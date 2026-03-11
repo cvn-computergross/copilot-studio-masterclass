@@ -38,3 +38,12 @@ Each lab lives in its own folder under [`labs/`](./labs/) and includes a local `
 - Image links are standard relative Markdown links so they render correctly on GitHub.
 - Check the prerequisite callouts inside each lab before starting.
 
+## Attribution
+
+Some parts of these lab guides are adapted from Microsoft Agent Academy:
+
+https://github.com/microsoft/agent-academy
+
+Copyright (c) Microsoft Corporation
+
+Used under the MIT License. These guides also contain modifications, restructuring, and additional original content.
