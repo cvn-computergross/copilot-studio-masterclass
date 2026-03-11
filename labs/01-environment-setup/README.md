@@ -2,6 +2,11 @@
 
 Previous: Start | [Back to README](../../README.md) | [Next: Lab 02](../02-knowledge-sources/README.md)
 
+> [!NOTE]
+> Portions of this lab are adapted from Microsoft Agent Academy:
+> https://github.com/microsoft/agent-academy  
+> Copyright (c) Microsoft Corporation. Used under the MIT License.
+
 ## Prerequisiti:
 
 1. `Mail aziendale o scolastica` ( @outlook.com, @gmail.com, etc., email personali non sono supportate).
@@ -214,4 +219,5 @@ Testare a piacere il funzionamento dell'Agent appena creato.
 >**Lab Completato**
 >
 >Con questo ultimo passaggio, il laboratorio per la creazione del primo agente in Copilot Studio è completato.
+
 
