@@ -2,6 +2,11 @@
 
 [Previous: Lab 05](../05-device-request-agent-flows/README.md) | [Back to README](../../README.md) | [Next: Lab 07](../07-multi-agent-hiring/README.md)
 
+> [!NOTE]
+> Portions of this lab are adapted from Microsoft Agent Academy:
+> https://github.com/microsoft/agent-academy  
+> Copyright (c) Microsoft Corporation. Used under the MIT License.
+
 ## Setup
 
 Per questo scenario, sono state preconfigurate delle tabelle Dataverse contenenti le strutture dati per gestire candidati, posizioni lavorative e flussi di lavoro relativi alle assunzioni.
@@ -155,4 +160,5 @@ Central orchestrator for all hiring activities
 >**Successo**
 >
 >Il setup è terminato!
+
 
