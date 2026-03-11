@@ -153,7 +153,7 @@ List of available devices by device type
 Concatenate("Status eq 'Available' and AssetType eq '", Topic.VarDeviceType, "'")
 ```
 
->[!note]
+>[!NOTE]
 >La formula costruisce dinamicamente una stringa di filtro unendo testo fisso con il valore di `Topic.VarDeviceType`.  Il risultato è una query che seleziona solo i dispositivi con stato `"Available"` e tipo uguale al valore della variabile.
 
 17. Premere Insert.
@@ -655,7 +655,7 @@ Come ultimo punto Inserire nuovamente dopo l'ultima virgola  il Dynamic Content 
 
 ![](./images/device-flow-step-48.png)
 
->[!info]
+>[!NOTE]
 >La formula verifica se il campo `AdditionalComments` del trigger è vuoto.  Se è vuoto restituisce il valore `"None"`, altrimenti restituisce il contenuto.
 
 19. Selezionare il nodo "Respond to the agent" e inserire come Output testuale:
@@ -728,7 +728,7 @@ Inserire la seguente Formula _fx_ :
 If(IsBlank(Topic.commentsId), "", Topic.commentsId)
 ```
 
->[!info]
+>[!NOTE]
 >La formula verifica se il campo `Topic.commentsId` è vuoto (`Blank()`).  Se lo è, restituisce una stringa vuota (`""`), altrimenti restituisce il valore di `commentsId`.  Serve a evitare valori NULL in output che potrebbero causare errori in controlli o funzioni.  In pratica, converte un valore vuoto in una stringa vuota utilizzabile.
 
 ![](./images/device-flow-step-61.png)
@@ -792,6 +792,7 @@ I need a laptop
 
 Proseguire con il test a piacere.
 
->[!success] Lab Completato
+>[!IMPORTANT]
+>**Lab Completato**
 >Con questo ultimo passaggio, il laboratorio per la creazione degli Agent Flows in Copilot Studio è completato.
 

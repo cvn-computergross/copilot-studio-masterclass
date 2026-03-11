@@ -49,7 +49,8 @@ Il prossimo compito è di caricare alcuni dati di esempio all'interno delle stru
 
 ![](./images/01-playhiringhubapp-x.png)
 
->[!warning] Attenzione
+>[!WARNING]
+>**Attenzione**
 >Il sistema potrebbe chiedere una login a questo punto. Fare di nuovo l'accesso e questo dovrebbe mostrare il contenuto dell'app Hiring Hub.
 
 4. Selezionare **Job Roles** nella navigazione di sinistra
@@ -71,7 +72,8 @@ Il prossimo compito è di caricare alcuni dati di esempio all'interno delle stru
 11. Assicurarsi che il mapping è corretto e selezionare **Finish Import**
 12. Selezionare **Done**
 
->[!warning] Caricamento
+>[!WARNING]
+>**Caricamento**
 >Potrebbe volerci qualche secondo di caricamento, ma si può premere il tasto **Refresh** per prendere nota della buona riuscita dell'operazione.
 
 ![](./images/01-job-roles-import-successful.png)
@@ -147,6 +149,7 @@ Central orchestrator for all hiring activities
 
 10. Selezionare **Salva** per salvare l'agente.
 
->[!success] Successo
+>[!IMPORTANT]
+>**Successo**
 >Il setup è terminato!
 

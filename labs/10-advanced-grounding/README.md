@@ -2,7 +2,8 @@
 
 [Previous: Lab 09](../09-multimodal-resume-prompt/README.md) | [Back to README](../../README.md) | [Next: Lab 11](../11-advanced-content-generation/README.md)
 
->[!warning] Prerequisito
+>[!WARNING]
+>**Prerequisito**
 >Per completare questo lab è necessario avere terminato il laboratorio precedente sul *prompt multimodale*
 ## Scenario
 
@@ -91,7 +92,8 @@ Per prima cosa, visionare le tabelle Dataverse che si andrà ad utilizzare:
 3. Scegliere **Prompt** ed selezionare la prompt action precedentemente configurata **Summarize Resume**
 4. Selezionare **Edit** per modificare il prompt, e rimpiazzarlo con la versione migliorata di seguito:
 
->[!warning] Attenzione
+>[!WARNING]
+>**Attenzione**
 >Assicurarsi che i parametri **Resume** e **Cover Letter** rimangano intatti
 
 ```
@@ -164,7 +166,8 @@ Cover Letter: {CoverLetter}
 
 ![](./images/5-add-grounding-x.png)
 
->[!info] Suggerimento
+>[!NOTE]
+>**Suggerimento**
 >La funzione **Add value** può essere utilizzata per aggiungere un valore dinamico preso tra gli input. Per esempio, in caso si stesse scrivendo un prompt per il riassumere un determinato record, si potrebbe fornire il *Resume Number* come parametro per poi applicarci il filtro.
 
 7. Successivamente, premere **+ Add content**, cercare **Job Roles** e invece di selezionare le colonne, espandere **Job Role (Evaluation Criteria)** selezionando le colonne seguenti, poi premere **Add**:
@@ -175,7 +178,8 @@ Cover Letter: {CoverLetter}
 
 ![](./images/5-all-prompt-parameters.png)
 
->[!info] Suggerimento
+>[!NOTE]
+>**Suggerimento**
 >E' importante selezionare l'**Evaluation Criteria** corretto selezionando *prima* **Job Role** e poi navigare nel menu **Job Role (Evaluation Criteria)**. Questo garantisce che solo i record relativi al Job Role verranno caricati.
 
 8. Selezionare i tre punti (**...**) nel pannello **Istruzioni** e premere **Settings**. Modificare il valore **Record retrieval** fino a 1000: questo consentirà di includere nel prompt il massimo numero di Job Roles ed Evaluation criteria
@@ -239,7 +243,8 @@ L'agente chiamerà questo flusso per ogni job role suggerito al quale il candida
 | **Resume (Resumes)**                    | Espressione (fx) | `concat('ppa_resumes/', first(outputs('Get_Resume')?['body/value'])?['ppa_resumeid'])`           |
 | **Application Date** (use **Show all**) | Espressione (fx) | `utcNow()`                                                                                       |
 
->[!tip] Approfondimento: formule PowerFx utilizzate
+>[!TIP]
+>**Approfondimento: formule PowerFx utilizzate**
 >- **`outputs('Get_Resume')?['body/value']`**  → Recupera l’array dei record restituiti dall’azione **Get_Resume**
 >- **`first(...)`** → Seleziona **il primo elemento (resume) trovato**
 >- **`['_ppa_candidate_value']`** → Estrae **l’ID del candidato collegato** (lookup verso la tabella Candidate)
@@ -320,7 +325,8 @@ You must always follow these rules and never break them:
 
 ![](./images/5-add-application-7-x.png)
 
->[!info] Iterare con Orchestrazione Generativa
+>[!NOTE]
+>**Iterare con Orchestrazione Generativa**
 >Grazie all'orchestratore generativo sotto Copilot Studio, è possibile gestire il caso in cui l'agente deve iterare su multiple righe e prendere decisioni su quali passaggi e strumenti usare. I *Matched Job Roles* verranno automaticamente letti e Application Intake Agent si attiverà per ogni riga. Questa funzione è molto comoda!
 
 ## Testare l'agente
@@ -350,6 +356,7 @@ This is a new resume for the Power Platform Developer Role.
 
 ![](./images/5-create-job-application-activity-map.png)
 
->[!success] Successo
+>[!IMPORTANT]
+>**Successo**
 >Con la nuova capacità dell'agente di interagire efficientemente ed in tempo reale con informazioni dal database, il laboratorio è terminato!
 

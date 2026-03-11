@@ -528,6 +528,7 @@ Voglio creare un nuovo annuncio di lavoro
 
 Proseguire con il test a piacere.
 
->[!success] Lab Completato
+>[!IMPORTANT]
+>**Lab Completato**
 >Con questo ultimo passaggio, il laboratorio per la creazione dei Tools in Copilot Studio è completato.
 

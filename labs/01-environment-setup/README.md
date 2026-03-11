@@ -21,7 +21,7 @@ Per accedere a Copilot Studio e usufruire della piattaforma è possibile usare u
 
 4. Una volta ottenuto l'account eseguire il `login`.
 
->[!note]
+>[!NOTE]
 >Nel caso in cui tu voglia pubblicare agenti all’interno di **Microsoft 365 Copilot Chat** oppure collegarti ai dati aziendali (come **SharePoint, OneDrive o Dataverse**), è indispensabile disporre di una licenza **Microsoft 365 Copilot**.
 >Questa licenza è un componente aggiuntivo (_add-on_); per ulteriori dettagli puoi consultare il [sito](https://www.microsoft.com/microsoft-365/copilot#plans) dedicato alle opzioni di licenza.
 
@@ -43,7 +43,8 @@ Una volta ottenuto un `Microsoft 365 Tenant`, è necessario l'accesso a `Copilot
 
 4. Premere su `Start Free Trial`.
 
->[!info] Trial Notes
+>[!NOTE]
+>**Trial Notes**
 >La versione di prova gratuita offre tutte le funzionalità di Copilot Studio.
 >Verranno inviate notifiche via email relative alla scadenza della prova. È possibile estendere la prova a incrementi di 30 giorni (fino a un massimo di 90 giorni di runtime dell'agente).	Se l'amministratore del tenant ha disattivato la registrazione self-service, verrà visualizzato un errore: in tal caso, contattare l'amministratore Microsoft 365 per riattivarla.
 
@@ -61,7 +62,8 @@ Una best practice nello sviluppo di Agenti è lavorare su un Environment diverso
 
 4. Utilizzare questo nuovo `Enviroment` per il Lab su `Copilot Studio`.
 
->[!note] Note
+>[!NOTE]
+>**Note**
 >Se si utilizza un account Microsoft 365 esistente e non ne è stato creato uno nello Step 1, ad esempio utilizzando il proprio account nell'organizzazione di lavoro, è possibile che l'amministratore IT (o il team equivalente) che gestisce il tenant/ambiente abbia disattivato il processo di registrazione. In tal caso, contattare l'amministratore oppure creare un tenant di test come indicato nello Step 1.
 
 ## Abilitare la Pubblicazione con la Copilot Studio Trail
@@ -108,7 +110,8 @@ Una volta aperto [Copilot Studio](https://copilotstudio.microsoft.com/), essere 
 per cambiare `Enviroment` in alto a destra selezionare il box `Enviroment` e cambiare il `default Enviroment` con quello nuovo. 
 Il prossimo passo è creare una Solution, un contenitore logico utilizzato per organizzare, gestire e distribuire in modo strutturato i componenti di una soluzione applicativa.
 
->[!tip] Best Practice
+>[!TIP]
+>**Best Practice**
 >È considerata una best practice creare ogni agente all’interno di una **solution specifica**, al fine di mantenere una chiara separazione logica tra i diversi componenti della piattaforma.  
 >Le solution permettono di organizzare e versionare gli elementi dell’agente, facilitando il ciclo di vita applicativo e le attività di aggiornamento e rilascio.
 
@@ -169,7 +172,8 @@ La soluzione `CSMFirstAgent` è stata creata.
 Non saranno presenti `components` finché non verrà creato un agente in Copilot Studio. Selezionare l’icona della `Back Arrow` per tornare al Solution Explorer.
 La `Current preferred Solution` risulta essere `CSMFirstAgent` in quanto in precedenza è stata selezionata la casella di controllo **Set as your preferred solution**.
 
->[!info] Info
+>[!NOTE]
+>**Info**
 >Una best practice consiste nel creare una nuova solution ogni volta che viene sviluppato un nuovo agente.
 ## Creazione del primo Agente
 
@@ -202,6 +206,7 @@ https://support.microsoft.com
 Terminato quest'ultimo passaggio premere in alto a destra il tasto **Test** che aprirà una schermata intitolata "Test your Agent" dove è possibile interagire con l'agente prima di pubblicarlo.
 Testare a piacere il funzionamento dell'Agent appena creato.
 
->[!success] Lab Completato
+>[!IMPORTANT]
+>**Lab Completato**
 >Con questo ultimo passaggio, il laboratorio per la creazione del primo agente in Copilot Studio è completato.
 

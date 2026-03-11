@@ -2,7 +2,8 @@
 
 [Previous: Lab 10](../10-advanced-grounding/README.md) | [Back to README](../../README.md) | [Next: Lab 12](../12-mcp-server-integration/README.md)
 
->[!warning] Prerequisito
+>[!WARNING]
+>**Prerequisito**
 >Per completare questo lab è necessario avere terminato il laboratorio precedente sul *Dataverse grounding*
 
 ### Scenario
@@ -122,7 +123,8 @@ Una volta completato, la situazione dovrebbe essere uguale rispetto al seguente 
 
 ![](./images/6-Template.png)
 
->[!note] Nota
+>[!NOTE]
+>**Nota**
 >Il template è un semplice documento Word. Il concetto chiave è quello di aggiungere placeholders nelle posizioni in cui il prompt dovrà aggiungere del testo. Per i valori temporanei è necessario utilizzare una dicitura con doppie parentesi graffe come `{{ JobTitle }}`. I nomi devono essere gli stessi rispetto ai parametri del prompt. [Maggiori informazioni in documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/generate-document-output-prompt) 
 
 12. Al momento la prompt action genera comunque testo. Per rendere lo strumento in grado di generare un documento, selezionare il menu a tendina **Output** in alto a destra e scegliere l'opzione **Document (preview)** 
@@ -194,7 +196,8 @@ binary(outputs('Run_a_prompt')?['body/responsev2/predictionOutput/documentOutput
 
 ![](./images/6-Formula.png)
 
->[!tip] Approfondimento: formula **PowerFx** utilizzata 
+>[!TIP]
+>**Approfondimento: formula PowerFx utilizzata**
 >- `outputs('Run_a_prompt')` → Recupera l’output dell’azione **Run a prompt**
 >- `['body/responsev2/predictionOutput/documentOutput/contentBytes']` → Naviga nella struttura dell’output per ottenere il campo **contentBytes**, che contiene il **contenuto del file generato dal modello** (di solito codificato in Base64)
 >- `binary(...)` → Converte quel contenuto in **formato binario**, cioè il formato richiesto da molte azioni di Power Automate quando devono gestire un file (es. creare un file in SharePoint o OneDrive).
@@ -305,6 +308,7 @@ Create an interview prep file for job application J1000
 
 ![](./images/6-InterviewPrepExample.png)
 
->[!success] Successo
+>[!IMPORTANT]
+>**Successo**
 >Con l'aggiunta della nuova capacità di generazione documenti, il laboratorio è completato!
 

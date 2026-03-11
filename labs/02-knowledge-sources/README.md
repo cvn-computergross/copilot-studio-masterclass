@@ -59,14 +59,15 @@ Questo Lab affronta varie tipologie di Knowledge Base fra cui SharePoint, perci�
 
 ![](./images/KB4.png)
 
->[!Info] Info
+>[!NOTE]
+>**Info**
 >La dimensione massima dei file da uploadare è 512MB e il numero massimo di URL per siti pubblici è 4. Per controllare altre specifiche tecniche andare su [Quotas and limits - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-quotas)
 
 6. Premere su `Upload`, verrà aperta una finestra del File Explorer, nella quale selezionare i seguenti Documenti: 
 
 [Zava_KB_Reset_M365_Password.docx](./files/Zava_KB_Reset_M365_Password.docx)
 
->[!Info]
+>[!NOTE]
 >Gli agenti di Copilot Studio richiedono la [Dataverse search](https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-add-file-upload) per utilizzare questa fonte di conoscenza. Se non puoi aggiungere file Dataverse a un agente, chiedi all’amministratore di attivare la `Dataverse search` nel tuo `Enviroment`.
 
 7. Modificare la `Description` con il seguente testo:
@@ -85,7 +86,7 @@ Usa questa Knowledge quando un Utente vuole resettare la Password.
 
 ![](./images/Settings2.png)
 
->[!tip] 
+>[!TIP]
 >Disattivare la General Knowledge e la Web Search permette all'agente di focalizzarsi solo sui dati che andiamo a fornire, andando così a limitare il rischio di allucinazione.
 
 
@@ -114,7 +115,7 @@ Come posso resettare la Password?
 
 ![](./images/Group1.png)
 
->[!Info] 
+>[!NOTE]
 >Per sapere i limiti o eventuali informazioni aggiuntive sui Files Group visitare la [Documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-file-group)
 
 4. Successivamente modificare il `Name` e la `Description` con :
@@ -155,7 +156,8 @@ Come configuro la VPN secondo la guida del 2022?
 
 2. Premere su `+Add knowledge`.
 
->[!abstract] Nota:
+>[!NOTE]
+>**Nota:**
 >Alcune Knowledge Base, come SharePoint e Dataverse, richiedono l'autenticazione dell'utente. Questo significa che l'agente farà riferimento, nelle sue risposte, solo ai dati che l'utente è autorizzato a visualizzare.
 >
 
@@ -179,7 +181,8 @@ Come configuro la VPN secondo la guida del 2022?
 Documentazione essenziale e risorse per supportare la gestione dei servizi IT e l’assistenza agli utenti finali.
 ```
 
-> [!tip] Tip
+> [!TIP]
+> **Tip**
 > L'aggiunta di una descrizione aiuta l'Agente a identificare meglio quale fonte utilizzare in base alla richiesta posta dall'utente.
 > 
 
@@ -189,9 +192,10 @@ Documentazione essenziale e risorse per supportare la gestione dei servizi IT e 
 Quali sono gli orari standard rispetto alla disponibilità del supporto di emergenza?
 ```
 
-> [!tip] 
+> [!TIP]
 > Per ulteriori informazioni sulle Knowledge Base consultare la [Documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio)
 
->[!success] Lab Terminato
+>[!IMPORTANT]
+>**Lab Terminato**
 >Con questo ultimo passaggio, il laboratorio per l'aggiunta di Knowledge al nostro Agente è completato.
 

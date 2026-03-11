@@ -7,7 +7,8 @@ Il seguente laboratorio mostrerà come un utente può dare feedback in due modi:
 1. Interazioni **built-in** e analisi tramite la pagina *Analytics* dell'agente
 2. **Adaptive Card personalizzata** che consente di collezionare il feedback quando l'utente ha risposto con 1 o 2 stelle al *sondaggio CSAT* (Customer Satisfaction Score). Come bonus, verrà loggato l'evento tramite il servizio **Azure Application Insight**
 
->[!warning] Prerequisito
+>[!WARNING]
+>**Prerequisito**
 >Per completare questo lab è necessario avere pubblicato l'agente *Interview Agent* (le funzioni specifiche non verranno utilizzate)
 
 ## Ottenere user feedback attraverso interazioni standard
@@ -49,7 +50,8 @@ Overly Complex or Hard to Follow: The explanation was confusing or used unnecess
 
 ### Consultare le analitiche standard
 
->[!info] Nota
+>[!NOTE]
+>**Nota**
 >Il feedback potrebbe impiegare qualche minuto prima di essere disponibile nella scheda Analytics. Se non è subito presente, controllare occasionalmente. 
 
 1. In Copilot Studio, all'interno di **Interview Agent** navigare nella scheda **Analytics** e scorrere fino alla sezione **Satisfaction**. All'interno della scheda **Reactions**, premere il tasto **See details**. Questo caricherà un pannello contenente tutte le recensioni inserite.
@@ -425,7 +427,8 @@ Topic.VarCSATRating
 
 ![](./images/8-AddAConditionNode.png)
 
->[!info] Logica da implementare
+>[!NOTE]
+>**Logica da implementare**
 >- Se il rating CSAT dato dall'utente è `3`, `4` o `5`, il flusso continuerà lungo il topic **End of Conversation** e farà parte dei feedback positivi
 >- Se il rating CSAT dato dall'utente è `1` o `2`, la conversazione verrà instradata all'interno del ramo **All other condition** che gestirà i feedback negativi
 
@@ -500,7 +503,8 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 
 ## BONUS: analisi telemetrica con Azure Application Insight
 
->[!warning] Prerequisiti
+>[!WARNING]
+>**Prerequisiti**
 >Occorre avere a disposizione una **sottoscrizione Azure** e fare il setup della risorsa [Application Insight](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource?tabs=portal#create-an-application-insights-resource) 
 
 1. Navigare nel custom topic **Capture CSAT dissatisfied** e selezionare l'icona **+** sotto il nodo **Ask with adaptive card**. Selezionare **Advanced** e premere **Log a custom telemetry event**
@@ -515,7 +519,8 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 
 ![](./images/8-EnterEventName.png)
 
->[!tip] Approfondimento: **Event name** e **Properties**
+>[!TIP]
+>**Approfondimento: Event name e Properties**
 >**Event name**
 >- Questo è l'**identificativo** dell'evento di telemetria che si vuole loggare
 >- La funzione è di permettere la ricerca ed il filtraggio in un secondo momento tramite gli strumenti di analitiche e monitoraggio
@@ -532,7 +537,8 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 
 ![](./images/8-EnterFormula.png)
 
->[!tip] Approfondimento: formula PowerFx utilizzata
+>[!TIP]
+>**Approfondimento: formula PowerFx utilizzata**
 >- `"Feedback: "` → aggiunge il testo `Feedback: ` all'inizio
 >- `& Text(Topic.ratingId):` → aggiunge alla stringa precedente il valore di `Topic.ratingId` (in questo caso, il numero da 1 a 5) convertito in testo 
 >- `& ", "` → aggiunge alla stringa precedente una virgola e uno spazio per chiarezza
@@ -622,7 +628,8 @@ customEvents
 
 ![](./images/8-KustoQuery.png)
 
->[!tip] Approfondimento: **Kusto query** utilizzata
+>[!TIP]
+>**Approfondimento: Kusto query utilizzata**
 >- `customEvents` → si riferisce alla tabella di Application Insight che contiene tutte gli eventi telemetrici relativi agli eventi custom
 >- `| extend FeedbackData = customDimensions['SerializedData']` → aggiunge una nuova colonna chiamata `FeedbackData`, che va ad estrarre il valore dal campo `SerializedData` all'interno della proprietà `customDimension` (un dizionario di dati collegati all'evento)
 >- `| where name == "CSAT Dissatisfied"` → filtra i risultati ai soli eventi il cui nome è esattamente "CSAT Dissatisfied"
@@ -637,6 +644,7 @@ customEvents
 
 ![](./images/8-ExtendSerializedData.png)
 
->[!success] Successo
+>[!IMPORTANT]
+>**Successo**
 >Con l'uso della prima query Kusto, la sezione bonus de laboratorio è terminata!
 

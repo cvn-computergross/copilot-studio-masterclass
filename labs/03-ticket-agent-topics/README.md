@@ -86,7 +86,7 @@ potresti identificare la tipologia di problema?
 
 3. Aggiungere *User.DisplayName* premendo il `{x}` dopo la virgola .
 
->[!info]
+>[!NOTE]
 >In questo lab vegono citate e utilizzate le Variabili, presenti in Copilot Studio. Per avere maggiori informazioni sul funzionamento, la tipologia e la creazione di variabili visitare la [Documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables?tabs=webApp)
 
 4. Su Identify selezionare `Multiple choice options` 
@@ -162,7 +162,7 @@ Segui questi passaggi di troubleshooting:
 8. Controlla le impostazioni del firewall.
 ```
 
->[!Tip]
+>[!TIP]
 >L’utilizzo di Topic strutturati per la gestione di Conversazioni consente di garantire risposte standardizzate, coerenti e conformi alle policy IT aziendali.  
 >A differenza delle risposte generative del modello AI, l’approccio deterministico riduce il rischio di suggerimenti non accurati o non autorizzati.
 
@@ -182,7 +182,7 @@ Segui questi passaggi di troubleshooting:
 
 12. Salvare il `Topic` e aprire la finestra di test.
 
-> [!tip] 
+> [!TIP]
 > Ricordarsi di premere su `start a new session`, perché facendolo la chat di Test si aggiornerà con le ultime modifiche fatte all'Agente.
 
 13. Inserire la seguente richiesta:
@@ -223,7 +223,8 @@ Questo Topic guida gli utenti verso la creazione di un ticket di support per il 
 
 ![](./images/AD1.png)
 
->[!summary] Tips
+>[!NOTE]
+>**Tips**
 > Puoi personalizzare le adaptive card direttamente da Copilot Studio o tramite siti esterni come [Designer Adaptive Cards](https://adaptivecards.io/designer/)
 
 ![](./images/AD2.png)
@@ -383,7 +384,7 @@ Il seguente Ticket è stato inviato al Reparto IT
 
 ![](./images/AD6.png)
 
-> [!info]
+> [!NOTE]
 > Nell'Adaptive card in Json non è possibile inserire variabili, quindi è necessario usare la  Formula Card scritta in [Power Fx](https://learn.microsoft.com/it-it/power-platform/power-fx/overview) 
 
 13. Incollare la seguente card:
@@ -402,6 +403,7 @@ Voglio aprire un ticket
 
 15. Continuare il dialogo con l'agente e vederne il funzionamento del Topic.
 
->[!success] Lab Completato
+>[!IMPORTANT]
+>**Lab Completato**
 >Con questo ultimo passaggio, il laboratorio per la creazione dei Topics in Copilot Studio è completato.
 
