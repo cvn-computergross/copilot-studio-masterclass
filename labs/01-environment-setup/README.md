@@ -45,6 +45,7 @@ Una volta ottenuto un `Microsoft 365 Tenant`, è necessario l'accesso a `Copilot
 
 >[!NOTE]
 >**Trial Notes**
+>
 >La versione di prova gratuita offre tutte le funzionalità di Copilot Studio.
 >Verranno inviate notifiche via email relative alla scadenza della prova. È possibile estendere la prova a incrementi di 30 giorni (fino a un massimo di 90 giorni di runtime dell'agente).	Se l'amministratore del tenant ha disattivato la registrazione self-service, verrà visualizzato un errore: in tal caso, contattare l'amministratore Microsoft 365 per riattivarla.
 
@@ -64,6 +65,7 @@ Una best practice nello sviluppo di Agenti è lavorare su un Environment diverso
 
 >[!NOTE]
 >**Note**
+>
 >Se si utilizza un account Microsoft 365 esistente e non ne è stato creato uno nello Step 1, ad esempio utilizzando il proprio account nell'organizzazione di lavoro, è possibile che l'amministratore IT (o il team equivalente) che gestisce il tenant/ambiente abbia disattivato il processo di registrazione. In tal caso, contattare l'amministratore oppure creare un tenant di test come indicato nello Step 1.
 
 ## Abilitare la Pubblicazione con la Copilot Studio Trail
@@ -112,6 +114,7 @@ Il prossimo passo è creare una Solution, un contenitore logico utilizzato per o
 
 >[!TIP]
 >**Best Practice**
+>
 >È considerata una best practice creare ogni agente all’interno di una **solution specifica**, al fine di mantenere una chiara separazione logica tra i diversi componenti della piattaforma.  
 >Le solution permettono di organizzare e versionare gli elementi dell’agente, facilitando il ciclo di vita applicativo e le attività di aggiornamento e rilascio.
 
@@ -174,6 +177,7 @@ La `Current preferred Solution` risulta essere `CSMFirstAgent` in quanto in prec
 
 >[!NOTE]
 >**Info**
+>
 >Una best practice consiste nel creare una nuova solution ogni volta che viene sviluppato un nuovo agente.
 ## Creazione del primo Agente
 
@@ -208,5 +212,6 @@ Testare a piacere il funzionamento dell'Agent appena creato.
 
 >[!IMPORTANT]
 >**Lab Completato**
+>
 >Con questo ultimo passaggio, il laboratorio per la creazione del primo agente in Copilot Studio è completato.
 

@@ -4,6 +4,7 @@
 
 >[!WARNING]
 >**Programma Frontier**
+>
 >Per questo laboratorio, è necessario assicurarsi di far parte del programma di [anteprima Frontier](https://adoption.microsoft.com/en-us/copilot/frontier-program/) per ottenere l’accesso anticipato a **Microsoft Agent 365**. 
 >
 >Frontier consente di entrare in contatto diretto con le più recenti innovazioni di **AI Microsoft**. Le anteprime Frontier sono soggette ai termini di anteprima già previsti negli accordi con i clienti. Poiché queste funzionalità sono ancora in fase di sviluppo, la loro disponibilità e le loro capacità potrebbero variare nel tempo.

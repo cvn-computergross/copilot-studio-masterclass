@@ -225,6 +225,7 @@ Questo Topic guida gli utenti verso la creazione di un ticket di support per il 
 
 >[!NOTE]
 >**Tips**
+>
 > Puoi personalizzare le adaptive card direttamente da Copilot Studio o tramite siti esterni come [Designer Adaptive Cards](https://adaptivecards.io/designer/)
 
 ![](./images/AD2.png)
@@ -405,5 +406,6 @@ Voglio aprire un ticket
 
 >[!IMPORTANT]
 >**Lab Completato**
+>
 >Con questo ultimo passaggio, il laboratorio per la creazione dei Topics in Copilot Studio è completato.
 

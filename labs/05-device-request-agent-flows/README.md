@@ -794,5 +794,6 @@ Proseguire con il test a piacere.
 
 >[!IMPORTANT]
 >**Lab Completato**
+>
 >Con questo ultimo passaggio, il laboratorio per la creazione degli Agent Flows in Copilot Studio è completato.
 

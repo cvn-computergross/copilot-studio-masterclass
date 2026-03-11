@@ -4,6 +4,7 @@
 
 >[!WARNING]
 >**Prerequisito**
+>
 >Per completare questo lab è necessario avere completato il laboratorio precedente sul sistema *Multi Agente*
 ### Use Case
 
@@ -43,6 +44,7 @@ When a new email arrives from an applicant
 
 >[!NOTE]
 >**Nota**
+>
 >Assicurarsi che tutte le connessioni alle app siano accompagnate da una spunta verde. Se non è così, selezionare il menu con **...** e premere su **New connection reference** per creare una nuova connessione.
 
 ![](./images/3-triggerName.png)
@@ -91,6 +93,7 @@ content type
 
 >[!TIP]
 >**Approfondimento: For each**
+>
 >Dopo avere selezionato **Attachments Content-Type** su Power Automate sarà apparsa automaticamente un azione di tipo **For each**.
 >
 >Questo avviene quando si seleziona un parametro (contenuto dinamico) che rappresenta una lista di oggetti (array). Power Automate riconosce che probabilmente si vuole processare ogni elemento singolarmente, per cui crea automaticamente un ciclo *Apply to each* intorno all'azione. 
@@ -101,6 +104,7 @@ content type
 
 >[!TIP]
 >**Approfondimento: Trigger Condition vs. Conditional Control Logic**
+>
 >In questo caso è stata utilizzata una logica condizionale tradizionale (*if ... else*), ma come alternativa più performante i triggers in Power Automate possono contenere una condizione insita nella loro azione. Le condizioni di trigger possono accedere al contenuto del payload.
 >
 >In questo caso, gli allegati si trovano in un array all'interno del body del trigger chiamato `attachments`. La seguente espressione controlla se l'array degli allegati non è vuoto **E** se il tipo del primo elemento è `application/pdf`. Notare che questo controlla solo il primo allegato.
@@ -125,6 +129,7 @@ Questo garantisce che per ogni file in allegato verrà controllato che il format
 
 >[!TIP]
 >**Approfondimento: HTML to text**
+>
 >L’azione **HTML to text** in **Power Automate** viene utilizzata per convertire contenuti formattati in **HTML** in **plain text**. È particolarmente utile quando si ricevono dati (come **email**, contenuti web o risposte da **API**) che contengono **HTML tags**, e si desidera estrarre solo il testo leggibile senza formattazione o codice.
 >
 >**Quando utilizzarla?**
@@ -165,6 +170,7 @@ item()?['name']
 
 >[!TIP]
 >**Approfondimento: funzione item()**
+>
 >Quando si utilizza un’azione **Apply to each**, **Power Automate** scorre ogni elemento di una **collection (array)**. La funzione **`item()`** viene usata principalmente all’interno di azioni come **Apply to each (o For each)**, **Select** o **Filter array**.
 >
 >**`item()`** restituisce l’**elemento corrente** in fase di elaborazione in un **loop** o in un’operazione su un **array**. 
@@ -269,6 +275,7 @@ Send [ResumeId (text)] = "RESUME ID PLACEHOLDER" and [ResumeTitle (text_1)] = "R
 
 >[!NOTE]
 >**Nota Licensing**
+>
 >Convertire il piano in Copilot Studio consente di gestire il flusso di trigger in Copilot Studio e consumare capacity Copilot Studio invece di Power Automate
 
 ![](./images/3-ChangePlanDetails-x.png)
@@ -586,6 +593,7 @@ Il prossimo passaggio consiste nel creare un nuovo agent flow per l'agent figlio
 
 >[!NOTE]
 >**Come tornare nella model-driven app se è stata chiusa**
+>
 >1. Navigare su [https://make.powerapps.com](https://make.powerapps.com/) assicurandosi di essere nello stesso environment, altrimenti cambiarlo
 >![](./images/3-BrowseToURL-x.png)
 >2. Selezionare **Apps** nel menu di sinistra, cercare l'applicazione **Hiring Hub** ed infine premere l'icona **Play** per caricarla nel browser
@@ -631,6 +639,7 @@ addDays(utcNow(), 3, 'MMM dd, yyyy')
 
 >[!NOTE]
 >**Formula PowerFx utilizzata**
+>
 >La funzione `addDays()` prende una data (`utcNow`), ci somma un certo numero di giorni (`3`) e restituisce la nuova data nel formato specificato (`MMM dd, yyyy`).
 
  ![](./images/3-ExpressionDueDate.png)
@@ -791,5 +800,6 @@ Taylor Testperson
 
 >[!IMPORTANT]
 >**Successo**
+>
 >Con la realizzazione del primo agente autonomo in grado di processare email, aggiornare informazioni nel database e notificare il team, il laboratorio è terminato!
 

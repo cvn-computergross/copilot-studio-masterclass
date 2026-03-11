@@ -51,6 +51,7 @@ Il prossimo compito è di caricare alcuni dati di esempio all'interno delle stru
 
 >[!WARNING]
 >**Attenzione**
+>
 >Il sistema potrebbe chiedere una login a questo punto. Fare di nuovo l'accesso e questo dovrebbe mostrare il contenuto dell'app Hiring Hub.
 
 4. Selezionare **Job Roles** nella navigazione di sinistra
@@ -74,6 +75,7 @@ Il prossimo compito è di caricare alcuni dati di esempio all'interno delle stru
 
 >[!WARNING]
 >**Caricamento**
+>
 >Potrebbe volerci qualche secondo di caricamento, ma si può premere il tasto **Refresh** per prendere nota della buona riuscita dell'operazione.
 
 ![](./images/01-job-roles-import-successful.png)
@@ -151,5 +153,6 @@ Central orchestrator for all hiring activities
 
 >[!IMPORTANT]
 >**Successo**
+>
 >Il setup è terminato!
 

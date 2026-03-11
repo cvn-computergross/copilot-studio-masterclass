@@ -4,6 +4,7 @@
 
 >[!WARNING]
 >**Prerequisito**
+>
 >Per svolgere questo lab occorre avere terminato il precedente ed avere creato lo *Hiring Agent*.
 
 ## Application Intake Agent
@@ -91,6 +92,7 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 
 >[!WARNING]
 >**Attenzione**
+>
 >Questa non è la scheda Tools dell'agente padre, si trova scorrendo le istruzioni del child agent
 
 2. Selezionare **+ Add**
@@ -125,6 +127,7 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 
 >[!NOTE]
 >**Nota**
+>
 >E' probabile che il sistema chieda una login su Dataverse dopo avere inserito l'azione. In tal caso inserire un nome qualsiasi e premere *add* per creare la nuova connessione
 
 8. Selezionare il nuovo nodo e cambiare il nome in **Create Resume**
@@ -144,6 +147,7 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 
 >[!NOTE]
 >**Formule PowerFx utilizzate**
+>
 >- `length(triggerBody()?['text'])` → calcola la lunghezza del testo.
 >- `greater(..., 2000)` → verifica se è maggiore di 2000 caratteri.
 >- `substring(triggerBody()?['text'], 0, 2000)` → prende solo i primi 2000 caratteri.
@@ -158,6 +162,7 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 
 >[!WARNING]
 >**Attenzione**
+>
 >Fare attenzione a non scegliere l'azione dal nome molto simile chiamata *Upload a file for an image to the selected environment*
 
 12. Chiamare il nuovo nodo **Upload Resume File**
@@ -226,6 +231,7 @@ E' il momento di connettere il flusso appena pubblicato all'agente Application I
 
 >[!NOTE]
 >**Nota**
+>
 >La descrizione spiega all'agente in che situazione chiamare lo strumento. Notare l'uso della "STRICT RULE" nella descrizione. Questo è un trucco per fornire ulteriori restrizioni su come utilizzare lo strumento, in questo caso solo in presenza di allegati e nel contesto di conversazione relativo a "Resume Upload". 
 >Scegliere quando lo strumento può essere utilizzato è un altro aspetto importante. Nel contesto di un'architettura multi agente è fondamentale essere certi che lo strumento possa essere chiamato SOLO dal child agent e non dal padre. Impostare il valore *Only when referenced by topics or agents* assicura questo comportamento.
 
@@ -249,6 +255,7 @@ First(System.Activity.Attachments).Content
 
 >[!NOTE]
 >**Formule utilizzate**
+>
 >- `System.Activity.Attachments` → Collezione che contiene tutti gli allegati inviati nel messaggio corrente (es. file, immagini, documenti).
 >- `First(...)` → Seleziona il primo elemento della collezione (in questo caso, il primo allegato)
 >- `.Content` → accede al contenuto dell'elemento selezionato (in particolare, nel caso di un file si tratta di una stringa codificata in Base64 a partire dai bytes)
@@ -274,6 +281,7 @@ Extract a cover letter style message from the context. Be sure to never prompt t
 
 >[!NOTE]
 >**Nota**
+>
 >Utilizzare una buona descrizione dei campi di input dinamici è un passaggio cruciale per assicurarsi che l'agente conosca come riempire gli input correttamente.
 
 13. Espandere la sezione **Advanced** per configurare alcune proprietà addizionali relative a questo input. Nella sezione **How many reprompts**, selezionare **Don't repeat**
@@ -282,6 +290,7 @@ Extract a cover letter style message from the context. Be sure to never prompt t
 
 >[!NOTE]
 >**Nota**
+>
 >Questa impostazione va a migliorare l'esperienza utente, in modo da non fare chiedere all'agente la stessa domanda multiple volte se non riesce ad identificare il dato corretto. Il compromesso è accettare che raramente inserirà un valore predefinito in questo campo, che verrà configurato nel prossimo passaggio.
 
 14. Scorrere in basso fino alla sezione **No valid entity found**. Nel menu a tendina **Action if no entity found** selezionare l'opzione **Set variable to value**. Scrivere `Resume upload` nel campo **Default entity value**.
@@ -354,6 +363,7 @@ L'agente dovrebbe rispondere con un errore indicando che può processare solo un
 
 >[!NOTE]
 >**Nota**
+>
 >Se il bottone play è grigio e non interagibile vuol dire che la soluzione non è stata pubblicata nel lab precedente di setup.
 >
 
@@ -472,6 +482,7 @@ General behavior
 
 >[!NOTE]
 >**Nota**
+>
 >Qualora Interview Agent risultasse grigio e non selezionabile, questo indica che l'agente non è ancora stato pubblicato. Tornare indietro e assicurarsi della buona riuscita dell'operazione di publish.
 
 4. Impostare la **Description** in questo modo:
@@ -484,6 +495,7 @@ Assists with the interview process and provides information about Resumes, Candi
 
 >[!NOTE]
 >**Nota**
+>
 >Notare che l'opzione *Pass conversation history to this agent* è abilitata di base. Questo consente all'agente di partenza di fornire pieno contesto all'agente connesso.
 
 5. Premere **Add agent**
@@ -518,6 +530,7 @@ Which active resumes are suitable for the Power Platform Developer role?
 
 >[!IMPORTANT]
 >**Successo**
+>
 >Con la primo sistema multi agent funzionante, il laboratorio è terminato! 
 >Il prossimo passaggio sarà quello di caricare automaticamente i CV che arrivano via mail.
 

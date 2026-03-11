@@ -4,6 +4,7 @@
 
 >[!WARNING]
 >**Prerequisito**
+>
 >Per completare questo lab è necessario avere completato il laboratorio precedente sul sistema *Multi Agente*
 ## Creare il prompt multi modale
 
@@ -87,6 +88,7 @@ Provide the output in valid JSON format with the following structure:
 
 >[!NOTE]
 >**Nota**
+>
 >Per avere ancora più controllo sul flusso di estrazione dati, la prompt action appena creata verrà utilizzata all'interno di un agent flow e non data direttamente all'utente come tool
 
 ## Aggiungere il prompt ad un Agent Flow
@@ -117,6 +119,7 @@ Provide the output in valid JSON format with the following structure:
 
 >[!TIP]
 >**Ottimizzare le queries**
+>
 >Quando si utilizza una tecnica di questo tipo in produzione, è sempre una *best practice* quella di limitare le colonne selezionate ai soli valori richiesti dall'Agent Flow
 
 ![](./images/4-summarize-resume-1.png)
@@ -135,6 +138,7 @@ Provide the output in valid JSON format with the following structure:
 
 >[!TIP]
 >**Approfondimento: formula PowerFx utilizzata**
+>
 >**`body('Get_Resume_Record')`**  → Restituisce il **body della risposta** dell’azione *Get Resume Record*
 >**`?['value']`** → Accede alla proprietà **value**, che contiene **l’array dei record Dataverse trovati**
 >**`first(...)`** → Prende **il primo record** dell’array restituito dalla query
@@ -158,6 +162,7 @@ Provide the output in valid JSON format with the following structure:
 
 >[!NOTE]
 >**Nota**
+>
 >Notare come i parametri appena impostati sono gli stessi che sono stati impostati come parametri di input nella configurazione della prompt action
 
 ## Creare il record di un candidato
@@ -184,6 +189,7 @@ Adesso l'informazione fornita dalla prompt action verrà utilizzata per creare u
 
 >[!TIP]
 >**Approfondimento: formula PowerFx utilizzata**
+>
 >- **`outputs('Get_Existing_Candidate')`**  → Restituisce **l’output completo** dell’azione *Get Existing Candidate*
 >- **`?['body/value']`** → Accede alla proprietà **value** del body della risposta, che contiene l'**array** dei **record Dataverse trovati**.
 >- **`length(...)`** → Conta **il numero di elementi presenti nell’array**. 
@@ -218,6 +224,7 @@ Completare il flusso aggiornando i dati e configurando il valore da restituire a
 
 >[!TIP]
 >**Approfondimento: formula PowerFx utilizzata**
+>
 >- `concat('ppa_candidates/', ...)` → Concatena una stringa per costruire il **percorso della tabella Dataverse**. In questo caso sono nel formato `ppa_candidates/{candidateId}`, dove `ppa_candidates` è il nome logico della tabella Dataverse.
 >- `equals(..., 1)` → Verifica se **esiste esattamente un candidato**
 >- `first(outputs('Get_Existing_Candidate')?['body/value'])?['ppa_candidateid']` → (Se il candidato esiste) prende l'ID del primo candidato trovato
@@ -318,6 +325,7 @@ Testare il sistema completo per controllare che tutto funzioni correttamente.
 
 >[!WARNING]
 >**Possibili Errori**
+>
 >- **Il CV non viene processato**: controllare che il file sia in formato PDF e sotto il limite di grandezza
 >- **Il candidato non viene creato**: controllare che il campo email sia stato estratto correttamente dal CV
 >- **Errori nel formato JSON**: controllare che le istruzioni del prompt includono la struttura *esatta* del JSON
@@ -325,6 +333,7 @@ Testare il sistema completo per controllare che tutto funzioni correttamente.
 
 >[!TIP]
 >**Approfondimento: miglioramenti per produzione**
+>
 >I seguenti punti non fanno parte del laboratorio, ma sono comuni considerazioni da fare prima di rendere l'agente pronto per passare in produzione:
 >1. **Gestione degli errori**: se il *Resume Number* non viene trovato, o il prompt fallisce nel parsing del documento, va restituito all'agente un errore chiaro.
 >2. **Aggiornamento dei candidati esistenti**: se il candidato viene trovato cercando la sua email, il nome potrebbe essere aggiornato per combaciare con quello nel CV
@@ -332,5 +341,6 @@ Testare il sistema completo per controllare che tutto funzioni correttamente.
 
 >[!IMPORTANT]
 >**Successo**
+>
 >Con la realizzazione del primo sistema multimodale in grado di estrarre informazioni da documenti, il laboratorio è terminato! Su queste fondamenta verranno espanse le capacità di ricerca informazioni nel prossimo laboratorio.
 

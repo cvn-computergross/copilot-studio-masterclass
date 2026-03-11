@@ -61,6 +61,7 @@ Questo Lab affronta varie tipologie di Knowledge Base fra cui SharePoint, perci�
 
 >[!NOTE]
 >**Info**
+>
 >La dimensione massima dei file da uploadare è 512MB e il numero massimo di URL per siti pubblici è 4. Per controllare altre specifiche tecniche andare su [Quotas and limits - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-quotas)
 
 6. Premere su `Upload`, verrà aperta una finestra del File Explorer, nella quale selezionare i seguenti Documenti: 
@@ -158,6 +159,7 @@ Come configuro la VPN secondo la guida del 2022?
 
 >[!NOTE]
 >**Nota:**
+>
 >Alcune Knowledge Base, come SharePoint e Dataverse, richiedono l'autenticazione dell'utente. Questo significa che l'agente farà riferimento, nelle sue risposte, solo ai dati che l'utente è autorizzato a visualizzare.
 >
 
@@ -183,6 +185,7 @@ Documentazione essenziale e risorse per supportare la gestione dei servizi IT e 
 
 > [!TIP]
 > **Tip**
+>
 > L'aggiunta di una descrizione aiuta l'Agente a identificare meglio quale fonte utilizzare in base alla richiesta posta dall'utente.
 > 
 
@@ -197,5 +200,6 @@ Quali sono gli orari standard rispetto alla disponibilità del supporto di emerg
 
 >[!IMPORTANT]
 >**Lab Terminato**
+>
 >Con questo ultimo passaggio, il laboratorio per l'aggiunta di Knowledge al nostro Agente è completato.
 
