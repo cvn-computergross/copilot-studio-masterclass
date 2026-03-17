@@ -404,6 +404,10 @@ Voglio aprire un ticket
 
 15. Continuare il dialogo con l'agente e vederne il funzionamento del Topic.
 
+> [!NOTE]
+> Se l'agente riporta al topic errato è possibile disabilitare il primo topic creato tramite il checkbox nella sezione Topics. 
+
+
 >[!IMPORTANT]
 >**Lab Completato**
 >
