@@ -84,7 +84,7 @@ Salve User.DisplayName ,
 potresti identificare la tipologia di problema?
 ```
 
-3. Aggiungere *User.DisplayName* premendo il `{x}` dopo la virgola .
+3. Aggiungere *User.DisplayName* premendo il simbolo `{x}`.
 
 >[!NOTE]
 >In questo lab vegono citate e utilizzate le Variabili, presenti in Copilot Studio. Per avere maggiori informazioni sul funzionamento, la tipologia e la creazione di variabili visitare la [Documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables?tabs=webApp)
