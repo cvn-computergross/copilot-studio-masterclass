@@ -411,6 +411,7 @@ Recarsi nella sezione **Input** e impostare i seguenti valori:
 | ---------- | ------------------------ | ---------------- |
 | Username   | Custom value             | User.DisplayName |
 | Content    | Dynamically fill with AI | Customize        |
+
 ![](./images/Html3.png)
 
 Per inserire la variabile nel Value dell'Username premere il simbolo “…” selezionare **System** e cercare `User.DisplayName`.
