@@ -73,7 +73,7 @@ Una best practice nello sviluppo di Agenti è lavorare su un Environment diverso
 >
 >Se si utilizza un account Microsoft 365 esistente e non ne è stato creato uno nello Step 1, ad esempio utilizzando il proprio account nell'organizzazione di lavoro, è possibile che l'amministratore IT (o il team equivalente) che gestisce il tenant/ambiente abbia disattivato il processo di registrazione. In tal caso, contattare l'amministratore oppure creare un tenant di test come indicato nello Step 1.
 
-## Abilitare la Pubblicazione con la Copilot Studio Trail
+## Abilitare la Pubblicazione con la Copilot Studio Trial
 
 La trial di **Copilot Studio** è stata aggiornata e, attualmente, la pubblicazione degli agenti non è consentita per impostazione predefinita. Per abilitare tale funzionalità, è necessario assegnare il ruolo **Copilot Studio Authors** tramite il **Power Platform Admin Center**.
 
