@@ -459,6 +459,7 @@ Ora non resta che configurare i vari Input secondo i valori qui sotto:
 | To         | Custom value             | User.Email |
 | Subject    | Dynamically fill with AI | Customize  |
 | Body       | Dynamically fill with AI | Customize  |
+
 ![](./images/Mail2.png)
 
 Per inserire la variabile nel Value del To premere il simbolo “…” selezionare **System** e cercare `User.Email`.
