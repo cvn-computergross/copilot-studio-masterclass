@@ -32,7 +32,8 @@ Ricreare la lista basandosi su questa tabella:
 |Contoso SmartWatch|Reserved|Contoso Ltd|CSW-G2|Accessory|Black|CON998877665|2024-02-28|249.00|ORD106|
 
 
-[Scarica il CSV](https://github.com/cvn-computergross/copilot-studio-masterclass/blob/main/labs/02-knowledge-sources/files/Devices-CSM.csv)
+[Scarica il file Devices-CSM.csv](../02-knowledge-sources/files/Devices-CSM.csv)
+
 
 ## Creazione Agente
 
