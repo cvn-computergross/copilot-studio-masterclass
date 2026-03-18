@@ -31,6 +31,9 @@ Ricreare la lista basandosi su questa tabella:
 |Contoso Phone Z|In Use|Contoso Ltd|CP-Z2022|Smartphone|Silver|CON556677889|2023-01-20|699.00|ORD103|
 |Contoso SmartWatch|Reserved|Contoso Ltd|CSW-G2|Accessory|Black|CON998877665|2024-02-28|249.00|ORD106|
 
+
+[Scarica il CSV](./labs/02-knowledge-sources/files/Devices-CSM.csv)
+
 ## Creazione Agente
 
 1. Navigare all'interno di [Copilot Studio](https://copilotstudio.microsoft.com/) e selezionare **Agents**  situato nel menù laterale a sinistra. 
