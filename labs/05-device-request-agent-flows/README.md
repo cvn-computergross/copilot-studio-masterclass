@@ -22,17 +22,18 @@ Usare la Lista chiamata Devices presente di default nel Sito generato con il Tem
 
 Ricreare la lista basandosi su questa tabella:
 
-|Title|Status|Manufacturer|Model|Asset Type|Color|Serial Number|Purchase Date|Purchase Price|Order #|
-|---|---|---|---|---|---|---|---|---|---|
-|Fabrikam Laptop X1|Reserved|Fabrikam Inc|FX1-2023|Laptop|Space Gray|FAB123456789|2023-04-10|1199.00|ORD101|
-|Trey Monitor Pro|Available|Trey Research|TM-PRO27|Accessory|Black|TREY987654321|2022-09-05|899.00|ORD102|
-|Trey Headset Max|Available|Trey Research|TH-MAX2023|Accessory|Dark Blue|TREY112233445|2024-01-10|299.00|ORD104|
-|Microsoft JetPrint|In Repair|Microsoft|MJ-404X|Printer|White|MS6677889900|2021-07-15|349.00|ORD104|
-|Contoso Phone Z|In Use|Contoso Ltd|CP-Z2022|Smartphone|Silver|CON556677889|2023-01-20|699.00|ORD103|
-|Contoso SmartWatch|Reserved|Contoso Ltd|CSW-G2|Accessory|Black|CON998877665|2024-02-28|249.00|ORD106|
+| Title | Status | Manufacturer | Model | Asset Type | Color | Serial Number | Purchase Date | Purchase Price | Order # |
+|---|---|---|---|---|---|---|---|---:|---|
+| Fabrikam Laptop X1 | Available | Fabrikam, Inc. | FX1-2023 | Laptop | Space gray | FAB123456789 | 2023-10-03T22:00:00Z | 1,199.00 | ORD101 |
+| Microsoft Surface Laptop 5 | Available | Microsoft | Surface Laptop 5 | Laptop | Silver | MSL500112233 | 2024-03-12T23:00:00Z | 1,499.00 | ORD107 |
+| Microsoft Surface Laptop Studio 2 | Available | Microsoft | Surface Laptop Studio 2 | Laptop | Black | MSLS22004567 | 2024-09-17T22:00:00Z | 2,399.00 | ORD108 |
+| Contoso Phone Z | In use | Contoso, Ltd. | CP-Z2022 | Smartphone | Silver | CON556677889 | 2023-01-19T23:00:00Z | 699.00 | ORD103 |
+| Trey Smartphone Elite | Available | Trey Research | TS-E2025 | Smartphone | Dark blue | TREY556600778 | 2025-01-14T23:00:00Z | 899.00 | ORD109 |
+| Contoso Desktop Pro | Available | Contoso, Ltd. | CDP-900 | Desktop | Black | COND334455667 | 2024-06-04T22:00:00Z | 1,299.00 | ORD110 |
 
 
-[Scarica il file Devices-CSM.csv](../02-knowledge-sources/files/Devices-CSM.csv)
+
+[Scarica il file Devices-CSM.csv](../files/Devices-CSM.csv)
 
 
 ## Creazione Agente
