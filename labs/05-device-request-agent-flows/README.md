@@ -791,7 +791,7 @@ Iniziare una nuova sessione nella finestra di Test, selezionare il simbolo (...)
 Testare il funzionamento dell'agente richiedendo un dispositivo, qui sotto un esempio:
 
 ```
-I need a laptop
+i want to request a new laptop
 ```
 
 Proseguire con il test a piacere.
