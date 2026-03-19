@@ -206,6 +206,7 @@ Adesso l'informazione fornita dalla prompt action verrà utilizzata per creare u
 | **Table name**     | Selezionare               | Candidates                         |
 | **Candidate Name** | Valore dinamico (fulmine) | Summarize Resume → `CandidateName` |
 | **Email**          | Valore dinamico (fulmine) | Summarize Resume → `Email`         |
+
 ![](./images/4-summarize-resume-6.png)
 
 ## Aggiornare il CV e configurare gli output
