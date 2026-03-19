@@ -108,6 +108,7 @@ Evaluation Criteria (Weighting, Evaluation Criteria): /Criteria
 | ResumeDetails       | Dataverse -> Job Application -> Resume (Resume)                                       | Cover Letter, Resume Number, Resume Title, Summary | Application Number   | Add Value -> Application Number |
 | JobDetails          | Dataverse -> Job Application -> Job Role (Job Role)                                   | Description, Job Role Number, Job Title            | Application Number   | Add Value -> Application Number |
 | Evaluation Criteria | Dataverse -> Job Application -> Job Role (Job Role) -> Job Role (Evaluation Criteria) | Criteria Name, Description, Weighting              | Application Number   | Add Value -> Application Number |
+
 Una volta completato, la situazione dovrebbe essere uguale rispetto al seguente screenshot:
 
 ![](./images/6-PromptFIlled.png)
