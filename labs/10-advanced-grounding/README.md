@@ -223,6 +223,7 @@ L'agente chiamerà questo flusso per ogni job role suggerito al quale il candida
 | **Table name**  | Selezionare               | Resumes                                                                                                                                              |
 | **Filter rows** | Valore dinamico (fulmine) | `ppa_resumenumber eq 'ResumeNumber'` dove **ResumeNumber** va rimpiazzato con il valore dinamico **When an agent calls the flow** → **ResumeNumber** |
 | **Row count**   | Inserire                  | 1                                                                                                                                                    |
+
 ![](./images/5-add-application-2.png)
 
 6. Premere il tasto **+** dopo l'azione appena configurata, cercare `dataverse`, selezionare **See more** e scegliere l'azione **List rows**
