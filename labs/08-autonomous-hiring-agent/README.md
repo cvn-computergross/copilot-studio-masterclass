@@ -103,7 +103,7 @@ content type
 ![](./images/3-ForEach.png)
 
 >[!TIP]
->**Approfondimento: Trigger Condition vs. Conditional Control Logic**
+>**Approfondimento: Trigger Condition vs. Conditional Control Logic  - NON USARE NEL LAB**
 >
 >In questo caso è stata utilizzata una logica condizionale tradizionale (*if ... else*), ma come alternativa più performante i triggers in Power Automate possono contenere una condizione insita nella loro azione. Le condizioni di trigger possono accedere al contenuto del payload.
 >
