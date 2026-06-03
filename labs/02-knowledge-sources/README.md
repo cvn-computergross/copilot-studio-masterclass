@@ -26,7 +26,7 @@ Questo Lab affronta varie tipologie di Knowledge Base fra cui SharePoint, perci√
 
 | Field            | Value                      |
 | ---------------- | -------------------------- |
-| Site name        | Help Desk CSM              |
+| Site name        | Help Desk CSM-Vostro Nome  |
 | Site description | Copilot Studio Masterclass |
 | Site address     | HelpDeskCSM                |
 
