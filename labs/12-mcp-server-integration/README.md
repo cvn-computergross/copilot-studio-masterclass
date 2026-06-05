@@ -9,6 +9,11 @@
 >
 >Frontier consente di entrare in contatto diretto con le più recenti innovazioni di **AI Microsoft**. Le anteprime Frontier sono soggette ai termini di anteprima già previsti negli accordi con i clienti. Poiché queste funzionalità sono ancora in fase di sviluppo, la loro disponibilità e le loro capacità potrebbero variare nel tempo.
 
+>[!WARNING]
+>**Licensing**
+>
+> E' necessario avere una licenza copilot 365 per poter utilizzare gli MCP server legati al Work IQ.
+
 ## Prerequisiti
 
 In questo laboratorio verranno utilizzati due **MCP server**: **Work IQ User MCP** e **Work IQ Calendar MCP**. Affinché il laboratorio funzioni correttamente, è necessario configurare in anticipo nel proprio **tenant** quanto segue:
