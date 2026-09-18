@@ -547,7 +547,7 @@ Get Device
 
 ![](./images/device-flow-step-32.png)
 
-9. Nel campo  **Site Address** e **List Name** inserire il sito e la lista SharePoint creata in precedenza. Nel campo Id inserire tramite il simbolo del fulmine il Dynamic Content  **DeviceSharePointId** relativo al trigger .
+9. Nel campo  **Site Address** e **List Name** inserire il sito e la lista SharePoint creata in precedenza. Nel campo Id inserire tramite il simbolo fx il Dynamic Content  **DeviceSharePointId** relativo al trigger .
 
 ![](./images/device-flow-step-33.png)
 
