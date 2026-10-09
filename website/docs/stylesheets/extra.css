@@ -249,9 +249,9 @@
   --md-admonition-bg-color: var(--aa-bg-alt);
   --md-footer-bg-color: var(--aa-bg);
 }
-/* Logo EDUlabs/CVN bianco nel tema scuro; Computer Gross su fondo chiaro arrotondato */
+/* Loghi in versione bianca nel tema scuro */
 [data-md-color-scheme="slate"] .footer-logos img[src*="edulabs-cvn"] { content: url("../assets/img/edulabs-cvn-white.png"); }
-[data-md-color-scheme="slate"] .footer-logos img[src*="cgross"] { background: #fff; border-radius: 4px; padding: 1px 3px; }
+[data-md-color-scheme="slate"] .footer-logos img[src*="cgross"] { content: url("../assets/img/cgross-white.png"); }
 
 /* In alto a destra: interruttore chiaro/scuro, filo verticale, icona GitHub */
 .md-header__option { margin: 0 .2rem 0 .6rem; }
