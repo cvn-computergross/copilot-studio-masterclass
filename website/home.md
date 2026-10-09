@@ -1,15 +1,8 @@
 # Copilot Studio Masterclass
 
 Benvenuto nei laboratori pratici di **Microsoft Copilot Studio**.
-Il percorso è diviso in due sezioni: si parte dalla creazione di agenti nel portale di Copilot Studio e si arriva a un flusso di lavoro code-first basato su GitHub.
-
-## Prima di iniziare
-
-!!! info "Requisiti"
-    - Un account Microsoft 365 aziendale o scolastico
-    - Accesso a Copilot Studio
-    - Conoscenza di base di Microsoft 365
-    - Accesso a SharePoint e Dataverse per i lab che usano fonti di conoscenza o dati strutturati
+Partiremo dalla **Standard Harness**, creando agenti direttamente nel portale di Copilot Studio: ambiente, fonti di conoscenza, topic, tool, flow, fino a scenari multi-agente e autonomi.
+Una volta consolidate le basi, approfondiremo la **GitHub Harness**, dove gli stessi agenti si costruiscono e si gestiscono con un flusso di lavoro code-first basato su GitHub.
 
 ## Come seguire i lab
 
