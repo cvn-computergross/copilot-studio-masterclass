@@ -28,14 +28,11 @@
 /* Header bianco e sottile, separato da un filo grigio */
 .md-header, .md-tabs { box-shadow: none; border: none; }
 .md-header { background: #ffffff; color: var(--aa-text-1); border-bottom: 1px solid var(--aa-divider); }
-/* Header: niente logo EDUlabs (è nel footer), logo e nome di Copilot Studio al centro */
+/* Header: niente logo EDUlabs (è nel footer), logo e nome del corso a sinistra */
 .md-header__button.md-logo { display: none !important; }
-.md-header__title {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  margin: 0 !important; width: auto; max-width: 60%; text-align: center;
-}
-.md-header__title .md-header__ellipsis { display: flex; justify-content: center; }
-.md-header__title .md-header__topic { position: static; justify-content: center; }
+.md-header__title { margin-left: .6rem !important; flex-grow: 1; height: 2.4rem; }
+.md-header__title .md-header__ellipsis { display: flex; align-items: center; height: 100%; }
+.md-header__title .md-header__topic { position: static; display: flex; align-items: center; height: 100%; }
 .md-header__title .md-header__topic + .md-header__topic { display: none; }
 .md-header__inner .md-header__source { margin-left: auto !important; }
 
@@ -46,7 +43,7 @@
 /* Logo di Copilot Studio accanto al titolo del sito */
 .md-header__title .md-header__topic:first-child::before {
   content: ""; display: inline-block; width: 1.4rem; height: 1.4rem; margin-right: .5rem;
-  vertical-align: -.3rem; background: url("../assets/img/copilot-studio.svg") center / contain no-repeat;
+  flex-shrink: 0; background: url("../assets/img/copilot-studio.svg") center / contain no-repeat;
 }
 .md-header__title .md-header__topic:first-child { font-weight: 700; }
 
