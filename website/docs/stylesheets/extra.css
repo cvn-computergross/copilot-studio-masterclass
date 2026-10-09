@@ -28,15 +28,14 @@
 /* Header bianco e sottile, separato da un filo grigio */
 .md-header, .md-tabs { box-shadow: none; border: none; }
 .md-header { background: #ffffff; color: var(--aa-text-1); border-bottom: 1px solid var(--aa-divider); }
-.md-header__button.md-logo img { height: 1.9rem; width: auto; }
+.md-header__button.md-logo img { height: 1.3rem; width: auto; }
 
-/* Menu laterale su fondo grigio chiaro, come la sidebar di Agent Academy */
-@media screen and (min-width: 45em) {
-  .md-sidebar--primary, .md-sidebar--primary .md-sidebar__scrollwrap { background: var(--aa-bg-alt) !important; }
-  .md-main__inner { margin-top: 0; }
-  .md-sidebar--primary .md-sidebar__scrollwrap { padding-top: 1rem; }
+/* Logo di Copilot Studio accanto al titolo del sito */
+.md-header__title .md-header__topic:first-child::before {
+  content: ""; display: inline-block; width: 1.4rem; height: 1.4rem; margin-right: .5rem;
+  vertical-align: -.3rem; background: url("../assets/img/copilot-studio.svg") center / contain no-repeat;
 }
-.md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link { font-weight: 700; color: var(--aa-text-1); }
+.md-header__title .md-header__topic:first-child { font-weight: 700; }
 
 /* Titoli scuri e neutri */
 .md-typeset h1, .md-typeset h2, .md-typeset h3 { color: var(--aa-text-1); }
