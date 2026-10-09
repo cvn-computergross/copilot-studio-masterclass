@@ -36,9 +36,11 @@
 .md-header__title .md-header__topic + .md-header__topic { display: none; }
 .md-header__inner .md-header__source { margin-left: auto !important; }
 
-/* Footer: logo EDUlabs piccolo in basso a destra */
-.md-footer-meta__inner { display: flex; align-items: center; justify-content: space-between; }
-.md-footer-meta .footer-logo { height: 1.4rem !important; width: auto !important; max-width: none; margin: .4rem .6rem; }
+/* Footer: loghi EDUlabs/CVN e Computer Gross piccoli nell'angolo in basso a destra */
+.md-footer-meta__inner.md-grid { max-width: none; display: flex; align-items: center; justify-content: space-between; padding: 0 1rem; }
+.md-footer-meta .footer-logos { display: flex; align-items: center; gap: .6rem; margin-left: auto; padding: .5rem 0; }
+.md-footer-meta .footer-logos img { height: 1.2rem !important; width: auto !important; max-width: none; }
+.md-footer-meta .footer-logos__sep { width: 1px; height: 1.1rem; background: var(--aa-divider); }
 
 /* Logo di Copilot Studio accanto al titolo del sito */
 .md-header__title .md-header__topic:first-child::before {
