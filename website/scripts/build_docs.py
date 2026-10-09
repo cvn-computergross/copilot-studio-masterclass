@@ -158,10 +158,10 @@ def main(src, site):
     # pagina Info: website/info.md (sintassi MkDocs) o, in mancanza, docs/info.md
     if (site / "info.md").is_file():
         shutil.copyfile(site / "info.md", docs / "info.md")
-        nav.append("  - Info: info.md")
+        nav.append("  - Info studenti: info.md")
     elif (lab_docs / "info.md").is_file():
         copy_md(lab_docs / "info.md", docs / "info.md")
-        nav.append("  - Info: info.md")
+        nav.append("  - Info studenti: info.md")
     for name, label in SECTIONS:
         section = lab_docs / name
         if not (section / "index.md").is_file():

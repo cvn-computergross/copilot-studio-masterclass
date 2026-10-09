@@ -312,6 +312,7 @@
 .md-typeset .info-item { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 0; }
 .md-typeset .info-item + .info-item { border-top: 1px solid var(--aa-divider); }
 .md-typeset .info-item > p { margin: 0; }
+.md-typeset .info-item p { margin: 0 0 .4rem; }
 .md-typeset .info-icon, .md-typeset .twemoji.info-icon { flex-shrink: 0; width: 2.4rem; height: 2.4rem; }
 .md-typeset .info-icon svg { width: 2.4rem; height: 2.4rem; max-height: none; }
 .md-typeset .info-item:nth-child(1) .info-icon { color: var(--aa-text-1); }

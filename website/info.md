@@ -1,4 +1,6 @@
-# Info
+# Info studenti
+
+Per i laboratori ogni partecipante ha a disposizione un account e un ambiente preparati apposta per il corso. Ecco cosa avrai e come funziona.
 
 <div class="info-list" markdown>
 
@@ -7,7 +9,9 @@
 
 <div markdown>
 ### Un account dedicato per ciascuno
-Ogni partecipante riceve il proprio account e registra l'MFA al primo accesso.
+Ogni partecipante riceve un account Microsoft 365 personale, creato apposta per il corso. Non serve usare il proprio account aziendale e non si condividono credenziali con altri.
+
+Al primo accesso ti verrà chiesto di registrare l'autenticazione a più fattori (MFA): tieni a portata di mano lo smartphone.
 </div>
 </div>
 
@@ -16,7 +20,9 @@ Ogni partecipante riceve il proprio account e registra l'MFA al primo accesso.
 
 <div markdown>
 ### Una sandbox dedicata
-Un ambiente isolato per ogni utente, con crediti Copilot Studio e funzionalità in anteprima abilitate.
+Ogni utente lavora in un proprio ambiente Power Platform isolato. Agenti, flow, soluzioni e dati che crei restano solo tuoi e non interferiscono con il lavoro degli altri partecipanti.
+
+L'ambiente ha già i crediti di Copilot Studio necessari per i lab e le funzionalità in anteprima abilitate, quindi puoi seguire tutti gli esercizi senza configurazioni aggiuntive.
 </div>
 </div>
 
@@ -25,7 +31,9 @@ Un ambiente isolato per ogni utente, con crediti Copilot Studio e funzionalità 
 
 <div markdown>
 ### Tutto ciò che crei resta tuo
-Quello che costruisci durante i lab può essere esportato liberamente.
+Quello che costruisci durante i lab può essere esportato liberamente, ad esempio come soluzione Power Platform, e reimportato nel tuo tenant.
+
+Se vuoi conservare un agente o un flow, esportalo prima della fine del corso.
 </div>
 </div>
 
@@ -34,7 +42,9 @@ Quello che costruisci durante i lab può essere esportato liberamente.
 
 <div markdown>
 ### Reset alla fine
-Ambienti e account vengono cancellati alla chiusura dell'ultima giornata.
+Alla chiusura dell'ultima giornata ambienti e account vengono cancellati, insieme a tutto il loro contenuto.
+
+Dopo il reset non è più possibile recuperare nulla: esporta per tempo ciò che ti interessa.
 </div>
 </div>
 

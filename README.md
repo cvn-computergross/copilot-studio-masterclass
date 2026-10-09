@@ -4,7 +4,7 @@ Hands-on labs for learning Microsoft Copilot Studio organized into two learning 
 
 ## Learning Paths
 
-Start from [Info](./docs/info.md) for accounts, sandbox and reset policy.
+Start from [Info studenti](./docs/info.md) for accounts, sandbox and reset policy.
 
 | Path | Description |
 |------|-------------|
