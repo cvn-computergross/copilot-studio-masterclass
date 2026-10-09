@@ -1,6 +1,6 @@
 # Lab 06 - Hiring Solution Setup
 
-[Previous: Lab 05](../05-device-request-agent-flows/README.md) | [Back to README](../../README.md) | [Next: Lab 07](../07-multi-agent-hiring/README.md)
+[Previous: Lab 05](../05-device-request-agent-flows/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 07](../07-multi-agent-hiring/README.md)
 
 > [!NOTE]
 > Portions of this lab are adapted from Microsoft Agent Academy:

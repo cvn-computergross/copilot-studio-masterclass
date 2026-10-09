@@ -1,6 +1,6 @@
 # Lab 12 - MCP Server Integration
 
-[Previous: Lab 11](../11-advanced-content-generation/README.md) | [Back to README](../../README.md) | [Next: Lab 13](../13-user-feedback-and-telemetry/README.md)
+[Previous: Lab 11](../11-advanced-content-generation/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 13](../13-user-feedback-and-telemetry/README.md)
 
 >[!WARNING]
 >**Programma Frontier**

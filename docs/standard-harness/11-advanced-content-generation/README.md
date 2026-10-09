@@ -1,6 +1,6 @@
 # Lab 11 - Advanced Content Generation
 
-[Previous: Lab 10](../10-advanced-grounding/README.md) | [Back to README](../../README.md) | [Next: Lab 12](../12-mcp-server-integration/README.md)
+[Previous: Lab 10](../10-advanced-grounding/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 12](../12-mcp-server-integration/README.md)
 
 >[!WARNING]
 >**Prerequisito**

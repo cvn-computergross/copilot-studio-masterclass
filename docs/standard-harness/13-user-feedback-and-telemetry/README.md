@@ -1,6 +1,6 @@
 # Lab 13 - User Feedback and Telemetry
 
-[Previous: Lab 12](../12-mcp-server-integration/README.md) | [Back to README](../../README.md) | Next: Complete
+[Previous: Lab 12](../12-mcp-server-integration/README.md) | [Back to Standard Harness](../index.md) | Next: Complete
 
 Il seguente laboratorio mostrerà come un utente può dare feedback in due modi:
 

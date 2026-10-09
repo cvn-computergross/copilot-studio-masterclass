@@ -1,6 +1,6 @@
 # Lab 04 - Job Posting Tools
 
-[Previous: Lab 03](../03-ticket-agent-topics/README.md) | [Back to README](../../README.md) | [Next: Lab 05](../05-device-request-agent-flows/README.md)
+[Previous: Lab 03](../03-ticket-agent-topics/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 05](../05-device-request-agent-flows/README.md)
 
 ## Creazione Agente
 

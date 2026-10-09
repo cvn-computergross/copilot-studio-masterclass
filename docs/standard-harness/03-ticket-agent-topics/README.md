@@ -1,6 +1,6 @@
 # Lab 03 - Ticket Agent Topics
 
-[Previous: Lab 02](../02-knowledge-sources/README.md) | [Back to README](../../README.md) | [Next: Lab 04](../04-job-posting-tools/README.md)
+[Previous: Lab 02](../02-knowledge-sources/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 04](../04-job-posting-tools/README.md)
 
 ## Creazione Agente Ticket
 

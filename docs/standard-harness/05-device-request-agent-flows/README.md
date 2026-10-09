@@ -1,6 +1,6 @@
 # Lab 05 - Device Request Agent Flows
 
-[Previous: Lab 04](../04-job-posting-tools/README.md) | [Back to README](../../README.md) | [Next: Lab 06](../06-hiring-solution-setup/README.md)
+[Previous: Lab 04](../04-job-posting-tools/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 06](../06-hiring-solution-setup/README.md)
 
 ## Prerequisiti
 

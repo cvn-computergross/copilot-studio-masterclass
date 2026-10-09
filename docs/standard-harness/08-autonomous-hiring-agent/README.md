@@ -1,6 +1,6 @@
 # Lab 08 - Autonomous Hiring Agent
 
-[Previous: Lab 07](../07-multi-agent-hiring/README.md) | [Back to README](../../README.md) | [Next: Lab 09](../09-multimodal-resume-prompt/README.md)
+[Previous: Lab 07](../07-multi-agent-hiring/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 09](../09-multimodal-resume-prompt/README.md)
 
 >[!WARNING]
 >**Prerequisito**

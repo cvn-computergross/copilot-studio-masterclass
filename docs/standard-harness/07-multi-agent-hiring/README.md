@@ -1,6 +1,6 @@
 # Lab 07 - Multi-Agent Hiring
 
-[Previous: Lab 06](../06-hiring-solution-setup/README.md) | [Back to README](../../README.md) | [Next: Lab 08](../08-autonomous-hiring-agent/README.md)
+[Previous: Lab 06](../06-hiring-solution-setup/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 08](../08-autonomous-hiring-agent/README.md)
 
 >[!WARNING]
 >**Prerequisito**

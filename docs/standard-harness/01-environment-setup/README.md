@@ -1,6 +1,6 @@
 # Lab 01 - Environment Setup
 
-Previous: Start | [Back to README](../../README.md) | [Next: Lab 02](../02-knowledge-sources/README.md)
+Previous: Start | [Back to Standard Harness](../index.md) | [Next: Lab 02](../02-knowledge-sources/README.md)
 
 > [!NOTE]
 > Portions of this lab are adapted from Microsoft Agent Academy:

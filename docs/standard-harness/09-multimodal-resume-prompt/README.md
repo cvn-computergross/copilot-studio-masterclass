@@ -1,6 +1,6 @@
 # Lab 09 - Multimodal Resume Prompt
 
-[Previous: Lab 08](../08-autonomous-hiring-agent/README.md) | [Back to README](../../README.md) | [Next: Lab 10](../10-advanced-grounding/README.md)
+[Previous: Lab 08](../08-autonomous-hiring-agent/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 10](../10-advanced-grounding/README.md)
 
 >[!WARNING]
 >**Prerequisito**

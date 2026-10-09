@@ -1,6 +1,6 @@
 # Lab 02 - Knowledge Sources
 
-[Previous: Lab 01](../01-environment-setup/README.md) | [Back to README](../../README.md) | [Next: Lab 03](../03-ticket-agent-topics/README.md)
+[Previous: Lab 01](../01-environment-setup/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 03](../03-ticket-agent-topics/README.md)
 
 ## Prerequisiti 
 

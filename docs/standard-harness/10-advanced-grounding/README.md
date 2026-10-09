@@ -1,6 +1,6 @@
 # Lab 10 - Advanced Grounding
 
-[Previous: Lab 09](../09-multimodal-resume-prompt/README.md) | [Back to README](../../README.md) | [Next: Lab 11](../11-advanced-content-generation/README.md)
+[Previous: Lab 09](../09-multimodal-resume-prompt/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 11](../11-advanced-content-generation/README.md)
 
 >[!WARNING]
 >**Prerequisito**
