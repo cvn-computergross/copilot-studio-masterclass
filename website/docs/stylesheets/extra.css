@@ -169,3 +169,17 @@
 
 /* Percorso nell'header: sezione e lab in grigio, più leggeri del nome del corso */
 .header-path__sep, .header-path__part { color: var(--aa-text-2); font-weight: 400; }
+
+/* Nome del corso già nell'header: niente titolo ripetuto in cima al menu laterale
+   (resta solo nel menu a scomparsa degli schermi stretti) */
+@media screen and (min-width: 45em) {
+  .md-nav--primary > .md-nav__title { display: none !important; }
+}
+
+/* Finestra che si restringe: prima spariscono sezione e lab, poi nome e logo del corso */
+@media screen and (max-width: 56em) {
+  .header-path__sep, .header-path__part { display: none; }
+}
+@media screen and (max-width: 30em) {
+  .md-header__title { visibility: hidden; }
+}
