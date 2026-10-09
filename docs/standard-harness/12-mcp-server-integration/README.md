@@ -29,21 +29,21 @@ In questo laboratorio verranno utilizzati due **MCP server**: **Work IQ User MCP
 2. Selezionare **Tools** nella navigazione in alto
 3. Selezionare **Add a tool**
 
-![](./images/7-add-a-tool.png)
+![](./images/aggiungere-server-mcp-work-01.png)
 
 4. Selezionare il filtro **Model Context Protocol**
 5. Individuare all'interno della lista **Work IQ User (Preview)**
 
-![](./images/7-user-mcp-setup.png)
+![](./images/aggiungere-server-mcp-work-02.png)
 
 6. Creare una nuova connessione al servizio tramite il tasto **Create new connection** e poi premere **Create**
 
-![](./images/7-user-mcp-connection.png)
+![](./images/aggiungere-server-mcp-work-03.png)
 
 7. Effettuare la login con il proprio account. Infine, premere **Add and configure**
 8. Scorrendo la schermata di overview, è possibile notare tutti i singoli strumenti che fanno parte del server MCP
 
-![](./images/7-user-mcp-tools.png)
+![](./images/aggiungere-server-mcp-work-04.png)
 
 9. Selezionare **Test** per assicurarsi del corretto funzionamento dello strumento. Alcuni prompt di esempio includono:
 
@@ -55,15 +55,15 @@ What is the job role of Mario Rossi?
 
 10. Selezionare **Allow** per dare il consenso sul trattamento dati al server MCP.
 
-![](./images/7-user-mcp-allow.png)
+![](./images/aggiungere-server-mcp-work-05.png)
 
 11. Di seguito, dovrebbe apparire la risposta dell'agente simile a quella mostrata in esempio sotto
 
-![](./images/7-user-mcp-test.png)
+![](./images/aggiungere-server-mcp-work-06.png)
 
 12. All'interno dell'activity map, è possibile notare che l'agente ha inizializzato il server MCP e chiamato l'azione corrispondente alla richiesta, come *getMyManager*. Si possono anche vedere i dettagli su cosa l'agente ha inviato e ricevuto dal server MCP
 
-![](./images/7-user-mcp-activity.png)
+![](./images/aggiungere-server-mcp-work-07.png)
 
 ## Aggiungere il server MCP Work IQ Calendar
 
@@ -80,12 +80,12 @@ Prima di essere in grado di interagire con il calendario, va configurato un seco
 3. Selezionare il filtro **Model Context Protocol**
 4. Individuare all'interno della lista **Work IQ Calendar (Preview)**
 
-![](./images/7-calendar-mcp-setup.png)
+![](./images/aggiungere-server-mcp-work-2-01.png)
 
 5. Effettuare il processo di connessione e poi selezionare **Add and configure**
 6. Prendere nota delle azioni disponibili all'interno del server MCP appena configurato
 
-![](./images/7-calendar-mcp-tools.png)
+![](./images/aggiungere-server-mcp-work-2-02.png)
 
 ## Testare il corretto funzionamento
 
@@ -164,15 +164,15 @@ Get my meetings for today
 
 5. L'agente risponderà con la richiesta di consenso. Premere **Allow** per consentire al server MCP di utilizzare i propri dati
 
-![](./images/7-calendar-mcp-allow.png)
+![](./images/failure-handling-01.png)
 
 6. L'agente dovrebbe ora rispondere correttamente con i meetings presenti nel proprio calendario
 
-![](./images/7-calendar-mcp-test.png)
+![](./images/failure-handling-02.png)
  
 7. Iniziare una nuova sessione di test tramite **New test session**
 
-![](./images/7-new-test-session.png)
+![](./images/failure-handling-03.png)
 
 8. Inserire il seguente prompt (sostituendo il nome utente in base al proprio ambiente)
 
@@ -182,7 +182,7 @@ Can you find 3 meeting times for a 30 minute meeting with Jane Doe for an interv
 
 Questo farà partire lo strumento MCP *findMeetingsTimes* che cercherà all'interno dei calendari degli utenti interessati per estrapolare disponibilità condivise.
 
-![](./images/7-outlook-calendar-meeting-test-output.png)
+![](./images/failure-handling-04.png)
 
 9. Terminare il test confermando uno degli slot proposti inserendo ad esempio:
 

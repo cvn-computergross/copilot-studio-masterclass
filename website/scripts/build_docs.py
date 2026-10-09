@@ -5,8 +5,8 @@ Uso:
     (es. dalla radice della repo: python website/scripts/build_docs.py . website)
 
 Lo script:
-  1. copia gli indici delle sezioni e i lab (README + images/ + files/) da docs/ del
-     branch main in website/docs/;
+  1. copia la pagina Info, gli indici delle sezioni, i lab (README + images/) e le
+     risorse da scaricare (docs/resources/) da docs/ del branch main in website/docs/;
   2. converte la sintassi GitHub nella sintassi MkDocs Material
      (README.md -> index.md, callout "> [!NOTE]" -> admonition "!!! note",
      rientri delle liste a 4 spazi, rimozione delle barre di navigazione,
@@ -139,7 +139,8 @@ def main(src, site):
     lab_docs, docs = src / "docs", site / "docs"
     # ripulisce solo i contenuti generati, non assets/javascripts/stylesheets
     (docs / "index.md").unlink(missing_ok=True)
-    for name, _ in SECTIONS:
+    (docs / "info.md").unlink(missing_ok=True)
+    for name in [n for n, _ in SECTIONS] + ["resources"]:
         shutil.rmtree(docs / name, ignore_errors=True)
 
     def copy_md(md, dest, checklist=False):
@@ -154,6 +155,13 @@ def main(src, site):
     else:
         copy_md(lab_docs / "index.md", docs / "index.md")
     nav = ["  - Home: index.md"]
+    # pagina Info: website/info.md (sintassi MkDocs) o, in mancanza, docs/info.md
+    if (site / "info.md").is_file():
+        shutil.copyfile(site / "info.md", docs / "info.md")
+        nav.append("  - Info: info.md")
+    elif (lab_docs / "info.md").is_file():
+        copy_md(lab_docs / "info.md", docs / "info.md")
+        nav.append("  - Info: info.md")
     for name, label in SECTIONS:
         section = lab_docs / name
         if not (section / "index.md").is_file():
@@ -163,12 +171,18 @@ def main(src, site):
         nav.append(f"    - Panoramica: {name}/index.md")
         for lab in sorted(p for p in section.iterdir() if (p / "README.md").is_file()):
             copy_md(lab / "README.md", docs / name / lab.name / "index.md", checklist=True)
-            for extra in ("images", "files"):
-                if (lab / extra).is_dir():
-                    shutil.copytree(lab / extra, docs / name / lab.name / extra)
+            if (lab / "images").is_dir():
+                shutil.copytree(lab / "images", docs / name / lab.name / "images")
             # nel menu "Lab 01 · Environment Setup"
             title = re.sub(r"^(Lab \d+) - ", r"\1 · ", h1(lab / "README.md"))
             nav.append(f'    - "{title}": {name}/{lab.name}/index.md')
+
+    # file da scaricare, raccolti per lab in docs/resources/
+    resources = lab_docs / "resources"
+    if (resources / "index.md").is_file():
+        shutil.copytree(resources, docs / "resources", ignore=shutil.ignore_patterns("index.md"))
+        copy_md(resources / "index.md", docs / "resources" / "index.md")
+        nav.append("  - Resources: resources/index.md")
 
     (site / "mkdocs.gen.yml").write_text(
         "# File generato da scripts/build_docs.py: non modificare.\n"

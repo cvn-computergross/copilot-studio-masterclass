@@ -166,7 +166,7 @@ Cover Letter: {CoverLetter}
 
 6. All'interno della finestra di dialogo **Job Role**, selezionare l'attributo **Filter**, scegliere **Status** e quindi scrivere `Active` come valore di filtro
 
-![](./images/5-add-grounding-x.png)
+![](./images/aggiungere-dati-grounding-al-01.png)
 
 >[!NOTE]
 >**Suggerimento**
@@ -177,9 +177,9 @@ Cover Letter: {CoverLetter}
 	- **Criteria Name**
 	- **Description**
 
-![](./images/5-add-eval-criteria.png)
+![](./images/aggiungere-dati-grounding-al-02.png)
 
-![](./images/5-all-prompt-parameters.png)
+![](./images/aggiungere-dati-grounding-al-03.png)
 
 >[!NOTE]
 >**Suggerimento**
@@ -188,7 +188,7 @@ Cover Letter: {CoverLetter}
 
 8. Selezionare i tre punti (**...**) nel pannello **Istruzioni** e premere **Settings**. Modificare il valore **Record retrieval** fino a 1000: questo consentirà di includere nel prompt il massimo numero di Job Roles ed Evaluation criteria
 
-![](./images/5-prompt-settings.png)
+![](./images/aggiungere-dati-grounding-al-04.png)
 
 ## Testare il prompt migliorato
 
@@ -198,7 +198,7 @@ Cover Letter: {CoverLetter}
 4. Selezionare la scheda **Knowledge used** per visionare i dati presi da Dataverse che sono stati uniti al prompt prima dell'esecuzione
 5. Premere **Save** per salvare il prompt aggiornato. Da ora in poi il sistema integrerà i dati da Dataverse con il prompt ogni volta che è richiamato dal flusso **Summarize Resume**
 
-![](./images/5-matched-roles-json-x.png)
+![](./images/testare-prompt-migliorato-01.png)
 
 ## Aggiungere il flusso Job Application 
 
@@ -213,7 +213,7 @@ L'agente chiamerà questo flusso per ogni job role suggerito al quale il candida
 | Text | `ResumeNumber`  | Be sure to only use the [ResumeNumber] - it MUST start with the letter R  |
 | Text | `JobRoleNumber` | Be sure to only use the [JobRoleNumber] - it MUST start with the letter J |
 
-![](./images/5-add-application-1.png)
+![](./images/aggiungere-flusso-job-application-01.png)
 
 4. Premere il tasto **+** sotto il trigger, cercare `dataverse`, selezionare **See more** e scegliere l'azione **List rows**
 5. Cambiare nome all'azione in `Get Resume`, ed impostare i seguenti parametri:
@@ -224,7 +224,7 @@ L'agente chiamerà questo flusso per ogni job role suggerito al quale il candida
 | **Filter rows** | Valore dinamico (fulmine) | `ppa_resumenumber eq 'ResumeNumber'` dove **ResumeNumber** va rimpiazzato con il valore dinamico **When an agent calls the flow** → **ResumeNumber** |
 | **Row count**   | Inserire                  | 1                                                                                                                                                    |
 
-![](./images/5-add-application-2.png)
+![](./images/aggiungere-flusso-job-application-02.png)
 
 6. Premere il tasto **+** dopo l'azione appena configurata, cercare `dataverse`, selezionare **See more** e scegliere l'azione **List rows**
 7. Cambiare il nome dell'azione in `Get Job Role`, ed impostare i seguenti parametri:
@@ -235,7 +235,7 @@ L'agente chiamerà questo flusso per ogni job role suggerito al quale il candida
 | **Filter rows** | Valore dinamico (fulmine) | `ppa_jobrolenumber eq 'JobRoleNumber'` dove **JobRoleNumber** va rimpiazzato con il valore dinamico **When an agent calls the flow** → **JobRoleNumber** |
 | **Row count**   | Inserire                  | 1                                                                                                                                                        |
 
-![](./images/5-add-application-3.png)
+![](./images/aggiungere-flusso-job-application-03.png)
 
 8. Premere il tasto **+** dopo l'azione appena configurata, cercare `dataverse`, selezionare **See more** e scegliere l'azione **Add a new row**
 9. Cambiare il nome dell'azione in `Add application`, ed impostare i seguenti parametri:
@@ -258,7 +258,7 @@ L'agente chiamerà questo flusso per ogni job role suggerito al quale il candida
 >
 >La formula restituisce un valore in formato `ppa_candidates/{candidateId}`, cioè il **riferimento al candidato associato al resume**. Le altre formule sono analoghe.
 
-![](./images/5-add-application-4.png)
+![](./images/aggiungere-flusso-job-application-04.png)
 
 10. Selezionare il nodo **Respond to the agent**, e premere su **+ Add an output** per configurare il valore di ritorno con le seguenti proprietà:
 
@@ -267,7 +267,7 @@ L'agente chiamerà questo flusso per ogni job role suggerito al quale il candida
 - **Value**: tra i valori dinamici (fulmine), selezionare **Add Application → See More → Application Number**
 - **Description**: `The [ApplicationNumber] of the Job Application created`
 
-![](./images/5-add-application-5.png)
+![](./images/aggiungere-flusso-job-application-05.png)
 
 11. Premere **Save draft** in alto a destra
 12. Navigare nella scheda di **Overview**,  selezionare **Edit** nel pannello **Details**. Impostare i seguenti valori:
@@ -292,7 +292,7 @@ Una volta pubblicato il flusso, può essere connesso all'agente Application Inta
 
 5. Selezionare **Save**
 
-![](./images/5-add-application-6-x.png)
+![](./images/aggiungere-flusso-all-agente-01.png)
 
 ## Modificare le istruzioni dell'agente
 
@@ -329,7 +329,7 @@ You must always follow these rules and never break them:
 3. Dove le istruzioni includono lo slash in avanti (`/`), selezionare il seguente testo e rimpiazzarlo con il riferimento dinamico allo strumento **Create Job Application**
 4. Premere **Save**
 
-![](./images/5-add-application-7-x.png)
+![](./images/modificare-istruzioni-dell-agente-01.png)
 
 >[!NOTE]
 >**Iterare con Orchestrazione Generativa**
@@ -347,7 +347,7 @@ This is a new resume for the Power Platform Developer Role.
 
 3. Notare come l'agente restituisce una lista dei *Suggested Job Roles*, ognuno dei quali con un identificativo specifico
 
-![](./images/5-test-1.png)
+![](./images/testare-l-agente-01.png)
 
 4. E' quindi possibile specificare per quale di questi aggiungere un application. Ad esempio:
 
@@ -357,11 +357,11 @@ This is a new resume for the Power Platform Developer Role.
 "Apply for the Developer and Architect roles"
 ```
 
-![](./images/5-test-2.png)
+![](./images/testare-l-agente-02.png)
 
 5. All'interno dell'activity map è possibile vedere come lo strumento **Create Job Application** viene lanciato per ognuno dei ruoli specificati. 
 
-![](./images/5-create-job-application-activity-map.png)
+![](./images/testare-l-agente-03.png)
 
 >[!IMPORTANT]
 >**Successo**

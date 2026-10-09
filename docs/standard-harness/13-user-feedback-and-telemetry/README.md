@@ -45,7 +45,7 @@ Inaccurate or Misleading: The information provided was incorrect or not relevant
 Overly Complex or Hard to Follow: The explanation was confusing or used unnecessary jargon.
 ```
 
-![](./images/8-SubmitPositiveFeedback.png)
+![](./images/ottenere-user-feedback-attraverso-01.png)
 
 3. Ripetere questa operazione un certo numero di volte fino ad avere inserito diverse reazioni accompagnate da feedback scritto
 
@@ -58,7 +58,7 @@ Overly Complex or Hard to Follow: The explanation was confusing or used unnecess
 
 1. In Copilot Studio, all'interno di **Interview Agent** navigare nella scheda **Analytics** e scorrere fino alla sezione **Satisfaction**. All'interno della scheda **Reactions**, premere il tasto **See details**. Questo caricherà un pannello contenente tutte le recensioni inserite.
 
-![](./images/8-Reactions.png)
+![](./images/ottenere-user-feedback-attraverso-02.png)
 
 ## Costruire un adaptive card per raccogliere feedback
 
@@ -70,24 +70,24 @@ All'interno di questo esempio verranno utilizzati (e modificati) alcuni utili to
 
 1. All'interno di **Hiring Agent**, navigare nella scheda **Topics**, selezionare **+ Add a topic** e scegliere **From blank**
 
-![](./images/8-AddTopicFromBlank.png)
+![](./images/costruire-adaptive-card-raccogliere-01.png)
 
 2. Rinominare il topic in `Capture CSAT dissatisfied feedback`
 3. All'interno del nodo trigger, selezionare l'icona con le frecce di **Change trigger** e selezionare **It's redirected to**. Questo farà si che il topic sarà attivato solo quando espressamente chiamato da un altro topic attraverso il nodo **Go to another topic**.
 
-![](./images/8-RenameTopicAndConfigureTrigger.png)
+![](./images/costruire-adaptive-card-raccogliere-02.png)
 
 4. Selezionare l'icona **+** sotto il trigger e selezionare il nodo **Ask with adaptive card**
 
-![](./images/8-AskWithAdaptiveCardNode.png)
+![](./images/costruire-adaptive-card-raccogliere-03.png)
 
 5. Selezionare il nodo, e premere **Edit adaptive card** nel menu che apparirà a destra
 
-![](./images/8-EditAdaptiveCard.png)
+![](./images/costruire-adaptive-card-raccogliere-04.png)
 
 6. All'interno dell'**Adaptive Card Designer**, espandere in basso il **Card payload editor**, selezionare tutto il contenuto presente (*Ctrl + A*) e sostituirlo con il JSON presente di seguito
 
-![](./images/8-UpdateJSON.png)
+![](./images/costruire-adaptive-card-raccogliere-05.png)
 
 ```
 {
@@ -384,11 +384,11 @@ All'interno di questo esempio verranno utilizzati (e modificati) alcuni utili to
 
 7. Notare adesso come il **Card Preview** contenga una nuova card con del testo ed alcuni dispositivi. Premere **Save** in alto a destra e poi uscire dal designer tramite **X Close**
 
-![](./images/8-CardUpdated.png)
+![](./images/costruire-adaptive-card-raccogliere-06.png)
 
 8. All'interno del canvas del topic, dovrebbe essere visualizzabile la nuova adaptive card. Scorrere in fondo e notare gli output. I campi `notesId` e `ratingId` sono stati definiti nelle proprietà della carta. Questi valori verranno utilizzati nel laboratorio bonus.
 
-![](./images/8-CardOutputs.png)
+![](./images/costruire-adaptive-card-raccogliere-07.png)
 
 ### Modify End of Conversation system topic
 
@@ -396,26 +396,26 @@ Il prossimo passaggio consiste nel modificare il topic di sistema **End of Conve
 
 1. Navigare all'interno della sezione **Topics**, filtrare per **System** e selezionare il topic di sistema **End of Conversation**
 
-![](./images/8-SelectEndOfConversationTopic.png)
+![](./images/costruire-adaptive-card-raccogliere-08.png)
 
 2. Scorrere al nodo **Condition** che controlla la variabile `SurveyResponse`. Selezionare l'icona **+** sotto il nodo e premere **Add node**
 
-![](./images/8-AddNode.png)
+![](./images/costruire-adaptive-card-raccogliere-09.png)
 
 3. Selezionare **Variable management** e premere **Set a variable value**
 
-![](./images/8-SelectSetAVariableValue.png)
+![](./images/costruire-adaptive-card-raccogliere-10.png)
 
 4. Selezionare **Create a new variable**. Questo nodo consente di dichiarare una variabile per contenere la risposta dell'utente al survey CSAT.
 
-![](./images/8-SelectCreateANewVariable.png)
+![](./images/costruire-adaptive-card-raccogliere-11.png)
 
 5. Selezionare la variabile e tramite il pannello **Variable properties** cambiare i seguenti valori:
 
 - **Variable name**: `VarCSATRating`
 - **To value**: `0` (valore iniziale)
 
-![](./images/8-ConfigureVariableProperties.png)
+![](./images/costruire-adaptive-card-raccogliere-12.png)
 
 6. Selezionando il nodo già esistente **CSAT Question**, ci sarà un campo nel quale inserire il riferimento ad una variabile nella quale salvare il risultato della risposta data dall'utente. Inserire al suo interno la seguente espressione che fa riferimento alla variabile appena configurata:
 
@@ -423,11 +423,11 @@ Il prossimo passaggio consiste nel modificare il topic di sistema **End of Conve
 Topic.VarCSATRating
 ```
 
-![](./images/8-CSATQuestionProperties.png)
+![](./images/costruire-adaptive-card-raccogliere-13.png)
 
 7. Selezionare l'icona **+** sotto il nodo **CSAT Question** e selezionare **Add a condition**
 
-![](./images/8-AddAConditionNode.png)
+![](./images/costruire-adaptive-card-raccogliere-14.png)
 
 >[!NOTE]
 >**Logica da implementare**
@@ -437,28 +437,28 @@ Topic.VarCSATRating
 
 8. Nel nodo **Condition** selezionare l'icona *maggiore* (**>**)
 
-![](./images/8-SelectAVariable.png)
+![](./images/costruire-adaptive-card-raccogliere-15.png)
 
 9. Selezionare la variabile **VarCSATRating**
 
-![](./images/8-SelectVarCSATRating.png)
+![](./images/costruire-adaptive-card-raccogliere-16.png)
 
 10. Come **operator**, selezionare `is greater or equal to`
 11. Come **Value**, inserire il valore `3`
 
-![](./images/8-AddIntegerValue.png)
+![](./images/costruire-adaptive-card-raccogliere-17.png)
 
 12. Completare la logica relativa al caso in cui il valore del feedback è inferiore a `3`. All'interno del ramo **All other conditions**, selezionare l'icona **+**, selezionare **Topic management** e premere **Go to another topic >**
 
-![](./images/8-AddNodeInOtherConditions.png)
+![](./images/costruire-adaptive-card-raccogliere-18.png)
 
 13. All'interno del menu selezionare il topic precedentemente creato **Capture CSAT dissatisfied feedback** 
 
-![](./images/8-SelectCaptureCSATDissatisfiedFeedbackTopic.png)
+![](./images/costruire-adaptive-card-raccogliere-19.png)
 
 14. Selezionare **Save** per salvare il topic
 
-![](./images/8-RedirectNodeAdded.png)
+![](./images/costruire-adaptive-card-raccogliere-20.png)
 
 15. Testare l'agente tramite **Test** e **new test session**. Qualsiasi domanda va bene, l'obiettivo è quello di inserire un feedback CSAT con punteggio inferiore a 3. Per forzare l'attivazione del system topic, inserire un prompt con scritto:
 
@@ -466,19 +466,19 @@ Topic.VarCSATRating
 end conversation
 ```
 
-![](./images/8-EndConversation.png)
+![](./images/costruire-adaptive-card-raccogliere-21.png)
 
 16. All'attivazione del topic **End of Conversation**, occorre rispondere **Yes** alle due domande seguenti
 
-![](./images/8-YesToAnsweringQuestion.png)
+![](./images/costruire-adaptive-card-raccogliere-22.png)
 
 17. A questo punto verrà inserita in chat la domanda CSAT. Selezionare 1 o 2 stelle come risposta
 
-![](./images/8-CSATSurvey.png)
+![](./images/costruire-adaptive-card-raccogliere-23.png)
 
 18. Siccome il rating è sotto 3, tramite l'activity map sarà possibile notare come il topic **End of Conversation** andrà a redirigere il flusso della conversazione all'interno del topic **Capture CSAT dissatisfied feedback**. Selezionare qualsiasi opzione
 
-![](./images/8-RedirectToTopicForCustomFeedback.png)
+![](./images/costruire-adaptive-card-raccogliere-24.png)
 
 19. Selezionare l'icona **Add comment** per inserire feedback testuale, utilizzando uno dei seguenti esempi
 
@@ -496,11 +496,11 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 
 20. Selezionare quindi **Submit**
 
-![](./images/8-WrittenFeedbackAndSubmit.png)
+![](./images/costruire-adaptive-card-raccogliere-25.png)
 
 21. L'agente riprenderà il topic **End of Conversation** siccome l'attività precedente è stata completata. Chiederà infine all'utente se c'è bisogno di assistenza addizionale. Selezionare **No**
 
-![](./images/8-EndOfConversationTopicCompleted.png)
+![](./images/costruire-adaptive-card-raccogliere-26.png)
 
 22. Questo completerà il topic **End of Conversation**
 
@@ -513,15 +513,15 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 
 1. Navigare nel custom topic **Capture CSAT dissatisfied** e selezionare l'icona **+** sotto il nodo **Ask with adaptive card**. Selezionare **Advanced** e premere **Log a custom telemetry event**
 
-![](./images/8-AddLogACustomTelemetryEvent.png)
+![](./images/bonus-analisi-telemetrica-azure-01.png)
 
 2. Selezionare l'icona con i tre puntini (**...**) e premere **Properties** 
 
-![](./images/8-SelecProperties.png)
+![](./images/bonus-analisi-telemetrica-azure-02.png)
 
 3. Nel box **Event name**, inserire `CSAT Dissatisfied`
 
-![](./images/8-EnterEventName.png)
+![](./images/bonus-analisi-telemetrica-azure-03.png)
 
 >[!TIP]
 >**Approfondimento: Event name e Properties**
@@ -540,7 +540,7 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 "Feedback: " & Text(Topic.ratingId) & ", " & "Comment: " & If(IsBlank(Topic.notesId), "NA", Topic.notesId)
 ```
 
-![](./images/8-EnterFormula.png)
+![](./images/bonus-analisi-telemetrica-azure-04.png)
 
 >[!TIP]
 >**Approfondimento: formula PowerFx utilizzata**
@@ -557,43 +557,43 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 5. Premere **Save** per salvare il topic
 6. Per collegare l'agente alla risorsa **Application Insight**, selezionare **Settings** in alto a destra
 
-![](./images/8-AgentSettings.png)
+![](./images/bonus-analisi-telemetrica-azure-05.png)
 
 7. Su **Advanced**, selezionare **Application Insights**
 
-![](./images/8-ApplicationInsightSettings.png)
+![](./images/bonus-analisi-telemetrica-azure-06.png)
 
 8. In un'altra scheda, navigare sul [portale Azure](https://portal.azure.com/) e aprire la risorsa precedentemente creata **Application Insight** (che avrà il nome deciso in fase di setup). All'interno della pagina di **Overview**, identificare il campo **Connection string** e copiarne il contenuto
 
-![](./images/8-CopyConnectionStringValue.png)
+![](./images/bonus-analisi-telemetrica-azure-07.png)
 
 9. Navigare indietro su Copilot Studio ed incollare il contenuto all'interno del campo **Connection string**. Salvare i cambiamenti con **Save**.
 
-![](./images/8-PasteConnectionStringAndSave.png)
+![](./images/bonus-analisi-telemetrica-azure-08.png)
 
 10. A questo punto è possibile testare il log dell'evento di telemetria nel quale il rating CSAT è di 1 o 2 stelle. Ripetere gli stessi step di test fatti in precedenza andando a scrivere in chat `end conversation`, dando due volte `Yes` e compilando il form con un numero inferiore a 3
 
-![](./images/8-CSATSurvey1.png)
+![](./images/bonus-analisi-telemetrica-azure-09.png)
 
 11. Scrivere un commento generico e premere **Submit**
 
-![](./images/8-SubmitFeedback.png)
+![](./images/bonus-analisi-telemetrica-azure-10.png)
 
 12. Terminare il flusso assicurandosi che l'agent torni nel topic **End of Conversation** e premere **No**
 
-![](./images/8-EndOfConversationTopicCompleted1.png)
+![](./images/bonus-analisi-telemetrica-azure-11.png)
 
 13. Ora va controllato il log generato da Application Insight. Navigare nuovamente sulla risorsa Azure **Application Insight** e selezionare **Events** nel menu di sinistra. Nel menu a tendina relativo a **Who used**, selezionare **Any Custom Event** e nel menu a tendina **Events** selezionare l'evento personalizzato **CSAT Dissatisfied**. Questo filtro mostrerà solo gli eventi custom con il nome **CSAT Dissatisfied**
 
-![](./images/8-Events.png)
+![](./images/bonus-analisi-telemetrica-azure-12.png)
 
 14. Scorrere in basso e selezionare **View More Insights**
 
-![](./images/8-ViewMoreInsights.png)
+![](./images/bonus-analisi-telemetrica-azure-13.png)
 
 15. In questa sezione è possibile avere maggiori informazioni su gli eventi custom loggati dall'agente. Scorrere alla sezione **Event Statistics** e selezionare **CSAT Dissatisfied**
 
-![](./images/8-ViewEventInsights.png)
+![](./images/bonus-analisi-telemetrica-azure-14.png)
 
 16. La sezione **end-to-end transaction details** contiene una serie di segnali molto precisi relativi alla telemetria dell'evento
 
@@ -602,27 +602,27 @@ The agent froze midway and didn’t respond for a while. I also experienced dela
 	- La proprietà `SerializedData` contiene il messaggio di feedback, includendo problemi tecnici e commenti dell'utente
 	- Le altre proprietà come `DesignMode`, `channelId` e `conversationId` offrono contesto sul dove e come l'evento sia stato generato
 
-![](./images/8-CustomEventInformation.png)
+![](./images/bonus-analisi-telemetrica-azure-15.png)
 
 17. Per situazioni in cui nel corso del tempo si accumulano moltissimi eventi all'interno di Application Insight, c'è un secondo metodo per ricercarli, tramite l'uso di query *Kusto* (un linguaggio di query). Nel menu di sinistra, selezionare **Logs** per fare caricare la scheda **Queries hub**. Chiuderla premendo la **X**
 
-![](./images/8-QueryLogs.png)
+![](./images/bonus-analisi-telemetrica-azure-16.png)
 
 17. Di base, saranno visualizzate una serie di Queries eseguite in precedenza. Per effettuare una query, premere su **Select a table**
 
-![](./images/8-SelectATable.png)
+![](./images/bonus-analisi-telemetrica-azure-17.png)
 
 18. Selezionare la tabella `customEvents` e premere **Run**. Questo lancerà una query sulla tabella `customEvents`
 
-![](./images/8-RunCustomEvents.png)
+![](./images/bonus-analisi-telemetrica-azure-18.png)
 
 19. Verranno quindi mostrati i risultati della query. Di base, mostrerà gli ultimi *1000 risultati* delle ultime *24 ore*
 
-![](./images/8-customEventsResults.png)
+![](./images/bonus-analisi-telemetrica-azure-19.png)
 
 20. La vista mostrata è nella **Simple mode**. Per effettuare query specifiche è possibile cambiarla in **KQL mode** 
 
-![](./images/8-SelectKQLmode.png)
+![](./images/bonus-analisi-telemetrica-azure-20.png)
 
 21. Inserire la seguente Kusto query e premere **Run**
 
@@ -632,7 +632,7 @@ customEvents
 | where name == "CSAT Dissatisfied"
 ```
 
-![](./images/8-KustoQuery.png)
+![](./images/bonus-analisi-telemetrica-azure-21.png)
 
 >[!TIP]
 >**Approfondimento: Kusto query utilizzata**
@@ -645,11 +645,11 @@ customEvents
 
 22. Espandere uno dei risultati mostrati
 
-![](./images/8-Results.png)
+![](./images/bonus-analisi-telemetrica-azure-22.png)
 
 23. Scorrere in basso per trovare la nuova colonna `FeedbackData` definita nella query Kusto
 
-![](./images/8-ExtendSerializedData.png)
+![](./images/bonus-analisi-telemetrica-azure-23.png)
 
 >[!IMPORTANT]
 >**Successo**

@@ -9,6 +9,6 @@ The GitHub Harness covers building and managing Copilot Studio agents with a cod
 
 ## Labs
 
-Each lab lives in its own folder, named `NN-lab-name/`, with a `README.md` and any `images/` or `files/` it needs.
+Each lab lives in its own folder, named `NN-lab-name/`, with a `README.md` and an `images/` folder. Files to download go in `docs/resources/NN-lab-name/`.
 
 _No labs yet._

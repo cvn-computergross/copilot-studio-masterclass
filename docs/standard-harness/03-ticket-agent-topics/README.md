@@ -10,15 +10,15 @@ Nel corso del laboratorio viene creato un agente vuoto, privo di connettori, azi
 
 1. Dalla home page di  [Copilot Studio](https://copilotstudio.microsoft.com/) premere **Agents**
 
-![](./images/Creazione1.png)
+![](./images/creazione-agente-ticket-01.png)
 
 2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nel' Environment, proseguire premendo **Create blank agent** .
 
-![](./images/creazione2.png)
+![](./images/creazione-agente-ticket-02.png)
 
 3. Copilot Studio procederà con la creazione dell' agente vuoto, per effettuare modifiche aspettare il seguente Messaggio:
 
-![](./images/Creazione3.png)
+![](./images/creazione-agente-ticket-03.png)
 
 ### Dettagli e Istruzioni
 
@@ -50,11 +50,11 @@ L’Help Desk Agent fornisce supporto tecnico di primo livello utilizzando esclu
 
 1. Nel menù dell'Agente premere su `Topics`.
 
-![](./images/Topic1.png)
+![](./images/creazione-primo-topic-01.png)
 
 2. Premere `Add a topic` e successivamente `From blank`.
 
-![](./images/Topic2.png)
+![](./images/creazione-primo-topic-02.png)
 
 3. Per prima cosa cambiare il nome del `Topic`, selezionando `Untitled` in alto a sinistra e inserendo il seguente nome:
 
@@ -62,7 +62,7 @@ L’Help Desk Agent fornisce supporto tecnico di primo livello utilizzando esclu
 First Topic - Supporto Tecnico
 ```
 
-![](./images/Topic3.png)
+![](./images/creazione-primo-topic-03.png)
 
 5. Ora aggiugere il `trigger` con la seguente descrizione:
 
@@ -70,12 +70,12 @@ First Topic - Supporto Tecnico
 Questo topic gestisce le richieste di assistenza relative a problematiche tecniche segnalate dagli utenti durante l’utilizzo di strumenti, applicazioni o servizi aziendali.
 ```
 
-![](./images/Topic4.png)
+![](./images/creazione-primo-topic-04.png)
 
 
 6. Sotto al `Trigger` premere su `+Add Node`
 
-![](./images/Topic5.png)
+![](./images/creazione-primo-topic-05.png)
 
 7. Selezionare `Ask a question` e inserire nel corpo il seguente messaggio:
 
@@ -97,19 +97,19 @@ potresti identificare la tipologia di problema?
 - `Software Issues`
 - `Network Issues`
 
-![](./images/Topic6.png)
+![](./images/creazione-primo-topic-06.png)
 
 6. Modificare il nome della variabile del nodo. Per fare ciò premere sulla variabile.
 
-![](./images/Topic7.png)
+![](./images/creazione-primo-topic-07.png)
 
 7. Nelle Variable Properties modificare il nome in Issue e fare caso ai vari settaggi della variabile
 
-![](./images/Topic8.png)
+![](./images/creazione-primo-topic-08.png)
 
 3. Notare come Copilot Studio crea in automatico le `Conditions` per ogni caso possibile.
 
-![](./images/Topic9.png)
+![](./images/creazione-primo-topic-09.png)
 
 4. Sotto ogni opzione premere `Add a node` e selezionare `Send a message`.
 5. Sotto a hardware issue inserire:
@@ -126,7 +126,7 @@ potresti identificare la tipologia di problema?
 7. Esegui la diagnostica hardware (se disponibile).
 ```
 
-![](./images/Topic10.png)
+![](./images/creazione-primo-topic-10.png)
 
 7. Ripetere il processo per le varie opzioni con i seguenti messaggi:
 
@@ -170,15 +170,15 @@ Segui questi passaggi di troubleshooting:
 
 9. Selezionare `Topic Management`,  `Go to another topic` e infine `Escalate`.
 
-![](./images/Topic11.png)
+![](./images/creazione-primo-topic-11.png)
 
-![](./images/Topic12.png)
+![](./images/creazione-primo-topic-12.png)
 
 10. Alla chiusura delle conditions premere `Add node`
 
 11. Selezionare `Topic Management` e `End current topic`
 
-![](./images/Topic13.png)
+![](./images/creazione-primo-topic-13.png)
 
 12. Salvare il `Topic` e aprire la finestra di test.
 
@@ -197,11 +197,11 @@ Ho un problema tecnico
 
 1. Andare su [Copilot Studio](https://copilotstudio.microsoft.com/) nella sezione `Agents` selezionare l'Agente `Help Desk ` . Nel menù dell'Agente premere su `Topics`.
 
-![](./images/Topic1.png)
+![](./images/creazione-primo-topic-01.png)
 
 2. Premere `Add a topic` e successivamente `From blank`.
 
-![](./images/Topic2.png)
+![](./images/creazione-primo-topic-02.png)
 
 3. Per prima cosa cambiare il nome del `Topic`, selezionando `Untitled` in alto a sinistra e inserendo il seguente nome:
 
@@ -209,7 +209,7 @@ Ho un problema tecnico
 Ticket Card
 ```
 
-![](./images/Ticket1.png)
+![](./images/creazione-topic-adaptive-card-01.png)
 
 4. Ora aggiungere il `trigger` con la seguente descrizione:
 
@@ -217,42 +217,42 @@ Ticket Card
 Questo Topic guida gli utenti verso la creazione di un ticket di support per il reparto IT.
 ```
 
-![](./images/Ticket2.png)
+![](./images/creazione-topic-adaptive-card-02.png)
 
 5. Premere su `Add Node` (l'icona + sotto a trigger) e selezionare `Ask with adaptive card`.
 
-![](./images/AD1.png)
+![](./images/creazione-topic-adaptive-card-03.png)
 
 >[!NOTE]
 >**Tips**
 >
 > Puoi personalizzare le adaptive card direttamente da Copilot Studio o tramite siti esterni come [Designer Adaptive Cards](https://adaptivecards.io/designer/)
 
-![](./images/AD2.png)
+![](./images/creazione-topic-adaptive-card-04.png)
 
 6. Aprire i dettagli dell'Adaptive card, premere **Edit adaptive card** 
 
-![](./images/AD3.png)
+![](./images/creazione-topic-adaptive-card-05.png)
 
 7. Si aprirà l'Adaptive card Designer,
 
 L’**Adaptive Card Designer** consente di progettare una scheda e visualizzarne il design in tempo reale.
 
-![](./images/Card1.png)
+![](./images/creazione-topic-adaptive-card-06.png)
 
 Trascinando gli elementi della scheda **TextBlock** e **FactSet** nell’area di creazione, ovvero il visualizzatore della scheda, si noterà che la struttura della scheda e l’editor del payload si aggiornano automaticamente con l’aggiunta dei due elementi. È possibile aggiornare direttamente sia l’editor del payload della scheda sia il riquadro delle proprietà degli elementi.
 
 Selezionando **Preview** è possibile visualizzare la scheda con larghezze diverse.
 
-![](./images/Card2.png)
+![](./images/creazione-topic-adaptive-card-07.png)
 
 Verrà caricata l’anteprima, nella quale saranno mostrati diversi output della scheda in base alla larghezza.
 
-![](./images/Card3.png)
+![](./images/creazione-topic-adaptive-card-08.png)
 
 Per uscire dall’anteprima, selezionare l’icona **X** e utilizzare il comando **Undo** nel designer per rimuovere i due elementi della scheda precedentemente aggiunti.
 
-![](./images/Card4.png)
+![](./images/creazione-topic-adaptive-card-09.png)
 
 
 8. Accedere all’editor del **Card payload** e selezionare tutte le righe utilizzando la combinazione di tasti **Ctrl + A** su Windows oppure **Command + A** su Mac, quindi eliminare le righe selezionate. Successivamente, incollare il codice **JSON**.
@@ -367,7 +367,7 @@ Per uscire dall’anteprima, selezionare l’icona **X** e utilizzare il comando
 
 8. L'adaptive card verrà visualizzata in questo modo:
 
-![](./images/AD4.png)
+![](./images/creazione-topic-adaptive-card-10.png)
 
 9. Sotto l'adaptive card premere `Add node`, selezionare `send a message`
 
@@ -379,11 +379,11 @@ Il seguente Ticket è stato inviato al Reparto IT
 
 11. Sempre all'interno del messaggio premere `+ Add `
 
-![](./images/AD5.png)
+![](./images/creazione-topic-adaptive-card-11.png)
 
 12. Selezionare `Adaptive card` e nella schermata di edit cambiare da Json a formula card.
 
-![](./images/AD6.png)
+![](./images/creazione-topic-adaptive-card-12.png)
 
 > [!NOTE]
 > Nell'Adaptive card in Json non è possibile inserire variabili, quindi è necessario usare la  Formula Card scritta in [Power Fx](https://learn.microsoft.com/it-it/power-platform/power-fx/overview) 
@@ -394,7 +394,7 @@ Il seguente Ticket è stato inviato al Reparto IT
 { type: "AdaptiveCard", body: [ { type: "TextBlock", size: "Medium", weight: "Bolder", text: "Riepilogo dati inseriti" }, { type: "FactSet", facts: [ { title: "Nome", value: Text(Topic.nome) }, { title: "Cognome", value: Text(Topic.cognome) }, { title: "Email", value: Text(Topic.email) }, { title: "Tipologia di problema", value: Text(Topic.tipologia) }, { title: "Descrizione", value: Text(Topic.descrizione) } ] } ], '$schema': "http://adaptivecards.io/schemas/adaptive-card.json", version: "1.5" }
 ```
 
-![](./images/AD7.png)
+![](./images/creazione-topic-adaptive-card-13.png)
 
 14. Dopo aver salvato il Topic premere il tasto Test e inserire la seguente richiesta:
 

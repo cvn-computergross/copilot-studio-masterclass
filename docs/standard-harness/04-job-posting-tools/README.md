@@ -9,11 +9,11 @@
 
 2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nel' Environment, proseguire premendo **Create blank agent** .
 
-![](./images/creazione2.png)
+![](./images/creazione-agente-01.png)
 
 3. Copilot Studio procederà con la creazione dell' agente vuoto, per effettuare modifiche aspettare il seguente Messaggio:
 
-![](./images/Creazione3.png)
+![](./images/creazione-agente-02.png)
 
 4. Finito il provisioning dell'agente modificare **Nome** e **Descrizione**:
 
@@ -37,7 +37,7 @@ Lo scopo è guidare la conversazione durante la creazione di ticket per garantir
 
 1. Nella pagina dell'agente andare nella sezione  **Topics** e selezionare **Add a topic** → **From blank**.
 
-![](./images/Job1.png)
+![](./images/topic-new-job-posting-01.png)
 
    2. Inserire il **Nome** del Topic:
 
@@ -45,7 +45,7 @@ Lo scopo è guidare la conversazione durante la creazione di ticket per garantir
 New Job Posting
 ```
 
-![](./images/Job2.png)
+![](./images/topic-new-job-posting-02.png)
 
 3. Successivamente andare e inserire il **Trigger** del Topic:
 
@@ -53,17 +53,17 @@ New Job Posting
 Questo strumento può gestire richieste come queste: nuovo annuncio di lavoro (job posting), pubblica una nuova posizione, aggiungi un’offerta di lavoro, crea un annuncio di lavoro, annuncia una posizione aperta 
 ```
 
-![](./images/Job3.png)
+![](./images/topic-new-job-posting-03.png)
 
 Per garantire il corretto funzionamento del Topic è necessario inserire alcune variabili di Input che l'Agente andrà a estrapolare dalla conversazione.
 
 4. In alto a destra premere su `Details` , facendo ciò viene aperta una finestra dalla quale è possibile visualizzare e modificare alcuni dettagli relativi al Topic  e le variabili di Input e Output.
 
-![](./images/Job4.png)
+![](./images/topic-new-job-posting-04.png)
 
 5. Andare nella sezione Input, premere **Create a new variable** e aggiungere le seguenti variabili di input:
 
-![](./images/Job5.png)
+![](./images/topic-new-job-posting-05.png)
 
 - Variable Name: `PrimaryLocation`
 - Identify as: `User's entire response`
@@ -73,7 +73,7 @@ Per garantire il corretto funzionamento del Topic è necessario inserire alcune 
 Sede di lavoro principale come “Città, Paese” oppure modalità di lavoro se specificata (“Remote” o “Hybrid”; includere la città per Hybrid quando disponibile)
 ```
 
-![](./images/Var1.png)
+![](./images/topic-new-job-posting-06.png)
 
 - Variable Name: `RoleTitle`
 - Identify as: `User's entire response`
@@ -84,7 +84,7 @@ Solo il nome della posizione, normalizzato in un titolo standard (es. “Softwar
 
 ```
 
-![](./images/Var2.png)
+![](./images/topic-new-job-posting-07.png)
 
 - Variable Name: `Seniority`
 - Identify as: `User's entire response`
@@ -94,7 +94,7 @@ Solo il nome della posizione, normalizzato in un titolo standard (es. “Softwar
 Livello di esperienza normalizzato in Junior | Mid | Senior (mappatura: entry/graduate → Junior; intermediate → Mid; senior/lead/principal/staff/head → Senior)
 ```
 
-![](./images/Var3.png)
+![](./images/topic-new-job-posting-08.png)
 
 6. Queste variabili saranno utilizzate per popolare il template dell'annuncio di lavoro nella Prompt Action.
 ## Prompt Action - Job Posting
@@ -102,12 +102,12 @@ Livello di esperienza normalizzato in Junior | Mid | Senior (mappatura: entry/gr
 Dopo aver configurato gli input come descritti nello step precedente, non resta che creare la Prompt Action con il template.
 1. Sotto al trigger premere `Add node`, selezionare `Add a tool` e poi premere su `New Prompt`.
 
-![](./images/Prompt1.png)
+![](./images/prompt-action-job-posting-01.png)
 
 Apparirà una schermata dove inserire per la scrittura del Prompt, che risultera simile al box delle istruzioni. 
 2. Come prima cosa rinominare il Prompt: `Job Posting - Zava`
 
-![](./images/Prompt6.png)
+![](./images/prompt-action-job-posting-02.png)
 
 3. Successivamente copiare e incollare il seguente prompt:
 
@@ -283,27 +283,27 @@ Unisciti a Zava S.p.A. – Potenziamo le imprese con Cloud & AI
 
 4. Dopo aver inserito il prompt non resta che  aggiungere le 3 variabili attraverso il tasto in basso a sinistra `add content` → `Text`  come in figura:
 
-![](./images/Prompt2.png)
+![](./images/regole-best-practice-01.png)
 
 5. Successivamente salvare la Prompt Action.
 
-![](./images/Prompt3.png)
+![](./images/regole-best-practice-02.png)
 
 6. Nel nuovo nodo del Topic mancano le variabili di Input, premere i tre punti (...) accanto al campo vuoto per inserire come in figura le variabili corrispondenti.
 
-![](./images/Prompt5.png)
+![](./images/regole-best-practice-03.png)
 
 7. Sempre nel nodo della Prompt Action, nella sezione Outputs premere **Select a variable** e successivamente **Create a new variable**.
 
-![](./images/Prompt4.png)
+![](./images/regole-best-practice-04.png)
 
 8. Modificare la variabile di output della Prompt Action e chiamarla `OutputAnnuncio`.
 
-![](./images/Var4.png)
+![](./images/regole-best-practice-05.png)
 
 9. In seguito, sotto alla configurazione del prompt premere `Add node`  e selezionare `Send a message`.
 
-![](./images/Promtp7.png)
+![](./images/regole-best-practice-06.png)
 
 10. Come contenuto inserire la seguente  Formula PowerFx:
 
@@ -392,7 +392,7 @@ Variabili:
 
 Per rendere dinamico il prompt occorre modificare i nomi in fondo chiamati `[DA CAMBIARE]` con delle variabili testuali, come mostrato nelle immagini:
 
-![](./images/Html1.png)
+![](./images/prompt-action-text-html-01.png)
 
 Una volta aggiunti correttamente i due input e chiamati `Username` e `Content`, salvare il tool tramite `Save`. 
 Successivamente, premere `Add and configure`.
@@ -403,7 +403,7 @@ Come descrizione inserire:
 Trasforma il contenuto in ingresso in un frammento HTML professionale per email, preservando struttura e collegamenti, senza alterare il contenuto
 ```
 
-![](./images/Html2.png)
+![](./images/prompt-action-text-html-02.png)
 
 Recarsi nella sezione **Input** e impostare i seguenti valori:
 
@@ -412,7 +412,7 @@ Recarsi nella sezione **Input** e impostare i seguenti valori:
 | Username   | Custom value             | User.DisplayName |
 | Content    | Dynamically fill with AI | Customize        |
 
-![](./images/Html3.png)
+![](./images/prompt-action-text-html-03.png)
 
 Per inserire la variabile nel Value dell'Username premere il simbolo “…” selezionare **System** e cercare `User.DisplayName`.
 Per quanto riguarda il Content premere su **Customize** e aggiungere la seguente **Description**:
@@ -421,7 +421,7 @@ Per quanto riguarda il Content premere su **Customize** e aggiungere la seguente
 Dall’intera conversazione, identifica ed estrapola la risposta finale più rilevante dell’assistente. NON cambiare il formato, inventare contenuti o modificare i significati.
 ```
 
-![](./images/Html4.png)
+![](./images/prompt-action-text-html-04.png)
 
 Salvare il tool.
 
@@ -449,7 +449,7 @@ Richiede tre input:
 - CORPO → il frammento completo dell’email HTML generato dallo strumento Testo in HTML, inclusi il saluto e il blocco di stile.
 ```
 
-![](./images/Mail1.png)
+![](./images/tool-send-an-email-01.png)
 
 Fatto ciò recarsi in **Additional details** e sotto **Credential to use** mettere _Maker-provided credentials_.
 Ora non resta che configurare i vari Input secondo i valori qui sotto:
@@ -460,7 +460,7 @@ Ora non resta che configurare i vari Input secondo i valori qui sotto:
 | Subject    | Dynamically fill with AI | Customize  |
 | Body       | Dynamically fill with AI | Customize  |
 
-![](./images/Mail2.png)
+![](./images/tool-send-an-email-02.png)
 
 Per inserire la variabile nel Value del To premere il simbolo “…” selezionare **System** e cercare `User.Email`.
 Per quanto riguarda il Subject premere su **Customize** e aggiungere la seguente **Description**:
@@ -469,7 +469,7 @@ Per quanto riguarda il Subject premere su **Customize** e aggiungere la seguente
 L’OGGETTO deve essere una frase molto breve (max ~8 parole) che riassume l'annuncio di lavoro, senza alcun riferimento a formattazione o HTML.
 ```
 
-![](./images/Mail3.png)
+![](./images/tool-send-an-email-03.png)
 
 In fine nel Body premere su **Customize** e aggiungere la seguente **Description**:
 
@@ -477,11 +477,11 @@ In fine nel Body premere su **Customize** e aggiungere la seguente **Description
 Il CORPO deve contenere l’intero frammento HTML dell’email generato dallo strumento "Testo in HTML", incluso il blocco di stile e il saluto, senza alcun testo aggiuntivo.
 ```
 
-![](./images/Mail4.png)
+![](./images/tool-send-an-email-04.png)
 
 Terminata la configurazione degli input andare nella sezione **Completion** e impostare sotto **After running** `Send specific response (specify below)`.
 
-![](./images/Mail5.png)
+![](./images/tool-send-an-email-05.png)
 
 Mettere come Message to display:
 
@@ -516,11 +516,11 @@ Sei l’Agente Redazione Annunci, incaricato di redigere annunci di lavoro trami
 
 Sostituire il nome degli strumenti con l'hyperlink utilizzando il tasto `/` seguito dal nome dello strumento all'interno del box delle istruzioni, come mostrato in figura.
 
-![](./images/job-posting-step-01.png)
+![](./images/istruzioni-finali-testing-01.png)
 
 Iniziare una nuova sessione nella finestra di Test.
 
-![](./images/job-posting-step-02.png)
+![](./images/istruzioni-finali-testing-02.png)
 
 Testare il funzionamento dell'agente richiedendo un dispositivo, qui sotto un esempio:
 

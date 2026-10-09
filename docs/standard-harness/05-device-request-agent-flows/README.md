@@ -33,7 +33,7 @@ Ricreare la lista basandosi su questa tabella:
 
 
 
-[Scarica il file Devices-CSM.csv](./files/Devices-CSM.csv)
+[Scarica il file Devices-CSM.csv](../../resources/05-device-request-agent-flows/Devices-CSM.csv)
 
 
 ## Creazione Agente
@@ -42,11 +42,11 @@ Ricreare la lista basandosi su questa tabella:
 
 2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nel' Environment, proseguire premendo **Create blank agent** .
 
-![](./images/creazione2.png)
+![](./images/creazione-agente-01.png)
 
 3. Copilot Studio procederà con la creazione dell' agente vuoto, per effettuare modifiche aspettare il seguente Messaggio:
 
-![](./images/Creazione3.png)
+![](./images/creazione-agente-02.png)
 
 4. Finito il provisioning dell'agente modificare **Nome** e **Descrizione**:
 
@@ -68,7 +68,7 @@ Automatically manages device reservations, availability, and assignments across 
 
 1. Andare nella Sezione Topics , selezionare **Add a topic** e poi **From blank**.
 
-![](./images/Flow1.png)
+![](./images/creazione-topic-available-devices-01.png)
 
 
 2. Cambiare il nome del topic con:
@@ -83,20 +83,20 @@ Available devices
 This topic helps users find devices that are available from our SharePoint Devices list. User can ask to see available devices and it will return a list of devices that are available which can include laptops, smartphones, accessories and more.
 ```
 
-![](./images/device-flow-step-01.png)
+![](./images/creazione-topic-available-devices-02.png)
 
 Successivamente, verrà aggiunta una **nuova variabile di input** che l’IA generativa utilizzerà durante il processo di orchestrazione per estrarre, dal messaggio dell’utente, il valore relativo al **tipo di dispositivo**.  
 4. Selezionare i **tre puntini (… )** accanto al topic, quindi scegliere **Details** per visualizzare il pannello dei dettagli del topic.
 
-![](./images/device-flow-step-02.png)
+![](./images/creazione-topic-available-devices-03.png)
 
 5. Il pannello **Topic details** è ora stato caricato. Selezionare la scheda **Input**.
 
-![](./images/device-flow-step-03.png)
+![](./images/creazione-topic-available-devices-04.png)
 
 6. Selezionare **Create a new variable**.
 
-![](./images/device-flow-step-04.png)
+![](./images/creazione-topic-available-devices-05.png)
 
 7. Inserire il nome della variabile:
 
@@ -106,7 +106,7 @@ VarDeviceType
 
 8. Cambiare **Identify as** in **User's entire response**.
 
-![](./images/device-flow-step-05.png)
+![](./images/creazione-topic-available-devices-06.png)
 
 9. Modificare la descrizione della variabile in:
 
@@ -114,11 +114,11 @@ VarDeviceType
 List of possible values: Laptop, Desktop, Smartphone
 ```
 
-![](./images/device-flow-step-06.png)
+![](./images/creazione-topic-available-devices-07.png)
 
 10. Andare nella sezione **Output** e creare una nuova variabile.
 
-![](./images/device-flow-step-07.png)
+![](./images/creazione-topic-available-devices-08.png)
 
 11. Inserire i seguenti dati:
 
@@ -136,21 +136,21 @@ VarAvailableDevices
 List of available devices by device type
 ```
 
-![](./images/device-flow-step-08.png)
+![](./images/creazione-topic-available-devices-09.png)
 
 12. Ora terminati i dettagli del Topic premere l'icona del + e aggiungere un nuovo nodo.
 
-![](./images/device-flow-step-09.png)
+![](./images/creazione-topic-available-devices-10.png)
 
 13. Selezionare **Add a tool**, andare nella sezione **Connector** e cercare il connettore **Get items** di SharePoint.
 
-![](./images/device-flow-step-10.png)
+![](./images/creazione-topic-available-devices-11.png)
 
 14. Selezionare la tab Input e inserire il sito SharePoint creato in precedenza, con la lista Devices.
 
 15. Ora aprire il menù a tendina delle **Advanced Options** e in **filter Query** premere il simbolo (...).
 
-![](./images/device-flow-step-11.png)
+![](./images/creazione-topic-available-devices-12.png)
 
 16. Recarsi nella sezione Formula e inserire la seguente espressione PowerFx :
 
@@ -163,11 +163,11 @@ Concatenate("Status eq 'Available' and AssetType eq '", Topic.VarDeviceType, "'"
 
 17. Premere Insert.
 
-![](./images/device-flow-step-12.png)
+![](./images/creazione-topic-available-devices-13.png)
 
 18. Selezionare poi **All items** in **Limit Columns by View**.
 
-![](./images/device-flow-step-13.png)
+![](./images/creazione-topic-available-devices-14.png)
 
 19. Ora modificare il nome della variabile di Output in:
 
@@ -177,19 +177,19 @@ VarDevices
 
 20. Modificarla da variabile di Topic  a Global.
 
-![](./images/device-flow-step-14.png)
+![](./images/creazione-topic-available-devices-15.png)
 
 21. Successivamente aggiungere un nuovo nodo **Variable Management** -> **Set a variable value**.
 
-![](./images/device-flow-step-15.png)
+![](./images/creazione-topic-available-devices-16.png)
 
 22. Selezionare per il **Set a variable** la variabile **VarAvailableDevices**.
 
-![](./images/device-flow-step-16.png)
+![](./images/creazione-topic-available-devices-17.png)
 
 23. Premere l'icona (...)  nella sezione **To value**.
 
-![](./images/device-flow-step-17.png)
+![](./images/creazione-topic-available-devices-18.png)
 
 24. Selezionare la sezione Formula e inserire la seguente espressione:
 
@@ -199,7 +199,7 @@ Global.VarDevices.value
 
 25. Premere Insert.
 
-![](./images/device-flow-step-18.png)
+![](./images/creazione-topic-available-devices-19.png)
 
 ## Creazione Topic - request device
 
@@ -207,7 +207,7 @@ Creare un nuovo Topic che guiderà l'utente nella prenotazione di un Device.
 
 1. Andare nella Sezione Topics , selezionare **Add a topic** e poi **From blank**.
 
-![](./images/Flow1.png)
+![](./images/creazione-topic-available-devices-01.png)
 
 
 2. Cambiare il nome del topic con:
@@ -222,17 +222,17 @@ Request device
 This topic helps users request a device when they answer yes to the question that asks the user if they would like to request one of these devices.
 ```
 
-![](./images/Flow2.png)
+![](./images/creazione-topic-request-device-01.png)
 
 4. Successivamente premere il + e selezionare **Ask with adaptive card**
 
-![](./images/Flow3.png)
+![](./images/creazione-topic-request-device-02.png)
 
 5. Selezionare il nodo e nelle **Properties** premere **Edit adaptive card**.
 
-![](./images/Flow4.png)
+![](./images/creazione-topic-request-device-03.png)
 
-![](./images/Flow5.png)
+![](./images/creazione-topic-request-device-04.png)
 
 All’interno dell’editor del **Card payload**, selezionare l’intero contenuto utilizzando la combinazione di tasti **Ctrl + A** su Windows oppure **Command + A** su Mac, quindi procedere con l’eliminazione delle righe selezionate. Successivamente, incollare il  **JSON**:
 
@@ -360,15 +360,15 @@ Questo **JSON** rappresenta attualmente un segnaposto e un’anteprima di quello
 
 6. Salvare e chiudere la card.
 
-![](./images/device-flow-step-19.png)
+![](./images/creazione-topic-request-device-05.png)
 
 Scorrendo fino in fondo al nodo, sono visibili le variabili di output. **commentsId** e **deviceSelectionId** sono due variabili che memorizzano i valori provenienti dagli elementi della scheda con cui gli utenti interagiscono. Tali valori verranno utilizzati nelle fasi successive del flow.
 
-![](./images/device-flow-step-20.png)
+![](./images/creazione-topic-request-device-06.png)
 
 7. Ora modificare la Card trasformandola in **Formula** card.
 
-![](./images/device-flow-step-21.png)
+![](./images/creazione-topic-request-device-07.png)
 
 8. Sostituire la Card premendo _Ctrl + A_ su Windows o _Command + A_ su Mac e incollare questo:
 
@@ -483,7 +483,7 @@ Nel Topic **Request device**, andare sotto all'Adaptive card e premere il simbol
 
 1. Selezionare **Add a tool** -> **Basic tools** -> **New Agent Flow**.
 
-![](./images/device-flow-step-22.png)
+![](./images/creazione-flow-01.png)
 
 Il Designer degli Agent flow verrà caricato con un trigger e un’azione.
 
@@ -495,13 +495,13 @@ Questa operazione invia una risposta che può contenere valori di output all’a
 
 2. Selezionare il trigger.
 
-![](./images/device-flow-step-23.png)
+![](./images/creazione-flow-02.png)
 
 3. Premere **Add an input** e selezionare **Text**.
 
-![](./images/device-flow-step-24.png)
+![](./images/creazione-flow-03.png)
 
-![](./images/device-flow-step-25.png)
+![](./images/creazione-flow-04.png)
 
 4. Compilare il nome dell'input con:
 
@@ -509,7 +509,7 @@ Questa operazione invia una risposta che può contenere valori di output all’a
 DeviceSharePointId
 ```
 
-![](./images/device-flow-step-26.png)
+![](./images/creazione-flow-05.png)
 
 5. Ora aggiungere un secondo input sempre testuale. Impostare il nome con:
 
@@ -518,7 +518,7 @@ User
 ```
 
 
-![](./images/device-flow-step-27.png)
+![](./images/creazione-flow-06.png)
 
 6. Infine aggiungere un ultimo input testuale:
 
@@ -526,15 +526,15 @@ User
 AdditionalComments
 ```
 
-![](./images/device-flow-step-28.png)
+![](./images/creazione-flow-07.png)
 
 Per **AdditionalCommnets** impostare il campo come facoltativo premendo il simbolo (...) e poi **Make the field optional**
 
-![](./images/device-flow-step-29.png)
+![](./images/creazione-flow-08.png)
 
 7. Aggiungere sotto al trigger un nuovo nodo, cercare **Get Item** di SharePoint.
 
-![](./images/device-flow-step-30.png)
+![](./images/creazione-flow-09.png)
 
 8. Selezionare il simbolo (...) e poi rinominare il tool con:
 
@@ -543,25 +543,25 @@ Get Device
 ```
 
 
-![](./images/device-flow-step-31.png)
+![](./images/creazione-flow-10.png)
 
-![](./images/device-flow-step-32.png)
+![](./images/creazione-flow-11.png)
 
 9. Nel campo  **Site Address** e **List Name** inserire il sito e la lista SharePoint creata in precedenza. Nel campo Id inserire tramite il simbolo fx il Dynamic Content  **DeviceSharePointId** relativo al trigger .
 
-![](./images/device-flow-step-33.png)
+![](./images/creazione-flow-12.png)
 
 10. Successivamente in **Advanced paramenters** premere **Show All**.
 
-![](./images/device-flow-step-34.png)
+![](./images/creazione-flow-13.png)
 
 11. In **Limit Columns by View** selezionare **All items**
 
-![](./images/device-flow-step-35.png)
+![](./images/creazione-flow-14.png)
 
 12. Successivamente premere l'icona del + sotto il Get Device tool e cercare **send an email**. Selezionare **Send an email (V2)** tool di **Office 365 Outlook connector**.
 
-![](./images/device-flow-step-36.png)
+![](./images/creazione-flow-15.png)
 
 13. Rinominare il Tool in :
 
@@ -592,15 +592,15 @@ Additional comments from [USER PLACEHOLDER]:
 This is an automated email from an Agent
 ```
 
-![](./images/device-flow-step-37.png)
+![](./images/creazione-flow-16.png)
 
 16. Come prossimo punto inserire nel Body tramite il simbolo del fulmine i Dynamic Content segnati in CAPS tra parentesi quadre.
 
-![](./images/device-flow-step-38.png)
+![](./images/creazione-flow-17.png)
 
 17. Per il link di SharePoint è necessario aprire l'editor Html con l'icona `</>` .
 
-![](./images/device-flow-step-39.png)
+![](./images/creazione-flow-18.png)
 
 Premere prima di "Link to item in SharePoint"  e aggiungere:
 
@@ -608,11 +608,11 @@ Premere prima di "Link to item in SharePoint"  e aggiungere:
 <a href="
 ```
 
-![](./images/device-flow-step-40.png)
+![](./images/creazione-flow-19.png)
 
 Premere dopo le " e inserire come Dynamic Content dal **Get Item** di SharePoint il **Link to Item**.
 
-![](./images/device-flow-step-41.png)
+![](./images/creazione-flow-20.png)
 
 Inserire questo dopo il Dynamic Content del Link:
 
@@ -620,7 +620,7 @@ Inserire questo dopo il Dynamic Content del Link:
 ">
 ```
 
-![](./images/device-flow-step-42.png)
+![](./images/creazione-flow-21.png)
 
 Successivamente inserire dopo la scritta "Link to item in SharePoint":
 
@@ -628,15 +628,15 @@ Successivamente inserire dopo la scritta "Link to item in SharePoint":
 </a>
 ```
 
-![](./images/device-flow-step-43.png)
+![](./images/creazione-flow-22.png)
 
 Con questo è terminato l'inserimento del hyperlink per SharePoint, quindi premere l'icona `</>`  per uscire dall'editor.
 
-![](./images/device-flow-step-44.png)
+![](./images/creazione-flow-23.png)
 
 18. Infine non resta che inserire una funzione per la sezione di Additional Comments. Selezionare uno spazio vuoto dopo i : e premere il simbolo _fx_ .
 
-![](./images/device-flow-step-45.png)
+![](./images/creazione-flow-24.png)
 
 Inserire nel box funzione:
 
@@ -646,7 +646,7 @@ if(empty())
 
 Dopo inserire come Dynamic Content l'input **AdditionalComments** dal trigger del Flow.
 
-![](./images/device-flow-step-46.png)
+![](./images/creazione-flow-25.png)
 
 Successivamente dopo la parentesi inserire:
 
@@ -654,11 +654,11 @@ Successivamente dopo la parentesi inserire:
 , 'None',
 ```
 
-![](./images/device-flow-step-47.png)
+![](./images/creazione-flow-26.png)
 
 Come ultimo punto Inserire nuovamente dopo l'ultima virgola  il Dynamic Content **AdditionalComments** .
 
-![](./images/device-flow-step-48.png)
+![](./images/creazione-flow-27.png)
 
 >[!NOTE]
 >La formula verifica se il campo `AdditionalComments` del trigger è vuoto.  Se è vuoto restituisce il valore `"None"`, altrimenti restituisce il contenuto.
@@ -669,15 +669,15 @@ Come ultimo punto Inserire nuovamente dopo l'ultima virgola  il Dynamic Content 
 ModelValue
 ```
 
-![](./images/device-flow-step-49.png)
+![](./images/creazione-flow-28.png)
 
 Come valore inserire il contenuto dinamico **Model** del nodo **Get item**.
 
-![](./images/device-flow-step-50.png)
+![](./images/creazione-flow-29.png)
 
 20. Il Flow è terminato, ora non resta che salvare, premere **Save draft**. Andare su **Overview** e selezionare **Edit**.
 
-![](./images/device-flow-step-51.png)
+![](./images/creazione-flow-30.png)
 
 Inserire nome e descrizione del Flow :
 
@@ -693,39 +693,39 @@ Send device request email
 This flow starts when an agent manually triggers it and provides device and user details. It retrieves device information from a SharePoint list using the provided device ID. After successfully getting the device details, it sends an email to a manager with the request information, and sends a value back to the agent.
 ```
 
-![](./images/device-flow-step-52.png)
+![](./images/creazione-flow-31.png)
 
 21. Tornare sul Designer e premere **Publish**.
 
-![](./images/device-flow-step-53.png)
+![](./images/creazione-flow-32.png)
 
-![](./images/device-flow-step-54.png)
+![](./images/creazione-flow-33.png)
 
 ## Aggiungere il Flow al Topic
 
 Per aggiungere il Flow appena creato al Topic "Request Devices" selezionare Agents nel menù presente a sinistra.
 
-![](./images/device-flow-step-55.png)
+![](./images/aggiungere-flow-al-topic-01.png)
 
 1. Selezionare l'agente **Device Booker** , andare su Topic e selezionare "Request devices".
 
-![](./images/device-flow-step-56.png)
+![](./images/aggiungere-flow-al-topic-02.png)
 
 2. Andare sotto al nodo **Ask with adaptive card** premere il + e selezionare **Add a tool** e successivamente il Flow appena creato.
 
-![](./images/device-flow-step-57.png)
+![](./images/aggiungere-flow-al-topic-03.png)
 
 3. Premere il simbolo (...)  del primo campo e selezionare **deviceSelectionId**.
 
-![](./images/device-flow-step-58.png)
+![](./images/aggiungere-flow-al-topic-04.png)
 
 4. Dopo nel campo user inserire **User.DisplayName**.
 
-![](./images/device-flow-step-59.png)
+![](./images/aggiungere-flow-al-topic-05.png)
 
 5. Premere > per espandere la sezione **Advanced Inputs** selezionare il simbolo (...) e successivamente la sezione Formula.
 
-![](./images/device-flow-step-60.png)
+![](./images/aggiungere-flow-al-topic-06.png)
 
 Inserire la seguente Formula _fx_ :
 
@@ -736,7 +736,7 @@ If(IsBlank(Topic.commentsId), "", Topic.commentsId)
 >[!NOTE]
 >La formula verifica se il campo `Topic.commentsId` è vuoto (`Blank()`).  Se lo è, restituisce una stringa vuota (`""`), altrimenti restituisce il valore di `commentsId`.  Serve a evitare valori NULL in output che potrebbero causare errori in controlli o funzioni.  In pratica, converte un valore vuoto in una stringa vuota utilizzabile.
 
-![](./images/device-flow-step-61.png)
+![](./images/aggiungere-flow-al-topic-07.png)
 
 6. Premere il + dopo il nodo "Action" del Flow e inserire un nodo **Send a message**  con il seguente contenuto:
 
@@ -747,13 +747,13 @@ Your selected device, [Modelvalue], has been submitted and will be reviewed by y
 
 Dove i contenuti fra parentesi quadre devono essere sostituiti con le variabili corrispondenti.
 
-![](./images/device-flow-step-62.png)
+![](./images/aggiungere-flow-al-topic-08.png)
 
 7. Inserire sotto un nuovo nodo. Selezionare **Topic Management** poi **Go to another Topic** e infine **End of Conversation**.
 
-![](./images/device-flow-step-63.png)
+![](./images/aggiungere-flow-al-topic-09.png)
 
-![](./images/device-flow-step-64.png)
+![](./images/aggiungere-flow-al-topic-10.png)
 
 8. Salvare il Topic.
 ## Istruzioni 
@@ -780,14 +780,14 @@ The agent must use a professional and concise tone when interacting with users.
 
 2. Sostituire i Topic segnati fra parentesi quadre tramite il `/` e selezionando il Topic corrispondente.
 
-![](./images/device-flow-step-65.png)
+![](./images/istruzioni-01.png)
 
 3. Premere Save per salvare le Istruzioni.
 ## Testing
 
 Iniziare una nuova sessione nella finestra di Test, selezionare il simbolo (...) e spuntare **Track between topics**.
 
-![](./images/device-flow-step-66.png)
+![](./images/testing-01.png)
 
 Testare il funzionamento dell'agente richiedendo un dispositivo, qui sotto un esempio:
 

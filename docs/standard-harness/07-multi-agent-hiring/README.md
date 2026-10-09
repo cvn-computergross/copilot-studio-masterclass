@@ -14,7 +14,7 @@
 2. Selezionare **Solutions**
 3. Trovare la soluzione **Operative**, selezionare i tre punti **...** e scegliere **Set preferred solution**. Selezionare **Apply** nella finestra di dialogo che esce fuori. Questo assicurerà che tutto il prossimo lavoro sarà aggiunto in questa soluzione.
 
-![](./images/2-select-preferred-solution-x.png)
+![](./images/application-intake-agent-01.png)
 
 ### Configurare le istruzioni di Hiring Agent
 
@@ -43,13 +43,13 @@ You are the central orchestrator for the hiring process. You coordinate activiti
 |File uploads|**On**|
 |Code Interpreter|**Off**|
 
-![](./images/2-gen-orchestration.png)
+![](./images/application-intake-agent-02.png)
 
-![](./images/2-set-medium-moderation.png)
+![](./images/application-intake-agent-03.png)
 
 7. Premere **Save**
 
-![](./images/2-settings-knowledge-web.png)
+![](./images/application-intake-agent-04.png)
 
 8. Cliccare la **X** in alto a destra e chiudere il menu delle impostazioni
 
@@ -57,11 +57,11 @@ You are the central orchestrator for the hiring process. You coordinate activiti
 
 1. Navigare nella scheda **Agents** all'interno dell'Hiring Agent e selezionare **Add**
 
-![](./images/2-agentsadd.png)
+![](./images/application-intake-agent-05.png)
 
 2. Selezionare **New child agent**
 
-![](./images/2-newchildagent.png)
+![](./images/application-intake-agent-06.png)
 
 3. Nel campo **Name** inserire `Application Intake Agent`
 4. Nel campo **When will this be used?** selezionare **The agent chooses** all'interno del menu a tendina. Queste opzioni sono simili ai trigger che possono essere configurati per i topics.
@@ -71,16 +71,16 @@ You are the central orchestrator for the hiring process. You coordinate activiti
 Processes incoming resumes and stores candidates in the system
 ```
 
-![](./images/2-agentnamedesc-x.png)
+![](./images/application-intake-agent-07.png)
 
 6. Espandere **Advanced** ed impostare la *Priority* a `10000`. Questo garantisce in seguito che l'agente *Interview Agent* verrà utilizzato per rispondere a domande generali prima di questo. Si potrebbe anche impostare una specifica condizione, ad esempio assicurandosi che ci sia almeno un allegato.
 
-![](./images/2-priority-x.png)
+![](./images/application-intake-agent-08.png)
 
 7. Assicurarsi che l'opzione **Web Search** sia impostata su **Disable**. In questo modo le informazioni verranno esclusivamente dall'agente padre
 8. Selezionare **Save**
 
-![](./images/2-websearchdisabled-x.png)
+![](./images/application-intake-agent-09.png)
 
 ### Configurare l'agent flow Resume Upload
 
@@ -97,19 +97,19 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 
 2. Selezionare **+ Add**
 
-![](./images/2-addtool-x.png)
+![](./images/application-intake-agent-10.png)
 
 3. Selezionare **+ New tool**
 
-![](./images/2-new-tool.png)
+![](./images/application-intake-agent-11.png)
 
 4. Selezionare **Agent flow**. Si aprirà la scheda del designer, ed è qui che verrà aggiunta la logica di caricamento cv. 
 
-![](./images/2-add-agent-flow.png)
+![](./images/application-intake-agent-12.png)
 
 5. Selezionare il nodo **When an agent calls the flow**, e premere **+ Add an input**
 
-![](./images/2-flowaddinput.png)
+![](./images/application-intake-agent-13.png)
 
 6. Aggiungere un input per ognuno dei parametri contenuti nella tabella in basso. Selezionare il tipo di input opportuno ed inserire nome e descrizione. La descrizione è importante perché aiuterà l'agente a sapere come riempire i campi.
 
@@ -119,11 +119,11 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 | Text | `Message`   | `Extract a cover letter style message from the context. The message must be less than 2000 characters.`                                                  |
 | Text | `UserEmail` | `The email address that the Resume originated from. This will be the user uploading the resume in chat, or the from email address if received by email.` |
 
-![](./images/2-upload-resume-trigger-x.png)
+![](./images/application-intake-agent-14.png)
 
 7. Selezionare l'icona **+** sotto il nodo di partenza e cercare `Dataverse add`, quindi selezionare l'azione **Add a new row** all'interno della collezione di connettori *Microsoft Daverse*
 
-![](./images/2-dataverseaddaction.png)
+![](./images/application-intake-agent-15.png)
 
 >[!NOTE]
 >**Nota**
@@ -132,7 +132,7 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 
 8. Selezionare il nuovo nodo e cambiare il nome in **Create Resume**
 
-![](./images/2-renamecreateresume.png)
+![](./images/application-intake-agent-16.png)
 
 9. Impostare il campo **Table name** con *Resumes*, quindi selezionare **Show all** per mostrare tutti i parametri
 
@@ -154,11 +154,11 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 >- `if(condizione, valore_se_vero, valore_se_falso)` → in questo caso: se l'input supera il limite di caratteri, prende un valore troncato ai primi 2000 caratteri
 >- `utcNow()` → restituisce **la data e l’ora corrente in formato UTC (Coordinated Universal Time)** nel momento in cui il flusso viene eseguito. Esempio: 2026-03-03T12:45:30Z
 
-![](./images/2-upload-resume-add-resume-props.png)
+![](./images/application-intake-agent-17.png)
 
 11. Selezionare il tasto **+** sotto il nodo *Create Resume*, cercare `Daverse upload` e selezionare l'azione **Upload a file ora an image**
 
-![](./images/2-dataverseupload.png)
+![](./images/application-intake-agent-18.png)
 
 >[!WARNING]
 >**Attenzione**
@@ -176,7 +176,7 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 |**Column Name**|Select|Resume PDF|
 |**Content**|Dynamic data (thunderbolt icon)|When an agent calls the flow → Resume contentBytes|
 
-![](./images/2-upload-resume-upload-resume-file.png)
+![](./images/application-intake-agent-19.png)
 
 14. Selezionare il nodo **Respond to the agent** e premere **+ Add an output**. Creare un output con le proprietà definite nella seguente tabella:
 
@@ -187,21 +187,21 @@ In questo caso, viene utilizzato un **Agent Flow** rispetto ad un topic, perché
 |**Value**|Dynamic data (thunderbolt icon)|Create Resume → See More → Resume Number|
 |**Description**|Enter|`The [ResumeNumber] of the Resume created`|
 
-![](./images/2-upload-resume-return.png)
+![](./images/application-intake-agent-20.png)
 
 15. Selezionare **Save draft** in alto a destra
 
-![](./images/2-upload-resume-save-draft-x.png)
+![](./images/application-intake-agent-21.png)
 
 16. Navigare nella tab di **Overview** e selezionare **Edit** all'interno del pannello *Details*. Aggiungere nome e descrizione come sotto e premere **Save**:
 	- **Flow name**: `Resume Upload`
 	- **Description**: `Uploads a Resume when instructed`
 
-![](./images/2-upload-resume-rename-x.png)
+![](./images/application-intake-agent-22.png)
 
 17. Selezionare nuovamente la scheda **Designer** e premere **Publish**
 
-![](./images/2-upload-resume-publish-x.png)
+![](./images/application-intake-agent-23.png)
 
 ### Connettere il flow all'agente
 
@@ -209,15 +209,15 @@ E' il momento di connettere il flusso appena pubblicato all'agente Application I
 
 1. Tornare all'interno dell'**Hiring Agent** e selezionare la scheda **Agents**. Aprire **Application Intake Agent**, e scorrere fino al pannello **Tools**.
 
-![](./images/2-add-agent-flow-to-agent-x.png)
+![](./images/application-intake-agent-24.png)
 
 2. Premere **+ Add**
 
-![](./images/2-addtool1-x.png)
+![](./images/application-intake-agent-25.png)
 
 3. Filtrare per **Flow** e selezionare il nuovo flusso **Resume Upload**
 
-![](./images/2-selectResumeUploadFlow.png)
+![](./images/application-intake-agent-26.png)
 
 4. Selezionare **Add and configure**
 5. Riempire i seguenti parametri:
@@ -227,7 +227,7 @@ E' il momento di connettere il flusso appena pubblicato all'agente Application I
 | **Description**                                     | `Uploads a Resume when instructed. STRICT RULE: Only call this tool when referenced in the form "Resume Upload" and there are Attachments` |
 | **Additional details → When this tool may be used** | `only when referenced by topics or agents`                                                                                                 |
 
-![](./images/2-resume-upload-tool-props-1.BrX6STrM.png)
+![](./images/application-intake-agent-27.png)
 
 >[!NOTE]
 >**Nota**
@@ -242,7 +242,7 @@ E' il momento di connettere il flusso appena pubblicato all'agente Application I
 | **Inputs → Add Input** | `contentBytes` |
 | **Inputs → Add Input** | `name`         |
 
-![](./images/2-resume-upload-tool-props-2.D1pwpxbD.png)
+![](./images/application-intake-agent-28.png)
 
 7. Occorre adesso impostare le proprietà degli input. Il valore **contentBytes** andrà a contenere l'effettivo file (CV). Selezionare **Custom value** dal menu a tendina **Fill using**
 8. Nel campo **Value**, premere sui tre punti **...** e selezionare la scheda **Formula**. Inserire la seguente formula che estrapola il file dalla chat e premere il tasto **Insert**
@@ -251,7 +251,7 @@ E' il momento di connettere il flusso appena pubblicato all'agente Application I
 First(System.Activity.Attachments).Content
 ```
 
-![](./images/2-contentbytesconfig.png)
+![](./images/application-intake-agent-29.png)
 
 >[!NOTE]
 >**Formule utilizzate**
@@ -267,11 +267,11 @@ First(System.Activity.Attachments).Content
 First(System.Activity.Attachments).Name
 ```
 
-![](./images/2-nameconfig.png)
+![](./images/application-intake-agent-30.png)
 
 11. Adesso occorre configurare l'input **Message**. In questo caso va bene riempire il campo dinamicamente con l'AI per questo motivo la colonna **Fill using** può essere lasciata così com'è. Premere il tasto **Customize** nella colonna **Value** per aggiungere ulteriori dettagli utili all'agente per riempire il campo con un valore appropriato.
 
-![](./images/2-messagecustomize.png)
+![](./images/application-intake-agent-31.png)
 
 12. Inserire il seguente valore nel campo **Description**:
 
@@ -286,7 +286,7 @@ Extract a cover letter style message from the context. Be sure to never prompt t
 
 13. Espandere la sezione **Advanced** per configurare alcune proprietà addizionali relative a questo input. Nella sezione **How many reprompts**, selezionare **Don't repeat**
 
-![](./images/2-messagereprompts.png)
+![](./images/application-intake-agent-32.png)
 
 >[!NOTE]
 >**Nota**
@@ -295,15 +295,15 @@ Extract a cover letter style message from the context. Be sure to never prompt t
 
 14. Scorrere in basso fino alla sezione **No valid entity found**. Nel menu a tendina **Action if no entity found** selezionare l'opzione **Set variable to value**. Scrivere `Resume upload` nel campo **Default entity value**.
 
-![](./images/2-messageentitynotfound.png)
+![](./images/application-intake-agent-33.png)
 
 15. Infine, riempire l'ultimo input **UserEmail** selezionando nella colonna **Fill using** l'opzione **Custom value** e premendo i tre puntini **...** nella colonna **Value**. Selezionare questa volta la scheda **System** e cercare **User**. Selezionare la variabile **User.Email** che contiene il valore email dell'utente che sta interagendo con l'agente.
 
-![](./images/2-useremailconfig.png)
+![](./images/application-intake-agent-34.png)
 
 16. Premere **Save**
 
-![](./images/2-save.png)
+![](./images/application-intake-agent-35.png)
 
 ### Definire le istruzioni dell'agente
 
@@ -328,7 +328,7 @@ Process for Resume Upload via Chat
 	- `System.Activity.Attachments` (Variabile)
 	- `Upload Resume` (Tool)
 
-![](./images/2-application-agent-instructions.png)
+![](./images/application-intake-agent-36.png)
 
 4. Selezionare **Save**
 
@@ -336,7 +336,7 @@ Process for Resume Upload via Chat
 
 E' arrivato il momento di verificare che l'agente funzioni correttamente, chiamando il child agent seguendo le istruzioni fornite.
 
-1. **Scaricare** i CV demo (`cv_fictitious.zip` nella cartella demo-material)
+1. **Scaricare** i [CV demo (cv_fictitious.zip)](../../resources/07-multi-agent-hiring/cv_fictitious.zip)
 2. Abilitare il pannello di test di Copilot Studio tramite il tasto **Test** in alto a destra
 3. Caricare due CV in chat inserendo anche il seguente prompt:
 
@@ -346,7 +346,7 @@ Process these resumes
 
 L'agente dovrebbe rispondere con un errore indicando che può processare solo un file alla volta, questo indica che le istruzioni stanno funzionando correttamente!
 
-![](./images/2-test-multi-uploads.png)
+![](./images/application-intake-agent-37.png)
 
 4. Ora, caricare un solo CV con il messaggio `Process this resume`
 
@@ -354,12 +354,12 @@ L'agente dovrebbe rispondere con un errore indicando che può processare solo un
 
 5. Nell'**Activity map**, si dovrebbe vedere l'agente figlio **Application Intake Agent** gestire il caricamento del nuovo CV. 
 
-![](./images/2-upload-activity-map-x.png)
+![](./images/application-intake-agent-38.png)
 
 6. Per verificare l'output, navigare su make.powerapps.com, assicurandosi di trovarsi nell'environment corretto.
 7. Selezionare **Apps** > **Hiring Hub** > menu espandibile **...** > **Play**
 
-![](./images/2-open-model-driven-app-x.png)
+![](./images/application-intake-agent-39.png)
 
 >[!NOTE]
 >**Nota**
@@ -369,7 +369,7 @@ L'agente dovrebbe rispondere con un errore indicando che può processare solo un
 
 8. Navigare su **Resumes**, e controllare che il file è stato caricato e la cover letter è stata riempita di conseguenza
 
-![](./images/2-resume-uploade-x.png)
+![](./images/application-intake-agent-40.png)
 
 ## Interview Prep Agent
 
@@ -381,12 +381,12 @@ In questa sezione del lab verrà creato il connected agent da aggiungere al nost
 2. Selezionare **Agenti** nella navigazione di sinistra
 3. Aprire l'icona a freccia verso il basso accanto a *Create blank agent* e selezionare **Advanced create**
 
-![](./images/01-newagent.png)
+![](./images/interview-prep-agent-01.png)
 
 4. Per *soluzione*, selezionare **Operative** (la soluzione appena importata)
 5. Per *schema name*, inserire `interviewagent` dopo il prefisso *ppa_* 
 
-![](./images/2-interview-settings.png)
+![](./images/interview-prep-agent-02.png)
 
 6. Selezionare **Confirm and create**
 
@@ -405,7 +405,7 @@ Interview Agent
 Assists with the interview process.
 ```
 
-![](./images/2-interview-details.png)
+![](./images/interview-prep-agent-03.png)
 
 4. Nella sezione **Instructions**, premere **Edit** ed inserire:
 
@@ -443,21 +443,21 @@ General behavior
 
 1. Navigare all'interno della scheda **Knowledge** e premere **+ Add knowledge**
 
-![](./images/2-interview-agent-add-knowledge.png)
+![](./images/interview-prep-agent-04.png)
 
 2. Selezionare **Dataverse**
 
-![](./images/2-interview-agent-add-knowledge-select-dataverse.png)
+![](./images/interview-prep-agent-05.png)
 
 3. Nel box di ricerca, scrivere `ppa_`. Questo è il prefisso per le tabelle precedentemente importate nel lab di setup.
 4. Selezionare tutte le 5 tabelle (Candidate, Evaluation Criteria, Job Application, Job Role, Resume)
 5. Selezionare **Add to agent**
 
-![](./images/2-interview-agent-add-knowledge-select-tables.png)
+![](./images/interview-prep-agent-06.png)
 
 6. Entrare nel menu **Settings** tramite il tasto in alto a destra.
 
-![](./images/2-connectedAgentSettings.png)
+![](./images/interview-prep-agent-07.png)
 
 7. Assicurarsi che le seguenti impostazioni siano configurate correttamente:
 
@@ -468,11 +468,11 @@ General behavior
 
 8. Premere **Save** e uscire dal menu delle impostazioni tramite il tasto **X** in alto a destra.
 
-![](./images/2-connectedAgentsSettingsConfig.png)
+![](./images/interview-prep-agent-08.png)
 
 9. Premere **Publish**, e attendere il completamento dell'operazione.
 
-![](./images/2-connectedAgentPublish.png)
+![](./images/interview-prep-agent-09.png)
 
 ### Connettere Interview Agent ad Hiring Agent
 
@@ -491,7 +491,7 @@ General behavior
 Assists with the interview process and provides information about Resumes, Candidates, Job Roles, and Evaluation Criteria.
 ```
 
-![](./images/2-add-connected-agent.png)
+![](./images/interview-prep-agent-10.png)
 
 >[!NOTE]
 >**Nota**
@@ -501,7 +501,7 @@ Assists with the interview process and provides information about Resumes, Candi
 5. Premere **Add agent**
 6. Assicurarsi di vedere sia **Application Intake Agent** che **Interview Agent**. Notare come uno sia un *Child agent* e l'altro un *Connected agent*. 
 
-![](./images/2-child-and-connected.png)
+![](./images/interview-prep-agent-11.png)
 
 ### Testare la collaborazione multi agente
 
@@ -512,7 +512,7 @@ Assists with the interview process and provides information about Resumes, Candi
 Upload this resume, then show me open job roles, each with a description of the evaluation criteria, then use this to match the resume to at least one suitable job role even if not a perfect match.
 ```
 
-![](./images/2-multi-agent-test-x.png)
+![](./images/interview-prep-agent-12.png)
 
 3. Notare come Hiring Agent va a delegare il caricamento del file all'agente figlio, e poi chiede all'Interview Agent di fornire un riassunto e ruoli aperti che potrebbero risultare affini, utilizzando la sua conoscenza. Provare diverse richieste sui Resumes, Job Roles ed Evaluation Criteria, ad esempio:
 

@@ -11,11 +11,11 @@
 1. Navigare su Copilot Studio e selezionare **Tools** dalla navigazione di sinistra
 2. Selezionare **+ New tool**, e premere **Prompt**
 
-![](./images/4-new-prompt.png)
+![](./images/creare-prompt-multi-modale-01.png)
 
 3. Rinominare il prompt dal suo nome predefinito (come *custom prompt 06/03/2026*) a `Summarize Resume`
 
-![](./images/4-promptname.png)
+![](./images/creare-prompt-multi-modale-02.png)
 
 4. Nel campo istruzioni, aggiungere il seguente prompt:
 
@@ -55,7 +55,7 @@ CoverLetter: /text
 | CoverLetter | Text              | CoverLetter | Here is a Resume!              |
 6. Premere il tasto **Test** per vedere il primo esempio di output per il prompt
 
-![](./images/4-prompt-parameters.png)
+![](./images/creare-prompt-multi-modale-03.png)
 
 ## Configurare l'output in JSON
 
@@ -79,7 +79,7 @@ Provide the output in valid JSON format with the following structure:
 
 2. Modificare l'impostazione di **Output** in alto a destra da *Text* a **JSON**
 
-![](./images/4-json-prompt.png)
+![](./images/configurare-l-output-json-01.png)
 
 3. Effettuare un nuovo **Test** per verificare che l'output sia correttamente formattato in JSON
 4. ***Opzionale***: provare a testare il comportamento con diversi modelli
@@ -96,7 +96,7 @@ Provide the output in valid JSON format with the following structure:
 1. Navigare all'interno dell'**Hiring Agent** all'interno di Copilot Studio
 2. Navigare nella scheda **Agents** e selezionare l'agente figlio **Application Intake Agent**
 
-![](./images/4-AppIntakeAgentSelect.png)
+![](./images/aggiungere-prompt-ad-agent-01.png)
 
 3. All'interno della sezione **Tools**, selezionare **+ Add > + New tool > Agent flow**
 4. Nel trigger **When an agent calls the flow**, premere **+Add an input** per aggiungere il seguente parametro:
@@ -107,7 +107,7 @@ Provide the output in valid JSON format with the following structure:
 
 5. Selezionare il tasto **+** per aggiungere un nuovo nodo, cercare `dataverse list rows` e selezionare l'azione **List rows**
 
-![](./images/4-AddListRows.png)
+![](./images/aggiungere-prompt-ad-agent-02.png)
 
 6. Rinominare l'azione appena creata in `Get Resume Record`, ed impostare i seguenti parametri:
 
@@ -122,11 +122,11 @@ Provide the output in valid JSON format with the following structure:
 >
 >Quando si utilizza una tecnica di questo tipo in produzione, è sempre una *best practice* quella di limitare le colonne selezionate ai soli valori richiesti dall'Agent Flow
 
-![](./images/4-summarize-resume-1.png)
+![](./images/aggiungere-prompt-ad-agent-03.png)
 
 7. Premere il tasto **+** sotto l'azione appena configurata, cercare `dataverse download` e selezionare l'azione **Download a file or an image**
 
-![](./images/4-DataverseDownload.png)
+![](./images/aggiungere-prompt-ad-agent-04.png)
 
 8. Come prima, rinominare la nuova azione in `Download Resume` ed impostare i parametri seguenti
 
@@ -144,11 +144,11 @@ Provide the output in valid JSON format with the following structure:
 >**`first(...)`** → Prende **il primo record** dell’array restituito dalla query
 >**`?['ppa_resumeid']`** → Estrae il campo **ppa_resumeid**, cioè **l’ID del file** memorizzato nel record
 
-![](./images/4-summarize-resume-2.png)
+![](./images/aggiungere-prompt-ad-agent-05.png)
 
 9. Premere il tasto **+** sotto l'azione appena configurata, e selezionare **Run a prompt** sotto la sezione **AI capabilities**
 
-![](./images/4-RunPrompt.png)
+![](./images/aggiungere-prompt-ad-agent-06.png)
 
 10. Rinominare l'azione in `Summarize Resume` ed impostare i seguenti parametri:
 
@@ -158,7 +158,7 @@ Provide the output in valid JSON format with the following structure:
 | **CoverLetter** | Espressione (icona fx) | `first(body('Get_Resume_Record')?['value'])?['ppa_coverletter']` |
 | **Resume**      | Dato dinamico          | Download Resume → File or image content                          |
 
-![](./images/4-summarize-resume-3.png)
+![](./images/aggiungere-prompt-ad-agent-07.png)
 
 >[!NOTE]
 >**Nota**
@@ -178,7 +178,7 @@ Adesso l'informazione fornita dalla prompt action verrà utilizzata per creare u
 | **Filter rows** | Dato dinamico  | `ppa_email eq 'Email'` dove `Email` va rimpiazzata con **Summarize Resume → Email** |
 | **Row count**   | Inserire       | 1                                                                                   |
 
-![](./images/4-summarize-resume-4.png)
+![](./images/creare-record-candidato-01.png)
 
 3. Premere il tasto **+** sotto l'azione appena configurata, cercare `control`, selezionare **See more** fino a trovare l'azione **Condition**
 4. Nelle proprietà della **Condition** impostare i seguenti valori:
@@ -196,7 +196,7 @@ Adesso l'informazione fornita dalla prompt action verrà utilizzata per creare u
 >
 >In questo caso, il valore di ritorno `0` indica che non sono stati trovati candidati corrispondenti ai criteri cercati
 
-![](./images/4-summarize-resume-5.png)
+![](./images/creare-record-candidato-02.png)
 
 5. Premere il tasto **+** all'interno del ramo **True**, cercare `dataverse add` e selezionare l'azione **Add a new row**
 6. Cambiare il nome della nuova azione in `Add a New Candidate`, ed impostare i seguenti parametri:
@@ -207,7 +207,7 @@ Adesso l'informazione fornita dalla prompt action verrà utilizzata per creare u
 | **Candidate Name** | Valore dinamico (fulmine) | Summarize Resume → `CandidateName` |
 | **Email**          | Valore dinamico (fulmine) | Summarize Resume → `Email`         |
 
-![](./images/4-summarize-resume-6.png)
+![](./images/creare-record-candidato-03.png)
 
 ## Aggiornare il CV e configurare gli output
 
@@ -233,7 +233,7 @@ Completare il flusso aggiornando i dati e configurando il valore da restituire a
 >
 >La formula restituisce un valore finale nel formato `ppa_candidates/3f8c2c9b-xxxx-xxxx-xxxx-xxxxxxxxxxxx`, indipendentemente dal fatto che il record esistesse già o sia stato appena creato.
 
-![](./images/4-summarize-resume-7.png)
+![](./images/aggiornare-cv-configurare-gli-01.png)
 
 3. Selezionare l'ultimo nodo **Respond to the agent** e premere **+ Add an output** per configurare i seguenti valori di ritorno, scegliendo il tipo appropriato per ognuno:
 
@@ -246,11 +246,11 @@ Completare il flusso aggiornando i dati e configurando il valore da restituire a
 |      |                   |                           |                                                                                                                                                                                                                        |                                                        |
 
 
-![](./images/4-summarize-resume-8.png)
+![](./images/aggiornare-cv-configurare-gli-02.png)
 
 4. Premere **Save draft** in alto a destra. Assicurarsi che il flusso sia uguale a quello mostrato in figura, controllando in particolare che il nodo **Update Resume** sia fuori dal blocco della logica  *Condition*
 
-![](./images/4-summarize-resume-9.png)
+![](./images/aggiornare-cv-configurare-gli-03.png)
 
 5. Navigare nella scheda di **Overview** e selezionare **Edit** all'interno della sezione **Details**. Modificare i seguenti campi:
 - **Flow name**: `Summarize Resume`
@@ -270,7 +270,7 @@ L'ultimo passaggio sarà quello di connettere il flusso all'agente che deve util
 2. Selezionare la scheda **Agents**, ed aprire **Application Intake Agent**
 3. Navigare nel pannello **Tools**, e selezionare **+ Add a tool > Flow > Summarize Resume (Agent Flow)**
 
-![](./images/4-SummarizeResumeFlowselect.png)
+![](./images/connettere-flusso-all-agente-01.png)
 
 4. Selezionare **Add and configure**
 5. Impostare i parametri come in seguito:
@@ -278,12 +278,12 @@ L'ultimo passaggio sarà quello di connettere il flusso all'agente che deve util
 - **Description**: `Summarize an existing Resume stored in Dataverse using a [ResumeNumber] as input, return the [CandidateNumber], and resume summary JSON`
 - **When this tool may be used**: *Only when referenced by topics or agents*
 
-![](./images/4-configure-summarize-resume-tool.png)
+![](./images/connettere-flusso-all-agente-02.png)
 
 6. Premere **Save**
 7. All'interno dei **Tools** di **Hiring Agent**, adesso dovrebbero essere presenti entrambi i flussi configurati, con la dicitura che sono utilizzabili solo da **Application Intake Agent**
 
-![](./images/4-agent-tools.png)
+![](./images/connettere-flusso-all-agente-03.png)
 
 8. Navigare nelle istruzioni di **Application Intake Agent** e *rimuovere* i due paragrafi che iniziano con:
 - `2.Post-Upload`
@@ -301,7 +301,7 @@ L'ultimo passaggio sarà quello di connettere il flusso all'agente che deve util
 
 9. Rimpiazzare `/Summarize Resume` con la relativa reference tramite l'uso del comando `/` all'interno delle istruzioni
 
-![](./images/4-summarize-instructions-update.png)
+![](./images/connettere-flusso-all-agente-04.png)
 
 10. Premere **Save**
 
@@ -313,14 +313,14 @@ Testare il sistema completo per controllare che tutto funzioni correttamente.
 2. Inserire una richiesta come `Here is a candidate Resume` e caricare un CV demo
 3. Verificare il corretto risultato: ricezione di un numero di candidato (in formato R######) e riassunto. Utilizzare l'activity map per controllare il lavoro degli strumenti configurati.
 
-![](./images/4-test-result.png)
+![](./images/testare-l-agente-01.png)
 
 4. Controllare i dati persistenti navigando su **Power App*
 5. Selezionare **Apps > Hiring Hub > Play**
 6. Navigare su **Resumes** per verificare che il CV sia stato correttamente caricato e processato. Dovrebbe avere sia le informazioni riassuntive che i valori associati.
 7. Controllare **Candidates** per vedere le informazioni estratte sul candidato.
 
-![](./images/4-resume-in-dataverse-xx.png)
+![](./images/testare-l-agente-02.png)
 
 8. Rilanciando lo stesso processo nuovamente, dovrebbe usare il Candidato esistente e non crearne uno nuovo.
 

@@ -10,17 +10,17 @@ Questo Lab affronta varie tipologie di Knowledge Base fra cui SharePoint, perci�
 
 1. Andare su [Microsoft 365](https://m365.cloud.microsoft/), accedere con il proprio account aziendale/scolastico,  premere su `Apps` e selezionare `All Apps`.
 
-![](./images/sharepoint1.png)
+![](./images/prerequisiti-01.png)
 
 2. Selezionare `SharePoint`, successivamente premere su `Create Site` -> `Team Site` -> `From Microsoft` -> `Standard Team`-> `Use Template`.
 
-![](./images/sharepoint2.png)
+![](./images/prerequisiti-02.png)
 
-![](./images/sharepoint3.png)
+![](./images/prerequisiti-03.png)
 
-![](./images/sharepoint4.png)
+![](./images/prerequisiti-04.png)
 
-![](./images/sharepoint5.png)
+![](./images/prerequisiti-05.png)
 
 3. Ora aggiungere i dettagli del sito SharePoint elencati qui sotto e premere su `Next`.
 
@@ -34,30 +34,30 @@ Questo Lab affronta varie tipologie di Knowledge Base fra cui SharePoint, perci�
 
 5. Andare in `Documents`, premere + Upload, e successivamente selezionare i seguenti file:
 
-[Zava_Help_Desk_Playbook.docx](./files/Zava_Help_Desk_Playbook.docx)
-[Zava_Incident_report_Template_Example.docx](./files/Zava_Incident_Report_Template_Example.docx)
-[Zava_Help_Desk_SLA.docx](./files/Zava_Help_Desk_SLA.docx)
+[Zava_Help_Desk_Playbook.docx](../../resources/02-knowledge-sources/Zava_Help_Desk_Playbook.docx)
+[Zava_Incident_report_Template_Example.docx](../../resources/02-knowledge-sources/Zava_Incident_Report_Template_Example.docx)
+[Zava_Help_Desk_SLA.docx](../../resources/02-knowledge-sources/Zava_Help_Desk_SLA.docx)
 
-![](./images/Upload1.png)
+![](./images/prerequisiti-06.png)
 ## Upload di Documenti come KB
 
 1. Dalla schermata `Home` di Copilot Studio selezionare `Agents`.
 
-![](./images/KB1.png)
+![](./images/upload-documenti-come-kb-01.png)
 
 2. Cercare l'Agente creato nel `Lab 1` e aprire la pagina di configurazione.
 
 3. Selezionare `Knowledge` nel menu in alto adiacente al Nome dell'Agente.
 
-![](./images/KB2.png)
+![](./images/upload-documenti-come-kb-02.png)
 
 4. Premere su `+Add knowledge`.
 
-![](./images/KB3.png)
+![](./images/upload-documenti-come-kb-03.png)
 
 5. Una volta premuto apparirà una schermata per aggiungere all'agente fonti di conoscenza.
 
-![](./images/KB4.png)
+![](./images/upload-documenti-come-kb-04.png)
 
 >[!NOTE]
 >**Info**
@@ -66,7 +66,7 @@ Questo Lab affronta varie tipologie di Knowledge Base fra cui SharePoint, perci�
 
 6. Premere su `Upload`, verrà aperta una finestra del File Explorer, nella quale selezionare i seguenti Documenti: 
 
-[Zava_KB_Reset_M365_Password.docx](./files/Zava_KB_Reset_M365_Password.docx)
+[Zava_KB_Reset_M365_Password.docx](../../resources/02-knowledge-sources/Zava_KB_Reset_M365_Password.docx)
 
 >[!NOTE]
 >Gli agenti di Copilot Studio richiedono la [Dataverse search](https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-add-file-upload) per utilizzare questa fonte di conoscenza. Se non puoi aggiungere file Dataverse a un agente, chiedi all’amministratore di attivare la `Dataverse search` nel tuo `Enviroment`.
@@ -81,11 +81,11 @@ Usa questa Knowledge quando un Utente vuole resettare la Password.
 
 9. Andare sui Settings.
 
-![](./images/Settings1.png)
+![](./images/upload-documenti-come-kb-05.png)
 
 10. Nella sezione Generative AI cercare il paragrafo Knowledge, disattivare "Use general Knowledge", "Use information from the Web" e Salvare le impostazioni.
 
-![](./images/Settings2.png)
+![](./images/upload-documenti-come-kb-06.png)
 
 >[!TIP]
 >Disattivare la General Knowledge e la Web Search permette all'agente di focalizzarsi solo sui dati che andiamo a fornire, andando così a limitare il rischio di allucinazione.
@@ -98,7 +98,7 @@ Usa questa Knowledge quando un Utente vuole resettare la Password.
 Come posso resettare la Password?
 ```
 
-![](./images/test1.png)
+![](./images/upload-documenti-come-kb-07.png)
 
 12. Notare come l'agente ha utilizzato il documento e lo ha riportato nelle references della risposta data.
 
@@ -108,13 +108,13 @@ Come posso resettare la Password?
 
 2. Una volta premuto apparirà la schermata per aggiungere all'agente fonti di conoscenza, premere `Upload` e selezionare questi file :
 
-[Zava_Guida_VPN_v1.docx](./files/Zava_Guida_VPN_v1.docx)
-[Zava_Guida_VPN_v2.docx](./files/Zava_Guida_VPN_v2.docx)
-[Zava_Guida_VPN_v3.docx](./files/Zava_Guida_VPN_v3.docx)
+[Zava_Guida_VPN_v1.docx](../../resources/02-knowledge-sources/Zava_Guida_VPN_v1.docx)
+[Zava_Guida_VPN_v2.docx](../../resources/02-knowledge-sources/Zava_Guida_VPN_v2.docx)
+[Zava_Guida_VPN_v3.docx](../../resources/02-knowledge-sources/Zava_Guida_VPN_v3.docx)
 
 3. Al posto di premere su **Add to agent** selezionare  **Upload as a group**.
 
-![](./images/Group1.png)
+![](./images/files-group-come-kb-01.png)
 
 >[!NOTE]
 >Per sapere i limiti o eventuali informazioni aggiuntive sui Files Group visitare la [Documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-file-group)
@@ -129,11 +129,11 @@ VPN Guide
 Contiene le guide di installazione e utilizzo per la VPN ZavaSecure. Utilizza la versione più aggiornata (v3), a meno che non sia richiesta una versione diversa.
 ```
 
-![](./images/Group2.png)
+![](./images/files-group-come-kb-02.png)
 
 6. Aspettare che il Files Group diventi **Ready** e aprirlo per modificarne i dettagli.
 
-![](./images/Group3.png)
+![](./images/files-group-come-kb-03.png)
 
 7. Aggiungere le `Instructions`:
 
@@ -153,7 +153,7 @@ Come configuro la VPN secondo la guida del 2022?
 
 1. Selezionare `Knowledge` nel menu in alto adiacente al Nome dell'Agente.
 
-![](./images/KB2.png)
+![](./images/upload-documenti-come-kb-02.png)
 
 2. Premere su `+Add knowledge`.
 
@@ -165,17 +165,17 @@ Come configuro la VPN secondo la guida del 2022?
 
 3. Selezionare `SharePoint`.
 
-![](./images/ShareKB1.png)
+![](./images/sito-sharepoint-come-kb-01.png)
 
 5. Premere su `Browse Item`.
 
-![](./images/ShareKB2.png)
+![](./images/sito-sharepoint-come-kb-02.png)
 
 6. Cercare il sito SharePoint `Help Desk CSM`.
    
 7. Selezionare `Documents`, e premere `Confirm Selection`.
 
-![](./images/ShareKB3.png)
+![](./images/sito-sharepoint-come-kb-03.png)
 
 8. Aggiornare la Descrizione della Knowledge con la seguente:
 

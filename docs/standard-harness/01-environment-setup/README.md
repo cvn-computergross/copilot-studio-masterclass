@@ -22,7 +22,7 @@ Per accedere a Copilot Studio e usufruire della piattaforma è possibile usare u
 2. Andare su [Microsoft 365 Business Plans and Pricing Page](https://www.microsoft.com/microsoft-365/business/microsoft-365-plans-and-pricing)
 3. Selezionare l'opzione meno costosa per iniziare, Microsoft 265 Business Basic Plan, premere su `Try for free` e compilare il form guidato con le informazioni per l'account e metodo di pagamento.
 
-![](./images/m365.png)
+![](./images/ottenere-microsoft-365-account-01.png)
 
 4. Una volta ottenuto l'account eseguire il `login`.
 
@@ -36,15 +36,15 @@ Una volta ottenuto un `Microsoft 365 Tenant`, è necessario l'accesso a `Copilot
 
 1. Navigare su [aka.ms/TryCopilotStudio](https://aka.ms/TryCopilotStudio).
 
-![](./images/copilotstudiotrial.png)
+![](./images/iniziare-copilot-studio-trial-01.png)
 
 2. Inserire le informazioni dell'account creato negli step precedenti e premere`Next`.
 
-![](./images/SIgnin.png)
+![](./images/iniziare-copilot-studio-trial-02.png)
 
 3. Una volta riconosciuto l'account. Selezionare `Sign In`.
 
-![](./images/FreeTrial.png)
+![](./images/iniziare-copilot-studio-trial-03.png)
 
 4. Premere su `Start Free Trial`.
 
@@ -60,7 +60,7 @@ Una best practice nello sviluppo di Agenti è lavorare su un Environment diverso
 
 1. Andare su [Power Apps Developer Plan website](https://aka.ms/PowerAppsDevPlan).
 
-![](./images/Environment.png)
+![](./images/creare-nuovo-developer-environment-01.png)
 
 2. Inserire l'`email address` -> Spuntare la `checkbox` -> Selezionare `Start free`.
 
@@ -83,33 +83,33 @@ Come primo passaggio, è richiesta la creazione di un **gruppo di sicurezza** ch
 
 2. Nella sezione **Teams & groups** selezionare **Active teams & groups**
 
-![](./images/AdminC1.png)
+![](./images/abilitare-pubblicazione-copilot-studio-01.png)
 
 3. Andare su **Security groups** e premere **Add a security group** e chiamarlo `AgentCreators`, successivamente premere **Next**.
 
-![](./images/Sg1.png)
+![](./images/abilitare-pubblicazione-copilot-studio-02.png)
 
 4. Verificare i dati inseriti e premere **Create group**. Dopo ciò cercare il security group appena creato.
 
-![](./images/Sg2.png)
+![](./images/abilitare-pubblicazione-copilot-studio-03.png)
 
 5. Andare nella sezione **Members**, premere **view all and manage members**
 
-![](./images/Sg3.png)
+![](./images/abilitare-pubblicazione-copilot-studio-04.png)
 
 6. Premere **Add members**, cercare il proprio account e aggiungersi come membro.
 7. Terminata la creazione del Security group recarsi su [Power Platform admin center](https://admin.powerplatform.microsoft.com/)
 8. Dalla schermata **Home** andare su **Manage** e poi **Tenant Settings**.
 
-![](./images/PW1.png)
+![](./images/abilitare-pubblicazione-copilot-studio-05.png)
 
-![](./images/PW2.png)
+![](./images/abilitare-pubblicazione-copilot-studio-06.png)
 
 9. Selezionare **Copilot Studio Authors** e cambiare da **All Users** al security group creato in precedenza, poi premere **Done** e successivamente **Save**.
 
-![](./images/PW3.png)
+![](./images/abilitare-pubblicazione-copilot-studio-07.png)
 
-![](./images/PW4.png)
+![](./images/abilitare-pubblicazione-copilot-studio-08.png)
 
 ## Solution e Publisher
 
@@ -126,15 +126,15 @@ Il prossimo passo è creare una Solution, un contenitore logico utilizzato per o
 
 1. Dopo aver selezionato il giusto`Copilot Studio environment`, premere sull'`ellipsis icon (. . .)`nel menù a sinistra, successivamente  `Solutions` sotto`Explore`.
 
-![](./images/Solution1.png)
+![](./images/solution-publisher-01.png)
 
 2. Verrà aperto il`Solution Explorer` premere `+ New solution`.
 
-![](./images/Solution2.png)
+![](./images/solution-publisher-02.png)
 
 3. Il pannello`New solution` apparirà e sarà possibile definire i dettagli della`Solution`. Prima di fare ciò è necessario creare un nuovo`Publisher`, selezionare `+ New publisher`.
 
-![](./images/Solution3.png)
+![](./images/solution-publisher-03.png)
 
 4. La Tab `Properties`del nuovo `Publisher`apparirà con campi da compilare nella scheda `Properties`.
 
@@ -148,7 +148,7 @@ Qui è possibile delineare i dettagli del `Publisher`che verranno utilizzati com
 	- Prefix: `csm`
 	- Prefix value: `77000`
 
-![](./images/Solution4.png)
+![](./images/solution-publisher-04.png)
 
 6. Premere `Save` per creare il `Publisher`.
 
@@ -192,7 +192,7 @@ Nel corso del laboratorio viene creato un agente minimale, privo di connettori, 
 
 1. Dalla home page di  [Copilot Studio](https://copilotstudio.microsoft.com/) premere **Agents**
 
-![](./images/Creazione1.png)
+![](./images/creazione-primo-agente-01.png)
 
 2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nel' Environment, proseguire inserendo la descrizione del primo agente:
 
@@ -200,7 +200,7 @@ Nel corso del laboratorio viene creato un agente minimale, privo di connettori, 
 Crea un agente chiamato IT Support con descrizione "Assistente di supporto IT di primo livello per l’azienda Zava". Deve fornire supporto tecnico di base usando un linguaggio semplice e porre domande solo se strettamente necessario. Non può recuperare password, bypassare MFA, sbloccare account o fornire codici. Il tono deve essere sempre professionale, calmo e neutro.
 ```
 
-![](./images/Creazione3.png)
+![](./images/creazione-primo-agente-02.png)
 
  3. Aspettare che Copilot Studio termini il setup dell'agente, e esplorare la schermata di personalizzazione dell'Agent.
 

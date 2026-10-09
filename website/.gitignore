@@ -2,5 +2,7 @@
 docs/index.md
 docs/standard-harness/
 docs/github-harness/
+docs/resources/
+docs/info.md
 mkdocs.gen.yml
 site/

@@ -19,16 +19,16 @@ Il primo obiettivo è quello creare una prompt action in grado di analizzare una
 
 1. All'interno di Copilot Studio, selezionare **Tools** dalla navigazione di sinistra
 
-![](./images/6-ToolsSelect.png)
+![](./images/creazione-prompt-01.png)
 
 2. Premere il tasto **+ New tool** 
 3. Selezionare **Prompt**
 
-![](./images/6-NewPrompt.png)
+![](./images/creazione-prompt-02.png)
 
 4. Rinominare il prompt in `Interview Question Document Prep`
 
-![](./images/6-PromptName.png)
+![](./images/creazione-prompt-03.png)
 
 5. All'interno del campo **Instructions**, aggiungere il seguente prompt:
 
@@ -92,7 +92,7 @@ Evaluation Criteria (Weighting, Evaluation Criteria): /Criteria
 
 6. In una nuova scheda del browser, navigare su [Power App](https://make.powerapps.com) e cercare la tabella **Job Application**. Prendere nota di uno dei numeri delle job application presenti. Questo servirà per il testing.
 
-![](./images/6-JobAppTable.png)
+![](./images/creazione-prompt-04.png)
 
 7. Tornare indietro nel prompt e raggiungere la sezione **input data**. Cercare il testo **/ApplicationNumber**, eliminarlo e tramite lo slash in avanti (**`/`**) impostare i seguenti valori:
 
@@ -111,19 +111,19 @@ Evaluation Criteria (Weighting, Evaluation Criteria): /Criteria
 
 Una volta completato, la situazione dovrebbe essere uguale rispetto al seguente screenshot:
 
-![](./images/6-PromptFIlled.png)
+![](./images/creazione-prompt-05.png)
 
 9. Mentre si configura il prompt, è consigliabile testare tramite **Test** per assicurarsi che il sistema riesca a prendere le informazioni corrette da Dataverse
 
-![](./images/6-FirstTest.png)
+![](./images/creazione-prompt-06.png)
 
 10. Siccome il prompt dev'essere in grado di generare un documento, è fondamentale assicurarsi che il modello usato supporti input ed output multi-modali. Per fare questo, premere sul menu a tendina **Model** e selezionare **GPT-4.1** (oppure **GPT-5 chat**)
 
-![](./images/6-ModelSelect.png)
+![](./images/creazione-prompt-07.png)
 
-11. Per permettere al prompt di popolare un foglio Word come output, è necessario fornire un template da riempire. Scaricare il template demo e aprirlo. TODO INSERIRE LINK
+11. Per permettere al prompt di popolare un foglio Word come output, è necessario fornire un template da riempire. Scaricare il [template demo](../../resources/11-advanced-content-generation/Interview_Questions_Template_Demo.docx) e aprirlo. TODO INSERIRE LINK
 
-![](./images/6-Template.png)
+![](./images/creazione-prompt-08.png)
 
 >[!NOTE]
 >**Nota**
@@ -132,21 +132,21 @@ Una volta completato, la situazione dovrebbe essere uguale rispetto al seguente 
 
 12. Al momento la prompt action genera comunque testo. Per rendere lo strumento in grado di generare un documento, selezionare il menu a tendina **Output** in alto a destra e scegliere l'opzione **Document (preview)** 
 
-![](./images/6-OutputSelect.png)
+![](./images/creazione-prompt-09.png)
 
 13. Per associare il template con il prompt, selezionare il tasto **Document settings** ed inserirlo tramite drag and drop o browse
 
-![](./images/6-DocumentSettings.png)
+![](./images/creazione-prompt-10.png)
 
 14. Dopo il caricamento del file, dovrebbero essere riconosciuti 19 campi (relativi ai valori messi tra parentesi graffe). Selezionare nuovamente il bottone **test** per vedere se il prompt scrive l'output in formato Word
 
-![](./images/6-DocTest.png)
+![](./images/creazione-prompt-11.png)
 
 15. La risposta dovrebbe essere simile a quella mostrata sotto. Dovrebbe contenere un collegamento in cima che permette di scaricare il documento. Controllare che sia stato riempito correttamente.
 
-![](./images/6-DocOutputBtn.png)
+![](./images/creazione-prompt-12.png)
 
-![](./images/6-DocFilled.png)
+![](./images/creazione-prompt-13.png)
 
 16. Cliccare **Save** per salvare il prompt
 
@@ -161,11 +161,11 @@ Tramite un *wrapping* del prompt all'interno di un agent flow è possibile estra
 1. In Copilot Studio, selezionare la scheda **Tools**
 2. Selezionare il tasto **New tool**
 
-![](./images/6-NewTool.png)
+![](./images/creare-agent-flow-richiamare-01.png)
 
 3. Selezionare l'opzione **Agent Flow**
 
-![](./images/6-AgentFlow.png)
+![](./images/creare-agent-flow-richiamare-02.png)
 
 4. Selezionare il primo nodo **When an agent calls the flow** ed utilizzare **+ Add an input** per aggiungere il seguente parametro
 
@@ -173,19 +173,19 @@ Tramite un *wrapping* del prompt all'interno di un agent flow è possibile estra
 - **Name**: `ApplicationNumber`
 - **Description**: `What's the job application number`
 
-![](./images/6-TriggerInputFilled.png)
+![](./images/creare-agent-flow-richiamare-03.png)
 
 5. Premere il tasto **+** sotto il nodo appena configurato e selezionare l'azione **Run a prompt** sotto **AI capabilities**
 
-![](./images/6-AddAction.png)
+![](./images/creare-agent-flow-richiamare-04.png)
 
 6. Dal menu tendina selezionare il nuovo prompt **Interview Question Document Prep**
 
-![](./images/6-SelectPromptName.png)
+![](./images/creare-agent-flow-richiamare-05.png)
 
 7. All'interno del campo **ApplicationNumber** selezionare i valori dinamici tramite l'icona del fulmine, e selezionare l'input **ApplicationNumber** creato nel punto precedente
 
-![](./images/6-MapInput.png)
+![](./images/creare-agent-flow-richiamare-06.png)
 
 8. Selezionare l'ultima azione **Respond to the agent** e premere **+ Add an output**, impostando il seguente valore:
 
@@ -197,7 +197,7 @@ Tramite un *wrapping* del prompt all'interno di un agent flow è possibile estra
 binary(outputs('Run_a_prompt')?['body/responsev2/predictionOutput/documentOutput/contentBytes'])
 ```
 
-![](./images/6-Formula.png)
+![](./images/creare-agent-flow-richiamare-07.png)
 
 >[!TIP]
 >**Approfondimento: formula PowerFx utilizzata**
@@ -210,18 +210,18 @@ binary(outputs('Run_a_prompt')?['body/responsev2/predictionOutput/documentOutput
 
 9. Selezionare **Save draft**
 
-![](./images/6-SaveDraft.png)
+![](./images/creare-agent-flow-richiamare-08.png)
 
 10. Navigare nella scheda **Overview**, selezionare **Edit** all'interno della sezione **Details** ed impostare i seguenti valori e premere **Save**
 
 - **Flow name**: `Doc Prep`
 - **Description**: `Creates an interview prep document and returns to the agent`
 
-![](./images/6-FlowName.png)
+![](./images/creare-agent-flow-richiamare-09.png)
 
 11. Navigare indietro nella scheda **Designer** e premere su **Publish**
 
-![](./images/6-PublishFlow.png)
+![](./images/creare-agent-flow-richiamare-10.png)
 
 ## Creare il topic
 
@@ -234,11 +234,11 @@ Anche in questo caso, occorre utilizzare un topic invece di aggiungere il flusso
 1. In Copilot Studio, all'interno di **Interview Agent**, selezionare la scheda **Topics** 
 2. Selezionare il bottone **+ Add a topic** e scegliere l'opzione **From blank**
 
-![](./images/6-AddTopic.png)
+![](./images/creare-topic-01.png)
 
 3. Rinominare il topic in `Generate Interview Doc`
 
-![](./images/6-RenameTopic.png)
+![](./images/creare-topic-02.png)
 
 4. All'interno del Topic Trigger, inserire la seguente descrizione
 
@@ -246,17 +246,17 @@ Anche in questo caso, occorre utilizzare un topic invece di aggiungere il flusso
 This topic generates an interview prep document with applicant details, role details and interview questions.
 ```
 
-![](./images/6-TopicDescription.png)
+![](./images/creare-topic-03.png)
 
 >Per fare funzionare il flusso, è necessario ottenere il Job Application Number. Per fare questo, verrà utilizzata una funzione in Copilot Studio chiamata *slot filling*. Questo consente all'orchestratore generativo del modello di linguaggio utilizzato di indentificare i valori da portare all'interno del topic. 
 
 5. Selezionare il tasto **Details** nel topic
 
-![](./images/6-DetailsBTN.png)
+![](./images/creare-topic-04.png)
 
 6. Selezionare la scheda **Input** all'interno del pannello dei dettagli e premere **Create a new variable**
 
-![](./images/6-InputNewVariable.png)
+![](./images/creare-topic-05.png)
 
 7. Nei campi della variabile appena creata, inserire i seguenti valori:
 
@@ -264,27 +264,27 @@ This topic generates an interview prep document with applicant details, role det
 - **Description**: `Fill with the Job Application Number referenced in the chat. The number always starts with a J followed by at least 4 digits.`
 - Lasciare gli altri campi inalterati
 
-![](./images/6-InputFilled.png)
+![](./images/creare-topic-06.png)
 
 8. Premere l'icona **+** dopo il nodo iniziale, selezionare **Add a tool** ed individuare il flusso **Doc Prep** creato nel punto precedente
 
-![](./images/6-SelectFlow.png)
+![](./images/creare-topic-07.png)
 
 9. Cliccare all'interno del campo di input del nuovo nodo **ApplicationNumber**, e tramite il menu con i tre punti (**...**) scegliere la variabile **VarApplicationNumber**
 
-![](./images/6-MapVariable.png)
+![](./images/creare-topic-08.png)
 
 10. Adesso va aggiunto un nodo messaggio per restituire i file all'utente. Per fare questo, cliccare l'icona **+** sotto l'azione appena configurata e selezionare **Send a message**
 
-![](./images/6-AddMessageNode.png)
+![](./images/creare-topic-09.png)
 
 11. All'interno del box di testo, scrivere `Here is your interview prep file`. Poi, cliccare il tasto **Add** e scegliere l'opzione **File**
 
-![](./images/6-MessageFill.png)
+![](./images/creare-topic-10.png)
 
 12. Nella sezione **Content**, selezionare i tre punti (**...**) e scegliere la proprietà **InterviewFile** 
 
-![](./images/6-MapFile.png)
+![](./images/creare-topic-11.png)
 
 13. Nella sezione **Name**, selezionare i tre punti (**...**), navigare alla sezione **Formula** ed inserire la seguente espressione:
 
@@ -292,7 +292,7 @@ This topic generates an interview prep document with applicant details, role det
 Topic.VarApplicationNumber&"InterviewPrep.docx"
 ```
 
-![](./images/6-InsertNameFormula.png)
+![](./images/creare-topic-12.png)
 
 14. Salvare le modifiche al topic tramite il tasto **Save**
 
@@ -306,11 +306,11 @@ Create an interview prep file for job application J1000
 
 2. Notare come l'agente chiama il topic, inserisce come input il numero corretto, chiama il flusso e restituisce il file. Assicurarsi che il file sia scaricabile.
 
-![](./images/6-TestResult.png)
+![](./images/testare-corretto-funzionamento-01.png)
 
 3. Aprire il file ed assicurarsi che il documento sia stato riempito correttamente
 
-![](./images/6-InterviewPrepExample.png)
+![](./images/testare-corretto-funzionamento-02.png)
 
 >[!IMPORTANT]
 >**Successo**
