@@ -1,8 +1,7 @@
 # Copilot Studio Masterclass
 
 Benvenuto nei laboratori pratici di **Microsoft Copilot Studio**.
-Partiremo dalla **Standard Harness**, creando agenti direttamente nel portale di Copilot Studio: ambiente, fonti di conoscenza, topic, tool, flow, fino a scenari multi-agente e autonomi.
-Una volta consolidate le basi, approfondiremo la **GitHub Harness**, dove gli stessi agenti si costruiscono e si gestiscono con un flusso di lavoro code-first basato su GitHub.
+Si parte dalla **Standard Harness**, creando agenti nel portale di Copilot Studio, e si prosegue con la **GitHub Harness**, con un approccio code-first.
 
 ## Come seguire i lab
 
