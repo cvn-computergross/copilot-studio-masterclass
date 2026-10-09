@@ -177,12 +177,10 @@ def main(src, site):
             title = re.sub(r"^(Lab \d+) - ", r"\1 · ", h1(lab / "README.md"))
             nav.append(f'    - "{title}": {name}/{lab.name}/index.md')
 
-    # file da scaricare, raccolti per lab in docs/resources/
-    resources = lab_docs / "resources"
-    if (resources / "index.md").is_file():
-        shutil.copytree(resources, docs / "resources", ignore=shutil.ignore_patterns("index.md"))
-        copy_md(resources / "index.md", docs / "resources" / "index.md")
-        nav.append("  - Resources: resources/index.md")
+    # file da scaricare (docs/resources/): copiati così i link nei lab funzionano,
+    # ma senza pagina né voce nel menu
+    if (lab_docs / "resources").is_dir():
+        shutil.copytree(lab_docs / "resources", docs / "resources")
 
     (site / "mkdocs.gen.yml").write_text(
         "# File generato da scripts/build_docs.py: non modificare.\n"

@@ -25,14 +25,13 @@ docs/
 ├── github-harness/       # Code-first labs
 │   └── index.md
 └── resources/            # Files to download, one folder per lab
-    ├── index.md
     └── NN-lab-name/
 website/                  # MkDocs site sources (see website/README.md)
 ```
 
 ## Notes
 
-- Files to download are collected in [`docs/resources/`](./docs/resources/index.md), one folder per lab.
+- Files to download are collected in `docs/resources/`, one folder per lab.
 - Images are named after the lab section they appear in, numbered in order (e.g. `creazione-flow-03.png`).
 - Image links are standard relative Markdown links so they render correctly on GitHub.
 - Check the prerequisite callouts inside each lab before starting.

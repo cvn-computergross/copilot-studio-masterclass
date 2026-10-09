@@ -2,7 +2,7 @@
 
 Hands-on labs for learning Microsoft Copilot Studio, organized into two learning paths.
 
-Before starting, read [Info studenti](./info.md). Files to download are in [Resources](./resources/index.md).
+Before starting, read [Info studenti](./info.md).
 
 | Path | Description |
 |------|-------------|
