@@ -26,13 +26,20 @@ Il branch `GitHub-Page` contiene solo il sito compilato e viene riscritto a ogni
 
 ## Anteprima locale
 
-Dalla cartella principale della repo:
+La prima volta, dalla cartella principale della repo, si crea l'ambiente Python (`.venv/` è escluso da git):
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\pip install -r website/requirements.txt
+```
+
+Poi, ogni volta:
+
+```powershell
 python website/scripts/build_docs.py . website
 .venv\Scripts\mkdocs serve -f website/mkdocs.gen.yml
 ```
 
-Aprire <http://127.0.0.1:8000>. I file generati (`website/docs/index.md`, `website/docs/standard-harness`, `website/docs/github-harness`, `website/mkdocs.gen.yml`) non vanno committati.
+Aprire <http://127.0.0.1:8000/copilot-studio-masterclass/> (`Ctrl+C` per fermare). Il server si ricarica da solo se cambiano CSS e script del sito; dopo aver modificato le guide in `docs/` va rilanciato `build_docs.py`.
+
+I file generati (`website/docs/index.md`, `website/docs/info.md`, `website/docs/standard-harness`, `website/docs/github-harness`, `website/docs/resources`, `website/mkdocs.gen.yml`) sono esclusi da git.
