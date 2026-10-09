@@ -34,6 +34,8 @@
 .md-header__title .md-header__ellipsis { display: flex; align-items: center; height: 100%; }
 .md-header__title .md-header__topic { position: static; display: flex; align-items: center; height: 100%; }
 .md-header__title .md-header__topic + .md-header__topic { display: none; }
+/* scorrendo il tema nasconderebbe il nome del corso per mostrare il titolo della pagina: lo teniamo fisso */
+.md-header__title--active .md-header__topic:first-child { opacity: 1 !important; transform: none !important; pointer-events: auto; z-index: 1; }
 .md-header__inner .md-header__source { margin-left: auto !important; }
 
 /* Footer: loghi EDUlabs/CVN e Computer Gross piccoli nell'angolo in basso a destra */
