@@ -155,11 +155,8 @@ def main(src, site):
     else:
         copy_md(lab_docs / "index.md", docs / "index.md")
     nav = ["  - Home: index.md"]
-    # pagina Info: website/info.md (sintassi MkDocs) o, in mancanza, docs/info.md
-    if (site / "info.md").is_file():
-        shutil.copyfile(site / "info.md", docs / "info.md")
-        nav.append("  - Info studenti: info.md")
-    elif (lab_docs / "info.md").is_file():
+    # pagina Info studenti, convertita da docs/info.md come le altre guide
+    if (lab_docs / "info.md").is_file():
         copy_md(lab_docs / "info.md", docs / "info.md")
         nav.append("  - Info studenti: info.md")
     for name, label in SECTIONS:
