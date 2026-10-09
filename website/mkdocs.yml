@@ -34,6 +34,8 @@ theme:
     - content.code.copy
 
 extra_javascript:
+  - javascripts/vendor/anime.min.js
+  - javascripts/animations.js
   - javascripts/checklist.js
   - javascripts/nav-collapsed.js
   - javascripts/header-path.js

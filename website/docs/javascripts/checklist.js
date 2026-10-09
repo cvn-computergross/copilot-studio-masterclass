@@ -50,7 +50,8 @@
       var done = [].filter.call(boxes, function (b) { return b.checked; }).length;
       bars.forEach(function (bar) {
         bar.querySelector(".checklist-label").textContent = done + " / " + boxes.length + " completati";
-        bar.querySelector(".checklist-fill").style.width = (100 * done / boxes.length) + "%";
+        var fill = bar.querySelector(".checklist-fill"), pct = 100 * done / boxes.length;
+        if (window.Anim) window.Anim.progress(fill, pct); else fill.style.transform = "scaleX(" + pct / 100 + ")";
       });
     }
     update();

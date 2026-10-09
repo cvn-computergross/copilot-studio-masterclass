@@ -61,6 +61,7 @@
       }).join("");
       items = [].slice.call(list.querySelectorAll(".sm-item"));
       select(0);
+      if (window.Anim) window.Anim.results(items);
     });
   }
   function select(i) {
@@ -96,15 +97,20 @@
   }
   function open() {
     if (!modal) build();
+    if (modal.classList.contains("sm-modal--open")) return;
     modal.classList.add("sm-modal--open");
     document.documentElement.style.overflow = "hidden";
+    if (window.Anim) window.Anim.openModal(modal);
     load();
     setTimeout(function () { input.focus(); input.select(); }, 0);
   }
   function close() {
-    if (!modal) return;
-    modal.classList.remove("sm-modal--open");
-    document.documentElement.style.overflow = "";
+    if (!modal || !modal.classList.contains("sm-modal--open")) return;
+    var hide = function () {
+      modal.classList.remove("sm-modal--open");
+      document.documentElement.style.overflow = "";
+    };
+    if (window.Anim) window.Anim.closeModal(modal, hide); else hide();
   }
 
   // pulsante nella colonna di destra, sopra la barra di avanzamento

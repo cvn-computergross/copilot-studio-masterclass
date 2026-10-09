@@ -150,7 +150,7 @@
 .md-typeset .task-list-control { cursor: pointer; }
 .checklist-progress { display: flex; align-items: center; gap: .8rem; margin: -.4rem 0 1.4rem; font-size: .7rem; color: var(--md-default-fg-color--light); }
 .checklist-track { flex: 1; height: 6px; border-radius: 3px; background: var(--md-default-fg-color--lightest); overflow: hidden; }
-.checklist-fill { height: 100%; width: 0; background: var(--md-accent-fg-color); transition: width .25s; }
+.checklist-fill { height: 100%; width: 100%; transform: scaleX(0); transform-origin: left center; background: var(--md-accent-fg-color); }
 .checklist-reset { font: inherit; color: inherit; background: none; border: 1px solid var(--md-default-fg-color--lightest); border-radius: 4px; padding: .1rem .5rem; cursor: pointer; }
 .checklist-reset:hover { color: var(--md-accent-fg-color); border-color: var(--md-accent-fg-color); }
 
@@ -191,7 +191,7 @@
 .sm-button {
   display: flex; align-items: center; gap: .5rem; width: calc(100% - 1.2rem); margin: 0 .6rem 1rem;
   padding: .35rem .6rem; font: inherit; font-size: .7rem; color: var(--aa-text-2); cursor: pointer;
-  background: var(--aa-bg-alt); border: 1px solid transparent; border-radius: 8px; transition: border-color .2s;
+  background: var(--aa-bg-alt); border: 1px solid transparent; border-radius: 8px; transition: border-color .2s; will-change: transform;
 }
 .sm-button:hover { border-color: var(--aa-brand); }
 .sm-button span { flex: 1; text-align: left; }
@@ -260,12 +260,11 @@
   border-radius: 1rem; background: var(--aa-bg-alt); border: 1px solid var(--aa-divider);
 }
 .md-header__option > .md-header__button svg {
-  position: absolute; top: 50%; left: .1rem; transform: translateY(-50%);
+  position: absolute; top: 50%; left: .1rem; margin-top: -.475rem;
   width: .95rem; height: .95rem; padding: .12rem; border-radius: 50%;
   background: var(--aa-bg); box-shadow: 0 1px 2px rgba(0,0,0,.15);
-  color: var(--aa-text-2); transition: left .2s;
+  color: var(--aa-text-2);
 }
-[data-md-color-scheme="slate"] .md-header__option > .md-header__button svg { left: 1.2rem; }
 .md-header__option > .md-header__button:hover { border-color: var(--aa-brand); }
 
 .md-header__source {
