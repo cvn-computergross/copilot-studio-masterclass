@@ -15,7 +15,6 @@ theme:
     repo: fontawesome/brands/github
   font:
     text: Inter
-    code: JetBrains Mono
   palette:
     - scheme: default
       primary: custom
