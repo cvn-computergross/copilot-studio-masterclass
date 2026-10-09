@@ -28,6 +28,7 @@ theme:
 extra_javascript:
   - javascripts/checklist.js
   - javascripts/nav-collapsed.js
+  - javascripts/header-path.js
 
 extra_css:
   - stylesheets/extra.css

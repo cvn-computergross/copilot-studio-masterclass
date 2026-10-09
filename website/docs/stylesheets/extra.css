@@ -166,3 +166,6 @@
   .md-sidebar--primary { border-right: 1px solid var(--md-default-fg-color--lightest); }
   .md-sidebar--secondary { border-left: 1px solid var(--md-default-fg-color--lightest); }
 }
+
+/* Percorso nell'header: sezione e lab in grigio, più leggeri del nome del corso */
+.header-path__sep, .header-path__part { color: var(--aa-text-2); font-weight: 400; }
