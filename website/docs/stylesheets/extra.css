@@ -7,6 +7,7 @@
   --aa-divider: #e2e2e3;
   --aa-text-1: #3c3c43;
   --aa-text-2: #67676c;
+  --aa-bg: #ffffff;
 }
 
 [data-md-color-scheme="default"] {
@@ -27,7 +28,7 @@
 
 /* Header bianco e sottile, separato da un filo grigio */
 .md-header, .md-tabs { box-shadow: none; border: none; }
-.md-header { background: #ffffff; color: var(--aa-text-1); border-bottom: 1px solid var(--aa-divider); }
+.md-header { background: var(--aa-bg); color: var(--aa-text-1); border-bottom: 1px solid var(--aa-divider); }
 /* Header: niente logo EDUlabs (è nel footer), logo e nome del corso a sinistra */
 .md-header__button.md-logo { display: none !important; }
 .md-header__title { margin-left: .6rem !important; flex-grow: 1; height: 2.4rem; }
@@ -36,7 +37,7 @@
 .md-header__title .md-header__topic + .md-header__topic { display: none; }
 /* scorrendo il tema nasconderebbe il nome del corso per mostrare il titolo della pagina: lo teniamo fisso */
 .md-header__title--active .md-header__topic:first-child { opacity: 1 !important; transform: none !important; pointer-events: auto; z-index: 1; }
-.md-header__inner .md-header__source { margin-left: auto !important; }
+.md-header__inner .md-search { margin-left: auto; }
 
 /* Footer: loghi EDUlabs/CVN e Computer Gross piccoli nell'angolo in basso a destra */
 .md-footer-meta__inner.md-grid { max-width: none; display: flex; align-items: center; justify-content: space-between; padding: 0 1rem; }
@@ -183,3 +184,91 @@
 @media screen and (max-width: 30em) {
   .md-header__title { visibility: hidden; }
 }
+
+/* Ricerca in stile Agent Academy: pulsante sopra la barra di avanzamento e finestra centrata */
+.md-header .md-search, .md-header label[for="__search"] { display: none !important; }
+.md-header__inner .md-header__option { margin-left: auto; }
+.sm-button {
+  display: flex; align-items: center; gap: .5rem; width: calc(100% - 1.2rem); margin: 0 .6rem 1rem;
+  padding: .35rem .6rem; font: inherit; font-size: .7rem; color: var(--aa-text-2); cursor: pointer;
+  background: var(--aa-bg-alt); border: 1px solid transparent; border-radius: 8px; transition: border-color .2s;
+}
+.sm-button:hover { border-color: var(--aa-brand); }
+.sm-button span { flex: 1; text-align: left; }
+.sm-button kbd, .sm-footer kbd {
+  font: inherit; font-size: .6rem; color: var(--aa-text-2); background: var(--aa-bg);
+  border: 1px solid var(--aa-divider); border-radius: 4px; padding: 0 .3rem;
+}
+.sm-button--top { width: 100%; margin: 0 0 1rem; }
+@media screen and (min-width: 76.25em) { .sm-button--top { display: none; } }
+
+.sm-modal { display: none; position: fixed; inset: 0; z-index: 100; }
+.sm-modal--open { display: block; }
+.sm-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
+.sm-shell {
+  position: relative; display: flex; flex-direction: column; max-width: 40rem; max-height: min(36rem, calc(100vh - 6rem));
+  margin: 4rem auto 0; padding: .6rem; background: var(--aa-bg); border-radius: 8px; box-shadow: 0 12px 32px rgba(0,0,0,.2);
+}
+.sm-bar {
+  display: flex; align-items: center; gap: .6rem; padding: 0 .6rem; height: 2.4rem;
+  border: 1px solid var(--aa-brand); border-radius: 6px; color: var(--aa-text-2);
+}
+.sm-bar input { flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: .85rem; color: var(--aa-text-1); }
+.sm-bar input::-webkit-search-cancel-button { display: none; }
+.sm-clear { border: 0; background: none; color: var(--aa-text-2); cursor: pointer; font-size: .8rem; }
+.sm-results { overflow-y: auto; margin-top: .4rem; }
+.sm-item { display: block; margin: .3rem 0; padding: .5rem .7rem; border: 1px solid var(--aa-divider); border-radius: 6px; color: var(--aa-text-1) !important; }
+.sm-item--active, .sm-item:hover { border-color: var(--aa-brand); background: var(--aa-brand-soft); }
+.sm-path { font-size: .75rem; font-weight: 600; }
+.sm-sep { color: var(--aa-text-2); margin: 0 .2rem; }
+.sm-text { font-size: .68rem; color: var(--aa-text-2); margin-top: .2rem; line-height: 1.5; }
+.sm-item mark { color: var(--aa-brand); background: none; font-weight: 600; }
+.sm-empty { padding: 1rem; font-size: .75rem; color: var(--aa-text-2); }
+.sm-footer { display: flex; gap: 1rem; padding: .6rem .2rem 0; font-size: .65rem; color: var(--aa-text-2); }
+.sm-footer kbd { margin-right: .15rem; }
+
+/* Tema scuro: stessi colori del tema scuro di Agent Academy */
+[data-md-color-scheme="slate"] {
+  --aa-brand: #a8b1ff;
+  --aa-brand-2: #bac2ff;
+  --aa-brand-soft: rgba(100, 108, 255, .16);
+  --aa-bg: #1b1b1f;
+  --aa-bg-alt: #202127;
+  --aa-divider: #2e2e32;
+  --aa-text-1: #dfdfd6;
+  --aa-text-2: #98989f;
+  --md-default-bg-color: var(--aa-bg);
+  --md-primary-fg-color: var(--aa-bg);
+  --md-primary-bg-color: var(--aa-text-1);
+  --md-accent-fg-color: var(--aa-brand-2);
+  --md-typeset-a-color: var(--aa-brand);
+  --md-default-fg-color: var(--aa-text-1);
+  --md-default-fg-color--light: var(--aa-text-2);
+  --md-default-fg-color--lightest: var(--aa-divider);
+  --md-code-bg-color: var(--aa-bg-alt);
+  --md-admonition-bg-color: var(--aa-bg-alt);
+  --md-footer-bg-color: var(--aa-bg);
+}
+/* Logo EDUlabs/CVN bianco nel tema scuro; Computer Gross su fondo chiaro arrotondato */
+[data-md-color-scheme="slate"] .footer-logos img[src*="edulabs-cvn"] { content: url("../assets/img/edulabs-cvn-white.png"); }
+[data-md-color-scheme="slate"] .footer-logos img[src*="cgross"] { background: #fff; border-radius: 4px; padding: 1px 3px; }
+
+/* In alto a destra: interruttore chiaro/scuro, filo verticale, icona GitHub */
+.md-header__option { margin: 0 .2rem 0 .6rem; }
+.md-header__option > .md-header__button {
+  position: relative; width: 2.3rem; height: 1.25rem; padding: 0; margin: 0;
+  border-radius: 1rem; background: var(--aa-bg-alt); border: 1px solid var(--aa-divider);
+}
+.md-header__option > .md-header__button svg {
+  position: absolute; top: 50%; left: .1rem; transform: translateY(-50%);
+  width: .95rem; height: .95rem; padding: .12rem; border-radius: 50%;
+  background: var(--aa-bg); box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  color: var(--aa-text-2); transition: left .2s;
+}
+[data-md-color-scheme="slate"] .md-header__option > .md-header__button svg { left: 1.2rem; }
+.md-header__option > .md-header__button:hover { border-color: var(--aa-brand); }
+
+.md-header__source { width: auto; margin-left: 0; padding-left: .6rem; border-left: 1px solid var(--aa-divider); }
+.md-header__source .md-source__repository { display: none; }
+.md-header__source .md-source__icon { margin: 0; width: 1.6rem; }
+.md-header__source .md-source__icon svg { margin: 0; width: 1.1rem; height: 1.1rem; }

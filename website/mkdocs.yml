@@ -17,9 +17,18 @@ theme:
     text: Inter
     code: JetBrains Mono
   palette:
-    scheme: default
-    primary: custom
-    accent: custom
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Passa al tema scuro
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Passa al tema chiaro
   features:
     - toc.follow
     - navigation.top
@@ -29,6 +38,7 @@ extra_javascript:
   - javascripts/checklist.js
   - javascripts/nav-collapsed.js
   - javascripts/header-path.js
+  - javascripts/search-modal.js
 
 extra_css:
   - stylesheets/extra.css
@@ -50,6 +60,8 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 
-plugins: []   # nessuna ricerca
+plugins:
+  - search:
+      lang: [it, en]
 
 # La navigazione (nav) viene generata da scripts/build_docs.py a partire da docs/ del branch main.
