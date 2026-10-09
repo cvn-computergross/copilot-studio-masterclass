@@ -284,3 +284,25 @@
 
 /* Interruttore e icona GitHub un po' staccati dal bordo destro */
 .md-header__inner .md-header__source { margin-right: 1.2rem; }
+
+/* Menu laterale più curato: voci arrotondate, voce attiva evidenziata in indaco tenue,
+   sotto-menu con un filo verticale a sinistra, sezioni in maiuscoletto */
+.md-nav--primary { font-size: .72rem; }
+.md-nav--primary .md-nav__link {
+  border-radius: 6px; padding: .3rem .6rem !important; margin: 1px .4rem 1px 0 !important;
+  color: var(--aa-text-2); transition: background .15s, color .15s;
+}
+.md-nav--primary .md-nav__link:hover { color: var(--aa-text-1); background: var(--aa-bg-alt); }
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link { color: var(--aa-text-1); }
+.md-nav--primary > .md-nav__list > .md-nav__item--nested { margin-top: .8rem; }
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link {
+  font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--aa-text-1);
+}
+.md-nav--primary .md-nav .md-nav__list {
+  margin-left: .7rem; padding-left: .4rem !important; border-left: 1px solid var(--aa-divider) !important;
+}
+.md-nav--primary .md-nav__item--active > .md-nav__link:not(:has(+ nav)),
+.md-nav--primary .md-nav__link--active {
+  color: var(--aa-brand) !important; background: var(--aa-brand-soft); font-weight: 600;
+}
+.md-nav--primary .md-nav__item--nested.md-nav__item--active > .md-nav__link { background: none; }
