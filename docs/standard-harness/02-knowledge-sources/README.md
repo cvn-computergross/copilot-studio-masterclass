@@ -35,7 +35,7 @@ Questo Lab affronta varie tipologie di Knowledge Base fra cui SharePoint, perci√
 5. Andare in `Documents`, premere + Upload, e successivamente selezionare i seguenti file:
 
 [Zava_Help_Desk_Playbook.docx](./files/Zava_Help_Desk_Playbook.docx)
-[Zava_Incident_report_Template_Example.docx](./files/Zava_Incident_report_Template_Example.docx)
+[Zava_Incident_report_Template_Example.docx](./files/Zava_Incident_Report_Template_Example.docx)
 [Zava_Help_Desk_SLA.docx](./files/Zava_Help_Desk_SLA.docx)
 
 ![](./images/Upload1.png)

@@ -33,7 +33,7 @@ Ricreare la lista basandosi su questa tabella:
 
 
 
-[Scarica il file Devices-CSM.csv](../files/Devices-CSM.csv)
+[Scarica il file Devices-CSM.csv](./files/Devices-CSM.csv)
 
 
 ## Creazione Agente

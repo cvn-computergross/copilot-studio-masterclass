@@ -1,0 +1,49 @@
+# Aggiorna il sito GitHub Pages.
+#   main        -> guide (docs/) + sorgenti del sito (cartella website/)
+#   GitHub-Page -> sito compilato (HTML), riscritto a ogni esecuzione: non modificarlo a mano
+# GitHub Pages pubblica il branch GitHub-Page (Settings > Pages > Deploy from a branch).
+name: Aggiorna sito GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # avvio manuale da Actions > Run workflow
+
+# Permessi minimi per tutto il workflow; il job sotto chiede solo la scrittura sul codice.
+permissions:
+  contents: read
+
+# Un aggiornamento alla volta.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write # serve solo per fare push sul branch GitHub-Page
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: website/requirements.txt
+
+      - name: Installa MkDocs
+        run: pip install -r website/requirements.txt
+
+      - name: Genera le pagine dai lab
+        run: python website/scripts/build_docs.py . website
+
+      - name: Compila e pubblica sul branch GitHub-Page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdocs gh-deploy --strict --force --no-history \
+            --config-file website/mkdocs.gen.yml \
+            --remote-branch GitHub-Page \
+            --message "Aggiornamento sito da main {sha}"
