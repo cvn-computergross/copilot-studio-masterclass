@@ -1,31 +1,38 @@
 # Standard Harness
 
-[Back to Masterclass home](../index.md)
+[← Home del corso](../../README.md)
 
-The Standard Harness covers building agents directly in the Microsoft Copilot Studio portal. Start with Lab 01 and continue in order: the first five labs establish the Copilot Studio foundations, then the sequence shifts into an end-to-end hiring scenario that applies those concepts in a connected workflow.
+Nella Standard Harness gli agenti si creano direttamente nel portale di Microsoft Copilot Studio. Parti dal Lab 01 e prosegui in ordine: i primi cinque lab costruiscono le basi di Copilot Studio, poi il percorso entra in uno scenario completo di selezione del personale (hiring) che applica gli stessi concetti in un flusso collegato.
 
-## Prerequisites
+## Prerequisiti <!-- icon: list-checks f-instructions -->
 
-- A work or school Microsoft 365 account
-- Access to Copilot Studio
-- Familiarity with Microsoft 365 basics
-- SharePoint and Dataverse access for labs that require knowledge sources or structured data
-- Frontier preview access only for Lab 12
+- Un account Microsoft 365 aziendale o scolastico
+- Accesso a Copilot Studio
+- Conoscenza di base di Microsoft 365
+- Accesso a SharePoint e Dataverse per i lab che usano fonti di conoscenza o dati strutturati
+- Accesso alle anteprime Frontier, solo per il Lab 12
 
-## Labs
+## Lab <!-- icon: flask f-instructions -->
 
-| # | Lab | Focus |
-|---|-----|-------|
-| 01 | [Environment Setup](./01-environment-setup/README.md) | Foundations |
-| 02 | [Knowledge Sources](./02-knowledge-sources/README.md) | Foundations |
-| 03 | [Ticket Agent Topics](./03-ticket-agent-topics/README.md) | Foundations |
-| 04 | [Job Posting Tools](./04-job-posting-tools/README.md) | Foundations |
-| 05 | [Device Request Agent Flows](./05-device-request-agent-flows/README.md) | Foundations |
-| 06 | [Hiring Solution Setup](./06-hiring-solution-setup/README.md) | Hiring scenario |
-| 07 | [Multi-Agent Hiring](./07-multi-agent-hiring/README.md) | Hiring scenario |
-| 08 | [Autonomous Hiring Agent](./08-autonomous-hiring-agent/README.md) | Hiring scenario |
-| 09 | [Multimodal Resume Prompt](./09-multimodal-resume-prompt/README.md) | Hiring scenario |
-| 10 | [Advanced Grounding](./10-advanced-grounding/README.md) | Hiring scenario |
-| 11 | [Advanced Content Generation](./11-advanced-content-generation/README.md) | Hiring scenario |
-| 12 | [MCP Server Integration](./12-mcp-server-integration/README.md) | Hiring scenario |
-| 13 | [User Feedback and Telemetry](./13-user-feedback-and-telemetry/README.md) | Hiring scenario |
+### Fondamenta
+
+| # | Lab | Argomento |
+|---|-----|-----------|
+| 01 | [Environment Setup](./01-environment-setup/README.md) | <!-- icon: tray f-platform --> Ambiente |
+| 02 | [Knowledge Sources](./02-knowledge-sources/README.md) | <!-- icon: books f-knowledge --> Conoscenza |
+| 03 | [Ticket Agent Topics](./03-ticket-agent-topics/README.md) | <!-- icon: chats-circle f-topics --> Topic |
+| 04 | [Job Posting Tools](./04-job-posting-tools/README.md) | <!-- icon: wrench f-tools --> Tool |
+| 05 | [Device Request Agent Flows](./05-device-request-agent-flows/README.md) | <!-- icon: flow-arrow f-tools --> Tool · agent flow |
+
+### Scenario Hiring
+
+| # | Lab | Argomento |
+|---|-----|-----------|
+| 06 | [Hiring Solution Setup](./06-hiring-solution-setup/README.md) | <!-- icon: package f-lifecycle --> Soluzioni |
+| 07 | [Multi-Agent Hiring](./07-multi-agent-hiring/README.md) | <!-- icon: robot f-agents --> Agenti |
+| 08 | [Autonomous Hiring Agent](./08-autonomous-hiring-agent/README.md) | <!-- icon: lightning f-triggers --> Trigger e autonomia |
+| 09 | [Multimodal Resume Prompt](./09-multimodal-resume-prompt/README.md) | <!-- icon: sparkle f-tools --> Tool · prompt |
+| 10 | [Advanced Grounding](./10-advanced-grounding/README.md) | <!-- icon: books f-knowledge --> Conoscenza |
+| 11 | [Advanced Content Generation](./11-advanced-content-generation/README.md) | <!-- icon: sparkle f-tools --> Tool · prompt |
+| 12 | [MCP Server Integration](./12-mcp-server-integration/README.md) | <!-- icon: plugs-connected f-tools --> Tool · MCP |
+| 13 | [User Feedback and Telemetry](./13-user-feedback-and-telemetry/README.md) | <!-- icon: chart-line-up f-lifecycle --> Feedback e telemetria |

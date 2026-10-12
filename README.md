@@ -1,40 +1,54 @@
-# Copilot Studio Masterclass Labs
+# Copilot Studio Masterclass
 
-Hands-on labs for learning Microsoft Copilot Studio organized into two learning paths.
+Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdown, readable here on GitHub, and are also published as a website.
 
-## Learning Paths
+## Start here
 
-Start from [Info studenti](./docs/info.md) for accounts, sandbox and reset policy.
+| | |
+|---|---|
+| [Info studenti](./docs/info.md) | Accounts, sandbox and what happens at the end of the course |
+| [Standard Harness](./docs/standard-harness/index.md) | Build agents in the Copilot Studio portal, from environment setup to multi-agent and autonomous scenarios |
+| [GitHub Harness](./docs/github-harness/index.md) | Code-first labs. Work in progress |
 
-| Path | Description |
-|------|-------------|
-| [Standard Harness](./docs/standard-harness/index.md) | Build agents in the Copilot Studio portal, from environment setup to multi-agent and autonomous scenarios. 13 labs. |
-| [GitHub Harness](./docs/github-harness/index.md) | Build and manage agents with a code-first, GitHub-based workflow. Work in progress. |
-
-## Repository Structure
+## Repository structure
 
 ```text
-docs/
-├── index.md              # Masterclass home
-├── info.md               # Accounts, sandbox and reset policy
-├── standard-harness/     # Portal-based labs (01-13)
-│   ├── index.md
+docs/                         # the guides: also the source of the website
+├── index.md                  # website home page (MkDocs syntax)
+├── info.md                   # Info studenti
+├── standard-harness/
+│   ├── index.md              # section overview and list of labs
 │   └── NN-lab-name/
-│       ├── README.md
-│       └── images/       # <section>-NN.png, in order of appearance
-├── github-harness/       # Code-first labs
+│       ├── README.md         # the lab
+│       └── images/           # <section>-NN.png, in order of appearance
+├── github-harness/
 │   └── index.md
-└── resources/            # Files to download, one folder per lab
-    └── NN-lab-name/
-website/                  # MkDocs site sources (see website/README.md)
+└── resources/NN-lab-name/    # files to download, linked from the labs
+theme/                        # look and behaviour of the website (see theme/README.md)
+mkdocs.yml                    # website configuration
+requirements.txt              # MkDocs and theme versions
 ```
 
-## Notes
+## Writing a lab
 
-- Files to download are collected in `docs/resources/`, one folder per lab.
-- Images are named after the lab section they appear in, numbered in order (e.g. `creazione-flow-03.png`).
-- Image links are standard relative Markdown links so they render correctly on GitHub.
-- Check the prerequisite callouts inside each lab before starting.
+- A lab is a folder `docs/<section>/NN-lab-name/` with a `README.md` and an `images/` folder. It appears in the website menu on its own.
+- Use GitHub Markdown: callouts (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`), numbered steps and relative links render both on GitHub and on the website. On the website the numbered steps become checkboxes with a progress bar.
+- Put files to download in `docs/resources/NN-lab-name/` and link them as `../../resources/NN-lab-name/<file>`.
+- Icons are optional: see [theme/README.md](./theme/README.md).
+
+## Website
+
+The site is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) straight from `docs/`: there is no copy or generation step. To preview it locally:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\pip install -r requirements.txt
+.venv\Scripts\mkdocs serve
+```
+
+Then open <http://127.0.0.1:8000/copilot-studio-masterclass/>. The page reloads when you save a guide.
+
+On every push to `main` the workflow in `.github/workflows/pages.yml` builds the site and writes it to the `GitHub-Page` branch, which GitHub Pages serves at <https://cvn-computergross.github.io/copilot-studio-masterclass/>.
 
 ## Attribution
 
@@ -45,3 +59,5 @@ https://github.com/microsoft/agent-academy
 Copyright (c) Microsoft Corporation
 
 Used under the MIT License. These guides also contain modifications, restructuring, and additional original content.
+
+Icons: [Phosphor Icons](https://phosphoricons.com/) (MIT) and [anime.js](https://animejs.com/) (MIT) are included in `theme/`. Microsoft and GitHub product logos are trademarks of their respective owners.

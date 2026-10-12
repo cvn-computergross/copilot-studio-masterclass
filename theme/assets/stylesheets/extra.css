@@ -1,0 +1,433 @@
+/* ==========================================================================
+   Copilot Studio Masterclass · stile del sito
+   I colori per argomento e le icone riprendono quelli delle slide del corso;
+   layout e tipografia (Inter) sono quelli di una guida in stile Agent Academy.
+
+   Indice: 1 token · 2 colori del tema · 3 tipografia · 4 header · 5 menu laterale
+           6 contenuto · 7 icone · 8 blocchi · 9 home · 10 checklist
+           11 ricerca · 12 footer · 13 schermi larghi
+   ========================================================================== */
+
+/* 1. Token ----------------------------------------------------------------- */
+:root {
+  /* neutrali */
+  --ink: #1b1b1b;            /* titoli, testo forte */
+  --body: #363b42;           /* testo */
+  --muted: #6b7480;          /* testo secondario, didascalie */
+  --rule: #e2e5e9;           /* bordi delle card, fili */
+  --tint-neutral: #f6f8fa;   /* fasce, riquadri di codice */
+  --surface: #ffffff;
+  --accent: #0f6cbd;
+  --navy: #0e2841;
+  --icon-outline: #1f2937;   /* contorno dei glifi dell'Icon Pack */
+  --on-solid: #ffffff;       /* testo sopra un colore pieno */
+
+  /* un colore per argomento: colore pieno, tinta, riempimento dell'icona */
+  --instructions: #0f6cbd; --instructions-tint: #edf4fb; --instructions-fill: #5aa9f0;
+  --ai-engine: #0e2841;    --ai-engine-tint: #e3e8ef;    --ai-engine-fill: #7ab3e0;
+  --knowledge: #0b7a3e;    --knowledge-tint: #e6f4ec;    --knowledge-fill: #5cc689;
+  --tools: #b4540a;        --tools-tint: #fdeee0;        --tools-fill: #ffa94d;
+  --topics: #5b5fc7;       --topics-tint: #eeeefb;       --topics-fill: #9b9cf2;
+  --agents: #0e7c86;       --agents-tint: #e3f3f4;       --agents-fill: #4fc3c7;
+  --triggers: #646800;     --triggers-tint: #f2f5da;     --triggers-fill: #b3c94a;
+  --lifecycle: #a02b93;    --lifecycle-tint: #f8edf6;    --lifecycle-fill: #d98bcb;
+  --platform: #9a6700;     --platform-tint: #fdf3dc;     --platform-fill: #ffc83d;
+  --system: #4a5563;       --system-tint: #edeff2;       --system-fill: #c9ced6;
+  --risk: #c4314b;         --risk-tint: #fbe9ec;         --risk-fill: #f06a6a;
+
+  --radius-card: .48rem;
+  --radius-chip: .34rem;
+  --radius-pill: 999px;
+  --shadow-card: 0 .13rem .67rem rgba(0, 0, 0, .09);
+
+  --md-text-font: "Inter";
+  --md-code-font: ui-monospace, "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New";
+}
+
+/* tema scuro: fondo neutro, e al posto del colore pieno di ogni famiglia si usa il suo
+   riempimento (più chiaro), così testi e badge restano leggibili */
+[data-md-color-scheme="slate"] {
+  --ink: #f2f2ee;
+  --body: #dfdfd6;
+  --muted: #98989f;
+  --rule: #2e2e32;
+  --tint-neutral: #202127;
+  --surface: #1b1b1f;
+  --accent: #7ab3e0;
+  --icon-outline: #ffffff;
+  --on-solid: #10131a;
+  --shadow-card: 0 .13rem .67rem rgba(0, 0, 0, .35);
+
+  --instructions: #5aa9f0; --instructions-tint: rgba(90, 169, 240, .16);
+  --ai-engine: #7ab3e0;    --ai-engine-tint: rgba(122, 179, 224, .16);
+  --knowledge: #5cc689;    --knowledge-tint: rgba(92, 198, 137, .16);
+  --tools: #ffa94d;        --tools-tint: rgba(255, 169, 77, .16);
+  --topics: #9b9cf2;       --topics-tint: rgba(155, 156, 242, .16);
+  --agents: #4fc3c7;       --agents-tint: rgba(79, 195, 199, .16);
+  --triggers: #b3c94a;     --triggers-tint: rgba(179, 201, 74, .16);
+  --lifecycle: #d98bcb;    --lifecycle-tint: rgba(217, 139, 203, .16);
+  --platform: #ffc83d;     --platform-tint: rgba(255, 200, 61, .16);
+  --system: #c9ced6;       --system-tint: rgba(201, 206, 214, .16);
+  --risk: #f06a6a;         --risk-tint: rgba(240, 106, 106, .16);
+}
+
+/* classi di argomento: danno a un elemento (icona, etichetta) i tre ruoli del colore */
+.f-instructions { --f: var(--instructions); --f-tint: var(--instructions-tint); --f-fill: var(--instructions-fill); }
+.f-ai-engine    { --f: var(--ai-engine);    --f-tint: var(--ai-engine-tint);    --f-fill: var(--ai-engine-fill); }
+.f-knowledge    { --f: var(--knowledge);    --f-tint: var(--knowledge-tint);    --f-fill: var(--knowledge-fill); }
+.f-tools        { --f: var(--tools);        --f-tint: var(--tools-tint);        --f-fill: var(--tools-fill); }
+.f-topics       { --f: var(--topics);       --f-tint: var(--topics-tint);       --f-fill: var(--topics-fill); }
+.f-agents       { --f: var(--agents);       --f-tint: var(--agents-tint);       --f-fill: var(--agents-fill); }
+.f-triggers     { --f: var(--triggers);     --f-tint: var(--triggers-tint);     --f-fill: var(--triggers-fill); }
+.f-lifecycle    { --f: var(--lifecycle);    --f-tint: var(--lifecycle-tint);    --f-fill: var(--lifecycle-fill); }
+.f-platform     { --f: var(--platform);     --f-tint: var(--platform-tint);     --f-fill: var(--platform-fill); }
+.f-system       { --f: var(--system);       --f-tint: var(--system-tint);       --f-fill: var(--system-fill); }
+.f-risk         { --f: var(--risk);         --f-tint: var(--risk-tint);         --f-fill: var(--risk-fill); }
+/* 2. Colori del tema Material ---------------------------------------------- */
+[data-md-color-scheme="default"],
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: var(--surface);
+  --md-primary-fg-color: var(--surface);
+  --md-primary-fg-color--light: var(--surface);
+  --md-primary-fg-color--dark: var(--tint-neutral);
+  --md-primary-bg-color: var(--ink);
+  --md-primary-bg-color--light: var(--muted);
+  --md-accent-fg-color: var(--accent);
+  --md-typeset-a-color: var(--accent);
+  --md-default-fg-color: var(--body);
+  --md-default-fg-color--light: var(--muted);
+  --md-default-fg-color--lightest: var(--rule);
+  --md-code-bg-color: var(--tint-neutral);
+  --md-admonition-fg-color: var(--body);
+  --md-admonition-bg-color: var(--surface);
+  --md-footer-bg-color: var(--surface);
+}
+
+/* 3. Tipografia ------------------------------------------------------------ */
+/* Inter, titoli semibold con lettere leggermente strette, testo 16px con interlinea ampia */
+.md-typeset { font-size: .8rem; line-height: 1.75; }
+.md-typeset h1, .md-typeset h2, .md-typeset h3 { color: var(--ink); font-weight: 600; }
+.md-typeset h1 { font-size: 1.6rem; letter-spacing: -.02em; line-height: 1.25; }
+.md-typeset h2 { font-size: 1.2rem; letter-spacing: -.02em; line-height: 1.33; border-top: 1px solid var(--rule); padding-top: 1.2rem; }
+.md-typeset h3 { font-size: .95rem; letter-spacing: -.01em; }
+.md-typeset .kicker { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+
+/* 4. Header ---------------------------------------------------------------- */
+/* bianco e sottile; a sinistra logo di Copilot Studio e nome del corso (+ sezione e lab),
+   a destra interruttore del tema, filo verticale e icona GitHub */
+.md-header, .md-tabs { box-shadow: none; border: none; }
+.md-header { background: var(--surface); color: var(--ink); border-bottom: 1px solid var(--rule); }
+
+.md-header__button.md-logo { display: block !important; margin: 0 0 0 .2rem; padding: .3rem .4rem; }
+.md-header__button.md-logo img { display: block; height: 1.4rem; width: auto; }
+.md-header__title { margin-left: .1rem !important; flex-grow: 1; height: 2.4rem; }
+.md-header__title .md-header__ellipsis { display: flex; align-items: center; height: 100%; }
+.md-header__title .md-header__topic { position: static; display: flex; align-items: center; height: 100%; }
+.md-header__title .md-header__topic:first-child { font-weight: 700; }
+.md-header__title .md-header__topic + .md-header__topic { display: none; }
+/* scorrendo, il tema sostituirebbe il nome del corso con il titolo della pagina: resta fisso */
+.md-header__title--active .md-header__topic:first-child { opacity: 1 !important; transform: none !important; pointer-events: auto; z-index: 1; }
+/* sezione e lab (scritti da header-path.js), più leggeri del nome del corso */
+.header-path__sep, .header-path__part { color: var(--muted); font-weight: 400; }
+
+/* la ricerca del tema è sostituita dalla finestra di search-modal.js */
+.md-header .md-search, .md-header label[for="__search"] { display: none !important; }
+
+/* interruttore chiaro/scuro: il pallino lo muove animations.js */
+.md-header__inner .md-header__option { margin: 0 .2rem 0 auto; }
+.md-header__option > .md-header__button {
+  position: relative; width: 2.3rem; height: 1.25rem; padding: 0; margin: 0;
+  border-radius: 1rem; background: var(--tint-neutral); border: 1px solid var(--rule);
+}
+.md-header__option > .md-header__button svg {
+  position: absolute; top: 50%; left: .1rem; margin-top: -.475rem;
+  width: .95rem; height: .95rem; padding: .12rem; border-radius: 50%;
+  background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+  color: var(--muted);
+}
+.md-header__option > .md-header__button:hover { border-color: var(--accent); }
+
+/* repo: solo l'icona, centrata, separata dall'interruttore da un filo corto */
+.md-header__inner .md-header__source {
+  display: flex !important; align-items: center; align-self: stretch; position: relative;
+  width: auto; margin: 0 1.2rem 0 0; padding-left: .7rem;
+}
+.md-header__source::before {
+  content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 1px; height: 1.1rem; background: var(--rule);
+}
+.md-header__source .md-source { display: flex; align-items: center; height: 100%; padding: 0; }
+.md-header__source .md-source__repository { display: none; }
+.md-header__source .md-source__icon { display: flex; align-items: center; justify-content: center; margin: 0; width: 1.6rem; height: 100%; }
+.md-header__source .md-source__icon svg { margin: 0; width: 1.1rem; height: 1.1rem; }
+
+/* finestra che si restringe: prima spariscono sezione e lab, poi nome e logo del corso */
+@media screen and (max-width: 76.234375em) {
+  .md-header__button[for="__drawer"] { order: -1; margin-left: 0; }
+}
+@media screen and (max-width: 56em) {
+  .header-path__sep, .header-path__part { display: none; }
+}
+@media screen and (max-width: 30em) {
+  .md-header__title { visibility: hidden; }
+  .md-header__button.md-logo { display: none !important; }
+}
+
+/* 5. Menu laterale --------------------------------------------------------- */
+/* voci arrotondate, pagina attiva evidenziata, sezioni in maiuscoletto */
+.md-nav--primary { font-size: .72rem; }
+.md-nav--primary .md-nav__item,
+.md-nav--primary .md-nav__title,
+.md-nav--primary .md-nav__list { border: none !important; box-shadow: none !important; }
+.md-nav--primary .md-nav__link {
+  border-radius: 6px; padding: .3rem .6rem !important; margin: 1px .4rem 1px 0 !important;
+  color: var(--muted); font-weight: 500; font-size: .7rem; line-height: 1.2rem;
+}
+.md-nav--primary .md-nav__link:hover { color: var(--ink); background: var(--tint-neutral); }
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link { color: var(--ink); }
+.md-nav--primary > .md-nav__list > .md-nav__item--nested { margin-top: .8rem; }
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link {
+  font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink);
+}
+.md-nav--primary .md-nav .md-nav__list { margin-left: .7rem; padding-left: .4rem !important; }
+.md-nav--primary .md-nav__item--active > .md-nav__link:not(:has(+ nav)),
+.md-nav--primary .md-nav__link--active {
+  color: var(--accent) !important; background: var(--instructions-tint); font-weight: 600;
+}
+.md-nav--primary .md-nav__item--nested.md-nav__item--active > .md-nav__link { background: none; }
+.md-nav--primary > .md-nav__title { color: var(--muted); font-weight: 700; }
+/* la freccia delle sezioni la ruota animations.js (anime.js), non una transizione CSS */
+.md-nav--primary .md-nav__icon { transition: none; }
+
+/* il nome del corso è già nell'header: in cima al menu resta solo nel cassetto dei telefoni */
+@media screen and (min-width: 45em) {
+  .md-nav--primary > .md-nav__title { display: none !important; }
+}
+
+/* da tablet in su il menu è sempre visibile (niente pulsante ☰), come su desktop */
+@media screen and (min-width: 45em) and (max-width: 76.234375em) {
+  .md-header__button[for="__drawer"] { display: none; }
+  .md-main__inner { display: flex; }
+  .md-content { min-width: 0; }
+  .md-sidebar--primary {
+    position: sticky; top: 2.4rem; align-self: flex-start;
+    left: auto; transform: none; width: 12.1rem; flex-shrink: 0;
+    height: calc(100vh - 2.4rem); z-index: 1;
+    background: transparent; box-shadow: none;
+  }
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    position: static; transform: none; height: 100%; overflow-y: auto; background: transparent;
+  }
+  .md-nav--primary .md-nav__source { display: none; }
+  .md-nav--primary .md-nav .md-nav__title { display: none; }
+}
+
+/* sotto la larghezza desktop le sezioni si aprono e chiudono con la freccia, senza
+   scorrere di lato; l'indice della pagina non entra nel menu */
+@media screen and (max-width: 76.234375em) {
+  .md-nav--primary .md-nav {
+    position: static; transform: none; opacity: 1; visibility: visible;
+    background: transparent; display: none;
+  }
+  .md-nav--primary .md-nav__toggle:checked ~ .md-nav,
+  .md-nav--primary .md-toggle--indeterminate ~ .md-nav { display: block; }
+  .md-nav--primary .md-nav .md-nav__title { display: none; }
+  .md-nav--primary .md-nav__link { display: flex; justify-content: space-between; align-items: center; }
+  .md-nav--primary .md-nav__item--nested > .md-nav__link .md-nav__icon { display: inline-block; }
+  .md-nav--primary .md-nav__item--nested > .md-nav__toggle:checked ~ .md-nav__link .md-nav__icon,
+  .md-nav--primary .md-nav__item--nested > .md-toggle--indeterminate ~ .md-nav__link .md-nav__icon { transform: rotate(90deg); }
+  .md-nav--primary label[for="__toc"], .md-nav--primary .md-nav--secondary { display: none !important; }
+  .md-nav--primary label[for="__toc"] + a.md-nav__link { display: flex !important; }
+}
+
+/* 6. Contenuto ------------------------------------------------------------- */
+/* riquadri (note, suggerimenti, avvisi): fondo tenue nel colore del significato,
+   icona ed etichetta nel colore pieno */
+.md-typeset .admonition, .md-typeset details {
+  --f: var(--instructions); --f-tint: var(--instructions-tint); --f-fill: var(--instructions-fill);
+  border: 0; border-radius: var(--radius-card); box-shadow: none;
+  background: var(--f-tint); font-size: .75rem; padding: 0 .9rem;
+}
+.md-typeset :is(.admonition, details):is(.warning, .danger, .failure, .bug) {
+  --f: var(--risk); --f-tint: var(--risk-tint); --f-fill: var(--risk-fill);
+}
+.md-typeset :is(.admonition, details).success {
+  --f: var(--knowledge); --f-tint: var(--knowledge-tint); --f-fill: var(--knowledge-fill);
+}
+.md-typeset .admonition-title, .md-typeset summary {
+  display: flex; align-items: center; gap: .4rem;
+  margin: 0 !important; padding: .7rem 0 0 !important; background: none !important;
+  color: var(--f); font-weight: 600;
+}
+/* l'icona del titolo la inserisce theme/hooks.py: niente icona predefinita del tema */
+.md-typeset .admonition-title::before, .md-typeset summary::before { display: none; }
+.md-typeset .admonition-title .icon { --md-icon-size: 1.1rem; }
+.md-typeset .admonition > :last-child, .md-typeset details > :last-child { margin-bottom: .7rem; }
+.md-typeset .admonition > .admonition-title + *, .md-typeset details > summary + * { margin-top: .3rem; }
+
+/* pulsanti */
+.md-typeset .md-button {
+  border: 1px solid var(--rule); border-radius: var(--radius-chip);
+  background: var(--surface); color: var(--ink);
+  font-size: .7rem; font-weight: 600; padding: .5em 1.1em; margin: 0 .4rem .4rem 0;
+}
+.md-typeset .md-button:is(:hover, :focus) { border-color: var(--accent); background: var(--surface); color: var(--accent); }
+.md-typeset .md-button--primary { border-color: var(--accent); background: var(--accent); color: var(--on-solid); }
+.md-typeset .md-button--primary:is(:hover, :focus) { border-color: var(--accent); background: var(--accent); color: var(--on-solid); filter: brightness(.92); }
+
+/* 7. Icone ------------------------------------------------------------------ */
+/* glifi dell'Icon Pack (Phosphor duotone): contorno scuro e strato duotone pieno nel
+   colore dell'argomento (classe f-…); senza classe, blu */
+.md-typeset .icon { --md-icon-size: 1.3em; vertical-align: -.24em; }
+.md-typeset .icon svg { fill: var(--icon-outline); }
+.md-typeset .icon svg [opacity] { opacity: 1; fill: var(--f-fill, var(--instructions-fill)); }
+/* loghi dei prodotti (Microsoft, GitHub): immagini, mai ricolorate; il logo di GitHub,
+   nero, diventa bianco nel tema scuro */
+.md-typeset .logo { height: 1.3em; width: auto; vertical-align: -.26em; }
+[data-md-color-scheme="slate"] .md-typeset .logo-github { filter: invert(1); }
+/* dimensioni */
+.md-typeset .icon.i-lg { --md-icon-size: 2rem; }
+.md-typeset .icon.i-xl { --md-icon-size: 3rem; }
+.md-typeset .logo.i-lg { height: 2rem; }
+.md-typeset .logo.i-xl { height: 3rem; }
+/* davanti a un titolo o a una voce di tabella */
+.md-typeset :is(h2, h3) > :is(.icon, .logo):first-child { margin-right: .45em; }
+.md-typeset td > :is(.icon, .logo):first-child { margin-right: .35em; }
+
+/* 8. Blocchi --------------------------------------------------------------- */
+/* griglie a due colonne */
+.card-grid, .feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; margin: 1rem 0; }
+.feature-grid { gap: 1.1rem 1.6rem; }
+@media screen and (max-width: 44.9375em) {
+  .card-grid, .feature-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* card: bianca, bordo sottile, ombra leggera; in testa icona e titolo */
+.md-typeset .card {
+  position: relative; display: flex; flex-direction: column; gap: .5rem;
+  padding: 1.1rem 1.2rem; background: var(--surface);
+  border: 1px solid var(--rule); border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+  font-size: .73rem; line-height: 1.55;
+}
+.md-typeset .card > * { margin: 0; }
+.md-typeset .card-head { display: flex; align-items: center; gap: .65rem; }
+.md-typeset .card-head .icon { --md-icon-size: 1.8rem; vertical-align: middle; }
+.md-typeset .card-head .logo { height: 1.8rem; vertical-align: middle; }
+.md-typeset .card-title { color: var(--ink); font-size: .87rem; font-weight: 600; line-height: 1.25; }
+.md-typeset .card-meta { margin-top: auto; padding-top: .2rem; color: var(--muted); font-size: .65rem; }
+/* card cliccabile: il link del titolo copre tutta la card */
+.md-typeset .card--link a.card-title::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.md-typeset .card--link:hover { border-color: var(--accent); }
+.md-typeset .card--link:hover .card-title { color: var(--accent); }
+
+/* voce con icona e titolo, senza cornice */
+.md-typeset .feature { font-size: .73rem; line-height: 1.55; }
+.md-typeset .feature > * { margin: 0; }
+.md-typeset .feature-title { margin-bottom: .2rem; color: var(--ink); font-size: .8rem; font-weight: 600; }
+.md-typeset .feature-title .icon { margin-right: .3rem; }
+
+/* argomenti: etichette con l'icona, nel colore dell'argomento */
+.md-typeset .topics { display: flex; flex-wrap: wrap; gap: .35rem; }
+.topic {
+  display: inline-flex; align-items: center; gap: .3rem; height: 1.35rem; padding: 0 .55rem;
+  border-radius: var(--radius-chip); background: var(--f-tint, var(--tint-neutral)); color: var(--f, var(--body));
+  font-size: .62rem; font-weight: 600; line-height: 1; white-space: nowrap;
+}
+.md-typeset .topic .icon { --md-icon-size: .95rem; vertical-align: middle; }
+
+/* fila di loghi con il nome */
+.md-typeset .logo-row { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0 0; }
+.md-typeset .logo-row > span {
+  display: inline-flex; align-items: center; gap: .45rem; padding: .35rem .7rem;
+  border: 1px solid var(--rule); border-radius: var(--radius-pill); color: var(--ink); font-size: .7rem; font-weight: 500;
+}
+.md-typeset .logo-row .logo { height: 1.15rem; vertical-align: middle; }
+
+/* 9. Home ------------------------------------------------------------------ */
+.hero { display: flex; align-items: center; gap: 1.2rem; margin: .6rem 0 1rem; }
+.md-typeset .hero .hero-logo { flex: none; height: 4.6rem; }
+.md-typeset .hero h1 { margin: 0 0 .3rem; font-size: 1.9rem; line-height: 1.15; }
+.md-typeset .hero .kicker { margin: 0; }
+.md-typeset .hero > p { margin: 0; line-height: 0; }
+@media screen and (max-width: 44.9375em) {
+  .hero { gap: .8rem; }
+  .md-typeset .hero .hero-logo { height: 3rem; }
+  .md-typeset .hero h1 { font-size: 1.4rem; }
+}
+
+/* 10. Checklist dei lab ----------------------------------------------------- */
+.md-typeset .task-list-control { cursor: pointer; }
+.checklist-progress { display: flex; align-items: center; gap: .8rem; margin: -.4rem 0 1.4rem; font-size: .7rem; color: var(--muted); }
+.checklist-track { flex: 1; height: 6px; border-radius: 3px; background: var(--rule); overflow: hidden; }
+/* la barra si allunga con una scala orizzontale (animations.js), non con la larghezza */
+.checklist-fill { height: 100%; width: 100%; transform: scaleX(0); transform-origin: left center; background: var(--accent); }
+.checklist-reset { font: inherit; color: inherit; background: none; border: 1px solid var(--rule); border-radius: 4px; padding: .1rem .5rem; cursor: pointer; }
+.checklist-reset:hover { color: var(--accent); border-color: var(--accent); }
+/* nella colonna dell'indice sugli schermi larghi, sotto il titolo su quelli stretti */
+.checklist-progress--side { flex-wrap: wrap; gap: .4rem .6rem; margin: 0 .6rem 1rem; padding-bottom: .8rem; border-bottom: 1px solid var(--rule); }
+.checklist-progress--side .checklist-track { flex-basis: 100%; order: 3; }
+@media screen and (min-width: 76.25em) { .checklist-progress--top { display: none; } }
+@media screen and (max-width: 76.234375em) { .checklist-progress--side { display: none; } }
+
+/* 11. Ricerca --------------------------------------------------------------- */
+/* pulsante sopra la barra di avanzamento e finestra centrata (search-modal.js) */
+.sm-button {
+  display: flex; align-items: center; gap: .5rem; width: calc(100% - 1.2rem); margin: 0 .6rem 1rem;
+  padding: .35rem .6rem; font: inherit; font-size: .7rem; color: var(--muted); cursor: pointer;
+  background: var(--tint-neutral); border: 1px solid transparent; border-radius: 8px; will-change: transform;
+}
+.sm-button:hover { border-color: var(--accent); }
+.sm-button svg, .sm-bar svg, .sm-clear svg { flex: none; fill: currentColor; }
+.sm-button span { flex: 1; text-align: left; }
+.sm-button kbd, .sm-footer kbd {
+  font: inherit; font-size: .6rem; color: var(--muted); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 0 .3rem;
+}
+.sm-button--top { width: 100%; margin: 0 0 1rem; }
+@media screen and (min-width: 60em) { .sm-button--top { display: none; } }
+
+.sm-modal { display: none; position: fixed; inset: 0; z-index: 100; }
+.sm-modal--open { display: block; }
+.sm-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
+.sm-shell {
+  position: relative; display: flex; flex-direction: column; max-width: 40rem; max-height: min(36rem, calc(100vh - 6rem));
+  margin: 4rem auto 0; padding: .6rem; background: var(--surface); border-radius: var(--radius-card); box-shadow: 0 12px 32px rgba(0, 0, 0, .2);
+}
+.sm-bar {
+  display: flex; align-items: center; gap: .6rem; padding: 0 .6rem; height: 2.4rem;
+  border: 1px solid var(--accent); border-radius: 6px; color: var(--muted);
+}
+.sm-bar input { flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: .85rem; color: var(--ink); }
+.sm-bar input::-webkit-search-cancel-button { display: none; }
+.sm-clear { display: flex; border: 0; padding: 0; background: none; color: var(--muted); cursor: pointer; }
+.sm-results { overflow-y: auto; margin-top: .4rem; }
+.sm-item { display: block; margin: .3rem 0; padding: .5rem .7rem; border: 1px solid var(--rule); border-radius: 6px; color: var(--body) !important; }
+.sm-item--active, .sm-item:hover { border-color: var(--accent); background: var(--instructions-tint); }
+.sm-path { font-size: .75rem; font-weight: 600; color: var(--ink); }
+.sm-sep { color: var(--muted); margin: 0 .2rem; }
+.sm-text { font-size: .68rem; color: var(--muted); margin-top: .2rem; line-height: 1.5; }
+.sm-item mark { color: var(--accent); background: none; font-weight: 600; }
+.sm-empty { padding: 1rem; font-size: .75rem; color: var(--muted); }
+.sm-footer { display: flex; gap: 1rem; padding: .6rem .2rem 0; font-size: .65rem; color: var(--muted); }
+.sm-footer kbd { margin-right: .15rem; }
+
+/* 12. Footer ---------------------------------------------------------------- */
+.md-footer { background: var(--surface); color: var(--body); border-top: 1px solid var(--rule); }
+.md-footer__link:hover { color: var(--accent); }
+.md-footer-meta { background: var(--surface); border-top: 1px solid var(--rule); }
+.md-footer-meta, .md-copyright { color: var(--muted); }
+/* loghi EDUlabs/CVN e Computer Gross, piccoli, nell'angolo in basso a destra */
+.md-footer-meta__inner.md-grid { max-width: none; display: flex; align-items: center; justify-content: space-between; padding: 0 1rem; }
+.md-footer-meta .footer-logos { display: flex; align-items: center; gap: .6rem; margin-left: auto; padding: .5rem 0; }
+.md-footer-meta .footer-logos img { height: 1.2rem !important; width: auto !important; max-width: none; }
+.md-footer-meta .footer-logos__sep { width: 1px; height: 1.1rem; background: var(--rule); }
+[data-md-color-scheme="slate"] .footer-logos img[src*="edulabs-cvn"] { content: url("../img/edulabs-cvn-white.png"); }
+[data-md-color-scheme="slate"] .footer-logos img[src*="cgross"] { content: url("../img/cgross-white.png"); }
+
+/* 13. Schermi larghi -------------------------------------------------------- */
+/* menu tutto a sinistra, indice tutto a destra, guida al centro con larghezza di lettura comoda */
+@media screen and (min-width: 76.25em) {
+  .md-header__inner.md-grid, .md-main__inner.md-grid { max-width: none; }
+  .md-main__inner.md-grid { padding: 0 1rem; }
+  .md-content { max-width: 52rem; margin: 0 auto; padding: 0 2rem; }
+}

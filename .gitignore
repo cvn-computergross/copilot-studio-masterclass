@@ -1,2 +1,5 @@
-# Ambiente Python locale per l'anteprima del sito (vedi website/README.md)
+# Ambiente Python locale per l'anteprima del sito (vedi theme/README.md)
 .venv/
+# Sito compilato da mkdocs build
+site/
+__pycache__/

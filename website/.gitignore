@@ -1,8 +1,0 @@
-# File generati da scripts/build_docs.py e da mkdocs
-docs/index.md
-docs/standard-harness/
-docs/github-harness/
-docs/resources/
-docs/info.md
-mkdocs.gen.yml
-site/

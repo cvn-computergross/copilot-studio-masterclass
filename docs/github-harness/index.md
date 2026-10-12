@@ -1,14 +1,12 @@
 # GitHub Harness
 
-[Back to Masterclass home](../index.md)
+[← Home del corso](../../README.md)
 
 > [!NOTE]
-> This section is a work in progress. Labs will be added here.
+> Sezione in preparazione: i lab verranno aggiunti qui.
 
-The GitHub Harness covers building and managing Copilot Studio agents with a code-first, GitHub-based workflow.
+Nella GitHub Harness si prosegue con un approccio code-first, dopo aver consolidato le basi nella [Standard Harness](../standard-harness/index.md).
 
-## Labs
+## Lab <!-- icon: flask f-instructions -->
 
-Each lab lives in its own folder, named `NN-lab-name/`, with a `README.md` and an `images/` folder. Files to download go in `docs/resources/NN-lab-name/`.
-
-_No labs yet._
+Nessun lab disponibile per ora.
