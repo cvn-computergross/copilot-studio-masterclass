@@ -97,8 +97,12 @@
 /* il menu comincia sotto l'header: così la sua barra di scorrimento non passa sopra il
    nome del corso e sopra il filo dell'header */
 @media (min-width: 960px) {
-  .VPSidebar { top: calc(var(--vp-layout-top-height, 0px) + var(--vp-nav-height)); padding-top: 16px; }
-  .VPSidebar .curtain { display: none; }
+  .Layout .VPSidebar { top: calc(var(--vp-layout-top-height, 0px) + var(--vp-nav-height)) !important; padding-top: 16px !important; }
+  .Layout .VPSidebar .curtain { display: none; }
+  /* un unico filo sotto tutto l'header, invece di due pezzi (sopra il menu e sopra il testo) */
+  .VPNavBarTitle.has-sidebar .title { border-bottom-color: transparent !important; }
+  .VPNavBar.has-sidebar .divider { padding-left: 0 !important; }
+  .VPNavBar .divider-line { background-color: var(--vp-c-divider) !important; }
 }
 /* sfondo bianco come il contenuto, sezioni in maiuscoletto, sotto-voci senza filo
    verticale a sinistra */

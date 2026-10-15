@@ -17,8 +17,7 @@ title: Home
 
 <div class="actions">
 
-[Inizia dal Lab 01](./standard-harness/01-environment-setup/README.md){.button .brand}
-[Info studenti](./info.md){.button}
+[Info studenti](./info.md){.button .brand}
 
 </div>
 
