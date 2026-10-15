@@ -91,6 +91,12 @@
 
 /* 3. Menu laterale ---------------------------------------------------------- */
 .VPSidebar { scrollbar-width: thin; scrollbar-color: var(--vp-c-divider) transparent; }
+/* il menu comincia sotto l'header: così la sua barra di scorrimento non passa sopra il
+   nome del corso e sopra il filo dell'header */
+@media (min-width: 960px) {
+  .VPSidebar { top: calc(var(--vp-layout-top-height, 0px) + var(--vp-nav-height)); padding-top: 16px; }
+  .VPSidebar .curtain { display: none; }
+}
 /* sfondo bianco come il contenuto, sezioni in maiuscoletto, sotto-voci senza filo
    verticale a sinistra */
 :root, .dark { --vp-sidebar-bg-color: var(--vp-c-bg); }
