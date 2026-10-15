@@ -1,0 +1,14 @@
+{
+  "name": "copilot-studio-masterclass",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "animejs": "3.2.2",
+    "vitepress": "1.6.4"
+  }
+}

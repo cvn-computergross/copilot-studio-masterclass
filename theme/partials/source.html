@@ -1,7 +1,0 @@
-{#- Link alla repo: solo l'icona, senza il riquadro con nome, stelle e fork (che il tema
-    riempirebbe interrogando le API di GitHub a ogni pagina). -#}
-<a href="{{ config.repo_url }}" title="{{ lang.t('source') }}" class="md-source">
-  <div class="md-source__icon md-icon">
-    {% include ".icons/" ~ (config.theme.icon.repo or "fontawesome/brands/git-alt") ~ ".svg" %}
-  </div>
-</a>

@@ -1,5 +1,5 @@
-# Ambiente Python locale per l'anteprima del sito (vedi theme/README.md)
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+# ambiente Python della vecchia versione MkDocs (si può cancellare)
 .venv/
-# Sito compilato da mkdocs build
-site/
-__pycache__/

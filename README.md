@@ -14,7 +14,7 @@ Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdo
 
 ```text
 docs/                         # the guides: also the source of the website
-├── index.md                  # website home page (MkDocs syntax)
+├── index.md                  # website home page
 ├── info.md                   # Info studenti
 ├── standard-harness/
 │   ├── index.md              # section overview and list of labs
@@ -23,10 +23,10 @@ docs/                         # the guides: also the source of the website
 │       └── images/           # <section>-NN.png, in order of appearance
 ├── github-harness/
 │   └── index.md
-└── resources/NN-lab-name/    # files to download, linked from the labs
-theme/                        # look and behaviour of the website (see theme/README.md)
-mkdocs.yml                    # website configuration
-requirements.txt              # MkDocs and theme versions
+├── resources/NN-lab-name/    # files to download, linked from the labs
+├── public/                   # logos served as-is
+└── .vitepress/               # website configuration and theme (see docs/.vitepress/README.md)
+package.json                  # VitePress and anime.js versions, site commands
 ```
 
 ## Writing a lab
@@ -34,19 +34,18 @@ requirements.txt              # MkDocs and theme versions
 - A lab is a folder `docs/<section>/NN-lab-name/` with a `README.md` and an `images/` folder. It appears in the website menu on its own.
 - Use GitHub Markdown: callouts (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`), numbered steps and relative links render both on GitHub and on the website. On the website the numbered steps become checkboxes with a progress bar.
 - Put files to download in `docs/resources/NN-lab-name/` and link them as `../../resources/NN-lab-name/<file>`.
-- Icons are optional: see [theme/README.md](./theme/README.md).
+- Icons are optional: see [docs/.vitepress/README.md](./docs/.vitepress/README.md).
 
 ## Website
 
-The site is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) straight from `docs/`: there is no copy or generation step. To preview it locally:
+The site is built with [VitePress](https://vitepress.dev/) (the same tool as Microsoft Agent Academy) straight from `docs/`. To preview it locally you need [Node.js](https://nodejs.org/):
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-.venv\Scripts\mkdocs serve
+npm install
+npm run docs:dev
 ```
 
-Then open <http://127.0.0.1:8000/copilot-studio-masterclass/>. The page reloads when you save a guide.
+Then open <http://localhost:5173/copilot-studio-masterclass/>. The page reloads when you save a guide.
 
 On every push to `main` the workflow in `.github/workflows/pages.yml` builds the site and writes it to the `GitHub-Page` branch, which GitHub Pages serves at <https://cvn-computergross.github.io/copilot-studio-masterclass/>.
 
@@ -60,4 +59,4 @@ Copyright (c) Microsoft Corporation
 
 Used under the MIT License. These guides also contain modifications, restructuring, and additional original content.
 
-Icons: [Phosphor Icons](https://phosphoricons.com/) (MIT) and [anime.js](https://animejs.com/) (MIT) are included in `theme/`. Microsoft and GitHub product logos are trademarks of their respective owners.
+Icons: [Phosphor Icons](https://phosphoricons.com/) (MIT) are included in `docs/.vitepress/theme/icons/`; animations use [anime.js](https://animejs.com/) (MIT). Microsoft and GitHub product logos are trademarks of their respective owners.

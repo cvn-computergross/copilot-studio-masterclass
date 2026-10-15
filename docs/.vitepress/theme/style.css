@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Copilot Studio Masterclass · stile del sito (sopra il tema predefinito di VitePress)
+   I colori per argomento e le icone riprendono quelli delle slide del corso; il resto
+   (layout, Inter, menu, ricerca, tema scuro) è quello di VitePress, come Agent Academy.
+
+   Indice: 1 colori · 2 header · 3 menu laterale · 4 colonna destra · 5 contenuto
+           6 icone · 7 blocchi della home · 8 passi dei lab · 9 fondo pagina
+   ========================================================================== */
+
+/* 1. Colori ----------------------------------------------------------------- */
+:root {
+  /* blu del corso al posto del viola di VitePress */
+  --vp-c-brand-1: #0f6cbd;
+  --vp-c-brand-2: #0c5ea5;
+  --vp-c-brand-3: #0f6cbd;
+  --vp-c-brand-soft: rgba(15, 108, 189, .12);
+
+  --icon-outline: #1f2937; /* contorno dei glifi dell'Icon Pack */
+  --radius: 8px;
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, .07);
+
+  /* un colore per argomento: colore pieno, tinta, riempimento dell'icona */
+  --instructions: #0f6cbd; --instructions-tint: #edf4fb; --instructions-fill: #5aa9f0;
+  --ai-engine: #0e2841;    --ai-engine-tint: #e3e8ef;    --ai-engine-fill: #7ab3e0;
+  --knowledge: #0b7a3e;    --knowledge-tint: #e6f4ec;    --knowledge-fill: #5cc689;
+  --tools: #b4540a;        --tools-tint: #fdeee0;        --tools-fill: #ffa94d;
+  --topics: #5b5fc7;       --topics-tint: #eeeefb;       --topics-fill: #9b9cf2;
+  --agents: #0e7c86;       --agents-tint: #e3f3f4;       --agents-fill: #4fc3c7;
+  --triggers: #646800;     --triggers-tint: #f2f5da;     --triggers-fill: #b3c94a;
+  --lifecycle: #a02b93;    --lifecycle-tint: #f8edf6;    --lifecycle-fill: #d98bcb;
+  --platform: #9a6700;     --platform-tint: #fdf3dc;     --platform-fill: #ffc83d;
+  --system: #4a5563;       --system-tint: #edeff2;       --system-fill: #c9ced6;
+  --risk: #c4314b;         --risk-tint: #fbe9ec;         --risk-fill: #f06a6a;
+}
+
+/* tema scuro: al posto del colore pieno di ogni argomento si usa il suo riempimento
+   (più chiaro), così testi ed etichette restano leggibili */
+.dark {
+  --vp-c-brand-1: #7ab3e0;
+  --vp-c-brand-2: #5aa9f0;
+  --vp-c-brand-3: #0f6cbd;
+  --vp-c-brand-soft: rgba(90, 169, 240, .16);
+  --icon-outline: #ffffff;
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, .35);
+
+  --instructions: #5aa9f0; --instructions-tint: rgba(90, 169, 240, .16);
+  --ai-engine: #7ab3e0;    --ai-engine-tint: rgba(122, 179, 224, .16);
+  --knowledge: #5cc689;    --knowledge-tint: rgba(92, 198, 137, .16);
+  --tools: #ffa94d;        --tools-tint: rgba(255, 169, 77, .16);
+  --topics: #9b9cf2;       --topics-tint: rgba(155, 156, 242, .16);
+  --agents: #4fc3c7;       --agents-tint: rgba(79, 195, 199, .16);
+  --triggers: #b3c94a;     --triggers-tint: rgba(179, 201, 74, .16);
+  --lifecycle: #d98bcb;    --lifecycle-tint: rgba(217, 139, 203, .16);
+  --platform: #ffc83d;     --platform-tint: rgba(255, 200, 61, .16);
+  --system: #c9ced6;       --system-tint: rgba(201, 206, 214, .16);
+  --risk: #f06a6a;         --risk-tint: rgba(240, 106, 106, .16);
+}
+
+/* classi di argomento: danno a un elemento (icona, etichetta) i tre ruoli del colore */
+.f-instructions { --f: var(--instructions); --f-tint: var(--instructions-tint); --f-fill: var(--instructions-fill); }
+.f-ai-engine    { --f: var(--ai-engine);    --f-tint: var(--ai-engine-tint);    --f-fill: var(--ai-engine-fill); }
+.f-knowledge    { --f: var(--knowledge);    --f-tint: var(--knowledge-tint);    --f-fill: var(--knowledge-fill); }
+.f-tools        { --f: var(--tools);        --f-tint: var(--tools-tint);        --f-fill: var(--tools-fill); }
+.f-topics       { --f: var(--topics);       --f-tint: var(--topics-tint);       --f-fill: var(--topics-fill); }
+.f-agents       { --f: var(--agents);       --f-tint: var(--agents-tint);       --f-fill: var(--agents-fill); }
+.f-triggers     { --f: var(--triggers);     --f-tint: var(--triggers-tint);     --f-fill: var(--triggers-fill); }
+.f-lifecycle    { --f: var(--lifecycle);    --f-tint: var(--lifecycle-tint);    --f-fill: var(--lifecycle-fill); }
+.f-platform     { --f: var(--platform);     --f-tint: var(--platform-tint);     --f-fill: var(--platform-fill); }
+.f-system       { --f: var(--system);       --f-tint: var(--system-tint);       --f-fill: var(--system-fill); }
+.f-risk         { --f: var(--risk);         --f-tint: var(--risk-tint);         --f-fill: var(--risk-fill); }
+
+.dark .only-light, html:not(.dark) .only-dark { display: none; }
+
+/* 2. Header ----------------------------------------------------------------- */
+/* nome del corso in grassetto; subito dopo, sezione e lab (HeaderPath.vue), più leggeri */
+.VPNavBarTitle .title { font-weight: 700; }
+.header-path { display: flex; align-items: center; gap: .45em; margin: 0 auto 0 .45em; font-size: 14px; color: var(--vp-c-text-2); }
+.header-path__part:last-child { color: var(--vp-c-text-1); font-weight: 500; }
+@media (max-width: 959px) { .header-path { display: none; } }
+
+/* il pallino dell'interruttore chiaro/scuro e la freccia delle sezioni del menu li anima
+   anime.js (animations.ts): niente transizioni CSS che si sovrappongano */
+.VPNavBar .VPSwitchAppearance .check,
+.VPNavScreen .VPSwitchAppearance .check { transition: none !important; }
+.VPSidebar .caret-icon { transition: none !important; }
+
+/* dove c'è la colonna destra la ricerca sta lì (AsideTools.vue), non nell'header */
+@media (min-width: 1280px) {
+  .VPNavBarSearch { visibility: hidden; }
+}
+
+/* 3. Menu laterale ---------------------------------------------------------- */
+.VPSidebar { scrollbar-width: thin; scrollbar-color: var(--vp-c-divider) transparent; }
+/* sfondo bianco come il contenuto, sezioni in maiuscoletto, sotto-voci senza filo
+   verticale a sinistra */
+:root, .dark { --vp-sidebar-bg-color: var(--vp-c-bg); }
+.VPSidebarItem.level-0.collapsible > .item .text { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.VPSidebarItem.level-1 .items, .VPSidebar .VPSidebarItem .items { border-left: 0 !important; }
+
+/* 4. Colonna destra ---------------------------------------------------------- */
+.aside-tools { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+.aside-search {
+  display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 10px;
+  border: 1px solid transparent; border-radius: var(--radius); background: var(--vp-c-bg-alt);
+  color: var(--vp-c-text-2); font-size: 13px; cursor: pointer;
+}
+.aside-search:hover { border-color: var(--vp-c-brand-1); }
+.aside-search svg { flex: none; width: 15px; height: 15px; fill: currentColor; }
+.aside-search span { flex: 1; text-align: left; }
+.aside-search kbd {
+  font-family: inherit; font-size: 11px; padding: 0 5px; border-radius: 4px;
+  border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); color: var(--vp-c-text-2);
+}
+
+/* barra di avanzamento dei lab (ProgressBar.vue) */
+.progress { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 12px; color: var(--vp-c-text-2); }
+.progress-label { flex: 1; }
+.progress-reset {
+  padding: 0 8px; border: 1px solid var(--vp-c-divider); border-radius: 4px; color: inherit; font-size: 12px; cursor: pointer;
+}
+.progress-reset:hover { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
+.progress-track { flex-basis: 100%; height: 6px; border-radius: 3px; background: var(--vp-c-divider); overflow: hidden; }
+.progress-fill { width: 100%; height: 100%; transform: scaleX(0); transform-origin: left center; background: var(--vp-c-brand-1); }
+.doc-progress .progress { margin-bottom: 20px; }
+/* sopra il testo solo dove la colonna destra non c'è */
+@media (min-width: 1280px) { .doc-progress { display: none; } }
+
+/* 5. Contenuto ------------------------------------------------------------- */
+/* callout: icona dell'Icon Pack davanti al titolo, nel colore del callout */
+.vp-doc .custom-block .custom-block-title { display: flex; align-items: center; gap: 6px; }
+.vp-doc .custom-block .custom-block-title::before {
+  content: ""; flex: none; width: 18px; height: 18px; background: currentColor;
+  -webkit-mask: var(--callout-icon) center / contain no-repeat; mask: var(--callout-icon) center / contain no-repeat;
+}
+.vp-doc .custom-block.note { --callout-icon: url("./icons/note-pencil.svg"); }
+.vp-doc .custom-block.tip { --callout-icon: url("./icons/lightbulb.svg"); }
+.vp-doc .custom-block.info,
+.vp-doc .custom-block.important { --callout-icon: url("./icons/info.svg"); }
+.vp-doc .custom-block.warning { --callout-icon: url("./icons/warning.svg"); }
+.vp-doc .custom-block.danger,
+.vp-doc .custom-block.caution { --callout-icon: url("./icons/prohibit.svg"); }
+/* note, suggerimenti e cose importanti in blu; avvisi e pericoli in rosso */
+:root {
+  --vp-custom-block-note-bg: var(--instructions-tint);
+  --vp-custom-block-note-text: var(--vp-c-text-1);
+  --vp-custom-block-important-border: transparent;
+  --vp-custom-block-important-bg: var(--instructions-tint);
+  --vp-custom-block-important-text: var(--vp-c-text-1);
+  --vp-custom-block-warning-border: transparent;
+  --vp-custom-block-warning-bg: var(--risk-tint);
+  --vp-custom-block-warning-text: var(--vp-c-text-1);
+  --vp-custom-block-caution-border: transparent;
+  --vp-custom-block-caution-bg: var(--risk-tint);
+  --vp-custom-block-caution-text: var(--vp-c-text-1);
+}
+.vp-doc .custom-block:is(.note, .tip, .info, .important) .custom-block-title { color: var(--instructions); }
+.vp-doc .custom-block:is(.warning, .danger, .caution) .custom-block-title { color: var(--risk); }
+
+/* 6. Icone ------------------------------------------------------------------ */
+/* glifi dell'Icon Pack (Phosphor duotone): contorno scuro e strato duotone pieno nel
+   colore dell'argomento (classe f-…); senza classe, blu */
+.vp-doc .icon { display: inline-flex; vertical-align: -.24em; }
+.vp-doc .icon svg { width: 1.3em; height: 1.3em; fill: var(--icon-outline); }
+.vp-doc .icon svg [opacity] { opacity: 1; fill: var(--f-fill, var(--instructions-fill)); }
+/* loghi dei prodotti (Microsoft, GitHub): immagini, mai ricolorate; il logo di GitHub,
+   nero, diventa bianco nel tema scuro */
+.vp-doc .logo { display: inline-block; height: 1.3em; width: auto; vertical-align: -.26em; margin: 0; }
+.dark .vp-doc .logo-github { filter: invert(1); }
+/* davanti a un titolo o a una voce di tabella */
+.vp-doc :is(h2, h3) > :is(.icon, .logo):first-child { margin-right: .4em; }
+.vp-doc td > :is(.icon, .logo):first-child { margin-right: .35em; }
+
+/* 7. Blocchi della home ----------------------------------------------------- */
+.vp-doc .hero { display: flex; align-items: center; gap: 24px; margin: 8px 0 20px; }
+.vp-doc .hero .hero-logo { flex: none; height: 92px; }
+.vp-doc .hero h1 { margin: 0 0 6px; font-size: 38px; line-height: 1.15; }
+.vp-doc .hero .kicker { margin: 0; color: var(--vp-c-text-2); font-size: 18px; line-height: 1.5; }
+@media (max-width: 639px) {
+  .vp-doc .hero { gap: 16px; }
+  .vp-doc .hero .hero-logo { height: 60px; }
+  .vp-doc .hero h1 { font-size: 28px; }
+}
+
+/* pulsanti */
+.vp-doc .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 8px; }
+.vp-doc .actions p { display: contents; }
+.vp-doc a.button {
+  display: inline-block; padding: 0 18px; line-height: 38px; border-radius: var(--radius);
+  border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); color: var(--vp-c-text-1);
+  font-size: 14px; font-weight: 600; text-decoration: none;
+}
+.vp-doc a.button:hover { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
+.vp-doc a.button.brand { border-color: var(--vp-c-brand-3); background: var(--vp-c-brand-3); color: #fff; }
+.vp-doc a.button.brand:hover { border-color: var(--vp-c-brand-2); background: var(--vp-c-brand-2); color: #fff; }
+
+/* griglie a due colonne */
+.vp-doc .card-grid, .vp-doc .feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0; }
+.vp-doc .feature-grid { gap: 20px 32px; }
+@media (max-width: 639px) { .vp-doc .card-grid, .vp-doc .feature-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* card: bianca, bordo sottile, ombra leggera; in testa icona e titolo */
+.vp-doc .card {
+  position: relative; display: flex; flex-direction: column; gap: 10px; padding: 20px 22px;
+  border: 1px solid var(--vp-c-divider); border-radius: var(--radius); background: var(--vp-c-bg);
+  box-shadow: var(--shadow-card); font-size: 14px; line-height: 1.55;
+}
+.vp-doc .card > * { margin: 0; }
+.vp-doc .card-head { display: flex; align-items: center; gap: 12px; }
+.vp-doc .card-head .logo, .vp-doc .card-head .icon svg { height: 36px; width: auto; }
+.vp-doc .card-head .icon svg { width: 36px; }
+.vp-doc .card-title { color: var(--vp-c-text-1); font-size: 17px; font-weight: 600; text-decoration: none; }
+.vp-doc .card-meta { margin-top: auto !important; color: var(--vp-c-text-2); font-size: 13px; }
+/* card cliccabile: il link del titolo copre tutta la card */
+.vp-doc .card--link a.card-title::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.vp-doc .card--link:hover { border-color: var(--vp-c-brand-1); }
+.vp-doc .card--link:hover .card-title { color: var(--vp-c-brand-1); }
+
+/* voce con icona e titolo, senza cornice */
+.vp-doc .feature { font-size: 14px; line-height: 1.55; }
+.vp-doc .feature > * { margin: 0; }
+.vp-doc .feature-title { margin-bottom: 4px !important; color: var(--vp-c-text-1); font-size: 15px; font-weight: 600; }
+.vp-doc .feature-title .icon { margin-right: 6px; }
+
+/* argomenti: etichette con l'icona, nel colore dell'argomento */
+.vp-doc .topics { display: flex; flex-wrap: wrap; gap: 6px; }
+.vp-doc .topic {
+  display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px;
+  border-radius: 6px; background: var(--f-tint, var(--vp-c-bg-alt)); color: var(--f, var(--vp-c-text-1));
+  font-size: 12px; font-weight: 600; white-space: nowrap;
+}
+.vp-doc .topic .icon svg { width: 17px; height: 17px; }
+
+/* fila di loghi con il nome */
+.vp-doc .logo-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+.vp-doc .logo-row > span {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px;
+  border: 1px solid var(--vp-c-divider); border-radius: 999px; color: var(--vp-c-text-1); font-size: 14px; font-weight: 500;
+}
+.vp-doc .logo-row .logo { height: 22px; }
+
+/* 8. Passi dei lab ---------------------------------------------------------- */
+/* checklist.ts mette davanti a ogni passo una casella e il suo numero */
+.vp-doc ol.steps { list-style: none; padding-left: 0; }
+.vp-doc ol.steps > li { position: relative; padding-left: 64px; }
+.vp-doc .step-check {
+  position: absolute; left: 0; top: .3em; width: 18px; height: 18px; margin: 0;
+  accent-color: var(--vp-c-brand-1); cursor: pointer;
+}
+.vp-doc .step-num { position: absolute; left: 26px; top: 0; width: 32px; font-weight: 600; color: var(--vp-c-text-1); }
+
+/* 9. Fondo pagina ----------------------------------------------------------- */
+/* stesso rientro del contenuto, così non finisce sotto il menu laterale */
+.site-footer { border-top: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); }
+.site-footer__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px; }
+.site-footer__copy { font-size: 12px; color: var(--vp-c-text-2); }
+.site-footer__logos { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.site-footer__logos img { height: 24px; width: auto; }
+.site-footer__sep { width: 1px; height: 22px; background: var(--vp-c-divider); }
+@media (min-width: 960px) {
+  .Layout:has(.VPSidebar) .site-footer { padding-left: var(--vp-sidebar-width); }
+}
+@media (min-width: 1440px) {
+  .Layout:has(.VPSidebar) .site-footer { padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)); }
+}
