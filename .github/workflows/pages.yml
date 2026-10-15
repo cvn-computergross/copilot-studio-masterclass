@@ -37,6 +37,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Compila e pubblica sul branch GitHub-Page
+        env:
+          NO_MKDOCS_2_WARNING: "true" # niente avviso su MkDocs 2.0: la versione è bloccata sotto la 2
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
