@@ -18,6 +18,9 @@ export default defineConfig({
   rewrites: { ':section/:lab/README.md': ':section/:lab/index.md' },
   head: [['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}logos/copilot-studio.svg` }]],
 
+  // anime.js preparato subito dal server di sviluppo, senza ricaricare la pagina al primo uso
+  vite: { optimizeDeps: { include: ['animejs/lib/anime.es.js'] } },
+
   // i file da scaricare (docs/resources/) non sono pagine: i lab li collegano con un link
   // relativo, che funziona su GitHub; nel sito vengono copiati così come sono
   buildEnd(site) {
