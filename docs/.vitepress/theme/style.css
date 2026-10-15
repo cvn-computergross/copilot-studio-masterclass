@@ -68,6 +68,9 @@
 .f-platform     { --f: var(--platform);     --f-tint: var(--platform-tint);     --f-fill: var(--platform-fill); }
 .f-system       { --f: var(--system);       --f-tint: var(--system-tint);       --f-fill: var(--system-fill); }
 .f-risk         { --f: var(--risk);         --f-tint: var(--risk-tint);         --f-fill: var(--risk-fill); }
+/* le due harness, come nelle slide: Standard = prugna, GitHub Copilot = blu */
+.f-standard     { --f: var(--lifecycle);    --f-tint: var(--lifecycle-tint);    --f-fill: var(--lifecycle-fill); }
+.f-github       { --f: var(--instructions); --f-tint: var(--instructions-tint); --f-fill: var(--instructions-fill); }
 
 .dark .only-light, html:not(.dark) .only-dark { display: none; }
 
@@ -235,6 +238,10 @@
   font-size: 12px; font-weight: 600; white-space: nowrap;
 }
 .vp-doc .topic .icon svg { width: 17px; height: 17px; }
+.vp-doc .topic .logo { height: 17px; }
+/* componenti comuni alle due harness: neutri */
+.vp-doc .topics--common { margin-top: -4px !important; }
+.vp-doc .topics--common .topic { --f: var(--vp-c-text-2); --f-tint: var(--vp-c-bg-alt); --f-fill: var(--system-fill); font-weight: 500; }
 
 /* fila di loghi con il nome */
 .vp-doc .logo-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }

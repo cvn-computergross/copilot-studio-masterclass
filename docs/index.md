@@ -34,14 +34,21 @@ Si parte dalla **Standard Harness**, creando agenti nel portale di Copilot Studi
 
 Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenza, topic, tool e agent flow, fino a scenari multi-agente e autonomi.
 
-<p class="topics">
-<span class="topic f-platform"><!-- icon: tray f-platform -->Ambiente</span>
-<span class="topic f-knowledge"><!-- icon: books f-knowledge -->Conoscenza</span>
-<span class="topic f-topics"><!-- icon: chats-circle f-topics -->Topic</span>
-<span class="topic f-tools"><!-- icon: wrench f-tools -->Tool</span>
-<span class="topic f-agents"><!-- icon: robot f-agents -->Agenti</span>
-<span class="topic f-triggers"><!-- icon: lightning f-triggers -->Trigger</span>
-<span class="topic f-lifecycle"><!-- icon: chart-line-up f-lifecycle -->Telemetria</span>
+<p class="topics f-standard">
+<span class="topic"><!-- icon: clipboard-text f-standard -->Istruzioni</span>
+<span class="topic"><!-- icon: chats-circle f-standard -->Topic</span>
+<span class="topic"><!-- icon: function f-standard -->Variabili</span>
+<span class="topic"><!-- icon: logo-power-fx -->Power Fx</span>
+<span class="topic"><!-- icon: robot f-standard -->Child agent</span>
+<span class="topic"><!-- icon: cards f-standard -->Adaptive card</span>
+<span class="topic"><!-- icon: logo-power-automate -->Agent flow</span>
+</p>
+
+<p class="topics topics--common">
+<span class="topic"><!-- icon: books -->Conoscenza</span>
+<span class="topic"><!-- icon: wrench -->Tool</span>
+<span class="topic"><!-- icon: code -->Code Interpreter</span>
+<span class="topic"><!-- icon: link -->Agenti connessi</span>
 </p>
 
 <!-- icon: flask --> <!-- labs: standard-harness --> · si parte da qui
@@ -55,14 +62,19 @@ Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenz
 
 Si prosegue con un approccio code-first, dopo aver consolidato le basi nel portale.
 
-<p class="topics">
-<span class="topic f-instructions"><!-- icon: clipboard-text f-instructions -->Istruzioni</span>
-<span class="topic f-tools"><!-- icon: puzzle-piece f-tools -->Skill</span>
-<span class="topic f-tools"><!-- icon: tree-view f-tools -->Workflow</span>
-<span class="topic f-tools"><!-- icon: hard-drives f-tools -->MCP</span>
-<span class="topic f-agents"><!-- icon: link f-agents -->Agenti connessi</span>
-<span class="topic f-system"><!-- icon: stack f-system -->Memoria</span>
-<span class="topic f-knowledge"><!-- icon: files f-knowledge -->File</span>
+<p class="topics f-github">
+<span class="topic"><!-- icon: clipboard-text f-github -->Istruzioni</span>
+<span class="topic"><!-- icon: puzzle-piece f-github -->Skill</span>
+<span class="topic"><!-- icon: stack f-github -->Memoria</span>
+<span class="topic"><!-- icon: webhooks-logo f-github -->Hooks (in arrivo)</span>
+<span class="topic"><!-- icon: tree-view f-github -->Workflow</span>
+</p>
+
+<p class="topics topics--common">
+<span class="topic"><!-- icon: books -->Conoscenza</span>
+<span class="topic"><!-- icon: wrench -->Tool</span>
+<span class="topic"><!-- icon: code -->Code Execution</span>
+<span class="topic"><!-- icon: link -->Agenti connessi</span>
 </p>
 
 <!-- icon: flask --> <!-- labs: github-harness -->
