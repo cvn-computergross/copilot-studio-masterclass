@@ -55,6 +55,16 @@ Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenz
 
 Si prosegue con un approccio code-first, dopo aver consolidato le basi nel portale.
 
+<p class="topics">
+<span class="topic f-instructions"><!-- icon: clipboard-text f-instructions -->Istruzioni</span>
+<span class="topic f-tools"><!-- icon: puzzle-piece f-tools -->Skill</span>
+<span class="topic f-tools"><!-- icon: tree-view f-tools -->Workflow</span>
+<span class="topic f-tools"><!-- icon: hard-drives f-tools -->MCP</span>
+<span class="topic f-agents"><!-- icon: link f-agents -->Agenti connessi</span>
+<span class="topic f-system"><!-- icon: stack f-system -->Memoria</span>
+<span class="topic f-knowledge"><!-- icon: files f-knowledge -->File</span>
+</p>
+
 <!-- icon: flask --> <!-- labs: github-harness -->
 {.card-meta}
 
