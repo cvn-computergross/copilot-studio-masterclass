@@ -1,5 +1,3 @@
 node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
-# ambiente Python della vecchia versione MkDocs (si può cancellare)
-.venv/
