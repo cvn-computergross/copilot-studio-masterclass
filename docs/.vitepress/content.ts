@@ -11,6 +11,20 @@ export const SECTIONS: [string, string][] = [
   ['github-harness', 'GitHub Harness'],
 ]
 
+// le due esperienze del corso, per il selettore in cima alle loro pagine (ExperienceSwitch.vue)
+export const EXPERIENCES = [
+  {
+    section: 'standard-harness',
+    title: 'Standard Harness',
+    text: 'Costruisci un sistema multi-agente per la selezione del personale con la Standard Harness di Copilot Studio',
+  },
+  {
+    section: 'github-harness',
+    title: 'GitHub Copilot Harness',
+    text: 'Costruisci il sistema con istruzioni, skill, tool e workflow',
+  },
+]
+
 const ICON_COMMENT = /<!--\s*icon:[^>]*-->/g
 
 /** Cartelle dei lab di una sezione (NN-nome/README.md), in ordine. */
@@ -29,24 +43,19 @@ export function h1(file: string): string {
   return line ? line.slice(2).replace(ICON_COMMENT, '').trim() : path.basename(path.dirname(file))
 }
 
-/** Menu laterale: Home, Info studenti, poi una voce per sezione con i suoi lab. */
+/** Menu laterale: Home, Info studenti, poi una voce per sezione con i suoi lab. Il nome della
+    sezione apre la sua panoramica (index.md); se la sezione non ha ancora lab è una voce semplice. */
 export function sidebar() {
   const items: any[] = [{ text: 'Home', link: '/' }]
   if (fs.existsSync(path.join(DOCS, 'info.md'))) items.push({ text: 'Info studenti', link: '/info' })
   for (const [name, label] of SECTIONS) {
     if (!fs.existsSync(path.join(DOCS, name, 'index.md'))) continue
-    items.push({
-      text: label,
-      collapsed: true,
-      items: [
-        { text: 'Panoramica', link: `/${name}/` },
-        ...labs(name).map((lab) => ({
-          // nel menu "Lab 01 · Environment Setup"
-          text: h1(path.join(DOCS, name, lab, 'README.md')).replace(/^(Lab \d+) - /, '$1 · '),
-          link: `/${name}/${lab}/`,
-        })),
-      ],
-    })
+    const items_ = labs(name).map((lab) => ({
+      // nel menu "Lab 01 · Environment Setup"
+      text: h1(path.join(DOCS, name, lab, 'README.md')).replace(/^(Lab \d+) - /, '$1 · '),
+      link: `/${name}/${lab}/`,
+    }))
+    items.push(items_.length ? { text: label, link: `/${name}/`, collapsed: true, items: items_ } : { text: label, link: `/${name}/` })
   }
   return items
 }

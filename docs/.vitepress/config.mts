@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { defineConfig } from 'vitepress'
-import { DOCS, SECTIONS, sidebar } from './content'
+import { DOCS, EXPERIENCES, SECTIONS, sidebar } from './content'
 import { masterclass } from './markdown'
 
 const base = '/copilot-studio-masterclass/'
@@ -44,6 +44,8 @@ export default defineConfig({
     sidebar: sidebar(),
     // usato dall'header per mostrare "· Standard Harness · Lab 05"
     sections: Object.fromEntries(SECTIONS),
+    // selettore "Scegli il percorso" in cima alle pagine delle due harness
+    experiences: EXPERIENCES,
     outline: { level: [2, 3], label: 'Indice' },
     socialLinks: [{ icon: 'github', link: repo, ariaLabel: 'Repository su GitHub' }],
     docFooter: { prev: 'Precedente', next: 'Successivo' },

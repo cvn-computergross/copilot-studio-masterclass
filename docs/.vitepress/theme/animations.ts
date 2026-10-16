@@ -93,7 +93,7 @@ function sidebarCaret(item: HTMLElement) {
 export function setupAnimations() {
   if (reduce()) return
   document
-    .querySelectorAll<HTMLElement>('.VPButton, .vp-doc a.button, .VPSocialLink, .aside-search, .progress-reset, .vp-doc button.copy, .VPNavBarSearch .DocSearch-Button')
+    .querySelectorAll<HTMLElement>('.VPButton, .vp-doc a.button, .experience__option, .VPSocialLink, .aside-search, .progress-reset, .vp-doc button.copy, .VPNavBarSearch .DocSearch-Button')
     .forEach(pressable)
   document.querySelectorAll<HTMLElement>('.VPSwitchAppearance').forEach(themeSwitch)
   document.querySelectorAll<HTMLElement>('.VPSidebarItem.collapsible > .item').forEach(sidebarCaret)

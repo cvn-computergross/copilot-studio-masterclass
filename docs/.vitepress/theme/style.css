@@ -279,3 +279,25 @@
 @media (min-width: 1440px) {
   .Layout:has(.VPSidebar) .site-footer { padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)); }
 }
+
+/* 10. Selettore del percorso ------------------------------------------------- */
+/* "Scegli il percorso" in cima alle pagine delle harness (ExperienceSwitch.vue): riquadro
+   azzurro, le due esperienze affiancate, quella della pagina evidenziata */
+.experience {
+  margin: 0 0 28px; padding: 16px 18px 18px;
+  border: 1.5px solid var(--vp-c-brand-1); border-radius: 12px; background: var(--vp-c-brand-soft);
+}
+.experience__title { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font-size: 16px; font-weight: 700; color: var(--vp-c-text-1); }
+.experience__dot { width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--vp-c-bg); background: var(--vp-c-brand-1); box-shadow: 0 0 0 1px var(--vp-c-brand-1); }
+.experience__options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 639px) { .experience__options { grid-template-columns: minmax(0, 1fr); } }
+.experience__option {
+  display: flex; flex-direction: column; gap: 4px; padding: 12px 14px;
+  border: 1px solid var(--vp-c-divider); border-radius: 8px; background: var(--vp-c-bg);
+  color: var(--vp-c-text-2) !important; text-decoration: none !important; font-size: 13px; line-height: 1.45;
+}
+.experience__option:hover { border-color: var(--f, var(--vp-c-brand-1)); }
+.experience__name { color: var(--vp-c-text-1); font-size: 15px; font-weight: 600; }
+.experience__option--active { border-color: var(--f); box-shadow: inset 4px 0 0 var(--f); }
+.experience__option:not(.experience__option--active) { opacity: .75; }
+.experience__option:not(.experience__option--active):hover { opacity: 1; }
