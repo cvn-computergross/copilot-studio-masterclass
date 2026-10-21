@@ -86,7 +86,7 @@ Si prosegue con un approccio code-first, dopo aver consolidato le basi nel porta
 
 ### Advanced
 
-Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dallo [scenario](./advanced/scenario.md) e dal [modello dati](./advanced/modello-dati.md).
+Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dallo [scenario](./advanced/scenario.md) e dal [schemi di architettura](./advanced/architettura-e-workflow.md).
 
 <div class="card-grid">
 <div class="card card--link">

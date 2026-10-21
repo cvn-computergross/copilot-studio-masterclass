@@ -2,7 +2,7 @@
 
 [Back to Advanced](../index.md)
 
-Il caso pratico costruito con la **standard harness**: l'Agente Demand IT orchestra child agent, agent flow, prompt e connected agent per ricevere, valutare e preparare le proposte di progetto IT di Zava. Prima di iniziare leggi lo [scenario](../scenario.md) e il [modello dati](../modello-dati.md).
+Il caso pratico costruito con la **standard harness**: l'Agente Demand IT orchestra child agent, agent flow, prompt e connected agent per ricevere, valutare e preparare le proposte di progetto IT di Zava. Prima di iniziare leggi lo [scenario](../scenario.md) e il [schemi di architettura](../architettura-e-workflow.md).
 
 ## Lab <!-- icon: flask f-instructions -->
 

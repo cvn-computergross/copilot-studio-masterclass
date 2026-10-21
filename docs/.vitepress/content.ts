@@ -22,10 +22,7 @@ export const SECTIONS: [string, string][] = [
 const LEVEL_PAGES: Record<string, [string, string][]> = {
   advanced: [
     ['scenario', 'Scenario'],
-    ['modello-dati', 'Data model'],
     ['architettura-e-workflow', 'Architecture & workflow'],
-    ['harness-a-confronto', 'Harness comparison'],
-    ['fonti-verificate', 'Sources'],
   ],
 }
 

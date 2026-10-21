@@ -4,7 +4,7 @@
 
 In questo percorso costruisci, con la harness che preferisci, il sistema di agenti che supporta l'**Ufficio Demand e PMO IT** di Zava S.p.A.: riceve i business case delle proposte di progetto IT, li registra, li valuta con i criteri pesati del programma di investimento, prepara il dossier per il Comitato e organizza la sessione di revisione.
 
-Prima di iniziare leggi lo [scenario](./scenario.md) e il [modello dati](./modello-dati.md): ogni laboratorio rimanda a queste due pagine.
+Prima di iniziare leggi lo [scenario](./scenario.md) e guarda gli schemi in [Architettura e workflow](./architettura-e-workflow.md).
 
 ## Come procedere
 
@@ -17,10 +17,7 @@ Prima di iniziare leggi lo [scenario](./scenario.md) e il [modello dati](./model
 | Pagina | Contenuto |
 | --- | --- |
 | [Scenario](./scenario.md) | L'azienda, il problema e il processo del PMO |
-| [Modello dati](./modello-dati.md) | Tabelle Dataverse del PMO Demand Hub |
 | [Architettura e workflow](./architettura-e-workflow.md) | Schemi dei componenti e dei flussi |
-| [Harness a confronto](./harness-a-confronto.md) | Standard e GitHub Copilot harness, componente per componente |
-| [Fonti verificate](./fonti-verificate.md) | Pagine Microsoft Learn consultate |
 
 ## Percorsi
 
