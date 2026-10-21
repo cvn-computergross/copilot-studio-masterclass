@@ -7,7 +7,7 @@ import { popCheckbox } from './animations'
 /** Stato letto dalle barre di avanzamento (AsideTools, DocProgress). */
 export const progress = reactive({ total: 0, done: 0, reset: () => {} })
 
-const LAB = /^[^/]+\/\d\d-[^/]+\/index\.md$/
+const LAB = /^[^/]+\/[^/]+\/\d\d-[^/]+\/index\.md$/
 
 export function setupChecklist(path: string, relativePath: string) {
   progress.total = 0
@@ -29,7 +29,7 @@ export function setupChecklist(path: string, relativePath: string) {
       let box = li.querySelector<HTMLInputElement>(':scope > .step-check')
       if (!box) {
         box = Object.assign(document.createElement('input'), { type: 'checkbox', className: 'step-check' })
-        box.setAttribute('aria-label', `Passo ${start + i} completato`)
+        box.setAttribute('aria-label', `Step ${start + i} completed`)
         const num = Object.assign(document.createElement('span'), { className: 'step-num', textContent: `${start + i}.` })
         li.prepend(box, num)
       }

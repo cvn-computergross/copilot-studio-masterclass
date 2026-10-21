@@ -19,8 +19,10 @@ const LOGOS = path.resolve(__dirname, '..', 'public', 'logos')
 const NAV_LINE = /^\s*(\[?Previous\b|\[Back to |\[← ).*$/gm
 const ICON = /<!--\s*icon:\s*([a-z0-9-]+)((?:\s+[a-z0-9_-]+)*)\s*-->/g
 const HEADING_ICON = /^(#{1,6})\s+(.*?)\s*(<!--\s*icon:[^>]*-->)\s*$/gm
-const LAB_COUNT = /<!--\s*labs:\s*([a-z0-9-]+)\s*-->/g
-const LAB_PAGE = /^[^/]+\/\d\d-[^/]+\/(README|index)\.md$/
+// cartelle e pagine Markdown dei materiali si aprono nella repo su GitHub
+const REPO = 'https://github.com/cvn-computergross/copilot-studio-masterclass'
+const LAB_COUNT = /<!--\s*labs:\s*([a-z0-9/-]+)\s*-->/g
+const LAB_PAGE = /^[^/]+\/[^/]+\/\d\d-[^/]+\/(README|index)\.md$/
 
 /** Nei lab un passo "N. testo" scritto subito sotto un paragrafo, senza riga vuota, per
     Markdown è ancora parte del paragrafo: si aggiunge la riga vuota, così diventa un passo
@@ -86,6 +88,19 @@ export function masterclass(md: MarkdownIt) {
       })
   })
 
+  // le doppie graffe dei segnaposto ({{Campo}}) per Vue sarebbero codice: si mostrano come testo
+  md.core.ruler.push('masterclass-mustache', (state) => {
+    for (const block of state.tokens) {
+      for (const token of block.children ?? []) {
+        if (token.type === 'code_inline') token.attrSet('v-pre', '')
+        else if (token.type === 'text' && token.content.includes('{{')) {
+          token.type = 'html_inline'
+          token.content = md.utils.escapeHtml(token.content).replace(/\{\{/g, '&#123;&#123;')
+        }
+      }
+    }
+  })
+
   // callout di GitHub: VitePress li riconosce già, qui si traduce solo il titolo predefinito
   md.core.ruler.push('masterclass-alert-titles', (state) => {
     for (const token of state.tokens) {
@@ -103,8 +118,14 @@ export function masterclass(md: MarkdownIt) {
         if (token.type !== 'link_open') continue
         const href = token.attrGet('href')
         if (!href || /^[a-z]+:/i.test(href)) continue
-        if (/(^|\/)resources\//.test(href)) token.attrSet('download', '')
-        else token.attrSet('href', href.replace(/(^|\/)README\.md(?=#|$)/, '$1index.md'))
+        if (/(^|\/)resources\//.test(href)) {
+          // una cartella o una pagina Markdown dei materiali si apre su GitHub; un file si scarica
+          if (/\/$|\.md(#|$)/.test(href)) {
+            const target = path.posix.normalize(path.posix.join(path.posix.dirname(state.env?.relativePath ?? ''), href))
+            token.attrSet('href', `${REPO}/${href.endsWith('/') ? 'tree' : 'blob'}/main/docs/${target}`)
+            token.attrSet('target', '_blank')
+          } else token.attrSet('download', '')
+        } else token.attrSet('href', href.replace(/(^|\/)README\.md(?=#|$)/, '$1index.md'))
       }
     }
   })

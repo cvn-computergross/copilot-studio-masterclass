@@ -1,17 +1,21 @@
 <script setup lang="ts">
-// Nell'header, subito dopo il nome del corso: "· Standard Harness · Lab 05", calcolato dal
-// percorso della pagina (sezione = prima cartella, lab = numero della cartella NN-nome).
+// Nell'header, subito dopo il nome del corso: "· Advanced · Standard Harness · Lab 01", calcolato dal
+// percorso della pagina (livello, sezione, numero della cartella NN-nome).
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 
 const { page, theme } = useData()
 
 const parts = computed(() => {
-  const [section, lab] = page.value.relativePath.split('/')
-  const label = (theme.value.sections ?? {})[section]
-  if (!label) return []
-  const num = lab?.match(/^(\d\d)-/)
-  return num ? [label, `Lab ${num[1]}`] : [label]
+  const [level, section, lab] = page.value.relativePath.split('/')
+  const levelLabel = (theme.value.levels ?? {})[level]
+  if (!levelLabel) return []
+  const sectionLabel = (theme.value.sections ?? {})[section]
+  if (!sectionLabel) return [levelLabel]
+  if (!lab?.match(/^\d\d-/)) return [levelLabel, sectionLabel]
+  // il codice del lab dal titolo ("Lab S02 - ..." -> "Lab S02"), altrimenti dal numero della cartella
+  const code = page.value.title.match(/^Lab (S?\d+)/)?.[1] ?? lab.slice(0, 2)
+  return [levelLabel, sectionLabel, `Lab ${code}`]
 })
 </script>
 

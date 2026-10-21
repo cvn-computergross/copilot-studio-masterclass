@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PMO Demand Hub</title>
+  <link rel="stylesheet" href="home.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span>
+        <svg class="hero-lines" viewBox="0 0 800 160" preserveAspectRatio="none">
+          <path class="line" d="M0,120 C120,40 220,150 340,90 S560,20 680,80 S780,120 800,60" />
+          <path class="line line-2" d="M0,140 C140,90 260,160 380,120 S600,60 720,110 S790,130 800,100" />
+        </svg>
+      </div>
+      <div class="hero-content">
+        <div class="hero-icon" aria-hidden="true">
+          <svg viewBox="0 0 256 256"><path d="M216,56v64H160V56ZM40,208a8,8,0,0,0,8,8H88a8,8,0,0,0,8-8V120H40Z" opacity="0.3"/><path d="M216,48H40a8,8,0,0,0-8,8V208a16,16,0,0,0,16,16H88a16,16,0,0,0,16-16V160h48v16a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V56A8,8,0,0,0,216,48Zm-8,64H168V64h40ZM88,64v48H48V64Zm0,144H48V128H88Zm16-64V64h48v80Zm64,32V128h40v48Z"/></svg>
+        </div>
+        <div>
+          <p class="eyebrow" id="greeting">Zava IT PMO</p>
+          <h1 class="title"><span class="word">PMO</span> <span class="word">Demand</span> <span class="word">Hub</span></h1>
+          <p class="subtitle">View, edit and import programs, criteria, requesters, proposals and assessments, and follow every proposal from business case to recommendation.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-action="new" data-entity="csm_proposal" type="button">New proposal</button>
+          <button class="btn btn-ghost" data-action="import" type="button">Import CSV</button>
+        </div>
+      </div>
+      <span class="badge-preview" id="previewBadge" hidden>Preview data</span>
+    </header>
+
+    <section class="manage" aria-labelledby="manageTitle">
+      <header class="section-head">
+        <div>
+          <h2 id="manageTitle">Manage data</h2>
+          <p class="section-sub">Open a table to view and edit records, add a record, or import rows from a CSV file. Files such as business cases and review dossiers are stored on the proposal and assessment forms.</p>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-soft" data-action="starter" type="button">Load starter data</button>
+          <button class="btn btn-solid" data-action="import" type="button">Import CSV</button>
+        </div>
+      </header>
+      <div class="tiles" id="tiles"></div>
+    </section>
+
+    <h2 class="section-title">Portfolio at a glance</h2>
+    <section class="kpis" aria-label="Key figures">
+      <article class="kpi" style="--accent: var(--c-proposal)">
+        <p class="kpi-label">Proposals</p>
+        <p class="kpi-value" data-count="proposals">0</p>
+        <p class="kpi-note">received in total</p>
+      </article>
+      <article class="kpi" style="--accent: var(--c-warn)">
+        <p class="kpi-label">To assess</p>
+        <p class="kpi-value" data-count="received">0</p>
+        <p class="kpi-note">status Received</p>
+      </article>
+      <article class="kpi" style="--accent: var(--c-assessment)">
+        <p class="kpi-label">Assessed</p>
+        <p class="kpi-value" data-count="assessed">0</p>
+        <p class="kpi-note"><span data-count="scheduled">0</span> review scheduled</p>
+      </article>
+      <article class="kpi" style="--accent: var(--c-criterion)">
+        <p class="kpi-label">Average score</p>
+        <p class="kpi-value" data-count="avgScore" data-decimals="1">0</p>
+        <p class="kpi-note">out of 100</p>
+      </article>
+      <article class="kpi" style="--accent: var(--c-program)">
+        <p class="kpi-label">Requested budget</p>
+        <p class="kpi-value" data-count="requested" data-money="1">0</p>
+        <p class="kpi-note">of <span data-count="available" data-money="1">0</span> available</p>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card card-programs">
+        <header class="card-head">
+          <h2>Programs and budget</h2>
+          <button class="link" data-action="list" data-entity="csm_program" type="button">Open programs</button>
+        </header>
+        <ul class="programs" id="programs"></ul>
+        <p class="legend"><span class="dot dot-req"></span>Requested by proposals <span class="dot dot-av"></span>Available budget</p>
+      </article>
+
+      <article class="card card-reco">
+        <header class="card-head">
+          <h2>Recommendations</h2>
+          <button class="link" data-action="list" data-entity="csm_assessment" type="button">Open assessments</button>
+        </header>
+        <div class="donut-wrap">
+          <svg class="donut" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="donut-track" cx="60" cy="60" r="46" />
+            <g id="donutSegments" transform="rotate(-90 60 60)"></g>
+          </svg>
+          <div class="donut-center">
+            <p class="donut-value" data-count="assessments">0</p>
+            <p class="donut-label">assessments</p>
+          </div>
+        </div>
+        <ul class="reco-list" id="recoList"></ul>
+      </article>
+
+      <article class="card card-recent">
+        <header class="card-head">
+          <h2>Latest proposals</h2>
+          <button class="link" data-action="board" type="button">See all</button>
+        </header>
+        <ul class="recent" id="recent"></ul>
+        <p class="empty" id="recentEmpty" hidden>No proposals yet. Send a business case to the agent, import a CSV, or select New proposal.</p>
+      </article>
+
+      <article class="card card-flow">
+        <header class="card-head"><h2>How a proposal moves</h2></header>
+        <ol class="flow" id="flow">
+          <li><span class="step-dot">1</span><div><strong>Intake</strong><p>The agent reads the business case and creates the proposal.</p></div></li>
+          <li><span class="step-dot">2</span><div><strong>Scoring</strong><p>Each criterion of the program is weighted and scored.</p></div></li>
+          <li><span class="step-dot">3</span><div><strong>Recording</strong><p>The assessment is saved with rationale and recommendation.</p></div></li>
+          <li><span class="step-dot">4</span><div><strong>Review</strong><p>The dossier goes to the committee, people decide.</p></div></li>
+        </ol>
+      </article>
+    </section>
+
+    <div class="overlay" id="overlay" hidden>
+      <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+        <header class="panel-head">
+          <h2 id="panelTitle">Import data from CSV</h2>
+          <button class="icon-btn" data-action="close" type="button" aria-label="Close">&times;</button>
+        </header>
+        <div class="panel-body">
+          <ol class="steps">
+            <li>
+              <label class="field-label" for="importTable">Table</label>
+              <select id="importTable" class="select"></select>
+              <p class="hint" id="tableHint"></p>
+            </li>
+            <li>
+              <span class="field-label">CSV file</span>
+              <label class="drop" id="drop">
+                <input type="file" id="fileInput" accept=".csv,text/csv,text/plain" />
+                <span class="drop-title" id="dropTitle">Drop a CSV file here or select to browse</span>
+                <span class="drop-sub">Comma or semicolon separated, first row with column names. UTF-8 recommended.</span>
+              </label>
+              <button class="link" data-action="template" type="button">Download a CSV template for this table</button>
+            </li>
+            <li id="previewStep" hidden>
+              <span class="field-label">Preview</span>
+              <p class="hint" id="mappingInfo"></p>
+              <div class="table-wrap"><table class="preview" id="previewTable"></table></div>
+              <label class="check"><input type="checkbox" id="updateExisting" checked /> Update existing rows that match <span id="keyLabel"></span></label>
+            </li>
+          </ol>
+          <div class="progress" id="progressWrap" hidden>
+            <div class="progress-bar"><span id="progressFill"></span></div>
+            <p class="hint" id="progressText"></p>
+          </div>
+          <div class="result" id="result" hidden></div>
+        </div>
+        <footer class="panel-foot">
+          <button class="btn btn-soft" data-action="close" type="button">Close</button>
+          <button class="btn btn-solid" id="runImport" data-action="run-import" type="button" disabled>Import rows</button>
+        </footer>
+      </div>
+    </div>
+
+    <footer class="foot">Copilot Studio Masterclass &middot; PMO Demand IT case study &middot; Animations by anime.js (MIT)</footer>
+  </main>
+  <script src="anime.min.js"></script>
+  <script src="home.js"></script>
+</body>
+</html>

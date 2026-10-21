@@ -17,18 +17,20 @@ title: Home
 
 <div class="actions">
 
-[Info studenti](./info.md){.button .brand}
+[Student info](./info.md){.button .brand}
 
 </div>
 
 ## Il percorso
 
-Si parte dalla **Standard Harness**, creando agenti nel portale di Copilot Studio, e si prosegue con la **GitHub Harness**, con un approccio code-first.
+Il corso ha due livelli. Nei **Fundamentals** impari le basi di Copilot Studio con una delle due harness; negli **Advanced** costruisci un sistema di agenti completo su un caso reale. Per ogni livello puoi scegliere la **Standard Harness**, creando agenti nel portale di Copilot Studio, o la **GitHub Harness**, con un approccio code-first.
+
+### Fundamentals
 
 <div class="card-grid">
 <div class="card card--link">
 
-<!-- icon: logo-copilot-studio --> [Standard Harness](./standard-harness/index.md){.card-title}
+<!-- icon: logo-copilot-studio --> [Standard Harness](./fondamentali/standard-harness/index.md){.card-title}
 {.card-head}
 
 Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenza, topic, tool e agent flow, fino a scenari multi-agente e autonomi.
@@ -50,13 +52,13 @@ Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenz
 <span class="topic"><!-- icon: link -->Agenti connessi</span>
 </p>
 
-<!-- icon: flask --> <!-- labs: standard-harness --> · si parte da qui
+<!-- icon: flask --> <!-- labs: fondamentali/standard-harness --> · si parte da qui
 {.card-meta}
 
 </div>
 <div class="card card--link">
 
-<!-- icon: logo-github --> [GitHub Harness](./github-harness/index.md){.card-title}
+<!-- icon: logo-github --> [GitHub Harness](./fondamentali/github-harness/index.md){.card-title}
 {.card-head}
 
 Si prosegue con un approccio code-first, dopo aver consolidato le basi nel portale.
@@ -76,7 +78,45 @@ Si prosegue con un approccio code-first, dopo aver consolidato le basi nel porta
 <span class="topic"><!-- icon: link -->Agenti connessi</span>
 </p>
 
-<!-- icon: flask --> <!-- labs: github-harness -->
+<!-- icon: flask --> <!-- labs: fondamentali/github-harness -->
+{.card-meta}
+
+</div>
+</div>
+
+### Advanced
+
+Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dallo [scenario](./advanced/scenario.md) e dal [modello dati](./advanced/modello-dati.md).
+
+<div class="card-grid">
+<div class="card card--link">
+
+<!-- icon: logo-copilot-studio --> [Standard Harness](./advanced/standard-harness/index.md){.card-title}
+{.card-head}
+
+Orchestratore, child agent e connected agent, prompt multimodali, grounding su Dataverse, trigger via email, dossier Word, valutazioni e pubblicazione.
+
+<p class="topics f-standard">
+<span class="topic"><!-- icon: robot f-standard -->Multi-agente</span>
+<span class="topic"><!-- icon: sparkle f-standard -->Prompt</span>
+<span class="topic"><!-- icon: logo-dataverse -->Dataverse</span>
+<span class="topic"><!-- icon: lightning f-standard -->Trigger</span>
+<span class="topic"><!-- icon: logo-word -->Dossier Word</span>
+<span class="topic"><!-- icon: rocket-launch f-standard -->Pubblicazione</span>
+</p>
+
+<!-- icon: flask --> <!-- labs: advanced/standard-harness -->
+{.card-meta}
+
+</div>
+<div class="card card--link">
+
+<!-- icon: logo-github --> [GitHub Harness](./advanced/github-harness/index.md){.card-title}
+{.card-head}
+
+Lo stesso agente con istruzioni, skill, Dataverse MCP e workflow.
+
+<!-- icon: flask --> <!-- labs: advanced/github-harness -->
 {.card-meta}
 
 </div>

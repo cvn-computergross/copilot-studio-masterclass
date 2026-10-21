@@ -14,8 +14,8 @@ watch(() => [progress.done, progress.total], update)
 
 <template>
   <div v-if="progress.total" class="progress">
-    <span class="progress-label">{{ progress.done }} / {{ progress.total }} completati</span>
-    <button type="button" class="progress-reset" @click="progress.reset()">Azzera</button>
+    <span class="progress-label">{{ progress.done }} / {{ progress.total }} completed</span>
+    <button type="button" class="progress-reset" @click="progress.reset()">Reset</button>
     <div class="progress-track"><div ref="fill" class="progress-fill" /></div>
   </div>
 </template>

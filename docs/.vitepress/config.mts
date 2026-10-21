@@ -3,23 +3,27 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { defineConfig } from 'vitepress'
-import { DOCS, EXPERIENCES, SECTIONS, sidebar } from './content'
+import { withMermaid } from 'vitepress-plugin-mermaid'
+import { DOCS, EXPERIENCES, LEVELS, SECTIONS, sidebar } from './content'
 import { masterclass } from './markdown'
 
 const base = '/copilot-studio-masterclass/'
 const repo = 'https://github.com/cvn-computergross/copilot-studio-masterclass'
 
-export default defineConfig({
+// withMermaid: i diagrammi ```mermaid delle guide (che GitHub disegna già) diventano figure anche nel sito
+export default withMermaid(defineConfig({
   lang: 'it-IT',
   title: 'Copilot Studio Masterclass',
   description: 'Laboratori pratici per creare agenti con Microsoft Copilot Studio',
   base,
   // ogni lab è un README.md (così GitHub lo mostra aprendo la cartella): nel sito è la pagina della cartella
-  rewrites: { ':section/:lab/README.md': ':section/:lab/index.md' },
+  rewrites: { ':level/:section/:lab/README.md': ':level/:section/:lab/index.md' },
+  // i materiali (docs/resources/) sono file da scaricare, non pagine del sito
+  srcExclude: ['resources/**'],
   head: [['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}logos/copilot-studio.svg` }]],
 
-  // anime.js preparato subito dal server di sviluppo, senza ricaricare la pagina al primo uso
-  vite: { optimizeDeps: { include: ['animejs/lib/anime.es.js'] } },
+  // anime.js e Mermaid (con fastdom, che è CommonJS) preparati subito dal server di sviluppo
+  vite: { optimizeDeps: { include: ['animejs/lib/anime.es.js', 'mermaid', 'fastdom'] } },
 
   // i file da scaricare (docs/resources/) non sono pagine: i lab li collegano con un link
   // relativo, che funziona su GitHub; nel sito vengono copiati così come sono
@@ -42,33 +46,16 @@ export default defineConfig({
   themeConfig: {
     logo: '/logos/copilot-studio.svg',
     sidebar: sidebar(),
-    // usato dall'header per mostrare "· Standard Harness · Lab 05"
+    // usati dall'header ("· Advanced · Standard Harness · Lab 01") e dal selettore del percorso
+    levels: Object.fromEntries(LEVELS),
     sections: Object.fromEntries(SECTIONS),
-    // selettore "Scegli il percorso" in cima alle pagine delle due harness
     experiences: EXPERIENCES,
-    outline: { level: [2, 3], label: 'Indice' },
-    socialLinks: [{ icon: 'github', link: repo, ariaLabel: 'Repository su GitHub' }],
-    docFooter: { prev: 'Precedente', next: 'Successivo' },
-    darkModeSwitchLabel: 'Tema',
-    lightModeSwitchTitle: 'Passa al tema chiaro',
-    darkModeSwitchTitle: 'Passa al tema scuro',
+    // navigazione in inglese, contenuti in italiano
+    outline: { level: [2, 3], label: 'On this page' },
+    socialLinks: [{ icon: 'github', link: repo, ariaLabel: 'GitHub repository' }],
+    docFooter: { prev: 'Previous', next: 'Next' },
     sidebarMenuLabel: 'Menu',
-    returnToTopLabel: 'Torna su',
-    notFound: { title: 'Pagina non trovata', quote: 'La pagina che cerchi non esiste o è stata spostata.', linkText: 'Torna alla home' },
-    search: {
-      provider: 'local',
-      options: {
-        translations: {
-          button: { buttonText: 'Cerca', buttonAriaLabel: 'Cerca' },
-          modal: {
-            displayDetails: 'Mostra dettagli',
-            resetButtonTitle: 'Cancella la ricerca',
-            backButtonTitle: 'Chiudi la ricerca',
-            noResultsText: 'Nessun risultato per',
-            footer: { selectText: 'per aprire', navigateText: 'per navigare', closeText: 'per chiudere' },
-          },
-        },
-      },
-    },
+    returnToTopLabel: 'Return to top',
+    search: { provider: 'local' },
   } as any,
-})
+}))

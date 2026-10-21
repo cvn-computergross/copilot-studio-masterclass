@@ -46,17 +46,22 @@ Le guide restano scritte per GitHub e non vanno modificate per il sito. A ogni b
 
 - toglie le righe di navigazione scritte per GitHub (`Previous: … | Back to … | Next: …`, `[← Home del corso]`);
 - fa puntare i link a `README.md` alla pagina del lab;
-- lascia i link ai file di `docs/resources/` come file da scaricare;
+- lascia i link ai file di `docs/resources/` come file da scaricare (cartelle e pagine Markdown dei materiali si aprono su GitHub);
+- mostra come testo i segnaposto tra doppie graffe (`{{Campo}}`);
 - sostituisce i segnaposto delle icone e il numero dei lab;
 - nei lab, separa un passo numerato scritto subito sotto un paragrafo, così diventa un passo come gli altri.
 
-I callout di GitHub (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`…) VitePress li riconosce da solo; qui se ne traduce il titolo in italiano.
+I diagrammi ```` ```mermaid ```` li disegna il plugin `vitepress-plugin-mermaid`. I callout di GitHub (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`…) VitePress li riconosce da solo; qui se ne traduce il titolo in italiano.
 
 Nel browser, `theme/checklist.ts` mette una casella davanti a ogni passo numerato dei lab e ricorda le spunte; la barra di avanzamento sta nella colonna destra (o sopra il testo, sugli schermi più stretti).
 
-## Menu laterale
+## Struttura e menu laterale
 
-Si costruisce da solo dalle cartelle: Home, Info studenti, poi una voce per sezione con la sua Panoramica e i lab (cartelle `NN-nome/` con un `README.md`), in ordine di numero. Il nome nel menu è il titolo `# ` del lab. Per una nuova sezione basta aggiungerla all'elenco `SECTIONS` in `content.ts`.
+Le guide stanno in `docs/<livello>/<sezione>/NN-nome/README.md`: livelli `fondamentali` (Fundamentals) e `advanced` (Advanced), sezioni `standard-harness` e `github-harness`.
+
+Il menu si costruisce da solo dalle cartelle: Home, Student info, poi un gruppo per livello. Nel gruppo Advanced ci sono prima le pagine di riferimento del caso pratico (`LEVEL_PAGES` in `content.ts`), poi le sezioni. Il nome di una sezione apre la sua panoramica (`index.md`) e contiene i lab in ordine di numero; il nome nel menu è il titolo `# ` del lab. Livelli, sezioni e testi del selettore "Choose your experience" sono in `content.ts` (`LEVELS`, `SECTIONS`, `EXPERIENCES`).
+
+I termini di navigazione (menu, Previous/Next, ricerca, avanzamento) sono in inglese; i contenuti in italiano.
 
 Quando si aggiunge o si rinomina una cartella di lab, il server di anteprima va riavviato perché il menu si aggiorni.
 
@@ -98,7 +103,7 @@ Se un'icona o un logo non esistono, la build si ferma e dice quale manca.
 
 ## Altri segnaposto
 
-- `<!-- labs: standard-harness -->` diventa il numero di lab della sezione ("13 lab"), o "In preparazione" se non ce ne sono.
+- `<!-- labs: fondamentali/standard-harness -->` diventa il numero di lab della sezione ("13 lab"), o "In preparazione" se non ce ne sono.
 
 ## Home
 

@@ -6,34 +6,39 @@ Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdo
 
 | | |
 |---|---|
-| [Info studenti](./docs/info.md) | Accounts, sandbox and what happens at the end of the course |
-| [Standard Harness](./docs/standard-harness/index.md) | Build agents in the Copilot Studio portal, from environment setup to multi-agent and autonomous scenarios |
-| [GitHub Harness](./docs/github-harness/index.md) | Code-first labs. Work in progress |
+| [Student info](./docs/info.md) | Accounts, sandbox and what happens at the end of the course |
+| **Fundamentals** | The basics of Copilot Studio |
+| [Standard Harness](./docs/fondamentali/standard-harness/index.md) | Labs 01-05 in the Copilot Studio portal |
+| [GitHub Harness](./docs/fondamentali/github-harness/index.md) | Work in progress |
+| **Advanced** | [Case study](./docs/advanced/index.md): the Demand IT agent of Zava's PMO |
+| [Standard Harness](./docs/advanced/standard-harness/index.md) | Data setup and labs S01-S07 |
+| [GitHub Harness](./docs/advanced/github-harness/index.md) | Work in progress |
 
 ## Repository structure
 
 ```text
 docs/                         # the guides: also the source of the website
 ├── index.md                  # website home page
-├── info.md                   # Info studenti
-├── standard-harness/
-│   ├── index.md              # section overview and list of labs
-│   └── NN-lab-name/
-│       ├── README.md         # the lab
-│       └── images/           # <section>-NN.png, in order of appearance
-├── github-harness/
-│   └── index.md
-├── resources/NN-lab-name/    # files to download, linked from the labs
+├── info.md                   # Student info
+├── fondamentali/             # Fundamentals
+│   ├── standard-harness/     # index.md + NN-lab-name/README.md (+ images/)
+│   └── github-harness/
+├── advanced/                 # Advanced: the case study
+│   ├── index.md, scenario.md, modello-dati.md, ...   # reference pages
+│   ├── standard-harness/     # 00-setup-dati, 01-...07-...
+│   └── github-harness/
+├── resources/                # files to download: fondamentali/NN-lab-name/, advanced/<topic>/
 ├── public/                   # logos served as-is
 └── .vitepress/               # website configuration and theme (see docs/.vitepress/README.md)
-package.json                  # VitePress and anime.js versions, site commands
+package.json                  # VitePress, Mermaid and anime.js versions, site commands
 ```
 
 ## Writing a lab
 
-- A lab is a folder `docs/<section>/NN-lab-name/` with a `README.md` and an `images/` folder. It appears in the website menu on its own.
+- A lab is a folder `docs/<level>/<section>/NN-lab-name/` (level `fondamentali` or `advanced`, section `standard-harness` or `github-harness`) with a `README.md` and an `images/` folder. It appears in the website menu on its own.
 - Use GitHub Markdown: callouts (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`), numbered steps and relative links render both on GitHub and on the website. On the website the numbered steps become checkboxes with a progress bar.
-- Put files to download in `docs/resources/NN-lab-name/` and link them as `../../resources/NN-lab-name/<file>`.
+- Put files to download in `docs/resources/` and link them with a relative path (e.g. `../../../resources/advanced/business-case/BC-01.pdf`). On the website files are downloaded; folders and Markdown pages open on GitHub.
+- Mermaid diagrams (```` ```mermaid ````) are drawn both on GitHub and on the website.
 - Icons are optional: see [docs/.vitepress/README.md](./docs/.vitepress/README.md).
 
 ## Website
