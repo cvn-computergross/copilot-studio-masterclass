@@ -70,23 +70,30 @@ function themeSwitch(button: HTMLElement) {
   })
 }
 
-/** Menu laterale: la freccia di una sezione ruota quando la si apre o chiude. */
-function sidebarCaret(item: HTMLElement) {
-  if (item.dataset.animCaret) return
-  item.dataset.animCaret = '1'
-  item.addEventListener('click', () => {
-    const group = item.closest('.VPSidebarItem')
-    const caret = item.querySelector<HTMLElement>('.caret-icon')
-    if (!group || !caret || reduce()) return
-    const wasCollapsed = group.classList.contains('collapsed')
+/** Menu laterale: la freccia di una sezione ruota quando la si apre (verso il basso) o chiude. */
+function sidebarCaret(group: HTMLElement) {
+  if (group.dataset.animCaret) return
+  group.dataset.animCaret = '1'
+  // si segue la classe "collapsed" invece del clic: al momento del clic Vue può averla già
+  // cambiata o no, e cliccando il testo di una sezione con link la sezione non si apre
+  let collapsed = group.classList.contains('collapsed')
+  new MutationObserver(() => {
+    const now = group.classList.contains('collapsed')
+    if (now === collapsed) return
+    collapsed = now
+    const caret = group.querySelector<HTMLElement>(':scope > .item .caret-icon')
+    if (!caret || reduce()) return
+    const to = now ? 0 : 90
+    // se un'animazione è in corso si riparte dall'angolo raggiunto
+    const interrupted = caret.style.transform !== ''
     anime.remove(caret)
     anime({
       targets: caret,
-      rotate: wasCollapsed ? [0, 90] : [90, 0],
+      rotate: interrupted ? to : [now ? 90 : 0, to],
       easing: SPRING,
       complete: () => { caret.style.transform = '' },
     })
-  })
+  }).observe(group, { attributes: true, attributeFilter: ['class'] })
 }
 
 /** Da chiamare a ogni cambio di pagina. */
@@ -96,7 +103,7 @@ export function setupAnimations() {
     .querySelectorAll<HTMLElement>('.VPButton, .vp-doc a.button, .experience__option, .VPSocialLink, .aside-search, .progress-reset, .vp-doc button.copy, .VPNavBarSearch .DocSearch-Button')
     .forEach(pressable)
   document.querySelectorAll<HTMLElement>('.VPSwitchAppearance').forEach(themeSwitch)
-  document.querySelectorAll<HTMLElement>('.VPSidebarItem.collapsible > .item').forEach(sidebarCaret)
+  document.querySelectorAll<HTMLElement>('.VPSidebarItem.collapsible').forEach(sidebarCaret)
   document.querySelectorAll<HTMLElement>('.vp-doc .card--link').forEach(liftable)
 
   // contenuto: sulla home prima il titolo, poi card, voci e loghi uno dopo l'altro;
