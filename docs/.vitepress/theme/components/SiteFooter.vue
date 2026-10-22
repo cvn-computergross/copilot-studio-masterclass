@@ -10,7 +10,7 @@ const year = new Date().getFullYear()
 <template>
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <span class="site-footer__copy">© {{ year }} Alessandro Lapi · Collaboration Value Next · Computer Gross</span>
+      <span class="site-footer__copy">© {{ year }} Alessandro Lapi · Collaboration Value Next · Computer Gross · <a :href="withBase('/credits.html')">Riferimenti e licenze</a></span>
       <span class="site-footer__logos">
         <img class="only-light" :src="withBase('/brand/edulabs-cvn.png')" alt="EDUlabs · Collaboration Value Next" />
         <img class="only-dark" :src="withBase('/brand/edulabs-cvn-white.png')" alt="EDUlabs · Collaboration Value Next" />

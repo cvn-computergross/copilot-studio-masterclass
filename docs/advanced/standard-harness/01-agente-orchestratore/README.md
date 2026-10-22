@@ -2,6 +2,8 @@
 
 [Previous: Lab 00](../00-setup-dati/README.md) | [Back to Standard Harness](../index.md) | [Next: S02](../02-sistema-multi-agente/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~45 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
 ## Scenario
 
 Con il PMO Demand Hub del Lab 00 i dati del processo hanno finalmente un posto. Ora il PMO vuole un sistema di agenti che si occupi della parte ripetitiva e lasci alle persone le decisioni:
@@ -30,28 +32,21 @@ L'Ufficio Demand e PMO IT vuole un unico punto di contatto per i proponenti e pe
 
 In questo laboratorio viene creato l'agente nella soluzione del PMO, vengono scritte le sue istruzioni da orchestratore, gli viene data la conoscenza delle regole aziendali (linee guida del PMO e piano strategico) e vengono configurate le impostazioni generative.
 
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere completato il [Lab 00 - Setup dati](../00-setup-dati/README.md) e avere a disposizione:
->
-> - la soluzione **PMO Demand IT** impostata come preferita;
-> - l'indirizzo della cartella SharePoint `PMO Knowledge` con i due documenti di conoscenza (Lab 00, sezione *Conoscenza PMO in SharePoint*);
-> - l'icona dell'agente [`demand-it-agent-192.png`](../../../resources/advanced/agent-icon/demand-it-agent-192.png).
+::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
+- **Un orchestratore, non un agente tuttofare.** L'orchestratore conosce il processo e decide chi fa cosa. Le procedure specifiche (intake, valutazione, briefing) vivono in componenti separati che si possono testare e cambiare senza riscrivere tutto. È lo stesso schema dell'Hiring Agent di Agent Academy.
+- **Le regole del processo come conoscenza, i dati come dati.** Le linee guida e il piano strategico sono documenti: vanno nella **conoscenza** e l'agente li cita. Programmi, criteri e pesi invece stanno in Dataverse: verranno letti dal vivo dai flow e dai prompt, non copiati nelle istruzioni. Così, se il PMO cambia un peso, nessun agente va modificato.
+- **Niente web, niente risposte non fondate.** Un agente di governance deve rispondere solo da fonti aziendali. Disattivando **Use information from the Web** e **Allow ungrounded responses** l'agente preferisce dire che non lo sa piuttosto che inventare una regola.
+- **File uploads attivo.** Il proponente allegherà il business case in chat: l'impostazione **File uploads** permette all'agente di ricevere e leggere il file.
+- **Schema name e soluzione decisi alla creazione.** Nella standard harness si possono impostare in **Advanced settings** durante la creazione dell'agente: scegliere un nome tecnico chiaro (`csm_agentedemand_std`) facilita l'ALM e distingue questo agente da quello del percorso GitHub Copilot.
+:::
 
-> [!NOTE]
-> **Informazioni sul lab**
->
-> Harness: **standard**. Tempo stimato: 45 minuti.
+## Prerequisiti
 
-> [!NOTE]
-> **Perché questa scelta**
->
-> - **Un orchestratore, non un agente tuttofare.** L'orchestratore conosce il processo e decide chi fa cosa. Le procedure specifiche (intake, valutazione, briefing) vivono in componenti separati che si possono testare e cambiare senza riscrivere tutto. È lo stesso schema dell'Hiring Agent di Agent Academy.
-> - **Le regole del processo come conoscenza, i dati come dati.** Le linee guida e il piano strategico sono documenti: vanno nella **conoscenza** e l'agente li cita. Programmi, criteri e pesi invece stanno in Dataverse: verranno letti dal vivo dai flow e dai prompt, non copiati nelle istruzioni. Così, se il PMO cambia un peso, nessun agente va modificato.
-> - **Niente web, niente risposte non fondate.** Un agente di governance deve rispondere solo da fonti aziendali. Disattivando **Use information from the Web** e **Allow ungrounded responses** l'agente preferisce dire che non lo sa piuttosto che inventare una regola.
-> - **File uploads attivo.** Il proponente allegherà il business case in chat: l'impostazione **File uploads** permette all'agente di ricevere e leggere il file.
-> - **Schema name e soluzione decisi alla creazione.** Nella standard harness si possono impostare in **Advanced settings** durante la creazione dell'agente: scegliere un nome tecnico chiaro (`csm_agentedemand_std`) facilita l'ALM e distingue questo agente da quello del percorso GitHub Copilot.
+Per svolgere questo lab occorre avere completato il [Lab 00 - Setup dati](../00-setup-dati/README.md) e avere a disposizione:
+
+- la soluzione **PMO Demand IT** impostata come preferita;
+- l'indirizzo della cartella SharePoint `PMO Knowledge` con i due documenti di conoscenza (Lab 00, sezione *Conoscenza PMO in SharePoint*);
+- l'icona dell'agente [`demand-it-agent-192.png`](../../../resources/advanced/agent-icon/demand-it-agent-192.png).
 
 ## Agente Demand IT
 

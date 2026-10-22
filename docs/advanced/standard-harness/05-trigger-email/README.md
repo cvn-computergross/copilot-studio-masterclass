@@ -2,6 +2,10 @@
 
 [Previous: S04](../04-grounding-e-valutazione/README.md) | [Back to Standard Harness](../index.md) | [Next: S06](../06-dossier-word/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~75 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
+Parti di questo laboratorio sono adattate da Microsoft Agent Academy (https://github.com/microsoft/agent-academy), Copyright (c) Microsoft Corporation, licenza MIT.
+
 ## Scenario
 
 Con S04 il ciclo in chat è completo: un business case allegato viene registrato, analizzato e valutato dopo la conferma di un analista. Il processo del PMO però nasce dalla casella email condivisa, dove le proposte arrivano in formati diversi e spesso senza tutte le informazioni richieste.
@@ -19,34 +23,27 @@ In questo lab verrà aggiunto all'Agente Demand IT un **trigger su evento**: qua
 - Provare il processo con le email di prova.
 
 > [!NOTE]
-> **Informazioni sul lab**
->
-> Harness: **standard**. Tempo stimato: 75 minuti. Parti di questo laboratorio sono adattate da Microsoft Agent Academy (https://github.com/microsoft/agent-academy), Copyright (c) Microsoft Corporation, licenza MIT.
-
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere:
->
-> - completato i laboratori S01-S04;
-> - una casella di posta del tenant di laboratorio (la propria) e accesso a Microsoft Teams;
-> - l'indirizzo dell'app **PMO Demand Hub** annotato nel Lab 00;
-> - le email di prova in [`materiali/email`](../../../resources/advanced/email/);
-> - un team in Microsoft Teams per il PMO, ad esempio `Zava PMO`, con un canale `Proposte` in cui il flow pubblicherà le notifiche. Per crearli: in Teams selezionare **Teams**, **+** (**Join or create a team**), **Create team**, nome `Zava PMO`; poi, nel team, **...**, **Add channel**, nome `Proposte`.
-
-> [!NOTE]
 > **Partecipanti al corso**
 >
 > Per i partecipanti al corso il team `Zava PMO` con il canale `Proposte` è già creato nel loro Teams: verificare solo di vederlo e passare alla prima sezione.
 
-> [!NOTE]
-> **Perché questa scelta**
->
-> - **Trigger dell'agente invece di un flow separato.** Il trigger nasce dall'agente e invia all'agente un messaggio da elaborare: l'agente usa gli stessi strumenti della chat (analisi del documento) senza duplicare la logica.
-> - **La parte deterministica nel flow, la parte di giudizio nell'agente.** Filtrare gli allegati PDF, creare la riga, caricare il file sono passi fissi: li fa Power Automate. Analizzare il documento e scegliere che cosa comunicare li fa l'agente.
-> - **Due livelli di filtro: regole nel trigger, giudizio nel prompt.** Il primo livello è il trigger: **Subject Filter** `Proposta progetto` e **Only with Attachments** scartano gratis e in modo deterministico la gran parte dei messaggi (fuori ufficio senza allegati, newsletter, posta generica). Il secondo livello è un piccolo prompt che legge i messaggi rimasti, prima che venga creato qualsiasi record. Serve per i casi che le regole non possono distinguere: una domanda sul processo con un documento in bozza (da far verificare a una persona), una notifica di mancato recapito che contiene il messaggio originale come allegato, una risposta nella stessa conversazione ("RE: Proposta progetto") con un allegato che non è un business case. Nel percorso GitHub Copilot lo stesso ruolo lo svolge il nodo **Classify** del workflow.
-> - **Nessuna decisione autonoma irreversibile.** Quando l'agente lavora da solo non c'è nessuno a cui chiedere conferma: per questo l'automazione registra e analizza, ma **non** crea valutazioni. La valutazione richiede la conferma del programma da parte di un analista (S04).
-> - **Un'email per proposta, un'esecuzione per email.** L'impostazione **Split On** fa partire un'esecuzione per ogni messaggio, anche se ne arrivano diversi insieme.
+::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
+- **Trigger dell'agente invece di un flow separato.** Il trigger nasce dall'agente e invia all'agente un messaggio da elaborare: l'agente usa gli stessi strumenti della chat (analisi del documento) senza duplicare la logica.
+- **La parte deterministica nel flow, la parte di giudizio nell'agente.** Filtrare gli allegati PDF, creare la riga, caricare il file sono passi fissi: li fa Power Automate. Analizzare il documento e scegliere che cosa comunicare li fa l'agente.
+- **Due livelli di filtro: regole nel trigger, giudizio nel prompt.** Il primo livello è il trigger: **Subject Filter** `Proposta progetto` e **Only with Attachments** scartano gratis e in modo deterministico la gran parte dei messaggi (fuori ufficio senza allegati, newsletter, posta generica). Il secondo livello è un piccolo prompt che legge i messaggi rimasti, prima che venga creato qualsiasi record. Serve per i casi che le regole non possono distinguere: una domanda sul processo con un documento in bozza (da far verificare a una persona), una notifica di mancato recapito che contiene il messaggio originale come allegato, una risposta nella stessa conversazione ("RE: Proposta progetto") con un allegato che non è un business case. Nel percorso GitHub Copilot lo stesso ruolo lo svolge il nodo **Classify** del workflow.
+- **Nessuna decisione autonoma irreversibile.** Quando l'agente lavora da solo non c'è nessuno a cui chiedere conferma: per questo l'automazione registra e analizza, ma **non** crea valutazioni. La valutazione richiede la conferma del programma da parte di un analista (S04).
+- **Un'email per proposta, un'esecuzione per email.** L'impostazione **Split On** fa partire un'esecuzione per ogni messaggio, anche se ne arrivano diversi insieme.
+:::
+
+## Prerequisiti
+
+Per svolgere questo lab occorre avere:
+
+- completato i laboratori S01-S04;
+- una casella di posta del tenant di laboratorio (la propria) e accesso a Microsoft Teams;
+- l'indirizzo dell'app **PMO Demand Hub** annotato nel Lab 00;
+- le email di prova in [`materiali/email`](../../../resources/advanced/email/);
+- un team in Microsoft Teams per il PMO, ad esempio `Zava PMO`, con un canale `Proposte` in cui il flow pubblicherà le notifiche. Per crearli: in Teams selezionare **Teams**, **+** (**Join or create a team**), **Create team**, nome `Zava PMO`; poi, nel team, **...**, **Add channel**, nome `Proposte`.
 
 ## Prompt "Classifica email PMO"
 

@@ -2,6 +2,8 @@
 
 [Previous: S03](../03-prompt-multimodale/README.md) | [Back to Standard Harness](../index.md) | [Next: S05](../05-trigger-email/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~90 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
 ## Scenario
 
 Dopo S03 ogni proposta registrata ha titolo, sintesi, budget, durata e proponente, e il programma è collegato quando il documento lo indica senza ambiguità. Resta il passaggio più delicato del processo manuale: la valutazione con i criteri pesati, che oggi ogni analista fa a mano e interpreta a modo suo.
@@ -14,19 +16,17 @@ Il cuore del lavoro del PMO è la valutazione: per ogni criterio del programma, 
 - un **agent flow** calcola punti, punteggio e indicazione con regole fisse (variabili, ciclo ed espressioni), registra la **Assessment** e aggiorna stato e programma della proposta;
 - una **conferma umana** precede la registrazione: il programma va confermato dall'utente e lo strumento chiede il consenso prima di scrivere.
 
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere completato i laboratori S01-S03, con almeno le proposte di BC-01, BC-03 e BC-05 analizzate. Serve inoltre il business case `BC-04_Migrazione_data_center_Bologna_cloud.pdf`.
+::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
+- **Il modello giudica, il flow calcola.** Se si chiede a un modello "dai un punteggio da 0 a 100", risponde con sicurezza ma con regole inventate al momento. Qui il modello fa una sola cosa, la più adatta a lui: per ogni criterio sceglie un livello su quattro (Forte, Moderata, Debole, Assente) e cita l'evidenza. Pesi, fattori, somma, soglie e regola di budget sono **espressioni del flow**: danno sempre lo stesso risultato e chiunque può ricontrollarle.
+- **Grounding filtrato invece di criteri nel prompt.** I criteri non sono scritti nel prompt: il prompt li legge da Dataverse filtrando per il programma della proposta. Se il PMO cambia un peso, la valutazione successiva lo usa senza modifiche all'agente. Il filtro riduce i record passati al modello (meno costi, meno rumore).
+- **Programma confermato da una persona.** Se il documento è ambiguo (BC-03), il programma lo sceglie l'analista tra quelli compatibili suggeriti in S03. Valutare sul programma sbagliato significherebbe usare criteri sbagliati.
+- **Consenso prima della scrittura.** Lo strumento di registrazione ha l'opzione **Ask the end user before running**: Copilot Studio chiede conferma all'utente prima di eseguirlo. È un controllo della piattaforma, non dipende da quanto bene il modello segue le istruzioni.
+- **Indicazione, non decisione.** Il flow registra una **raccomandazione** per il Comitato. La parola "approvata" non compare mai.
+:::
 
-> [!NOTE]
-> **Perché questa scelta**
->
-> - **Il modello giudica, il flow calcola.** Se si chiede a un modello "dai un punteggio da 0 a 100", risponde con sicurezza ma con regole inventate al momento. Qui il modello fa una sola cosa, la più adatta a lui: per ogni criterio sceglie un livello su quattro (Forte, Moderata, Debole, Assente) e cita l'evidenza. Pesi, fattori, somma, soglie e regola di budget sono **espressioni del flow**: danno sempre lo stesso risultato e chiunque può ricontrollarle.
-> - **Grounding filtrato invece di criteri nel prompt.** I criteri non sono scritti nel prompt: il prompt li legge da Dataverse filtrando per il programma della proposta. Se il PMO cambia un peso, la valutazione successiva lo usa senza modifiche all'agente. Il filtro riduce i record passati al modello (meno costi, meno rumore).
-> - **Programma confermato da una persona.** Se il documento è ambiguo (BC-03), il programma lo sceglie l'analista tra quelli compatibili suggeriti in S03. Valutare sul programma sbagliato significherebbe usare criteri sbagliati.
-> - **Consenso prima della scrittura.** Lo strumento di registrazione ha l'opzione **Ask the end user before running**: Copilot Studio chiede conferma all'utente prima di eseguirlo. È un controllo della piattaforma, non dipende da quanto bene il modello segue le istruzioni.
-> - **Indicazione, non decisione.** Il flow registra una **raccomandazione** per il Comitato. La parola "approvata" non compare mai.
+## Prerequisiti
+
+Per svolgere questo lab occorre avere completato i laboratori S01-S03, con almeno le proposte di BC-01, BC-03 e BC-05 analizzate. Serve inoltre il business case `BC-04_Migrazione_data_center_Bologna_cloud.pdf`.
 
 ## Prompt "Valuta proposta"
 

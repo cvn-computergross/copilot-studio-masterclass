@@ -2,6 +2,10 @@
 
 [Previous: S01](../01-agente-orchestratore/README.md) | [Back to Standard Harness](../index.md) | [Next: S03](../03-prompt-multimodale/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~90 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
+Parti di questo laboratorio sono adattate da Microsoft Agent Academy (https://github.com/microsoft/agent-academy), Copyright (c) Microsoft Corporation, licenza MIT.
+
 ## Scenario
 
 In S01 l'Agente Demand IT ha imparato a rispondere sulle regole del processo. Un proponente però vuole consegnare il suo business case, e oggi lo fa per email: un analista apre il documento, lo registra nel foglio Excel e, più avanti, organizza la revisione con sponsor e architetto. Questo lab porta in chat due passaggi del processo: la registrazione della proposta nel PMO Demand Hub e la preparazione della revisione.
@@ -15,25 +19,18 @@ Il PMO ha due esigenze con caratteristiche diverse:
 
 In questo laboratorio viene creato un **child agent** per l'intake, con un **agent flow** che salva il documento, e un **connected agent** per la revisione, l'**Agente Comitato**, che legge i dati del PMO Demand Hub.
 
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere terminato il laboratorio S01 ed avere creato l'**Agente Demand IT**. Servono inoltre i business case [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e [`BC-05_Nuova_intranet_e_hub_dipendenti.docx`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.docx).
+::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
+- **Child agent per l'intake.** Un child agent vive dentro l'agente padre: condivide il ciclo di vita e la pubblicazione, ha istruzioni e strumenti propri e viene invocato quando la richiesta corrisponde alla sua descrizione. È la scelta giusta per una sotto-procedura che non ha senso fuori dall'Agente Demand IT.
+- **Agent flow invece di un topic per salvare il file.** Salvare il documento richiede più passaggi lato server (creare la riga, caricare il file, restituire il codice) senza interagire con l'utente: un flow li esegue in sequenza, con input e output tipizzati.
+- **Strumento usabile solo dal child agent.** Il flow di intake non deve essere chiamato dall'orchestratore in contesti sbagliati: viene reso disponibile solo quando il child agent lo richiama esplicitamente.
+- **Connected agent per la revisione.** Un connected agent è un agente completo, pubblicato a sé, con istruzioni, conoscenza e ciclo di rilascio propri. L'orchestratore gli delega un compito ben definito e ne integra la risposta. Ha senso quando lo specialista ha un pubblico o un responsabile diverso, o può servire ad altri agenti.
+- **Dataverse come conoscenza dello specialista.** Nella standard harness lo specialista può interrogare direttamente le tabelle del PMO come conoscenza, in sola lettura e con i permessi dell'utente. Nel percorso GitHub Copilot lo stesso risultato si ottiene con il Dataverse MCP Server.
+- **Solo PDF in questa fase.** Il prompt che analizzerà il documento in S03 accetta come input solo PDF o immagini. Il child agent quindi accetta il PDF e chiede di convertire i file Word: è un vincolo della standard harness che il percorso GitHub Copilot non ha.
+:::
 
-> [!NOTE]
-> **Informazioni sul lab**
->
-> Harness: **standard**. Tempo stimato: 90 minuti. Parti di questo laboratorio sono adattate da Microsoft Agent Academy (https://github.com/microsoft/agent-academy), Copyright (c) Microsoft Corporation, licenza MIT.
+## Prerequisiti
 
-> [!NOTE]
-> **Perché questa scelta**
->
-> - **Child agent per l'intake.** Un child agent vive dentro l'agente padre: condivide il ciclo di vita e la pubblicazione, ha istruzioni e strumenti propri e viene invocato quando la richiesta corrisponde alla sua descrizione. È la scelta giusta per una sotto-procedura che non ha senso fuori dall'Agente Demand IT.
-> - **Agent flow invece di un topic per salvare il file.** Salvare il documento richiede più passaggi lato server (creare la riga, caricare il file, restituire il codice) senza interagire con l'utente: un flow li esegue in sequenza, con input e output tipizzati.
-> - **Strumento usabile solo dal child agent.** Il flow di intake non deve essere chiamato dall'orchestratore in contesti sbagliati: viene reso disponibile solo quando il child agent lo richiama esplicitamente.
-> - **Connected agent per la revisione.** Un connected agent è un agente completo, pubblicato a sé, con istruzioni, conoscenza e ciclo di rilascio propri. L'orchestratore gli delega un compito ben definito e ne integra la risposta. Ha senso quando lo specialista ha un pubblico o un responsabile diverso, o può servire ad altri agenti.
-> - **Dataverse come conoscenza dello specialista.** Nella standard harness lo specialista può interrogare direttamente le tabelle del PMO come conoscenza, in sola lettura e con i permessi dell'utente. Nel percorso GitHub Copilot lo stesso risultato si ottiene con il Dataverse MCP Server.
-> - **Solo PDF in questa fase.** Il prompt che analizzerà il documento in S03 accetta come input solo PDF o immagini. Il child agent quindi accetta il PDF e chiede di convertire i file Word: è un vincolo della standard harness che il percorso GitHub Copilot non ha.
+Per svolgere questo lab occorre avere terminato il laboratorio S01 ed avere creato l'**Agente Demand IT**. Servono inoltre i business case [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e [`BC-05_Nuova_intranet_e_hub_dipendenti.docx`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.docx).
 
 ## Intake Proposte
 

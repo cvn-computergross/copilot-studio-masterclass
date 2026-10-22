@@ -1,21 +1,31 @@
-"""Schemi della pagina "Architettura e workflow" (docs/advanced/architettura-e-workflow.md).
+"""Schemi dei lab Advanced della Standard Harness (S01, S02, S04, S05, S06).
 
-Disegna ogni schema come immagine SVG nello stile delle slide del corso: riquadri tinti nel
-colore dell'argomento con glifo dell'Icon Pack (Phosphor duotone) o logo Microsoft, frecce
-sottili colorate, ritorni tratteggiati. Le immagini vanno in docs/advanced/images/ e si vedono
-uguali su GitHub e nel sito.
+Disegna ogni schema come file SVG in docs/advanced/images/, nello stile delle slide del corso:
+riquadri tinti nel colore dell'argomento con glifo dell'Icon Pack (Phosphor duotone), logo
+Microsoft o icona dell'agente, frecce sottili colorate, ritorni tratteggiati.
 
-Uso, dalla cartella principale della repo:
+Uso, dalla cartella principale della repo (servono Pillow e `npm install` già fatto):
     python tools/diagrams.py
 
 Per cambiare uno schema si modifica la sua funzione qui sotto e si rilancia lo script.
 
-Controlli di impaginazione: ogni testo viene misurato con le metriche di Segoe UI (Pillow +
-segoeui.ttf / seguisb.ttf / segoeuib.ttf, cercati in C:/Windows/Fonts o nella cartella indicata
-dalla variabile DIAGRAM_FONT_DIR). Lo script si ferma con l'elenco dei problemi se un testo
-esce dal suo riquadro (serve un margine destro di almeno 12px), se un'etichetta di freccia non
-sta sulla sua freccia o copre un riquadro, se una freccia attraversa un riquadro o se due
-riquadri si sovrappongono. La cornice esterna si adatta al contenuto con margini uguali.
+Colori e tema scuro: i colori non sono scritti negli elementi ma in classi (dg-box, dg-label,
+dg-arrow...) e nelle classi di argomento f-... (le stesse del sito). Lo sfondo è trasparente.
+  - Il file SVG da solo (GitHub, anteprima del file) porta un <style> con i colori chiari e una
+    @media (prefers-color-scheme: dark) con quelli scuri: segue il tema del sistema operativo.
+  - Nel sito markdown.ts inserisce l'SVG direttamente nella pagina (non come <img>), toglie il
+    suo <style> e i colori vengono da theme/style.css ("Schemi"), che usa la classe .dark di
+    VitePress: decide l'interruttore del tema del sito. Se si aggiunge una classe qui, va
+    aggiunta anche lì.
+Glifi: contorno (dg-ol) scuro, bianco nel tema scuro; strato duotone (dg-dt) nel colore
+dell'argomento. Loghi e icone degli agenti sono immagini incorporate, mai ricolorate.
+
+Controlli di impaginazione: ogni testo viene misurato con Inter, il carattere del sito (il file
+woff2 variabile che VitePress porta in node_modules, o quello indicato da DIAGRAM_FONT), con
+un margine di sicurezza del 4%. Lo script si ferma con l'elenco dei problemi se un testo esce
+dal suo riquadro (serve un margine destro di almeno 12px), se un'etichetta di freccia non sta
+sulla sua freccia o copre un riquadro, se una freccia attraversa un riquadro o se due riquadri
+si sovrappongono. Il disegno si adatta al contenuto con margini uguali.
 """
 import base64
 import math
@@ -36,10 +46,8 @@ LOGOS = ROOT / "docs" / "public" / "logos"
 OUT = ROOT / "docs" / "advanced" / "images"
 AGENT_ICONS = ROOT / "docs" / "resources" / "advanced" / "agent-icon"
 
-FONT = "Segoe UI, Inter, Helvetica, Arial, sans-serif"
-INK, BODY, MUTED, RULE, ICON = "#1B1B1B", "#363B42", "#6B7480", "#E2E5E9", "#1F2937"
-NEUTRAL_ARROW = "#B4BAC2"
-# argomento -> (colore pieno, tinta, riempimento dell'icona), come nelle slide
+FONT = "Inter, 'Segoe UI', Helvetica, Arial, sans-serif"
+# argomento -> (colore pieno, tinta, riempimento dell'icona), come nelle slide e in theme/style.css
 FAM = {
     "instructions": ("#0F6CBD", "#EDF4FB", "#5AA9F0"),
     "ai-engine": ("#0E2841", "#E3E8EF", "#7AB3E0"),
@@ -55,39 +63,90 @@ FAM = {
     "standard": ("#A02B93", "#F8EDF6", "#D98BCB"),
     "github": ("#0F6CBD", "#EDF4FB", "#5AA9F0"),
 }
+NEUTRAL = "neutral"  # frecce di ritorno e rami "No": grigie
+
+# colori comuni: (chiaro, scuro) per il file SVG da solo; nel sito li dà theme/style.css
+COMMON = {
+    "--dg-body": ("#363B42", "#E6EDF3"),     # testo dei messaggi
+    "--dg-muted": ("#6B7480", "#9198A1"),    # sottotitoli, risposte
+    "--dg-rule": ("#E2E5E9", "#3D444D"),     # bordi delle schede e delle etichette, linee verticali
+    "--dg-neutral": ("#B4BAC2", "#7D858F"),  # frecce grigie
+    "--dg-bg": ("#FFFFFF", "#0D1117"),       # fondo delle etichette sulle frecce (= fondo pagina)
+    "--dg-card": ("#FFFFFF", "#0D1117"),     # schede dentro un'area tinta
+    "--dg-outline": ("#1F2937", "#FFFFFF"),  # contorno dei glifi
+    "--dg-badge": ("#0E2841", "#7AB3E0"),    # numeri dei passi
+    "--dg-badge-ink": ("#FFFFFF", "#0D1117"),
+}
+# regole delle classi: identiche in theme/style.css (sezione "Schemi")
+RULES = """
+.dg-box{fill:var(--f-tint)}
+.dg-card{fill:var(--dg-card);stroke:var(--dg-rule)}
+.dg-lane{fill:var(--f-tint);stroke:var(--f-fill)}
+.dg-label{fill:var(--f)}
+.dg-sub{fill:var(--dg-muted)}
+.dg-body{fill:var(--dg-body)}
+.dg-ol{fill:var(--dg-outline)}
+.dg-dt{fill:var(--f-fill)}
+.dg-arrow{fill:none;stroke:var(--f);stroke-width:1.6}
+.dg-head{fill:var(--f)}
+.dg-pill{fill:var(--dg-bg);stroke:var(--dg-rule)}
+.dg-pilltext{fill:var(--f)}
+.dg-neutral{--f:var(--dg-neutral)}
+.dg-neutral .dg-pilltext{fill:var(--dg-muted)}
+.dg-note{fill:var(--f-tint)}
+.dg-rule{stroke:var(--dg-rule)}
+.dg-badge circle{fill:var(--dg-badge)}
+.dg-badge text{fill:var(--dg-badge-ink)}
+""".strip()
 
 PAD = 12      # margine minimo fra la fine di un testo e il bordo destro del suo riquadro
-MARGIN = 20   # margine fra il contenuto e la cornice esterna, uguale sui quattro lati
+MARGIN = 6    # margine fra il contenuto e il bordo del disegno, uguale sui quattro lati
 GAP = 4       # distanza minima fra un'etichetta di freccia e un riquadro
 PILL_H = 18   # altezza delle etichette sulle frecce
+SAFETY = 1.04  # i testi si misurano il 4% più larghi di Inter: resta margine fra browser e sistemi
 
 
 class LayoutError(Exception):
     """Uno schema non rispetta i controlli di impaginazione."""
 
+
+def style_block():
+    """<style> del file SVG da solo: colori chiari e, con il sistema in tema scuro, quelli scuri."""
+    def rgba(hexcolor, a):
+        r, g, b = (int(hexcolor[i:i + 2], 16) for i in (1, 3, 5))
+        return f"rgba({r},{g},{b},{a})"
+    light = "svg{" + ";".join(f"{k}:{v[0]}" for k, v in COMMON.items()) + "}"
+    light += "".join(f".f-{k}{{--f:{s};--f-tint:{t};--f-fill:{f}}}" for k, (s, t, f) in FAM.items())
+    dark = "svg{" + ";".join(f"{k}:{v[1]}" for k, v in COMMON.items()) + "}"
+    dark += "".join(f".f-{k}{{--f:{f};--f-tint:{rgba(f, .16)}}}" for k, (s, t, f) in FAM.items())
+    return f"<style>{light}{RULES.replace(chr(10), '')}@media (prefers-color-scheme: dark){{{dark}}}</style>"
+
+
 # --- misura dei testi -------------------------------------------------------------------
-FONT_DIRS = [os.environ.get("DIAGRAM_FONT_DIR"), "C:/Windows/Fonts", str(Path.home() / ".fonts"),
-             "/usr/share/fonts/truetype/msttcorefonts", "/Library/Fonts"]
-FONT_FILES = {400: "segoeui.ttf", 600: "seguisb.ttf", 700: "segoeuib.ttf"}
+# Inter variabile (assi: dimensione ottica, peso). Il browser mette la dimensione ottica uguale
+# alla dimensione del testo, ma non sotto 14: per testi da 11 a 13,5px vale sempre 14.
+INTER = [os.environ.get("DIAGRAM_FONT"),
+         ROOT / "node_modules" / "vitepress" / "dist" / "client" / "theme-default" / "fonts" / "inter-roman-latin.woff2"]
 _FONTS = {}
 
 
 def _font(weight):
-    # il browser usa Segoe UI Regular per i pesi fino a 500, Semibold per 600, Bold da 700
-    key = 700 if weight >= 650 else 600 if weight >= 550 else 400
-    if key not in _FONTS:
+    if weight not in _FONTS:
         if ImageFont is None:
             sys.exit("diagrams.py: serve Pillow per misurare i testi (pip install pillow)")
-        name = FONT_FILES[key]
-        path = next((Path(d) / name for d in FONT_DIRS if d and (Path(d) / name).exists()), None)
+        path = next((Path(p) for p in INTER if p and Path(p).exists()), None)
         if path is None:
-            sys.exit(f"diagrams.py: font {name} non trovato; indica la cartella con DIAGRAM_FONT_DIR")
-        _FONTS[key] = ImageFont.truetype(str(path), 1000)  # misura a 1000px: larghezze senza hinting
-    return _FONTS[key]
+            sys.exit("diagrams.py: Inter non trovato; lanciare npm install o indicare il file con DIAGRAM_FONT")
+        f = ImageFont.truetype(str(path), 1000)  # misura a 1000px: larghezze senza hinting
+        axes = {a["name"]: a for a in f.get_variation_axes()}
+        f.set_variation_by_axes([14 if n == b"Optical size" else weight if n == b"Weight" else a["default"]
+                                 for n, a in axes.items()])
+        _FONTS[weight] = f
+    return _FONTS[weight]
 
 
 def text_width(s, size, weight=400):
-    return _font(weight).getlength(s) * size / 1000
+    return _font(weight).getlength(s) * size / 1000 * SAFETY
 
 
 def text_box(x, y, s, size, weight=400, anchor="start"):
@@ -139,8 +198,9 @@ def dist_to_polyline(pt, pts):
     return best
 
 
-def icon_svg(spec, x, y, size, fam):
-    """Glifo Phosphor (contorno scuro, strato duotone nel colore dell'argomento), logo o icona di un agente."""
+def icon_svg(spec, x, y, size):
+    """Glifo Phosphor (contorno dg-ol, strato duotone dg-dt nel colore dell'argomento del gruppo),
+    oppure logo o icona di un agente: immagini incorporate, mai ricolorate."""
     if spec.startswith(("logo:", "agent:")):
         kind, name = spec.split(":", 1)
         if kind == "agent":  # icona dell'agente caricata nei lab
@@ -151,51 +211,57 @@ def icon_svg(spec, x, y, size, fam):
         data = base64.b64encode(file.read_bytes()).decode()
         return f'<image x="{x}" y="{y}" width="{size}" height="{size}" href="data:{mime};base64,{data}" preserveAspectRatio="xMidYMid meet"/>'
     src = (GLYPHS / f"{spec}.svg").read_text(encoding="utf-8")
-    paths = re.findall(r"<path[^>]*/>", src)
-    fill = FAM[fam][2]
     out = []
-    for p in paths:
+    for p in re.findall(r"<path[^>]*/>", src):
         if 'opacity="0.2"' in p:
-            out.append(p.replace('opacity="0.2"', f'fill="{fill}"'))
+            out.append(p.replace(' opacity="0.2"', "").replace("<path", '<path class="dg-dt"'))
         else:
-            out.append(p.replace("<path", f'<path fill="{ICON}"'))
+            out.append(p.replace("<path", '<path class="dg-ol"'))
     return f'<svg x="{x}" y="{y}" width="{size}" height="{size}" viewBox="0 0 256 256">{"".join(out)}</svg>'
 
 
-class Diagram:
-    """Raccoglie le parti dello schema e la loro geometria; save() controlla e adatta la cornice."""
+def fam_class(fam):
+    return "dg-neutral" if fam == NEUTRAL else f"f-{fam}"
 
-    def __init__(self):
-        self.parts, self.markers = [], set()
+
+class Diagram:
+    """Raccoglie le parti dello schema e la loro geometria; save() controlla e adatta il disegno."""
+
+    def __init__(self, name):
+        self.name = name
+        self.parts, self.markers = [], {}
         self.nodes, self.lanes, self.pills, self.free, self.arrows, self.extent = [], [], [], [], [], []
         self.errors = []
 
-    def _text(self, x, y, s, size=13, color=BODY, weight=400, anchor="start", italic=False):
-        style = ' font-style="italic"' if italic else ""
-        self.parts.append(f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" font-weight="{weight}" text-anchor="{anchor}"{style}>{escape(s)}</text>')
+    @staticmethod
+    def _t(x, y, s, size, cls, weight=400, anchor="start"):
+        return (f'<text class="{cls}" x="{x:g}" y="{y:g}" font-size="{size}" font-weight="{weight}"'
+                f' text-anchor="{anchor}">{escape(s)}</text>')
+
+    def _text(self, x, y, s, size=13, cls="dg-body", weight=400, anchor="start", out=None):
+        (self.parts if out is None else out).append(self._t(x, y, s, size, cls, weight, anchor))
         return text_box(x, y, s, size, weight, anchor)
 
-    def text(self, x, y, s, size=13, color=BODY, weight=400, anchor="start", italic=False):
+    def text(self, x, y, s, size=13, cls="dg-body", weight=400, anchor="start", fam=None):
         """Testo libero: non deve toccare riquadri, intestazioni di corsia o etichette."""
-        box = self._text(x, y, s, size, color, weight, anchor, italic)
+        out = []
+        box = self._text(x, y, s, size, cls, weight, anchor, out)
+        self.parts.append(f'<g class="{fam_class(fam)}">{out[0]}</g>' if fam else out[0])
         self.free.append((s, box))
         return box
 
     def node(self, x, y, w, label, icon, fam, sub=None, white=False, h=None):
         """Riquadro con icona ed etichetta; white=True dentro un'area tinta."""
-        solid, tint, _ = FAM[fam]
         lines = sub.split("\n") if sub else []
         h = h or (44 + 16 * len(lines) if lines else 48)
-        if white:
-            self.parts.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="#FFFFFF" stroke="{RULE}"/>')
-        else:
-            self.parts.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{tint}"/>')
-        self.parts.append(icon_svg(icon, x + 12, y + h / 2 - 13, 26, fam))
+        g = [f'<rect class="{"dg-card" if white else "dg-box"}" x="{x}" y="{y}" width="{w}" height="{h}" rx="8"/>',
+             icon_svg(icon, x + 12, y + h / 2 - 13, 26)]
         ty = y + h / 2 - 8 * len(lines) + 5
         rect = (x, y, x + w, y + h)
-        boxes = [(label, self._text(x + 48, ty, label, 13.5, solid, 600))]
+        boxes = [(label, self._text(x + 48, ty, label, 13.5, "dg-label", 600, out=g))]
         for i, line in enumerate(lines):
-            boxes.append((line, self._text(x + 48, ty + 17 + 16 * i, line, 12, MUTED)))
+            boxes.append((line, self._text(x + 48, ty + 17 + 16 * i, line, 12, "dg-sub", out=g)))
+        self.parts.append(f'<g class="dg-node f-{fam}">' + "".join(g) + "</g>")
         for s, b in boxes:
             if b[2] > x + w - PAD:
                 need = math.ceil(b[2] - x + PAD)
@@ -207,62 +273,65 @@ class Diagram:
         return {"x": x, "y": y, "w": w, "h": h, "cx": x + w / 2, "cy": y + h / 2, "r": x + w, "b": y + h}
 
     def lane(self, x, y, w, h, title, icon, fam):
-        solid, tint, fill = FAM[fam]
-        self.parts.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="{tint}" stroke="{fill}"/>')
-        self.parts.append(icon_svg(icon, x + 14, y + 12, 22, fam))
-        tb = self._text(x + 44, y + 28, title.upper(), 11.5, solid, 600)
+        g = [f'<rect class="dg-lane" x="{x}" y="{y}" width="{w}" height="{h}" rx="12"/>',
+             icon_svg(icon, x + 14, y + 12, 22)]
+        tb = self._text(x + 44, y + 28, title.upper(), 11.5, "dg-label", 600, out=g)
+        self.parts.append(f'<g class="dg-lanegroup f-{fam}">' + "".join(g) + "</g>")
         rect, ib = (x, y, x + w, y + h), (x + 14, y + 12, x + 36, y + 34)
         if not contains(rect, ib, 8):
             self.errors.append(f"corsia '{title}': l'icona non sta dentro la corsia")
         if tb[2] > x + w - PAD:
-            self.errors.append(f"corsia '{title}': il titolo supera il margine destro di {tb[2] - (x + w - PAD):.1f}px")
+            need = math.ceil(tb[2] - x + PAD)
+            self.errors.append(f"corsia '{title}': il titolo supera il margine destro di "
+                               f"{tb[2] - (x + w - PAD):.1f}px (larghezza {w}, ne servono almeno {need})")
         self.lanes.append((title, rect, [ib, tb]))
         return {"x": x, "y": y, "w": w, "h": h, "r": x + w, "b": y + h}
 
-    def _marker(self, color):
-        mid = "m" + color.strip("#")
-        if mid not in self.markers:
-            self.markers.add(mid)
-            self.parts.insert(0, f'<defs><marker id="{mid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="{color}"/></marker></defs>')
-        return mid
+    def _marker(self, fam):
+        """Punta di freccia, una per colore; l'id porta il nome dello schema (due schemi nella stessa pagina)."""
+        if fam not in self.markers:
+            self.markers[fam] = (f'<marker id="{self.name}-head-{fam}" class="{fam_class(fam)}" viewBox="0 0 10 10" refX="9" refY="5"'
+                                 f' markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head" d="M0 0 L10 5 L0 10 Z"/></marker>')
+        return f"{self.name}-head-{fam}"
 
-    def arrow(self, pts, fam="ai-engine", dashed=False, label=None, at=None, color=None):
-        """Freccia a segmenti; l'etichetta (at = centro) deve stare su uno dei segmenti."""
-        color = color or FAM[fam][0]
-        mid = self._marker(color)
-        d = "M" + " L".join(f"{x} {y}" for x, y in pts)
+    def arrow(self, pts, fam="ai-engine", dashed=False, label=None, at=None):
+        """Freccia a segmenti; l'etichetta (at = centro) deve stare su uno dei segmenti. fam=NEUTRAL: grigia."""
+        mid = self._marker(fam)
+        d = "M" + " L".join(f"{x:g} {y:g}" for x, y in pts)
         dash = ' stroke-dasharray="5 4"' if dashed else ""
-        self.parts.append(f'<path d="{d}" fill="none" stroke="{color}" stroke-width="1.6"{dash} marker-end="url(#{mid})"/>')
+        g = [f'<path class="dg-arrow" d="{d}"{dash} marker-end="url(#{mid})"/>']
         self.arrows.append((label, pts))
         if label:
             lx, ly = at or ((pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2)
             wpx = text_width(label, 11, 500) + 20
             rect = (lx - wpx / 2, ly - PILL_H / 2, lx + wpx / 2, ly + PILL_H / 2)
-            self.parts.append(f'<rect x="{rect[0]:.1f}" y="{rect[1]}" width="{wpx:.1f}" height="{PILL_H}" rx="9" fill="#FFFFFF" stroke="{RULE}"/>')
-            self._text(lx, ly + 3.5, label, 11, color if color != NEUTRAL_ARROW else MUTED, 500, "middle")
+            g.append(f'<rect class="dg-pill" x="{rect[0]:.1f}" y="{rect[1]:g}" width="{wpx:.1f}" height="{PILL_H}" rx="9"/>')
+            self._text(lx, ly + 3.5, label, 11, "dg-pilltext", 500, "middle", out=g)
             if dist_to_polyline((lx, ly), pts) > 0.75:
                 self.errors.append(f"etichetta '{label}': il centro ({lx}, {ly}) non sta sulla sua freccia")
             self.pills.append((label, rect, pts))
+        self.parts.append(f'<g class="dg-link {fam_class(fam)}">' + "".join(g) + "</g>")
 
-    def badge(self, x, y, n, color="#0E2841"):
-        self.parts.append(f'<circle cx="{x}" cy="{y}" r="10" fill="{color}"/>')
-        self._text(x, y + 4, str(n), 11, "#FFFFFF", 600, "middle")
+    def badge(self, x, y, n):
+        g = [f'<circle cx="{x}" cy="{y}" r="10"/>']
+        self._text(x, y + 4, str(n), 11, "dg-badgetext", 600, "middle", out=g)
+        self.parts.append('<g class="dg-badge">' + "".join(g) + "</g>")
         self.extent.append((x - 10, y - 10, x + 10, y + 10))
 
     def note(self, x, y, lines, fam):
         """Passo interno di un diagramma di sequenza: etichetta tinta (una o due righe) che parte dalla linea x."""
-        solid, tint, _ = FAM[fam]
         wpx = max(text_width(s, 12, 500) for s in lines) + 20
         ph = 24 + 15 * (len(lines) - 1)
         rect = (x - 8, y - ph / 2, x - 8 + wpx, y + ph / 2)
-        self.parts.append(f'<rect x="{rect[0]}" y="{rect[1]}" width="{wpx:.1f}" height="{ph}" rx="12" fill="{tint}"/>')
+        g = [f'<rect class="dg-note" x="{rect[0]:g}" y="{rect[1]:g}" width="{wpx:.1f}" height="{ph}" rx="12"/>']
         for k, s in enumerate(lines):
-            self._text(x + 2, y + 4 - 7.5 * (len(lines) - 1) + 15 * k, s, 12, solid, 500)
+            self._text(x + 2, y + 4 - 7.5 * (len(lines) - 1) + 15 * k, s, 12, "dg-label", 500, out=g)
+        self.parts.append(f'<g class="dg-notegroup f-{fam}">' + "".join(g) + "</g>")
         self.free.append((" ".join(lines), rect))
         return rect
 
     def vline(self, x, y0, y1):
-        self.parts.append(f'<line x1="{x}" y1="{y0}" x2="{x}" y2="{y1}" stroke="{RULE}" stroke-width="1.5" stroke-dasharray="4 4"/>')
+        self.parts.append(f'<line class="dg-rule" x1="{x:g}" y1="{y0:g}" x2="{x:g}" y2="{y1:g}" stroke-width="1.5" stroke-dasharray="4 4"/>')
         self.extent.append((x - 1, y0, x + 1, y1))
 
     def check(self):
@@ -324,7 +393,8 @@ class Diagram:
         return (min(b[0] for b in boxes), min(b[1] for b in boxes),
                 max(b[2] for b in boxes), max(b[3] for b in boxes))
 
-    def save(self, name):
+    def save(self):
+        name = self.name
         errs = self.check()
         if errs:
             raise LayoutError(f"schema {name}: problemi di impaginazione\n  - " + "\n  - ".join(errs))
@@ -333,9 +403,10 @@ class Diagram:
         w, h = x1 - x0 + 2 * MARGIN, y1 - y0 + 2 * MARGIN
         dx, dy = MARGIN - x0, MARGIN - y0
         OUT.mkdir(parents=True, exist_ok=True)
-        svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" font-family="{FONT}">'
-               f'<rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="14" fill="#FFFFFF" stroke="{RULE}"/>'
-               f'<g transform="translate({dx} {dy})">' + "".join(self.parts) + "</g></svg>")
+        defs = "<defs>" + "".join(self.markers.values()) + "</defs>" if self.markers else ""
+        svg = (f'<svg xmlns="http://www.w3.org/2000/svg" class="dg" viewBox="0 0 {w} {h}" width="{w}" height="{h}"'
+               f' font-family="{FONT}">{style_block()}{defs}'
+               f'<g transform="translate({dx} {dy})">' + "".join(self.parts) + "</g></svg>\n")
         (OUT / f"{name}.svg").write_text(svg, encoding="utf-8")
         print(f"schema {name} ({w}x{h})")
 
@@ -346,7 +417,7 @@ def _splits(text):
     out = []
     for i in range(1, len(words)):
         a, b = " ".join(words[:i]), " ".join(words[i:])
-        wmax = max(text_width(a, 12), text_width(b, 12))
+        wmax = max(text_width(a, 12, 500), text_width(b, 12, 500))
         out.append((a[-1] not in ":;,", wmax, [a, b]))
     return sorted(out, key=lambda c: (c[0], c[1]))
 
@@ -363,12 +434,12 @@ def sequence(name, actors, messages, col_min=230):
     for a, b, text, kind in messages:
         two = min((c[1] for c in _splits(text)), default=math.inf)
         if a != b:
-            col = max(col, (min(text_width(text, 12), two) + 2 * side) / abs(b - a))
+            col = max(col, (min(text_width(text, 12, 500), two) + 2 * side) / abs(b - a))
         else:  # la nota non deve superare la linea successiva
-            col = max(col, min(text_width(text, 12), two) + 20 + 8 + side)
+            col = max(col, min(text_width(text, 12, 500), two) + 20 + 8 + side)
     col = math.ceil(col)
     xs = [60 + col * i + col / 2 for i in range(n)]
-    d = Diagram()
+    d = Diagram(name)
     for (label, icon, fam), cx in zip(actors, xs):
         d.node(cx - col / 2 + 8, 20, col - 16, label, icon, fam, white=True, h=56)
     y, step = 110, 46
@@ -376,7 +447,7 @@ def sequence(name, actors, messages, col_min=230):
         lines = [text]
         # spazio per il testo: fra le due linee, o (nota) dalla linea fino alla successiva
         room = abs(b - a) * col - 2 * side if a != b else col - 20 - 8 - side
-        if text_width(text, 12) > room:
+        if text_width(text, 12, 500) > room:
             lines = next(c[2] for c in _splits(text) if c[1] <= room)
         y += 15 * (len(lines) - 1) if a != b else 7.5 * (len(lines) - 1)
         d.badge(26, y, i + 1)
@@ -388,12 +459,11 @@ def sequence(name, actors, messages, col_min=230):
             y += 7.5 * (len(lines) - 1)
         else:
             reply = kind == "reply"
-            color = NEUTRAL_ARROW if reply else FAM["instructions"][0]
             x1, x2 = xs[a], xs[b]
             sign = 1 if x2 > x1 else -1
-            d.arrow([(x1 + 4 * sign, y), (x2 - 4 * sign, y)], dashed=reply, color=color)
+            d.arrow([(x1 + 4 * sign, y), (x2 - 4 * sign, y)], NEUTRAL if reply else "instructions", dashed=reply)
             for k, line in enumerate(reversed(lines)):
-                box = d._text((x1 + x2) / 2, y - 7 - 15 * k, line, 12, MUTED if reply else BODY, 500, "middle")
+                box = d._text((x1 + x2) / 2, y - 7 - 15 * k, line, 12, "dg-sub" if reply else "dg-body", 500, "middle")
                 if box[0] < min(x1, x2) + side - 0.5 or box[2] > max(x1, x2) - side + 0.5:
                     d.errors.append(f"messaggio '{line}': esce dallo spazio fra le linee")
                 d.extent.append(box)
@@ -401,7 +471,7 @@ def sequence(name, actors, messages, col_min=230):
         y += step
     for cx in xs:
         d.vline(cx, 76, last + 30)
-    d.save(name)
+    d.save()
 
 
 # --- schemi -----------------------------------------------------------------------------
@@ -414,19 +484,23 @@ COM = "agent:committee-agent-192.png"    # icona dell'Agente Comitato
 
 def panoramica():
     """S01-S07: chi parla con chi."""
-    d = Diagram()
-    A, B, C, D = 20, 285, 570, 825          # colonne: 210, 230, 200, 200 px con 55 px fra l'una e l'altra
-    u = d.node(A, 40, 210, "Proponenti e analisti", "users-three", "agents", "Teams e M365 Copilot (S07)")
-    kn = d.node(A, 140, 210, "PMO Knowledge", "logo:sharepoint", "knowledge", "conoscenza SharePoint")
-    mail = d.node(A, 250, 210, "Casella del PMO", "logo:outlook", "tools", "oggetto Proposta progetto")
-    da = d.node(B, 40, 230, "Agente Demand IT", DA, "ai-engine", "orchestratore (S01)")
-    trg = d.node(B, 250, 230, "Flow del trigger", "logo:power-automate", "triggers", "When a new email arrives (S05)")
-    intk = d.node(C, 10, 200, "Intake Proposte", "robot", "agents", "child agent (S02-S05)")
-    com = d.node(C, 100, 200, "Agente Comitato", COM, "agents", "agente connesso (S02)")
-    dos = d.node(C, 190, 200, "Genera dossier", "logo:power-automate", "tools", "topic e agent flow (S06)")
-    teams = d.node(D, 10, 200, "Canale del PMO", "logo:teams", "tools", "Notifica PMO in Teams")
-    dv = d.node(D, 100, 200, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse (Lab 00)")
-    od = d.node(D, 190, 200, "OneDrive", "logo:onedrive", "tools", "dossier Word e link")
+    d = Diagram("panoramica-sistema")
+    WA, WB, WC, WD = 232, 250, 210, 200     # larghezze delle quattro colonne, 55 px fra l'una e l'altra
+    A = 20
+    B = A + WA + 55
+    C = B + WB + 55
+    D = C + WC + 55
+    u = d.node(A, 40, WA, "Proponenti e analisti", "users-three", "agents", "Teams e M365 Copilot (S07)")
+    kn = d.node(A, 140, WA, "PMO Knowledge", "logo:sharepoint", "knowledge", "conoscenza SharePoint")
+    mail = d.node(A, 250, WA, "Casella del PMO", "logo:outlook", "tools", "oggetto Proposta progetto")
+    da = d.node(B, 40, WB, "Agente Demand IT", DA, "ai-engine", "orchestratore (S01)")
+    trg = d.node(B, 250, WB, "Flow del trigger", "logo:power-automate", "triggers", "When a new email arrives (S05)")
+    intk = d.node(C, 10, WC, "Intake Proposte", "robot", "agents", "child agent (S02-S05)")
+    com = d.node(C, 100, WC, "Agente Comitato", COM, "agents", "agente connesso (S02)")
+    dos = d.node(C, 190, WC, "Genera dossier", "logo:power-automate", "tools", "topic e agent flow (S06)")
+    teams = d.node(D, 10, WD, "Canale del PMO", "logo:teams", "tools", "Notifica PMO in Teams")
+    dv = d.node(D, 100, WD, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse (Lab 00)")
+    od = d.node(D, 190, WD, "OneDrive", "logo:onedrive", "tools", "dossier Word e link")
     d.arrow([(u["r"], u["cy"]), (B, u["cy"])], "ai-engine")
     d.arrow([(kn["r"], kn["cy"]), (B + 40, kn["cy"]), (B + 40, da["b"])], "knowledge", dashed=True)
     d.arrow([(mail["r"], mail["cy"]), (B, mail["cy"])], "triggers")
@@ -442,24 +516,24 @@ def panoramica():
     right = dv["r"] + 25
     d.arrow([(trg["r"], trg["cy"]), (right, trg["cy"]), (right, dv["cy"]), (dv["r"], dv["cy"])], "triggers",
             label="Registra proposta email", at=(dos["cx"], trg["cy"]))
-    d.save("panoramica-sistema")
+    d.save()
 
 
 def architettura_standard():
     """S01-S06: i componenti dell'Agente Demand IT e dello specialista."""
-    d = Diagram()
+    d = Diagram("architettura-standard")
     d.lane(20, 20, 620, 382, "Agente Demand IT · csm_agentedemand_std", DA, "ai-engine")
-    top = d.node(340, 62, 280, "Topic", "chats-circle", "topics", "Genera dossier di revisione", white=True)
-    trg = d.node(340, 140, 280, "Trigger", "lightning", "triggers", "When a new email arrives (V3)", white=True)
-    d.node(340, 218, 280, "Conoscenza PMO Knowledge", "logo:sharepoint", "knowledge", "Linee guida PMO, Piano Strategico IT", white=True)
-    intake = d.lane(40, 62, 280, 325, "Intake Proposte · child agent", "robot", "agents")
+    top = d.node(342, 62, 280, "Topic", "chats-circle", "topics", "Genera dossier di revisione", white=True)
+    trg = d.node(342, 140, 280, "Trigger", "lightning", "triggers", "When a new email arrives (V3)", white=True)
+    d.node(342, 218, 280, "Conoscenza PMO Knowledge", "logo:sharepoint", "knowledge", "Linee guida PMO, Piano Strategico IT", white=True)
+    intake = d.lane(40, 62, 284, 325, "Intake Proposte · child agent", "robot", "agents")
     tools = [("Carica business case", "crea proposta e carica il PDF"),
              ("Analizza business case", "prompt Estrai dati business case"),
              ("Crea valutazione", "prompt Valuta proposta,\nconferma dell'utente"),
              ("Notifica PMO in Teams", "adaptive card nel canale")]
     ys = [102, 167, 232, 313]
     for (label, sub), y in zip(tools, ys):
-        d.node(55, y, 250, label, "logo:power-automate", "tools", sub, white=True, h=74 if "\n" in sub else 58)
+        d.node(55, y, 254, label, "logo:power-automate", "tools", sub, white=True, h=74 if "\n" in sub else 58)
     d.lane(680, 20, 310, 150, "Agente Comitato · connesso", COM, "agents")
     k2 = d.node(695, 62, 280, "Conoscenza Dataverse", "logo:dataverse", "knowledge", "Program, Evaluation Criterion,\nRequester, Proposal, Assessment", white=True)
     fd = d.node(680, 200, 310, "Agent flow Genera dossier", "logo:power-automate", "tools", "prompt Dossier di revisione")
@@ -473,7 +547,7 @@ def architettura_standard():
     d.arrow([(180, intake["b"]), (180, dv["cy"]), (dv["x"], dv["cy"])], "knowledge", label="scrivono", at=(180, (402 + dv["y"]) / 2))
     d.arrow([(pa["cx"], pa["b"]), (pa["cx"], dv["y"] + 15), (dv["r"], dv["y"] + 15)], "triggers")
     d.arrow([(k2["r"], k2["cy"]), (1005, k2["cy"]), (1005, dv["b"] - 15), (dv["r"], dv["b"] - 15)], "knowledge", dashed=True)
-    d.save("architettura-standard")
+    d.save()
 
 
 def workflow_chat():
@@ -494,7 +568,7 @@ def workflow_chat():
 
 def workflow_email_standard():
     """S05: il flow del trigger in Power Automate."""
-    d = Diagram()
+    d = Diagram("workflow-email-standard")
     x, w = 200, 340
     t = d.node(x, 20, w, "When a new email arrives (V3)", "logo:outlook", "triggers", "Split On: una esecuzione per email")
     h = d.node(x, 104, w, "Html to text", "file-text", "tools")
@@ -511,36 +585,36 @@ def workflow_email_standard():
     fine = d.node(650, 456, 320, "Fine senza azioni", "x-circle", "system", "RispostaAutomatica o NonPertinente")
     for a_, b_ in ((t, h), (h, c), (c, dec), (dec, lo), (lo, r), (r, cd), (cd, ag), (ag, an), (an, nt)):
         d.arrow([(a_["cx"], a_["b"]), (b_["cx"], b_["y"])], "instructions")
-    d.text(dec["cx"] + 8, (dec["b"] + lo["y"]) / 2 + 4, "Sì", 11, MUTED, 600)
-    d.arrow([(dec["r"], dec["cy"]), (dv["x"], dv["cy"])], color=NEUTRAL_ARROW, label="No", at=((dec["r"] + dv["x"]) / 2, dec["cy"]))
+    d.text(dec["cx"] + 8, (dec["b"] + lo["y"]) / 2 + 4, "Sì", 11, "dg-sub", 600)
+    d.arrow([(dec["r"], dec["cy"]), (dv["x"], dv["cy"])], NEUTRAL, label="No", at=((dec["r"] + dv["x"]) / 2, dec["cy"]))
     d.arrow([(dv["cx"], dv["b"]), (man["cx"], man["y"])], "platform", label="Sì", at=(dv["cx"], (dv["b"] + man["y"]) / 2))
     loop = dv["r"] + 30
-    d.arrow([(dv["r"], dv["cy"]), (loop, dv["cy"]), (loop, fine["cy"]), (fine["r"], fine["cy"])], color=NEUTRAL_ARROW,
+    d.arrow([(dv["r"], dv["cy"]), (loop, dv["cy"]), (loop, fine["cy"]), (fine["r"], fine["cy"])], NEUTRAL,
             label="No", at=(loop, man["cy"]))
-    d.save("workflow-email-standard")
+    d.save()
 
 
 def workflow_dossier():
     """S06: dal topic al link del documento."""
-    d = Diagram()
-    lane_x, lane_y = 605, 20               # spazio fra Topic e corsia per l'etichetta CodiceValutazione
+    d = Diagram("workflow-dossier")
+    lane_x, lane_y = 615, 20               # spazio fra Topic e corsia per l'etichetta CodiceValutazione
     row = lane_y + 40
     p_h, f_h, sl_h = 76, 58, 58            # altezze di Run a prompt, Create file, Create share link
     f_y = row + p_h + 9
     sl_y = f_y + f_h + 12
     d.lane(lane_x, lane_y, 370, sl_y + sl_h + 15 - lane_y, "Agent flow · Genera dossier", "logo:power-automate", "tools")
     u = d.node(20, row, 190, "Utente", "user-circle", "agents", "Mi prepari il dossier\ndi AS-####?")
-    top = d.node(250, row, 220, "Topic", "chats-circle", "topics", "Genera dossier di revisione,\nchiede il codice se manca")
+    top = d.node(250, row, 230, "Topic", "chats-circle", "topics", "Genera dossier di revisione,\nchiede il codice se manca")
     p = d.node(lane_x + 15, row, 340, "Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione: output Document,\ntemplate Word, conoscenza Dataverse", white=True, h=p_h)
     f = d.node(lane_x + 15, f_y, 340, "Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx", white=True, h=f_h)
     sl = d.node(lane_x + 15, sl_y, 340, "Create share link", "logo:onedrive", "tools", "View, Organization: output DossierURL", white=True, h=sl_h)
-    card = d.node(250, sl["cy"] - 30, 220, "Adaptive card", "cards", "topics", "link al dossier in chat")
+    card = d.node(250, sl["cy"] - 30, 230, "Adaptive card", "cards", "topics", "link al dossier in chat")
     d.arrow([(u["r"], u["cy"]), (top["x"], u["cy"])], "topics")
     d.arrow([(top["r"], top["cy"]), (p["x"], top["cy"])], "topics", label="CodiceValutazione", at=((top["r"] + lane_x) / 2, top["cy"]))
     d.arrow([(p["cx"], p["b"]), (f["cx"], f["y"])], "tools")
     d.arrow([(f["cx"], f["b"]), (sl["cx"], sl["y"])], "tools")
     d.arrow([(sl["x"], sl["cy"]), (card["r"], sl["cy"])], "tools", dashed=True)
-    d.save("workflow-dossier")
+    d.save()
 
 
 def workflow_revisione():

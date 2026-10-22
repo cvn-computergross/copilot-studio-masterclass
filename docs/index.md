@@ -86,7 +86,7 @@ Si prosegue con un approccio code-first, dopo aver consolidato le basi nel porta
 
 ### Advanced
 
-Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dalla [panoramica del caso](./advanced/index.md) e dal [Lab 00 - Setup dati](./advanced/standard-harness/00-setup-dati/README.md).
+Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dal [Lab 00 - Setup dati](./advanced/standard-harness/00-setup-dati/README.md), che racconta il caso e prepara i dati per entrambi i percorsi.
 
 <div class="card-grid">
 <div class="card card--link">
@@ -172,3 +172,7 @@ Oltre a Copilot Studio, nei lab incontrerai questi prodotti Microsoft.
 <span><!-- icon: logo-word -->Word</span>
 <span><!-- icon: logo-application-insights -->Application Insights</span>
 </p>
+
+## Riferimenti
+
+<!-- icon: book-open-text --> Parti delle guide sono adattate da Microsoft Agent Academy (licenza MIT); il sito usa VitePress, anime.js, Phosphor Icons e il carattere Inter. Fonti, licenze e marchi sono elencati in [Riferimenti e licenze](./credits.md).

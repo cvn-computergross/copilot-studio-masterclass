@@ -61,14 +61,15 @@ function sectionItem(dir: string, label: string) {
   return items.length ? { text: label, link: `/${dir}/`, collapsed: true, items } : { text: label, link: `/${dir}/` }
 }
 
-/** Menu laterale: Home, Student info, poi un gruppo per livello con le sue sezioni. */
+/** Menu laterale: Home, Student info, Riferimenti e licenze, poi un gruppo per livello con le sue
+    sezioni. Il gruppo è solo un titolo fisso: non si chiude e non apre una pagina. */
 export function sidebar() {
   const items: any[] = [{ text: 'Home', link: '/' }]
   if (fs.existsSync(path.join(DOCS, 'info.md'))) items.push({ text: 'Student info', link: '/info' })
+  if (fs.existsSync(path.join(DOCS, 'credits.md'))) items.push({ text: 'Riferimenti e licenze', link: '/credits' })
   for (const [level, levelLabel] of LEVELS) {
     if (!fs.existsSync(path.join(DOCS, level))) continue
-    const group: any = { text: levelLabel, collapsed: false, items: [] }
-    if (fs.existsSync(path.join(DOCS, level, 'index.md'))) group.link = `/${level}/`
+    const group: any = { text: levelLabel, items: [] }
     for (const [page, label] of LEVEL_PAGES[level] ?? []) {
       if (fs.existsSync(path.join(DOCS, level, `${page}.md`))) group.items.push({ text: label, link: `/${level}/${page}` })
     }

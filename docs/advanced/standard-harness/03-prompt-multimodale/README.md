@@ -2,6 +2,8 @@
 
 [Previous: S02](../02-sistema-multi-agente/README.md) | [Back to Standard Harness](../index.md) | [Next: S04](../04-grounding-e-valutazione/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~75 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
 ## Scenario
 
 I business case arrivano al PMO da funzioni diverse e con qualità diverse. Per mettere alla prova gli agenti il caso pratico usa sei documenti di prova, in [`materiali/business-case`](../../../resources/advanced/business-case/), costruiti per esercitare situazioni diverse:
@@ -25,20 +27,18 @@ Dopo S02 una proposta registrata contiene solo il file e un titolo provvisorio: 
 - un **agent flow** che richiama il prompt con **Run a prompt**, **deduplica il proponente** (riconosciuto per email) e completa la proposta con azioni Dataverse, collegando il programma quando il documento lo indica senza ambiguità;
 - il collegamento del flow al child agent **Intake Proposte**, con le istruzioni aggiornate.
 
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere completato i laboratori S01 e S02 (Agente Demand IT, child agent **Intake Proposte** e agent flow **Carica business case**). Servono inoltre i business case BC-01, BC-03 e BC-05 (versione PDF) in [`materiali/business-case`](../../../resources/advanced/business-case/).
+::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
+- **Un prompt dedicato invece di chiedere all'agente "leggi il documento".** In chat l'agente potrebbe leggere il PDF (File uploads), ma il risultato dipenderebbe da come l'utente formula la richiesta. Un prompt con istruzioni fisse, input tipizzati e output JSON dà un'estrazione coerente, testabile a parte e utilizzabile in automazione (verrà riusato nel trigger email di S05).
+- **Output JSON.** Un JSON con campi definiti si collega direttamente alle colonne di Dataverse nel flow: niente interpretazione del testo libero.
+- **Prompt richiamato da un agent flow, non come strumento diretto.** L'input documento non è supportato quando il prompt viene usato direttamente come strumento dell'agente: si usa l'azione **Run a prompt** in un flow. Il flow inoltre aggiunge passi deterministici (cercare il proponente, creare o riusare il record) che non devono essere lasciati al modello.
+- **Grounding sui programmi attivi.** Il prompt riceve dal vivo l'elenco dei programmi attivi da Dataverse: può verificare che il codice indicato nel documento esista e, se il documento è ambiguo, suggerire i programmi compatibili. La scelta finale resta a una persona.
+- **Deduplica per email.** Lo stesso proponente presenta più proposte: l'email aziendale è la chiave che evita duplicati nell'anagrafica.
+- **Segnalazione di prompt injection.** Il documento è un dato. Il prompt deve segnalare i testi che cercano di dare istruzioni al sistema (verrà messo alla prova in S07 con BC-06).
+:::
 
-> [!NOTE]
-> **Perché questa scelta**
->
-> - **Un prompt dedicato invece di chiedere all'agente "leggi il documento".** In chat l'agente potrebbe leggere il PDF (File uploads), ma il risultato dipenderebbe da come l'utente formula la richiesta. Un prompt con istruzioni fisse, input tipizzati e output JSON dà un'estrazione coerente, testabile a parte e utilizzabile in automazione (verrà riusato nel trigger email di S05).
-> - **Output JSON.** Un JSON con campi definiti si collega direttamente alle colonne di Dataverse nel flow: niente interpretazione del testo libero.
-> - **Prompt richiamato da un agent flow, non come strumento diretto.** L'input documento non è supportato quando il prompt viene usato direttamente come strumento dell'agente: si usa l'azione **Run a prompt** in un flow. Il flow inoltre aggiunge passi deterministici (cercare il proponente, creare o riusare il record) che non devono essere lasciati al modello.
-> - **Grounding sui programmi attivi.** Il prompt riceve dal vivo l'elenco dei programmi attivi da Dataverse: può verificare che il codice indicato nel documento esista e, se il documento è ambiguo, suggerire i programmi compatibili. La scelta finale resta a una persona.
-> - **Deduplica per email.** Lo stesso proponente presenta più proposte: l'email aziendale è la chiave che evita duplicati nell'anagrafica.
-> - **Segnalazione di prompt injection.** Il documento è un dato. Il prompt deve segnalare i testi che cercano di dare istruzioni al sistema (verrà messo alla prova in S07 con BC-06).
+## Prerequisiti
+
+Per svolgere questo lab occorre avere completato i laboratori S01 e S02 (Agente Demand IT, child agent **Intake Proposte** e agent flow **Carica business case**). Servono inoltre i business case BC-01, BC-03 e BC-05 (versione PDF) in [`materiali/business-case`](../../../resources/advanced/business-case/).
 
 ## Prompt "Estrai dati business case"
 

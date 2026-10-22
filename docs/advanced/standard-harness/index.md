@@ -1,6 +1,6 @@
 # Advanced · Standard Harness
 
-[Back to Advanced](../index.md)
+[← Home del corso](../../../README.md)
 
 Il caso pratico costruito con la **standard harness**: l'Agente Demand IT orchestra child agent, agent flow, prompt e connected agent per ricevere, valutare e preparare le proposte di progetto IT di Zava. La storia del caso e gli schemi dei componenti si trovano nei laboratori, a partire dal [Lab 00](./00-setup-dati/README.md).
 

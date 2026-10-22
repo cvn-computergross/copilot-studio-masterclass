@@ -51,7 +51,7 @@ Le guide restano scritte per GitHub e non vanno modificate per il sito. A ogni b
 - sostituisce i segnaposto delle icone e il numero dei lab;
 - nei lab, separa un passo numerato scritto subito sotto un paragrafo, così diventa un passo come gli altri.
 
-Gli schemi dell'Advanced sono SVG generati da `tools/diagrams.py` (glifi Phosphor e loghi Microsoft): si modificano lì e si rigenerano con `python tools/diagrams.py`. I callout di GitHub (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`…) VitePress li riconosce da solo; qui se ne traduce il titolo in italiano.
+Gli schemi dell'Advanced sono SVG generati da `tools/diagrams.py` (glifi Phosphor e loghi Microsoft): si modificano lì e si rigenerano con `python tools/diagrams.py` (servono Pillow e `npm install`, perché i testi si misurano con il file di Inter di VitePress; lo script si ferma se un testo non sta nel suo riquadro). Nelle guide restano normali immagini (`![testo](../../images/nome.svg)`), così si vedono anche su GitHub, dove seguono il tema chiaro/scuro del sistema operativo. Nel sito `markdown.ts` inserisce l'SVG direttamente nella pagina (`<figure class="diagram">`, testo vero, il testo alternativo come nome accessibile) e ne toglie lo stile: i colori vengono da `theme/style.css` e seguono l'interruttore chiaro/scuro del sito. Sugli schermi stretti lo schema non scende sotto 640px e si scorre in orizzontale. I callout di GitHub (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`…) VitePress li riconosce da solo; qui se ne traduce il titolo in italiano e gli si mette davanti il glifo dell'Icon Pack (blu per note, suggerimenti e cose importanti, rosso per avvisi e pericoli).
 
 Nel browser, `theme/checklist.ts` mette una casella davanti a ogni passo numerato dei lab e ricorda le spunte; la barra di avanzamento sta nella colonna destra (o sopra il testo, sugli schermi più stretti).
 
@@ -59,7 +59,7 @@ Nel browser, `theme/checklist.ts` mette una casella davanti a ogni passo numerat
 
 Le guide stanno in `docs/<livello>/<sezione>/NN-nome/README.md`: livelli `fondamentali` (Fundamentals) e `advanced` (Advanced), sezioni `standard-harness` e `github-harness`.
 
-Il menu si costruisce da solo dalle cartelle: Home, Student info, poi un gruppo per livello. Nel gruppo Advanced ci sono prima le pagine di riferimento del caso pratico (`LEVEL_PAGES` in `content.ts`), poi le sezioni. Il nome di una sezione apre la sua panoramica (`index.md`) e contiene i lab in ordine di numero; il nome nel menu è il titolo `# ` del lab. Livelli, sezioni e testi del selettore "Choose your experience" sono in `content.ts` (`LEVELS`, `SECTIONS`, `EXPERIENCES`).
+Il menu si costruisce da solo dalle cartelle: Home, Student info, Riferimenti e licenze (`credits.md`), poi un gruppo per livello. Il nome del gruppo (Fundamentals, Advanced) è un titolo fisso: non si chiude e non apre una pagina, perché un livello non ha una pagina propria (la storia del caso pratico sta nello *Scenario* dei lab, a partire dal Lab 00). Dentro il gruppo ci sono le eventuali pagine di riferimento del livello (`LEVEL_PAGES` in `content.ts`), poi le sezioni. Il nome di una sezione apre la sua panoramica (`index.md`) e contiene i lab in ordine di numero; il nome nel menu è il titolo `# ` del lab. Livelli, sezioni e testi del selettore "Choose your experience" sono in `content.ts` (`LEVELS`, `SECTIONS`, `EXPERIENCES`).
 
 I termini di navigazione (menu, Previous/Next, ricerca, avanzamento) sono in inglese; i contenuti in italiano.
 

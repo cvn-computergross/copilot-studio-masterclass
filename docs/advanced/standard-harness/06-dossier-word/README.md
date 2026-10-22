@@ -2,6 +2,8 @@
 
 [Previous: S05](../05-trigger-email/README.md) | [Back to Standard Harness](../index.md) | [Next: S07](../07-valutazioni-e-pubblicazione/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~60 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
 ## Scenario
 
 Dopo S05 le proposte arrivano al PMO dalla chat e dalla casella email, e ognuna può avere una valutazione confermata da un analista. Il passo successivo è il **Comitato di Valutazione Investimenti IT**, che decide sulla base di un dossier di revisione. Oggi ogni dossier costa a un analista circa due ore di lavoro.
@@ -17,32 +19,25 @@ In questo lab il dossier verrà generato come **documento Word** a partire da un
 - Salvare il documento in OneDrive e creare un link di condivisione in un agent flow.
 - Consegnare il link all'utente con un topic.
 
-> [!NOTE]
-> **Informazioni sul lab**
->
-> Harness: **standard**. Tempo stimato: 60 minuti.
-
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere:
->
-> - almeno una Valutazione registrata (S04);
-> - il template [`Zava_Dossier_Revisione_Template.docx`](../../../resources/advanced/template/Zava_Dossier_Revisione_Template.docx);
-> - OneDrive for Business attivo per il proprio account (basta averlo aperto almeno una volta da [office.com](https://www.office.com/)). Non serve creare cartelle: il dossier viene salvato nella radice, **I miei file**.
-
-> [!NOTE]
-> **Perché questa scelta**
->
-> - **Template Word con segnaposto.** La struttura del documento (titoli, ordine, tabelle, nota sull'uso dell'IA) sta nel template, che il PMO può modificare in Word. Il prompt compila solo i campi `{{...}}`: il layout resta identico a ogni generazione.
-> - **Il dossier riflette la valutazione registrata.** Il prompt legge livelli, evidenze e punteggio dalla Valutazione (AS-####) invece di rivalutare la proposta: il documento coincide con ciò che è stato confermato in S04.
-> - **Flow con OneDrive e link di condivisione.** In un topic il contenuto del documento generato non è disponibile direttamente come output del nodo. La documentazione indica di usare un flow che salva il file in OneDrive o SharePoint, crea un link di condivisione e lo restituisce al topic.
-> - **Topic invece di lasciare decidere all'orchestratore.** La generazione del dossier ha un input preciso (il codice valutazione) e una consegna fissa (il link). Un topic con una variabile di input garantisce che il codice venga chiesto se manca e che il link venga sempre mostrato.
+::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
+- **Template Word con segnaposto.** La struttura del documento (titoli, ordine, tabelle, nota sull'uso dell'IA) sta nel template, che il PMO può modificare in Word. Il prompt compila solo i campi `{{...}}`: il layout resta identico a ogni generazione.
+- **Il dossier riflette la valutazione registrata.** Il prompt legge livelli, evidenze e punteggio dalla Valutazione (AS-####) invece di rivalutare la proposta: il documento coincide con ciò che è stato confermato in S04.
+- **Flow con OneDrive e link di condivisione.** In un topic il contenuto del documento generato non è disponibile direttamente come output del nodo. La documentazione indica di usare un flow che salva il file in OneDrive o SharePoint, crea un link di condivisione e lo restituisce al topic.
+- **Topic invece di lasciare decidere all'orchestratore.** La generazione del dossier ha un input preciso (il codice valutazione) e una consegna fissa (il link). Un topic con una variabile di input garantisce che il codice venga chiesto se manca e che il link venga sempre mostrato.
+:::
 
 > [!NOTE]
 > **Confronto con il percorso GitHub Copilot**
 >
 > Nel percorso GitHub Copilot (G06) il layout è scritto in codice Python dentro una skill. Qui è in un file Word. Entrambe le soluzioni separano il **layout** (fisso) dal **contenuto** (generato).
+
+## Prerequisiti
+
+Per svolgere questo lab occorre avere:
+
+- almeno una Valutazione registrata (S04);
+- il template [`Zava_Dossier_Revisione_Template.docx`](../../../resources/advanced/template/Zava_Dossier_Revisione_Template.docx);
+- OneDrive for Business attivo per il proprio account (basta averlo aperto almeno una volta da [office.com](https://www.office.com/)). Non serve creare cartelle: il dossier viene salvato nella radice, **I miei file**.
 
 ## Template del dossier
 

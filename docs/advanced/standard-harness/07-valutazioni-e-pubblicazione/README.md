@@ -2,6 +2,8 @@
 
 [Previous: S06](../06-dossier-word/README.md) | [Back to Standard Harness](../index.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~60 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
 ## Scenario
 
 Con S06 il sistema della standard harness è completo: due canali di ingresso, intake e valutazione con conferma, preparazione della revisione e dossier per il Comitato. Prima di consegnarlo al PMO restano due domande: l'agente continua a comportarsi bene dopo ogni modifica? E resiste a chi prova a usarlo in modo scorretto?
@@ -19,33 +21,26 @@ In questo lab verranno creati due set di test (comportamento di base e sicurezza
 - Pubblicare l'agente e aprirlo in Microsoft 365 Copilot solo per sé, senza distribuirlo.
 - Provare il processo end to end da Microsoft 365 Copilot.
 
-> [!NOTE]
-> **Informazioni sul lab**
->
-> Harness: **standard**. Tempo stimato: 60 minuti.
-
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere:
->
-> - completato i laboratori S01-S06;
-> - il permesso di pubblicare agenti (ruolo **Copilot Studio Authors**, modulo 1);
-> - per Microsoft 365 Copilot: le licenze necessarie nel tenant di laboratorio.
-
 > [!WARNING]
 > **Consumo di capacità**
 >
 > Le valutazioni eseguono davvero l'agente e consumano capacità come le conversazioni. Vengono eseguite con l'utente connesso a Copilot Studio e con le sue connessioni.
 
-> [!NOTE]
-> **Perché questa scelta**
->
-> - **Test set come test di regressione.** Un test set è un gruppo di domande con le risposte attese. Si esegue dopo ogni modifica: se un caso che passava inizia a fallire, si sa subito che cosa si è rotto. La regola d'oro è che tutti i casi passino, così un fallimento significa sempre un problema.
-> - **Meaning match invece di Exact match.** Le risposte di un agente generativo cambiano formulazione. **Meaning match** valuta se il significato coincide con quello atteso; la soglia di 70 (invece del valore predefinito 50) rende il test più severo senza pretendere le stesse parole.
-> - **Tool use per il percorso.** Per alcune richieste non conta solo la risposta ma **quale** componente è stato usato: il metodo **Tool use** verifica che sia stato attivato il topic o lo strumento atteso.
-> - **Casi senza effetti collaterali.** I test vengono rieseguiti molte volte: si evitano casi che creano proposte, valutazioni o eventi. Le scritture si provano a mano, in modo controllato.
-> - **Pubblicare non vuol dire distribuire.** **Publish** rende attiva la versione corrente dell'agente; il canale **Teams and Microsoft 365 Copilot** la rende apribile in Microsoft 365 Copilot. Finché l'agente non viene condiviso e distribuito nell'organizzazione, lo vede solo il suo autore: è il modo giusto di provarlo in un ambiente di corso.
+::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
+- **Test set come test di regressione.** Un test set è un gruppo di domande con le risposte attese. Si esegue dopo ogni modifica: se un caso che passava inizia a fallire, si sa subito che cosa si è rotto. La regola d'oro è che tutti i casi passino, così un fallimento significa sempre un problema.
+- **Meaning match invece di Exact match.** Le risposte di un agente generativo cambiano formulazione. **Meaning match** valuta se il significato coincide con quello atteso; la soglia di 70 (invece del valore predefinito 50) rende il test più severo senza pretendere le stesse parole.
+- **Tool use per il percorso.** Per alcune richieste non conta solo la risposta ma **quale** componente è stato usato: il metodo **Tool use** verifica che sia stato attivato il topic o lo strumento atteso.
+- **Casi senza effetti collaterali.** I test vengono rieseguiti molte volte: si evitano casi che creano proposte, valutazioni o eventi. Le scritture si provano a mano, in modo controllato.
+- **Pubblicare non vuol dire distribuire.** **Publish** rende attiva la versione corrente dell'agente; il canale **Teams and Microsoft 365 Copilot** la rende apribile in Microsoft 365 Copilot. Finché l'agente non viene condiviso e distribuito nell'organizzazione, lo vede solo il suo autore: è il modo giusto di provarlo in un ambiente di corso.
+:::
+
+## Prerequisiti
+
+Per svolgere questo lab occorre avere:
+
+- completato i laboratori S01-S06;
+- il permesso di pubblicare agenti (ruolo **Copilot Studio Authors**, modulo 1);
+- per Microsoft 365 Copilot: le licenze necessarie nel tenant di laboratorio.
 
 ## Test set di base dell'Agente Demand IT
 

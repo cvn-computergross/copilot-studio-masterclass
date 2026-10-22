@@ -36,7 +36,12 @@ export default {
         setupChecklist(route.path, page.value.relativePath)
         setupAnimations()
       })
-    onMounted(enhance)
+    onMounted(() => {
+      enhance()
+      // server di sviluppo: salvando un .md la pagina si ridisegna senza cambiare indirizzo
+      // e perde le caselle aggiunte da checklist.ts; si rimettono dopo ogni aggiornamento
+      import.meta.hot?.on('vite:afterUpdate', enhance)
+    })
     watch(() => route.path, enhance)
   },
 } satisfies Theme

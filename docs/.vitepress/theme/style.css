@@ -118,7 +118,7 @@
 /* sfondo bianco come il contenuto, sezioni in maiuscoletto, sotto-voci senza filo
    verticale a sinistra */
 :root, .dark { --vp-sidebar-bg-color: var(--vp-c-bg); }
-.VPSidebarItem.level-0.collapsible > .item .text { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.VPSidebarItem.level-0:not(.is-link) > .item .text { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .VPSidebarItem.level-1 .items, .VPSidebar .VPSidebarItem .items { border-left: 0 !important; }
 
 /* 4. Colonna destra ---------------------------------------------------------- */
@@ -150,19 +150,11 @@
 @media (min-width: 1280px) { .doc-progress { display: none; } }
 
 /* 5. Contenuto ------------------------------------------------------------- */
-/* callout: icona dell'Icon Pack davanti al titolo, nel colore del callout */
+/* callout: davanti al titolo il glifo dell'Icon Pack (markdown.ts), come le altre icone:
+   contorno scuro e strato duotone blu (note, suggerimenti) o rosso (avvisi, pericoli) */
 .vp-doc .custom-block .custom-block-title { display: flex; align-items: center; gap: 6px; }
-.vp-doc .custom-block .custom-block-title::before {
-  content: ""; flex: none; width: 18px; height: 18px; background: currentColor;
-  -webkit-mask: var(--callout-icon) center / contain no-repeat; mask: var(--callout-icon) center / contain no-repeat;
-}
-.vp-doc .custom-block.note { --callout-icon: url("./icons/note-pencil.svg"); }
-.vp-doc .custom-block.tip { --callout-icon: url("./icons/lightbulb.svg"); }
-.vp-doc .custom-block.info,
-.vp-doc .custom-block.important { --callout-icon: url("./icons/info.svg"); }
-.vp-doc .custom-block.warning { --callout-icon: url("./icons/warning.svg"); }
-.vp-doc .custom-block.danger,
-.vp-doc .custom-block.caution { --callout-icon: url("./icons/prohibit.svg"); }
+.vp-doc .custom-block-title .callout-icon { flex: none; vertical-align: 0; }
+.vp-doc .custom-block-title .callout-icon svg { width: 18px; height: 18px; }
 /* note, suggerimenti e cose importanti in blu; avvisi e pericoli in rosso */
 :root {
   --vp-custom-block-note-bg: var(--instructions-tint);
@@ -193,6 +185,41 @@
 /* davanti a un titolo o a una voce di tabella */
 .vp-doc :is(h2, h3) > :is(.icon, .logo):first-child { margin-right: .4em; }
 .vp-doc td > :is(.icon, .logo):first-child { margin-right: .35em; }
+
+/* schemi dell'Advanced (tools/diagrams.py): markdown.ts li inserisce nella pagina come SVG,
+   senza il loro <style>; qui i colori, che seguono il tema del sito (.dark). Riquadri,
+   corsie e note usano le classi di argomento f-…; le regole dg-… sono le stesse di RULES in
+   tools/diagrams.py. Sfondo trasparente; sugli schermi stretti lo schema non scende sotto
+   640px e si scorre in orizzontale */
+.vp-doc .diagram {
+  --dg-body: #363b42; --dg-muted: #6b7480; --dg-rule: #e2e5e9; --dg-neutral: #b4bac2;
+  --dg-bg: var(--vp-c-bg); --dg-card: var(--vp-c-bg); --dg-outline: var(--icon-outline);
+  --dg-badge: var(--ai-engine); --dg-badge-ink: #fff;
+  margin: 24px 0; overflow-x: auto; scrollbar-width: thin;
+}
+.dark .vp-doc .diagram {
+  --dg-body: var(--vp-c-text-1); --dg-muted: var(--vp-c-text-2); --dg-rule: var(--vp-c-divider);
+  --dg-neutral: #7d858f; --dg-badge-ink: var(--vp-c-bg);
+}
+.vp-doc .diagram > svg { display: block; max-width: 100%; min-width: 640px; height: auto; margin: 0 auto; font-family: var(--vp-font-family-base); }
+.diagram .dg-box { fill: var(--f-tint); }
+.diagram .dg-card { fill: var(--dg-card); stroke: var(--dg-rule); }
+.diagram .dg-lane { fill: var(--f-tint); stroke: var(--f-fill); }
+.diagram .dg-label { fill: var(--f); }
+.diagram .dg-sub { fill: var(--dg-muted); }
+.diagram .dg-body { fill: var(--dg-body); }
+.diagram .dg-ol { fill: var(--dg-outline); }
+.diagram .dg-dt { fill: var(--f-fill); }
+.diagram .dg-arrow { fill: none; stroke: var(--f); stroke-width: 1.6; }
+.diagram .dg-head { fill: var(--f); }
+.diagram .dg-pill { fill: var(--dg-bg); stroke: var(--dg-rule); }
+.diagram .dg-pilltext { fill: var(--f); }
+.diagram .dg-neutral { --f: var(--dg-neutral); }
+.diagram .dg-neutral .dg-pilltext { fill: var(--dg-muted); }
+.diagram .dg-note { fill: var(--f-tint); }
+.diagram .dg-rule { stroke: var(--dg-rule); }
+.diagram .dg-badge circle { fill: var(--dg-badge); }
+.diagram .dg-badge text { fill: var(--dg-badge-ink); }
 
 /* 7. Blocchi della home ----------------------------------------------------- */
 .vp-doc .hero { display: flex; align-items: center; gap: 24px; margin: 8px 0 20px; }
@@ -281,6 +308,8 @@
 .site-footer { border-top: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); }
 .site-footer__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px; }
 .site-footer__copy { font-size: 12px; color: var(--vp-c-text-2); }
+.site-footer__copy a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.site-footer__copy a:hover { color: var(--vp-c-brand-1); }
 .site-footer__logos { display: flex; align-items: center; gap: 12px; margin-left: auto; }
 .site-footer__logos img { height: 24px; width: auto; }
 .site-footer__sep { width: 1px; height: 22px; background: var(--vp-c-divider); }
@@ -312,3 +341,6 @@
 .experience__option--active { border-color: var(--f); box-shadow: inset 4px 0 0 var(--f); }
 .experience__option:not(.experience__option--active) { opacity: .75; }
 .experience__option:not(.experience__option--active):hover { opacity: 1; }
+
+/* riquadri apribili "::: details" (es. "Perché questa scelta"): il titolo si legge come cliccabile */
+.vp-doc .custom-block.details summary { cursor: pointer; font-weight: 600; }

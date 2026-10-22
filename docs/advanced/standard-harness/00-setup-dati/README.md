@@ -2,6 +2,8 @@
 
 Previous: Start | [Back to Standard Harness](../index.md) | [Next: S01](../01-agente-orchestratore/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~90 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard e GitHub Copilot (laboratorio condiviso)
+
 ## Scenario
 
 Zava S.p.A. è una società tecnologica italiana con 420 dipendenti, sede a Milano e uffici a Torino, Bologna e Roma. Ogni anno le funzioni aziendali (Acquisti, Vendite, Risorse Umane, Servizio Clienti, IT Operations, Sicurezza) propongono nuovi progetti IT. Le proposte vengono finanziate attraverso cinque **programmi di investimento**, ciascuno con un budget e con criteri di valutazione propri.
@@ -32,39 +34,42 @@ Prima che un agente possa registrare e valutare proposte, il PMO ha bisogno di u
 
 Agent Academy fornisce per l'Hiring Agent una soluzione già pronta da importare. Qui il modello viene costruito a mano: richiede più tempo, ma permette di capire ogni scelta che gli agenti useranno dopo (nomi logici, codici automatici, scelte, relazioni).
 
-> [!WARNING]
-> **Prerequisito**
->
-> Per svolgere questo lab occorre avere a disposizione:
->
-> - Un ambiente di laboratorio con Dataverse (lo stesso dei fondamenti va bene) e il ruolo **System Customizer** o **System Administrator**.
-> - Il publisher **CSM Solutions** con prefisso `csm` e prefisso delle scelte `77000` (creato nel modulo 1 dei fondamenti; se non esiste, crearlo durante la creazione della soluzione).
-> - I file [`programs.csv`](../../../resources/advanced/data/programs.csv) e [`evaluation-criteria.csv`](../../../resources/advanced/data/evaluation-criteria.csv).
-> - Un sito SharePoint dove poter creare cartelle e caricare file (per la cartella della conoscenza PMO), e i file [`Zava_PMO_Linee_Guida_Business_Case.docx`](../../../resources/advanced/conoscenza/Zava_PMO_Linee_Guida_Business_Case.docx) e [`Zava_Piano_Strategico_IT_2026-2028.pdf`](../../../resources/advanced/conoscenza/Zava_Piano_Strategico_IT_2026-2028.pdf).
+Ogni record del PMO Demand Hub ha un codice leggibile: Proposta `PP-####`, Valutazione `AS-####`, Proponente `RQ-####`, Programma `PG-###`. Gli agenti leggono questi codici dai risultati degli strumenti e non li inventano mai. I codici del proprio ambiente saranno diversi da quelli degli esempi: nelle prove si controlla la forma, non il valore.
 
-> [!NOTE]
-> **Laboratorio condiviso**
->
-> Questo laboratorio è condiviso dai due percorsi. Tempo stimato: 90 minuti.
+Questo laboratorio è condiviso dai due percorsi, standard e GitHub Copilot: dopo il setup si sceglie un percorso e si svolgono i lab in ordine, perché ogni lab estende il precedente. Chi vuole confrontare le harness può svolgere anche l'altro percorso nello stesso ambiente: gli agenti del percorso GitHub Copilot hanno il suffisso ` - GH`, così i componenti non si confondono.
 
 > [!TIP]
 > **Percorso rapido**
 >
 > Anche per questo corso c'è una soluzione pronta: [`PMODemandIT_1_0_0_0.zip`](../../../resources/advanced/solution/PMODemandIT_1_0_0_0.zip). Contiene le stesse tabelle, colonne e nomi logici in inglese descritti qui, più l'app PMO Demand Hub con home page, import CSV e Proposal Board. Se la si importa (**Solutions**, **Import solution**), saltare le sezioni da *Creare la soluzione* a *Creare l'app PMO Demand Hub*, abilitare a mano **Enable attachments** sulla tabella **Proposal** e riprendere da *Importare programmi e criteri*. Le istruzioni dettagliate sono nel [README della soluzione](../../../resources/advanced/solution/README.md).
 
-> [!NOTE]
-> **Perché queste scelte**
->
-> - **Dataverse invece di una lista SharePoint o di un Excel.** Il processo ha relazioni (una proposta ha un proponente, un programma, una o più valutazioni), regole sui tipi di dato e codici univoci. Dataverse le gestisce in modo nativo, rispetta la sicurezza per ruolo ed è la fonte che entrambe le harness sanno leggere e scrivere (connettore e prompt nella standard harness, Dataverse MCP Server nella GitHub Copilot harness).
-> - **Codici con numerazione automatica.** Persone e agenti si scambiano codici leggibili (PP-1003), non GUID. Il codice lo genera Dataverse, così l'agente non ha mai motivo di inventarlo.
-> - **Criteri come righe di una tabella.** Pesi e descrizioni sono dati che il PMO può cambiare senza toccare gli agenti. Il grounding legge sempre la versione aggiornata.
-> - **Nomi logici decisi esplicitamente.** Prompt, skill e flow citano i nomi logici delle colonne (`csm_requestedbudget`, `csm_proposalstatus`...). Impostarli in modo esplicito evita sorprese e rende le istruzioni copiabili da questo laboratorio.
-> - **Due modi di conservare il documento.** Una colonna **File** per il percorso standard (il flow carica e riscarica il PDF per il prompt) e le **note** abilitate per il percorso GitHub Copilot (il contenuto della nota è leggibile con il Dataverse MCP Server). Nel percorso che non si usa, la colonna o le note rimangono semplicemente vuote.
+::: details <!-- icon: lightbulb f-instructions --> Perché queste scelte
+- **Dataverse invece di una lista SharePoint o di un Excel.** Il processo ha relazioni (una proposta ha un proponente, un programma, una o più valutazioni), regole sui tipi di dato e codici univoci. Dataverse le gestisce in modo nativo, rispetta la sicurezza per ruolo ed è la fonte che entrambe le harness sanno leggere e scrivere (connettore e prompt nella standard harness, Dataverse MCP Server nella GitHub Copilot harness).
+- **Codici con numerazione automatica.** Persone e agenti si scambiano codici leggibili (PP-1003), non GUID. Il codice lo genera Dataverse, così l'agente non ha mai motivo di inventarlo.
+- **Criteri come righe di una tabella.** Pesi e descrizioni sono dati che il PMO può cambiare senza toccare gli agenti. Il grounding legge sempre la versione aggiornata.
+- **Nomi logici decisi esplicitamente.** Prompt, skill e flow citano i nomi logici delle colonne (`csm_requestedbudget`, `csm_proposalstatus`...). Impostarli in modo esplicito evita sorprese e rende le istruzioni copiabili da questo laboratorio.
+- **Due modi di conservare il documento.** Una colonna **File** per il percorso standard (il flow carica e riscarica il PDF per il prompt) e le **note** abilitate per il percorso GitHub Copilot (il contenuto della nota è leggibile con il Dataverse MCP Server). Nel percorso che non si usa, la colonna o le note rimangono semplicemente vuote.
+:::
 
 > [!TIP]
 > **Dove lavorare**
 >
 > Lavorare in [Power Apps](https://make.powerapps.com/) per le tabelle e l'app: il designer delle tabelle offre tutte le opzioni necessarie, inclusa la numerazione automatica. Prima di iniziare controllare in alto a destra che l'ambiente sia quello di laboratorio.
+
+## Prerequisiti
+
+Per svolgere questo lab occorre avere a disposizione:
+
+- Un ambiente di laboratorio con Dataverse (lo stesso dei fondamenti va bene) e il ruolo **System Customizer** o **System Administrator**.
+- Il publisher **CSM Solutions** con prefisso `csm` e prefisso delle scelte `77000` (creato nel modulo 1 dei fondamenti; se non esiste, crearlo durante la creazione della soluzione).
+- I file [`programs.csv`](../../../resources/advanced/data/programs.csv) e [`evaluation-criteria.csv`](../../../resources/advanced/data/evaluation-criteria.csv).
+- Un sito SharePoint dove poter creare cartelle e caricare file (per la cartella della conoscenza PMO), e i file [`Zava_PMO_Linee_Guida_Business_Case.docx`](../../../resources/advanced/conoscenza/Zava_PMO_Linee_Guida_Business_Case.docx) e [`Zava_Piano_Strategico_IT_2026-2028.pdf`](../../../resources/advanced/conoscenza/Zava_Piano_Strategico_IT_2026-2028.pdf).
+
+Per i laboratori successivi servono anche:
+
+- le licenze per i connettori Office 365 Outlook, Office 365 Users, Microsoft Teams e OneDrive for Business nel tenant di laboratorio;
+- i materiali del caso pratico in [`resources/advanced`](../../../resources/advanced/) (business case, email di prova, template del dossier, skill): ogni lab indica nei prerequisiti i file che usa;
+- per il percorso GitHub Copilot: il Microsoft Dataverse MCP Server disponibile nell'ambiente (vedi *Impostazioni per il percorso GitHub Copilot*), Work IQ abilitato nel tenant, capacità di Copilot Credits e un secondo utente del tenant, con casella di posta, da usare come sponsor o architetto nei test di pianificazione. Tutti i partecipanti alle riunioni devono essere **interni** al tenant.
 
 ## Soluzione
 

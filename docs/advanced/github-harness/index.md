@@ -1,6 +1,6 @@
 # Advanced · GitHub Harness
 
-[Back to Advanced](../index.md)
+[← Home del corso](../../../README.md)
 
 > [!NOTE]
 > Sezione in preparazione: qui arriverà lo stesso caso pratico costruito con la GitHub Copilot harness.
