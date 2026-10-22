@@ -2,21 +2,41 @@
 
 [Previous: Lab 02](../02-knowledge-sources/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 04](../04-job-posting-tools/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~60 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
+## Scenario
+
+All'Help Desk di Zava arrivano ogni giorno segnalazioni simili: un problema hardware, un'applicazione che non parte, la rete che non funziona. Per queste richieste il reparto IT vuole risposte standard, sempre uguali e conformi alle procedure, non suggerimenti generati di volta in volta. Quando serve un intervento, l'utente deve poter aprire un ticket fornendo tutti i dati necessari.
+
+In questo lab si crea un nuovo agente, **Help Desk**, che lavora con i **topic**: un primo topic guida l'utente nella scelta del tipo di problema e risponde con i passaggi di troubleshooting, un secondo raccoglie i dati del ticket con una **adaptive card** e ne mostra il riepilogo.
+
+## Che cosa si costruisce
+
+L'agente **Help Desk** sceglie il topic in base alla descrizione del suo trigger: "Ho un problema tecnico" avvia **First Topic - Supporto Tecnico**, "Voglio aprire un ticket" avvia **Ticket Card**. Se la risposta alla domanda del primo topic non corrisponde a nessuna opzione, il ramo **All other conditions** passa al topic di sistema **Escalate**. Lo schema di ogni topic, nodo per nodo, si trova all'inizio della sezione che lo crea.
+
+![Agente Help Desk: l'utente avvia First Topic - Supporto Tecnico o Ticket Card; dal primo topic il ramo All other conditions porta al topic di sistema Escalate](../../images/lab03-agente-help-desk.svg)
+
+## Prerequisiti
+
+Per svolgere questo lab occorre avere:
+
+- completato il Lab 01 (developer environment e solution `CSMFirstAgent` come preferred solution).
+
 ## Creazione Agente Ticket
 
-Questo laboratorio ha l’obiettivo di guidare alla creazione del primo Topic utilizzando un nuovo agente per avere un maggiore controllo sul comportamento. 
+Questo laboratorio ha l’obiettivo di guidare alla creazione del primo Topic utilizzando un nuovo agente, per avere un maggiore controllo sul comportamento.
 
-Nel corso del laboratorio viene creato un agente vuoto, privo di connettori, azioni o fonti esterne. L’agente si basa unicamente sulle istruzioni fornite e su i Topics.
+Nel corso del laboratorio viene creato un agente vuoto, privo di connettori, azioni o fonti esterne. L’agente si basa unicamente sulle istruzioni fornite e sui Topic.
 
-1. Dalla home page di  [Copilot Studio](https://copilotstudio.microsoft.com/) premere **Agents**
+1. Dalla home page di [Copilot Studio](https://copilotstudio.microsoft.com/) premere **Agents**.
 
 ![](./images/creazione-agente-ticket-01.png)
 
-2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nel' Environment, proseguire premendo **Create blank agent** .
+2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nell'environment; proseguire premendo **Create blank agent**.
 
 ![](./images/creazione-agente-ticket-02.png)
 
-3. Copilot Studio procederà con la creazione dell' agente vuoto, per effettuare modifiche aspettare il seguente Messaggio:
+3. Copilot Studio procederà con la creazione dell'agente vuoto: per effettuare modifiche aspettare il seguente messaggio:
 
 ![](./images/creazione-agente-ticket-03.png)
 
@@ -31,7 +51,7 @@ Inserire alcuni dettagli all'agente e delle istruzioni molto basilari, il focus 
 Un Help Desk Agent fornisce supporto tecnico di primo livello agli utenti identificando e risolvendo problematiche Hardware, Software e di rete.
 ```
 
-- Istructions:
+- Instructions:
 
 ```
 ## Obiettivo
@@ -47,6 +67,9 @@ L’Help Desk Agent fornisce supporto tecnico di primo livello utilizzando esclu
 
 ## Creazione del Primo Topic
 
+Il topic da costruire, come apparirà nel canvas: il trigger, la domanda a scelta multipla salvata nella variabile **Issue**, un ramo della condizione per ogni opzione con il suo messaggio, il ramo **All other conditions** che passa a **Escalate** e la chiusura con **End current topic**.
+
+![Topic First Topic - Supporto Tecnico: trigger, Question con variabile Issue, rami Hardware, Software e Network Issues con un messaggio ciascuno, ramo All other conditions verso Escalate, End current topic](../../images/lab03-topic-supporto-tecnico.svg)
 
 1. Nel menù dell'Agente premere su `Topics`.
 
@@ -64,7 +87,7 @@ First Topic - Supporto Tecnico
 
 ![](./images/creazione-primo-topic-03.png)
 
-5. Ora aggiugere il `trigger` con la seguente descrizione:
+4. Ora aggiungere il `trigger` con la seguente descrizione:
 
 ```
 Questo topic gestisce le richieste di assistenza relative a problematiche tecniche segnalate dagli utenti durante l’utilizzo di strumenti, applicazioni o servizi aziendali.
@@ -73,25 +96,27 @@ Questo topic gestisce le richieste di assistenza relative a problematiche tecnic
 ![](./images/creazione-primo-topic-04.png)
 
 
-6. Sotto al `Trigger` premere su `+Add Node`
+5. Sotto al `Trigger` premere su `+Add Node`.
 
 ![](./images/creazione-primo-topic-05.png)
 
-7. Selezionare `Ask a question` e inserire nel corpo il seguente messaggio:
+6. Selezionare `Ask a question` e inserire nel corpo il seguente messaggio:
 
 ```
 Salve User.DisplayName ,
 potresti identificare la tipologia di problema?
 ```
 
-3. Aggiungere *User.DisplayName* premendo il simbolo `{x}`.
+7. Aggiungere *User.DisplayName* premendo il simbolo `{x}`.
 
->[!NOTE]
->In questo lab vegono citate e utilizzate le Variabili, presenti in Copilot Studio. Per avere maggiori informazioni sul funzionamento, la tipologia e la creazione di variabili visitare la [Documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables?tabs=webApp)
+> [!NOTE]
+> **Variabili**
+>
+> In questo lab vengono citate e utilizzate le variabili di Copilot Studio. Per maggiori informazioni sul funzionamento, sui tipi e sulla creazione delle variabili consultare la [documentazione](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables?tabs=webApp).
 
-4. Su Identify selezionare `Multiple choice options` 
+8. Su Identify selezionare `Multiple choice options`.
 
-5. Inserire nuove opzioni di risposta:
+9. Inserire nuove opzioni di risposta:
 
 - `Hardware Issues`
 - `Software Issues`
@@ -99,20 +124,20 @@ potresti identificare la tipologia di problema?
 
 ![](./images/creazione-primo-topic-06.png)
 
-6. Modificare il nome della variabile del nodo. Per fare ciò premere sulla variabile.
+10. Modificare il nome della variabile del nodo. Per fare ciò premere sulla variabile.
 
 ![](./images/creazione-primo-topic-07.png)
 
-7. Nelle Variable Properties modificare il nome in Issue e fare caso ai vari settaggi della variabile
+11. Nelle Variable Properties modificare il nome in `Issue` e fare caso alle varie impostazioni della variabile.
 
 ![](./images/creazione-primo-topic-08.png)
 
-3. Notare come Copilot Studio crea in automatico le `Conditions` per ogni caso possibile.
+12. Notare come Copilot Studio crea in automatico le `Conditions` per ogni caso possibile.
 
 ![](./images/creazione-primo-topic-09.png)
 
-4. Sotto ogni opzione premere `Add a node` e selezionare `Send a message`.
-5. Sotto a hardware issue inserire:
+13. Sotto ogni opzione premere `Add a node` e selezionare `Send a message`.
+14. Sotto a `Hardware Issues` inserire:
 
 ```
 🔧 Problema Hardware rilevato. Segui questi passaggi di troubleshooting:
@@ -128,7 +153,7 @@ potresti identificare la tipologia di problema?
 
 ![](./images/creazione-primo-topic-10.png)
 
-7. Ripetere il processo per le varie opzioni con i seguenti messaggi:
+15. Ripetere il processo per le altre opzioni con i seguenti messaggi:
 
 - Software:
 
@@ -162,40 +187,48 @@ Segui questi passaggi di troubleshooting:
 8. Controlla le impostazioni del firewall.
 ```
 
->[!TIP]
->L’utilizzo di Topic strutturati per la gestione di Conversazioni consente di garantire risposte standardizzate, coerenti e conformi alle policy IT aziendali.  
->A differenza delle risposte generative del modello AI, l’approccio deterministico riduce il rischio di suggerimenti non accurati o non autorizzati.
+> [!NOTE]
+> **Perché un topic strutturato**
+>
+> L’utilizzo di topic strutturati per la gestione delle conversazioni consente di garantire risposte standardizzate, coerenti e conformi alle policy IT aziendali.
+> A differenza delle risposte generative del modello AI, l’approccio deterministico riduce il rischio di suggerimenti non accurati o non autorizzati.
 
-8. Premere `Add node` sotto `All other conditions` 
+16. Premere `Add node` sotto `All other conditions`.
 
-9. Selezionare `Topic Management`,  `Go to another topic` e infine `Escalate`.
+17. Selezionare `Topic Management`, `Go to another topic` e infine `Escalate`.
 
 ![](./images/creazione-primo-topic-11.png)
 
 ![](./images/creazione-primo-topic-12.png)
 
-10. Alla chiusura delle conditions premere `Add node`
+18. Alla chiusura delle conditions premere `Add node`.
 
-11. Selezionare `Topic Management` e `End current topic`
+19. Selezionare `Topic Management` e `End current topic`.
 
 ![](./images/creazione-primo-topic-13.png)
 
-12. Salvare il `Topic` e aprire la finestra di test.
+20. Salvare il `Topic` e aprire la finestra di test.
 
 > [!TIP]
-> Ricordarsi di premere su `start a new session`, perché facendolo la chat di Test si aggiornerà con le ultime modifiche fatte all'Agente.
+> **Nuova sessione di test**
+>
+> Ricordarsi di premere su `start a new session`: così la chat di test si aggiorna con le ultime modifiche fatte all'agente.
 
-13. Inserire la seguente richiesta:
+21. Inserire la seguente richiesta:
 
 ```
 Ho un problema tecnico
 ```
 
-14. Continuare il dialogo con l'agente e vederne il funzionamento.
+22. Continuare il dialogo con l'agente e vederne il funzionamento.
 
-## Creazione Del Topic con Adaptive Card
+## Creazione del Topic con Adaptive Card
 
-1. Andare su [Copilot Studio](https://copilotstudio.microsoft.com/) nella sezione `Agents` selezionare l'Agente `Help Desk ` . Nel menù dell'Agente premere su `Topics`.
+Il secondo topic: dopo il trigger, il nodo **Ask with adaptive card** mostra la scheda Richiesta Ticket IT e salva i campi compilati in cinque variabili; il messaggio finale le riprende in una formula card di riepilogo.
+
+![Topic Ticket Card: trigger, Ask with adaptive card con le variabili di output nome, cognome, email, tipologia e descrizione, messaggio con la formula card Riepilogo dati inseriti](../../images/lab03-topic-ticket-card.svg)
+
+1. Andare su [Copilot Studio](https://copilotstudio.microsoft.com/), nella sezione `Agents` selezionare l'agente `Help Desk`. Nel menù dell'Agente premere su `Topics`.
 
 ![](./images/creazione-primo-topic-01.png)
 
@@ -214,7 +247,7 @@ Ticket Card
 4. Ora aggiungere il `trigger` con la seguente descrizione:
 
 ```
-Questo Topic guida gli utenti verso la creazione di un ticket di support per il reparto IT.
+Questo Topic guida gli utenti verso la creazione di un ticket di supporto per il reparto IT.
 ```
 
 ![](./images/creazione-topic-adaptive-card-02.png)
@@ -223,18 +256,18 @@ Questo Topic guida gli utenti verso la creazione di un ticket di support per il 
 
 ![](./images/creazione-topic-adaptive-card-03.png)
 
->[!NOTE]
->**Tips**
+> [!TIP]
+> **Adaptive Card Designer**
 >
-> Puoi personalizzare le adaptive card direttamente da Copilot Studio o tramite siti esterni come [Designer Adaptive Cards](https://adaptivecards.io/designer/)
+> Le adaptive card si possono personalizzare direttamente da Copilot Studio o con strumenti esterni come il [Designer Adaptive Cards](https://adaptivecards.io/designer/).
 
 ![](./images/creazione-topic-adaptive-card-04.png)
 
-6. Aprire i dettagli dell'Adaptive card, premere **Edit adaptive card** 
+6. Aprire i dettagli dell'adaptive card e premere **Edit adaptive card**.
 
 ![](./images/creazione-topic-adaptive-card-05.png)
 
-7. Si aprirà l'Adaptive card Designer,
+7. Si aprirà l'Adaptive Card Designer.
 
 L’**Adaptive Card Designer** consente di progettare una scheda e visualizzarne il design in tempo reale.
 
@@ -365,30 +398,32 @@ Per uscire dall’anteprima, selezionare l’icona **X** e utilizzare il comando
 }
 ```
 
-8. L'adaptive card verrà visualizzata in questo modo:
+9. L'adaptive card verrà visualizzata in questo modo:
 
 ![](./images/creazione-topic-adaptive-card-10.png)
 
-9. Sotto l'adaptive card premere `Add node`, selezionare `send a message`
+10. Sotto l'adaptive card premere `Add node` e selezionare `Send a message`.
 
-10. Dentro il messaggio scrivere il seguente testo:
+11. Dentro il messaggio scrivere il seguente testo:
 
 ```
 Il seguente Ticket è stato inviato al Reparto IT
 ```
 
-11. Sempre all'interno del messaggio premere `+ Add `
+12. Sempre all'interno del messaggio premere `+ Add`.
 
 ![](./images/creazione-topic-adaptive-card-11.png)
 
-12. Selezionare `Adaptive card` e nella schermata di edit cambiare da Json a formula card.
+13. Selezionare `Adaptive card` e nella schermata di modifica passare da JSON a **Formula** card.
 
 ![](./images/creazione-topic-adaptive-card-12.png)
 
 > [!NOTE]
-> Nell'Adaptive card in Json non è possibile inserire variabili, quindi è necessario usare la  Formula Card scritta in [Power Fx](https://learn.microsoft.com/it-it/power-platform/power-fx/overview) 
+> **Variabili nella card**
+>
+> In una adaptive card scritta in JSON non è possibile inserire variabili: per questo si usa la Formula card, scritta in [Power Fx](https://learn.microsoft.com/it-it/power-platform/power-fx/overview).
 
-13. Incollare la seguente card:
+14. Incollare la seguente card:
 
 ```
 { type: "AdaptiveCard", body: [ { type: "TextBlock", size: "Medium", weight: "Bolder", text: "Riepilogo dati inseriti" }, { type: "FactSet", facts: [ { title: "Nome", value: Text(Topic.nome) }, { title: "Cognome", value: Text(Topic.cognome) }, { title: "Email", value: Text(Topic.email) }, { title: "Tipologia di problema", value: Text(Topic.tipologia) }, { title: "Descrizione", value: Text(Topic.descrizione) } ] } ], '$schema': "http://adaptivecards.io/schemas/adaptive-card.json", version: "1.5" }
@@ -396,20 +431,26 @@ Il seguente Ticket è stato inviato al Reparto IT
 
 ![](./images/creazione-topic-adaptive-card-13.png)
 
-14. Dopo aver salvato il Topic premere il tasto Test e inserire la seguente richiesta:
+15. Dopo aver salvato il Topic premere il tasto Test e inserire la seguente richiesta:
 
 ```
 Voglio aprire un ticket
 ```
 
-15. Continuare il dialogo con l'agente e vederne il funzionamento del Topic.
+16. Continuare il dialogo con l'agente e verificare il funzionamento del Topic.
 
-> [!NOTE]
-> Se l'agente riporta al topic errato è possibile disabilitare il primo topic creato tramite il checkbox nella sezione Topics. 
-
-
->[!IMPORTANT]
->**Lab Completato**
+> [!TIP]
+> **Se si attiva il topic sbagliato**
 >
->Con questo ultimo passaggio, il laboratorio per la creazione dei Topics in Copilot Studio è completato.
+> Se l'agente porta al topic errato, è possibile disattivare il primo topic creato con l'interruttore nella sezione Topics.
+
+> [!IMPORTANT]
+> **Lab Completato**
+>
+> L'agente **Help Desk** ora gestisce le richieste di supporto con conversazioni guidate. In questo lab si è visto:
+>
+> - come creare un agente vuoto con istruzioni essenziali;
+> - come creare un topic con trigger, domanda a scelta multipla e condizioni;
+> - come rinominare e usare le variabili di un topic;
+> - come raccogliere dati con una adaptive card e mostrarne il riepilogo con una Formula card in Power Fx.
 

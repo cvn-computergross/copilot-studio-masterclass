@@ -22,7 +22,7 @@ export const SECTIONS: [string, string][] = [
 const LEVEL_PAGES: Record<string, [string, string][]> = {}
 
 // selettore "Choose your experience" in cima alle pagine delle harness (ExperienceSwitch.vue)
-export const EXPERIENCES: Record<string, { section: string; title: string; text: string }[]> = {
+export const EXPERIENCES: Record<string, { section: string; title: string; text: string; soon?: boolean }[]> = {
   fondamentali: [
     { section: 'standard-harness', title: 'Standard Harness', text: 'Le basi di Copilot Studio nel portale: ambiente, conoscenza, topic, tool e agent flow' },
     { section: 'github-harness', title: 'GitHub Copilot Harness', text: 'Le stesse basi con istruzioni, skill, tool e workflow' },
@@ -43,6 +43,11 @@ export function labs(section: string): string[] {
     .readdirSync(dir)
     .filter((name) => /^\d\d-/.test(name) && fs.existsSync(path.join(dir, name, 'README.md')))
     .sort()
+}
+
+// una harness senza lab è ancora in preparazione: nel selettore appare attenuata
+for (const [level, list] of Object.entries(EXPERIENCES)) {
+  for (const e of list) e.soon = labs(`${level}/${e.section}`).length === 0
 }
 
 /** Primo titolo "# ..." di un file Markdown, senza segnaposto delle icone. */

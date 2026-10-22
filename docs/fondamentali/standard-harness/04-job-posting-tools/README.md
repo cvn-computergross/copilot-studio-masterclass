@@ -2,16 +2,36 @@
 
 [Previous: Lab 03](../03-ticket-agent-topics/README.md) | [Back to Standard Harness](../index.md) | [Next: Lab 05](../05-device-request-agent-flows/README.md)
 
+<!-- icon: clock-countdown --> **Tempo stimato:** ~75 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
+
+## Scenario
+
+Il team HR di Zava S.p.A. pubblica spesso nuove posizioni aperte e ogni annuncio deve seguire lo stesso template aziendale: profilo dell'azienda, policy di lavoro, benefit e modalità di candidatura sempre uguali, mentre ruolo, seniority, sede, retribuzione e responsabilità cambiano di volta in volta. Scriverli a mano richiede tempo e porta a testi diversi tra loro.
+
+In questo lab si crea l'**Agente Redazione Annunci**, che raccoglie ruolo, seniority e sede in un topic, genera l'annuncio con un **prompt** basato sul template, lo converte in HTML con un secondo prompt e lo invia via email all'utente con il connettore **Office 365 Outlook**.
+
+## Che cosa si costruisce
+
+Lo schema mostra i componenti dell'agente e i dati che passano dall'uno all'altro. Il topic **New Job Posting** raccoglie le tre variabili e chiama il prompt **Job Posting - Zava**, che restituisce l'annuncio in **OutputAnnuncio** e lo mostra in chat. Le istruzioni indicano l'ordine dei passi successivi: il prompt **Testo in HTML** converte l'annuncio e lo strumento **Annuncio Mail** lo invia alla casella dell'utente.
+
+![Agente Redazione Annunci: topic New Job Posting, prompt Job Posting - Zava, messaggio in chat, prompt Testo in HTML, strumento Annuncio Mail e casella dell'utente](../../images/lab04-agente-annunci.svg)
+
+## Prerequisiti
+
+Per svolgere questo lab occorre avere:
+
+- completato il Lab 01 (developer environment e solution `CSMFirstAgent` come preferred solution);
+- una casella di posta Office 365 Outlook nel proprio account, per ricevere l'annuncio.
+
 ## Creazione Agente
 
+1. Navigare all'interno di [Copilot Studio](https://copilotstudio.microsoft.com/) e selezionare **Agents** nel menù laterale a sinistra.
 
-1. Navigare all'interno di [Copilot Studio](https://copilotstudio.microsoft.com/) e selezionare **Agents**  situato nel menù laterale a sinistra. 
-
-2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nel' Environment, proseguire premendo **Create blank agent** .
+2. Nella schermata **Agents** è possibile visualizzare la lista completa degli agenti creati nell'environment; proseguire premendo **Create blank agent**.
 
 ![](./images/creazione-agente-01.png)
 
-3. Copilot Studio procederà con la creazione dell' agente vuoto, per effettuare modifiche aspettare il seguente Messaggio:
+3. Copilot Studio procederà con la creazione dell'agente vuoto: per effettuare modifiche aspettare il seguente messaggio:
 
 ![](./images/creazione-agente-02.png)
 
@@ -33,13 +53,17 @@ Agente incaricato di redigere annunci di lavoro tramite template aziendale e gen
 
 ## Topic - New Job Posting
 
-Lo scopo è guidare la conversazione durante la creazione di ticket per garantire un output migliore e conforme a un template, andando a raccogliere alcuni dati di input.
+Lo scopo è guidare la conversazione durante la creazione dell'annuncio, raccogliendo alcuni dati di input, per garantire un output migliore e conforme al template.
 
-1. Nella pagina dell'agente andare nella sezione  **Topics** e selezionare **Add a topic** → **From blank**.
+Il topic completo, alla fine di questa sezione e della successiva: le tre variabili di input le ricava l'agente dalla conversazione, il prompt **Job Posting - Zava** le usa per compilare il template e il messaggio mostra il risultato.
+
+![Topic New Job Posting: trigger con le variabili di input RoleTitle, Seniority e PrimaryLocation, prompt Job Posting - Zava, messaggio con Topic.OutputAnnuncio.text](../../images/lab04-topic-new-job-posting.svg)
+
+1. Nella pagina dell'agente andare nella sezione **Topics** e selezionare **Add a topic** → **From blank**.
 
 ![](./images/topic-new-job-posting-01.png)
 
-   2. Inserire il **Nome** del Topic:
+2. Inserire il **Nome** del Topic:
 
 ```
 New Job Posting
@@ -47,7 +71,7 @@ New Job Posting
 
 ![](./images/topic-new-job-posting-02.png)
 
-3. Successivamente andare e inserire il **Trigger** del Topic:
+3. Successivamente inserire il **Trigger** del Topic:
 
 ```
 Questo strumento può gestire richieste come queste: nuovo annuncio di lavoro (job posting), pubblica una nuova posizione, aggiungi un’offerta di lavoro, crea un annuncio di lavoro, annuncia una posizione aperta 
@@ -57,7 +81,7 @@ Questo strumento può gestire richieste come queste: nuovo annuncio di lavoro (j
 
 Per garantire il corretto funzionamento del Topic è necessario inserire alcune variabili di Input che l'Agente andrà a estrapolare dalla conversazione.
 
-4. In alto a destra premere su `Details` , facendo ciò viene aperta una finestra dalla quale è possibile visualizzare e modificare alcuni dettagli relativi al Topic  e le variabili di Input e Output.
+4. In alto a destra premere su `Details`: si apre una finestra dalla quale è possibile visualizzare e modificare alcuni dettagli relativi al Topic e le variabili di Input e Output.
 
 ![](./images/topic-new-job-posting-04.png)
 
@@ -97,14 +121,17 @@ Livello di esperienza normalizzato in Junior | Mid | Senior (mappatura: entry/gr
 ![](./images/topic-new-job-posting-08.png)
 
 6. Queste variabili saranno utilizzate per popolare il template dell'annuncio di lavoro nella Prompt Action.
+
 ## Prompt Action - Job Posting
 
-Dopo aver configurato gli input come descritti nello step precedente, non resta che creare la Prompt Action con il template.
+Dopo aver configurato gli input come descritto nello step precedente, non resta che creare la Prompt Action con il template.
+
 1. Sotto al trigger premere `Add node`, selezionare `Add a tool` e poi premere su `New Prompt`.
 
 ![](./images/prompt-action-job-posting-01.png)
 
-Apparirà una schermata dove inserire per la scrittura del Prompt, che risultera simile al box delle istruzioni. 
+Apparirà una schermata per la scrittura del prompt, simile al box delle istruzioni.
+
 2. Come prima cosa rinominare il Prompt: `Job Posting - Zava`
 
 ![](./images/prompt-action-job-posting-02.png)
@@ -281,7 +308,7 @@ Unisciti a Zava S.p.A. – Potenziamo le imprese con Cloud & AI
 - In caso di incertezza, generare suggerimenti di massima ma contrassegnarli come “(suggerito)”.
 ```
 
-4. Dopo aver inserito il prompt non resta che  aggiungere le 3 variabili attraverso il tasto in basso a sinistra `add content` → `Text`  come in figura:
+4. Dopo aver inserito il prompt non resta che aggiungere le 3 variabili attraverso il tasto in basso a sinistra `add content` → `Text`, come in figura:
 
 ![](./images/regole-best-practice-01.png)
 
@@ -301,28 +328,31 @@ Unisciti a Zava S.p.A. – Potenziamo le imprese con Cloud & AI
 
 ![](./images/regole-best-practice-05.png)
 
-9. In seguito, sotto alla configurazione del prompt premere `Add node`  e selezionare `Send a message`.
+9. In seguito, sotto alla configurazione del prompt premere `Add node` e selezionare `Send a message`.
 
 ![](./images/regole-best-practice-06.png)
 
-10. Come contenuto inserire la seguente  Formula PowerFx:
+10. Come contenuto inserire la seguente formula Power Fx:
 
 ```
 Topic.OutputAnnuncio.text
 ```
 
 11. Premere **Insert** e salvare il Topic.
+
 ## Prompt Action - Text to Html
 
-Lo scopo di questo strumento è trasformare un input testuale in un output in formato HTML, così da migliorare l’aspetto grafico della mail di riepilogo.  
-Accedere alla sezione **Tools**, cliccare su **Add a tool** → **Create new** → **Prompt**.  
-Una volta aperta la schermata di configurazione del prompt, come primo passaggio rinominare il Prompt:
+Lo scopo di questo strumento è trasformare un input testuale in un output in formato HTML, così da migliorare l’aspetto grafico della mail di riepilogo.
+
+1. Accedere alla sezione **Tools**, cliccare su **Add a tool** → **Create new** → **Prompt**.
+
+2. Una volta aperta la schermata di configurazione del prompt, come primo passaggio rinominare il Prompt:
 
 ```
 Testo in HTML
 ```
 
-Successivamente copiare e incollare la seguente Prompt Action:
+3. Successivamente copiare e incollare la seguente Prompt Action:
 
 ```
 Sei un esperto nella creazione di email HTML professionali per annunci di lavoro.
@@ -390,14 +420,15 @@ Variabili:
 
 ```
 
-Per rendere dinamico il prompt occorre modificare i nomi in fondo chiamati `[DA CAMBIARE]` con delle variabili testuali, come mostrato nelle immagini:
+4. Per rendere dinamico il prompt occorre sostituire i segnaposto in fondo chiamati `[Da cambiare]` con delle variabili testuali, come mostrato nelle immagini:
 
 ![](./images/prompt-action-text-html-01.png)
 
-Una volta aggiunti correttamente i due input e chiamati `Username` e `Content`, salvare il tool tramite `Save`. 
-Successivamente, premere `Add and configure`.
+5. Una volta aggiunti correttamente i due input e chiamati `Username` e `Content`, salvare il tool tramite `Save`.
 
-Come descrizione inserire:
+6. Successivamente, premere `Add and configure`.
+
+7. Come descrizione inserire:
 
 ```
 Trasforma il contenuto in ingresso in un frammento HTML professionale per email, preservando struttura e collegamenti, senza alterare il contenuto
@@ -405,7 +436,7 @@ Trasforma il contenuto in ingresso in un frammento HTML professionale per email,
 
 ![](./images/prompt-action-text-html-02.png)
 
-Recarsi nella sezione **Input** e impostare i seguenti valori:
+8. Recarsi nella sezione **Input** e impostare i seguenti valori:
 
 | Input Name | Fill using               | Value            |
 | ---------- | ------------------------ | ---------------- |
@@ -414,8 +445,9 @@ Recarsi nella sezione **Input** e impostare i seguenti valori:
 
 ![](./images/prompt-action-text-html-03.png)
 
-Per inserire la variabile nel Value dell'Username premere il simbolo “…” selezionare **System** e cercare `User.DisplayName`.
-Per quanto riguarda il Content premere su **Customize** e aggiungere la seguente **Description**:
+9. Per inserire la variabile nel Value dell'Username premere il simbolo “…” selezionare **System** e cercare `User.DisplayName`.
+
+10. Per quanto riguarda il Content premere su **Customize** e aggiungere la seguente **Description**:
 
 ```
 Dall’intera conversazione, identifica ed estrapola la risposta finale più rilevante dell’assistente. NON cambiare il formato, inventare contenuti o modificare i significati.
@@ -423,15 +455,17 @@ Dall’intera conversazione, identifica ed estrapola la risposta finale più ril
 
 ![](./images/prompt-action-text-html-04.png)
 
-Salvare il tool.
+11. Salvare il tool.
 
 ## Tool - Send an Email
 
 Questo strumento ha la funzione di acquisire il contenuto HTML generato dal Prompt impostato in precedenza e utilizzarlo per comporre automaticamente il messaggio di posta elettronica, provvedendo successivamente al suo invio all’utente finale.  
 
-Dalla sezione **Tools**, selezionare **Add a tool** e, tra i connettori disponibili, scegliere **Office 365 Outlook**. Successivamente, individuare e selezionare l’azione `Send an email (v2)`.  
+1. Dalla sezione **Tools**, selezionare **Add a tool** e, tra i connettori disponibili, scegliere **Office 365 Outlook**.
 
-Una volta completata la configurazione della connessione e dopo aver cliccato su **Add and Configure**, impostare il tool compilando i parametri richiesti come indicato di seguito:
+2. Successivamente, individuare e selezionare l’azione `Send an email (v2)`.
+
+3. Una volta completata la configurazione della connessione e dopo aver cliccato su **Add and Configure**, impostare il tool compilando i parametri richiesti come indicato di seguito:
 
 - Name:
 
@@ -451,8 +485,9 @@ Richiede tre input:
 
 ![](./images/tool-send-an-email-01.png)
 
-Fatto ciò recarsi in **Additional details** e sotto **Credential to use** mettere _Maker-provided credentials_.
-Ora non resta che configurare i vari Input secondo i valori qui sotto:
+4. Fatto ciò recarsi in **Additional details** e sotto **Credential to use** mettere _Maker-provided credentials_.
+
+5. Ora non resta che configurare i vari Input secondo i valori qui sotto:
 
 | Input Name | Fill using               | Value      |
 | ---------- | ------------------------ | ---------- |
@@ -462,8 +497,9 @@ Ora non resta che configurare i vari Input secondo i valori qui sotto:
 
 ![](./images/tool-send-an-email-02.png)
 
-Per inserire la variabile nel Value del To premere il simbolo “…” selezionare **System** e cercare `User.Email`.
-Per quanto riguarda il Subject premere su **Customize** e aggiungere la seguente **Description**:
+6. Per inserire la variabile nel Value del To premere il simbolo “…” selezionare **System** e cercare `User.Email`.
+
+7. Per quanto riguarda il Subject premere su **Customize** e aggiungere la seguente **Description**:
 
 ```
 L’OGGETTO deve essere una frase molto breve (max ~8 parole) che riassume l'annuncio di lavoro, senza alcun riferimento a formattazione o HTML.
@@ -471,7 +507,7 @@ L’OGGETTO deve essere una frase molto breve (max ~8 parole) che riassume l'ann
 
 ![](./images/tool-send-an-email-03.png)
 
-In fine nel Body premere su **Customize** e aggiungere la seguente **Description**:
+8. Infine nel Body premere su **Customize** e aggiungere la seguente **Description**:
 
 ```
 Il CORPO deve contenere l’intero frammento HTML dell’email generato dallo strumento "Testo in HTML", incluso il blocco di stile e il saluto, senza alcun testo aggiuntivo.
@@ -479,21 +515,21 @@ Il CORPO deve contenere l’intero frammento HTML dell’email generato dallo st
 
 ![](./images/tool-send-an-email-04.png)
 
-Terminata la configurazione degli input andare nella sezione **Completion** e impostare sotto **After running** `Send specific response (specify below)`.
+9. Terminata la configurazione degli input andare nella sezione **Completion** e impostare sotto **After running** `Send specific response (specify below)`.
 
 ![](./images/tool-send-an-email-05.png)
 
-Mettere come Message to display:
+10. Mettere come Message to display:
 
 ```
 La mail da lei richiesta è stata inviata. 📨
 ```
 
-Salvare il tool.
+11. Salvare il tool.
 
 ## Istruzioni finali e testing
 
-Terminati i tools ora andiamo a inserire le istruzioni per premettere all'agente di poter svolgere il suo ruolo:
+1. Terminati i tool, inserire le istruzioni che permettono all'agente di svolgere il suo ruolo:
 
 ```
 # Contesto
@@ -514,24 +550,30 @@ Sei l’Agente Redazione Annunci, incaricato di redigere annunci di lavoro trami
 - L’output finale visibile deve essere solo l’azione di invio email.
 ```
 
-Sostituire il nome degli strumenti con l'hyperlink utilizzando il tasto `/` seguito dal nome dello strumento all'interno del box delle istruzioni, come mostrato in figura.
+2. Sostituire il nome degli strumenti con l'hyperlink utilizzando il tasto `/` seguito dal nome dello strumento all'interno del box delle istruzioni, come mostrato in figura.
 
 ![](./images/istruzioni-finali-testing-01.png)
 
-Iniziare una nuova sessione nella finestra di Test.
+3. Iniziare una nuova sessione nella finestra di Test.
 
 ![](./images/istruzioni-finali-testing-02.png)
 
-Testare il funzionamento dell'agente richiedendo un dispositivo, qui sotto un esempio:
+4. Testare il funzionamento dell'agente chiedendo un nuovo annuncio di lavoro, ad esempio:
 
 ```
 Voglio creare un nuovo annuncio di lavoro
 ```
 
-Proseguire con il test a piacere.
+5. Proseguire con il test a piacere.
 
->[!IMPORTANT]
->**Lab Completato**
+> [!IMPORTANT]
+> **Lab Completato**
 >
->Con questo ultimo passaggio, il laboratorio per la creazione dei Tools in Copilot Studio è completato.
+> L'**Agente Redazione Annunci** ora scrive annunci conformi al template di Zava e li invia via email. In questo lab si è visto:
+>
+> - come usare le variabili di input di un topic per raccogliere dati dalla conversazione;
+> - come creare un prompt con input di testo e richiamarlo da un topic;
+> - come creare un prompt come tool e configurarne gli input;
+> - come aggiungere un connettore (Office 365 Outlook) come tool, con input fissi e input riempiti dall'AI;
+> - come collegare i tool nelle istruzioni dell'agente con il tasto `/`.
 

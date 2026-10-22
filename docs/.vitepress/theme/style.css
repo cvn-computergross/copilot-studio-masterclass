@@ -209,11 +209,11 @@
 .vp-doc a.download code { background: transparent; padding: 0; color: inherit; font-weight: 600; }
 .vp-doc .custom-block a.download { color: var(--instructions); text-decoration: none; }
 
-/* schemi dell'Advanced (tools/diagrams.py): markdown.ts li inserisce nella pagina come SVG,
-   senza il loro <style>; qui i colori, che seguono il tema del sito (.dark). Riquadri,
-   corsie e note usano le classi di argomento f-…; le regole dg-… sono le stesse di RULES in
-   tools/diagrams.py. Sfondo trasparente; sugli schermi stretti lo schema non scende sotto
-   640px e si scorre in orizzontale */
+/* schemi dell'Advanced e dei Fundamentals (tools/diagrams.py): markdown.ts li inserisce nella
+   pagina come SVG, senza il loro <style>; qui i colori, che seguono il tema del sito (.dark).
+   Riquadri, corsie e note usano le classi di argomento f-…; le regole dg-… sono le stesse di
+   RULES in tools/diagrams.py. Sfondo trasparente; sugli schermi stretti lo schema non scende
+   sotto 640px (o sotto la sua larghezza, --dg-w, se è più stretto) e si scorre in orizzontale */
 .vp-doc .diagram {
   --dg-body: #363b42; --dg-muted: #6b7480; --dg-rule: #e2e5e9; --dg-neutral: #b4bac2;
   --dg-bg: var(--vp-c-bg); --dg-card: var(--vp-c-bg); --dg-outline: var(--icon-outline);
@@ -224,7 +224,7 @@
   --dg-body: var(--vp-c-text-1); --dg-muted: var(--vp-c-text-2); --dg-rule: var(--vp-c-divider);
   --dg-neutral: #7d858f; --dg-badge-ink: var(--vp-c-bg);
 }
-.vp-doc .diagram > svg { display: block; max-width: 100%; min-width: 640px; height: auto; margin: 0 auto; font-family: var(--vp-font-family-base); }
+.vp-doc .diagram > svg { display: block; max-width: 100%; min-width: min(640px, var(--dg-w, 640px)); height: auto; margin: 0 auto; font-family: var(--vp-font-family-base); }
 .diagram .dg-box { fill: var(--f-tint); }
 .diagram .dg-card { fill: var(--dg-card); stroke: var(--dg-rule); }
 .diagram .dg-lane { fill: var(--f-tint); stroke: var(--f-fill); }
@@ -288,6 +288,8 @@
 .vp-doc .card--link a.card-title::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
 .vp-doc .card--link:hover { border-color: var(--vp-c-brand-1); }
 .vp-doc .card--link:hover .card-title { color: var(--vp-c-brand-1); }
+.vp-doc .card--soon, .vp-doc .card--soon:hover { opacity: .55; filter: grayscale(.6); border-style: dashed; }
+
 
 /* voce con icona e titolo, senza cornice */
 .vp-doc .feature { font-size: 14px; line-height: 1.55; }
@@ -364,6 +366,10 @@
 .experience__option--active { border-color: var(--f); box-shadow: inset 4px 0 0 var(--f); }
 .experience__option:not(.experience__option--active) { opacity: .75; }
 .experience__option:not(.experience__option--active):hover { opacity: 1; }
+/* harness non ancora pronta: attenuata, anche se è quella della pagina */
+.experience__option.experience__option--soon, .experience__option.experience__option--soon:hover { opacity: .55; filter: grayscale(.6); border-style: dashed; }
+.experience__soon { align-self: flex-start; margin-top: 2px; padding: 1px 8px; border-radius: 10px; background: var(--vp-c-default-soft); color: var(--vp-c-text-2); font-size: 11px; font-weight: 600; }
+
 
 /* riquadri apribili "::: details" (es. "Perché questa scelta"): il titolo si legge come cliccabile */
 .vp-doc .custom-block.details summary { cursor: pointer; font-weight: 600; }

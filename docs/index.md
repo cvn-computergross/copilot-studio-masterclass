@@ -56,7 +56,7 @@ Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenz
 {.card-meta}
 
 </div>
-<div class="card card--link">
+<div class="card card--link card--soon">
 
 <!-- icon: logo-github --> [GitHub Harness](./fondamentali/github-harness/index.md){.card-title}
 {.card-head}
@@ -86,7 +86,7 @@ Si prosegue con un approccio code-first, dopo aver consolidato le basi nel porta
 
 ### Advanced
 
-Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dal [Lab 00 - Setup dati](./advanced/standard-harness/00-setup-dati/README.md), che racconta il caso e prepara i dati per entrambi i percorsi.
+Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dal [Lab 00 - Setup dati](./advanced/standard-harness/00-setup-dati/README.md), che racconta il caso e prepara i dati usati da tutti i lab.
 
 <div class="card-grid">
 <div class="card card--link">
@@ -109,12 +109,19 @@ Orchestratore, child agent e connected agent, prompt multimodali, grounding su D
 {.card-meta}
 
 </div>
-<div class="card card--link">
+<div class="card card--link card--soon">
 
 <!-- icon: logo-github --> [GitHub Harness](./advanced/github-harness/index.md){.card-title}
 {.card-head}
 
 Lo stesso agente con istruzioni, skill, Dataverse MCP e workflow.
+
+<p class="topics f-github">
+<span class="topic"><!-- icon: clipboard-text f-github -->Istruzioni</span>
+<span class="topic"><!-- icon: puzzle-piece f-github -->Skill</span>
+<span class="topic"><!-- icon: logo-dataverse -->Dataverse MCP</span>
+<span class="topic"><!-- icon: tree-view f-github -->Workflow</span>
+</p>
 
 <!-- icon: flask --> <!-- labs: advanced/github-harness -->
 {.card-meta}
@@ -170,7 +177,7 @@ Oltre a Copilot Studio, nei lab incontrerai questi prodotti Microsoft.
 <span><!-- icon: logo-outlook -->Outlook</span>
 <span><!-- icon: logo-teams -->Teams</span>
 <span><!-- icon: logo-word -->Word</span>
-<span><!-- icon: logo-application-insights -->Application Insights</span>
+<span><!-- icon: logo-power-apps -->Power Apps</span>
 </p>
 
 ## Riferimenti

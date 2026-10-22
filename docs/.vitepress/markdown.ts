@@ -6,9 +6,10 @@
 //   - "<!-- icon: nome classi -->" diventa un'icona (vedi docs/.vitepress/README.md);
 //   - "<!-- labs: sezione -->" diventa il numero di lab della sezione;
 //   - nei lab, un passo numerato scritto subito sotto un paragrafo diventa comunque un passo;
-//   - un'immagine da sola in un paragrafo che punta a docs/advanced/images/*.svg (schemi di
-//     tools/diagrams.py) diventa lo schema inserito nella pagina: <figure class="diagram"> con
-//     l'SVG, senza il suo <style>; colori e tema scuro vengono da theme/style.css.
+//   - un'immagine da sola in un paragrafo che punta a docs/advanced/images/*.svg o a
+//     docs/fondamentali/images/*.svg (schemi di tools/diagrams.py) diventa lo schema inserito
+//     nella pagina: <figure class="diagram"> con l'SVG, senza il suo <style>; colori e tema
+//     scuro vengono da theme/style.css.
 // I callout "> [!NOTE]" e le liste li gestisce già VitePress, con la stessa sintassi di GitHub:
 // qui se ne traduce il titolo e gli si mette davanti il glifo dell'Icon Pack.
 import fs from 'node:fs'
@@ -19,7 +20,8 @@ import { labs } from './content'
 const ICONS = path.resolve(__dirname, 'theme', 'icons')
 const LOGOS = path.resolve(__dirname, '..', 'public', 'logos')
 const DOCS = path.resolve(__dirname, '..')
-const DIAGRAMS = path.join(DOCS, 'advanced', 'images')
+// cartelle degli schemi di tools/diagrams.py: Advanced e Fundamentals
+const DIAGRAMS = [path.join(DOCS, 'advanced', 'images'), path.join(DOCS, 'fondamentali', 'images')]
 
 const NAV_LINE = /^\s*(\[?Previous\b|\[Back to |\[← ).*$/gm
 const ICON = /<!--\s*icon:\s*([a-z0-9-]+)((?:\s+[a-z0-9_-]+)*)\s*-->/g
@@ -89,7 +91,9 @@ function logo(name: string, classes: string[], file: string): string {
 /** Schema generato da tools/diagrams.py, inserito nella pagina al posto dell'immagine.
     Il suo <style> (colori per GitHub, con il tema scuro del sistema operativo) si toglie:
     nel sito i colori vengono da theme/style.css e seguono la classe .dark di VitePress.
-    Il testo alternativo diventa il nome accessibile dello schema. */
+    Il testo alternativo diventa il nome accessibile dello schema. La larghezza dello schema va
+    in --dg-w: sugli schermi stretti uno schema non scende sotto 640px, né sotto la sua
+    larghezza se è più stretto (style.css). */
 function diagram(svgFile: string, alt: string, esc: (s: string) => string): string {
   const svg = fs.readFileSync(svgFile, 'utf8')
     .replace(/<\?xml[^>]*\?>\s*/, '')
@@ -97,7 +101,9 @@ function diagram(svgFile: string, alt: string, esc: (s: string) => string): stri
     .trim()
     .replace(/^<svg /, `<svg role="img" aria-label="${esc(alt)}" `)
     .replace(/^(<svg[^>]*>)/, `$1<title>${esc(alt)}</title>`)
-  return `<figure class="diagram" v-pre>${svg}</figure>`
+  const width = Number(/^<svg[^>]*\swidth="(\d+(?:\.\d+)?)"/.exec(svg)?.[1])
+  const style = width > 0 ? ` style="--dg-w: ${width}px"` : ''
+  return `<figure class="diagram"${style} v-pre>${svg}</figure>`
 }
 
 export function masterclass(md: MarkdownIt) {
@@ -153,8 +159,8 @@ export function masterclass(md: MarkdownIt) {
     }
   }
 
-  // schemi dell'Advanced: un paragrafo fatto solo di "![testo](…/images/nome.svg)" diventa lo
-  // schema inserito nella pagina (riquadri e testi veri, colori del tema chiaro/scuro del sito)
+  // schemi dell'Advanced e dei Fundamentals: un paragrafo fatto solo di "![testo](…/images/nome.svg)"
+  // diventa lo schema inserito nella pagina (riquadri e testi veri, colori del tema chiaro/scuro del sito)
   md.core.ruler.push('masterclass-diagrams', (state) => {
     const file = state.env?.relativePath ?? ''
     const tokens = state.tokens
@@ -165,7 +171,7 @@ export function masterclass(md: MarkdownIt) {
       const src = parts[0].attrGet('src') ?? ''
       if (/^[a-z]+:/i.test(src) || !/\.svg$/i.test(src)) continue
       const svgFile = path.resolve(DOCS, path.dirname(file), src)
-      if (path.dirname(svgFile) !== DIAGRAMS) continue
+      if (!DIAGRAMS.includes(path.dirname(svgFile))) continue
       if (!fs.existsSync(svgFile)) throw new Error(`${file}: schema non trovato, ${path.relative(DOCS, svgFile)}`)
       const block = new state.Token('html_block', '', 0)
       block.content = diagram(svgFile, parts[0].content, md.utils.escapeHtml) + '\n'

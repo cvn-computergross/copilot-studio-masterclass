@@ -2,7 +2,7 @@
 
 Previous: Start | [Back to Standard Harness](../index.md) | [Next: S01](../01-agente-orchestratore/README.md)
 
-<!-- icon: clock-countdown --> **Tempo stimato:** ~45 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard e GitHub Copilot (laboratorio condiviso)
+<!-- icon: clock-countdown --> **Tempo stimato:** ~45 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
 
 ## Scenario
 
@@ -26,33 +26,28 @@ I problemi sono noti: tempi di presa in carico lunghi, valutazioni poco confront
 | Architetto di riferimento | Valuta gli aspetti tecnici per il programma | Agente Comitato, sessione di revisione |
 | Comitato | Decide | Dossier di revisione |
 
-Tutte le persone sono interne a Zava S.p.A. Non è un dettaglio: Work IQ e i connettori di calendario leggono disponibilità e profili solo all'interno del proprio tenant, per cui lo scenario non prevede di pianificare riunioni con persone esterne.
-
 Il primo passo non riguarda ancora gli agenti. Oggi i dati del processo sono sparsi tra la casella email e un foglio Excel: serve prima un archivio comune e strutturato, che persone e agenti possano leggere e scrivere.
 
 Questo archivio è il **PMO Demand Hub**, e il corso lo fornisce già pronto, come Agent Academy fa per l'Hiring Agent: una soluzione Dataverse con le cinque tabelle del processo (Programmi, Criteri di valutazione, Proponenti, Proposte, Valutazioni) e l'app model-driven **PMO Demand Hub** per consultarle, modificarle e importare dati. In questo laboratorio si legge prima con attenzione che cosa contiene la soluzione: nomi logici, codici automatici, scelte e relazioni sono quelli che gli agenti useranno in tutti i laboratori successivi. Poi la soluzione viene importata, vengono caricati i dati di partenza (cinque programmi di investimento con i loro criteri pesati) e viene preparata in SharePoint la cartella con i documenti di conoscenza del PMO. In particolare verranno svolte le seguenti attività:
 
 - Capire tabelle, colonne, scelte e relazioni del modello dati.
 - Conoscere l'app **PMO Demand Hub**: home page, import CSV e Proposal Board.
-- Importare la soluzione **PMO Demand IT** e abilitare note e allegati sulla tabella **Proposal**.
+- Importare la soluzione **PMO Demand IT**.
 - Caricare i cinque programmi e i 25 criteri di valutazione.
-- Verificare il Dataverse MCP Server per il percorso GitHub Copilot.
 - Preparare la cartella SharePoint della conoscenza PMO.
 
 Ogni record del PMO Demand Hub ha un codice leggibile: Proposta `PP-####`, Valutazione `AS-####`, Proponente `RQ-####`, Programma `PG-###`. Gli agenti leggono questi codici dai risultati degli strumenti e non li inventano mai. I codici del proprio ambiente saranno diversi da quelli degli esempi: nelle prove si controlla la forma, non il valore.
 
-Questo laboratorio è condiviso dai due percorsi, standard e GitHub Copilot: dopo il setup si sceglie un percorso e si svolgono i lab in ordine, perché ogni lab estende il precedente. Chi vuole confrontare le harness può svolgere anche l'altro percorso nello stesso ambiente: gli agenti del percorso GitHub Copilot hanno il suffisso ` - GH`, così i componenti non si confondono.
-
 ::: details <!-- icon: lightbulb f-instructions --> Perché queste scelte
 - **Una soluzione pronta invece del modello costruito a mano.** Il centro del corso sono gli agenti, non il designer delle tabelle. Importare la soluzione richiede pochi minuti e garantisce che nomi logici e valori delle scelte siano esattamente quelli citati da prompt, skill e flow dei laboratori: non resta nessun errore di battitura da scoprire quando un agente fallisce una scrittura.
-- **Dataverse invece di una lista SharePoint o di un Excel.** Il processo ha relazioni (una proposta ha un proponente, un programma, una o più valutazioni), regole sui tipi di dato e codici univoci. Dataverse le gestisce in modo nativo, rispetta la sicurezza per ruolo ed è la fonte che entrambe le harness sanno leggere e scrivere (connettore e prompt nella standard harness, Dataverse MCP Server nella GitHub Copilot harness).
+- **Dataverse invece di una lista SharePoint o di un Excel.** Il processo ha relazioni (una proposta ha un proponente, un programma, una o più valutazioni), regole sui tipi di dato e codici univoci. Dataverse le gestisce in modo nativo, rispetta la sicurezza per ruolo e agenti, prompt e flow lo leggono e scrivono con il connettore Dataverse.
 - **Codici con numerazione automatica.** Persone e agenti si scambiano codici leggibili (PP-1003), non GUID. Il codice lo genera Dataverse, così l'agente non ha mai motivo di inventarlo: rilegge quello assegnato al salvataggio.
 - **Criteri come righe di una tabella.** Pesi e descrizioni sono dati che il PMO può cambiare senza toccare gli agenti. Il grounding legge sempre la versione aggiornata.
 - **Nomi logici decisi esplicitamente.** Prompt, skill e flow citano i nomi logici delle colonne (`csm_requestedbudget`, `csm_proposalstatus`...) e i valori numerici delle scelte. Nella soluzione sono fissati una volta per tutte: le istruzioni dei laboratori si possono copiare così come sono.
 - **Scelte locali e lookup veri.** Canale, stato e raccomandazione sono scelte proprie della colonna, con i valori numerici del publisher (770000000, 770000001...); i collegamenti tra tabelle sono lookup, non testi con un codice, così un agente non può collegare una proposta a un programma che non esiste.
 - **Budget come numero intero.** Evita le colonne di tipo valuta (tasso di cambio, valuta della transazione) ed è sufficiente per confronti e regole.
 - **Programma vuoto finché non è confermato.** Quando una proposta potrebbe rientrare in due programmi decide una persona: un lookup vuoto rende visibile lo stato "da confermare".
-- **Due modi di conservare il documento.** Una colonna **File** per il percorso standard (il flow carica e riscarica il PDF per il prompt) e le **note** abilitate per il percorso GitHub Copilot (il contenuto della nota è leggibile con il Dataverse MCP Server). Nel percorso che non si usa, la colonna o le note rimangono semplicemente vuote.
+- **Il documento in una colonna File.** Il business case resta sul record della proposta: il flow carica il PDF nella colonna **Business Case Document** e lo riscarica quando il prompt deve leggerlo.
 - **Proposal Status come scelta personalizzata.** Lo stato di sistema (Active, Inactive) resta disponibile per archiviare; lo stato del processo ha valori propri.
 :::
 
@@ -115,7 +110,7 @@ Lo stesso dipendente può presentare più proposte nel corso dell'anno. Una tabe
 
 ### Proposal
 
-La proposta è la tabella su cui lavorano tutti: intake, valutazione, dossier, pianificazione. Contiene i dati estratti dal business case, i dati sul canale di arrivo (chat o email) e lo stato del processo. Due scelte meritano attenzione: lo **Proposal Status** è una colonna propria, distinta dallo stato di sistema, e il documento si conserva in due modi perché le due harness lo leggono in modo diverso (colonna **Business Case Document** e note).
+La proposta è la tabella su cui lavorano tutti: intake, valutazione, dossier, pianificazione. Contiene i dati estratti dal business case, i dati sul canale di arrivo (chat o email) e lo stato del processo. Due scelte meritano attenzione: lo **Proposal Status** è una colonna propria, distinta dallo stato di sistema, e il documento si conserva sul record nella colonna File **Business Case Document**.
 
 | Colonna | Nome logico | Tipo e regole |
 | --- | --- | --- |
@@ -252,8 +247,7 @@ Per svolgere questo lab occorre avere a disposizione:
 Per i laboratori successivi servono anche:
 
 - le licenze per i connettori Office 365 Outlook, Office 365 Users, Microsoft Teams e OneDrive for Business nel tenant di laboratorio;
-- i [materiali del caso pratico](../../../resources/advanced/) (business case, email di prova, template del dossier, skill): ogni lab indica nei prerequisiti i file che usa;
-- per il percorso GitHub Copilot: il Microsoft Dataverse MCP Server disponibile nell'ambiente (vedi *Impostazioni per il percorso GitHub Copilot*), Work IQ abilitato nel tenant, capacità di Copilot Credits e un secondo utente del tenant, con casella di posta, da usare come sponsor o architetto nei test di pianificazione. Tutti i partecipanti alle riunioni devono essere **interni** al tenant.
+- i [materiali del caso pratico](../../../resources/advanced/) (business case, email di prova, template del dossier, skill): ogni lab indica nei prerequisiti i file che usa.
 
 ## Importare la soluzione
 
@@ -277,23 +271,6 @@ Una soluzione è il contenitore che il PMO sposterà da un ambiente all'altro: s
 > **Componenti già presenti**
 >
 > Se l'ambiente contiene già il publisher CSM Solutions, la soluzione PMO Demand IT o una tabella `csm_program` con la sola colonna Name (ad esempio da un tentativo precedente fatto a mano), l'importazione li aggiorna e aggiunge le colonne mancanti: non serve eliminarli prima. Se invece segnala un conflitto su una colonna esistente con un tipo diverso, eliminare quella colonna o quella tabella e importare di nuovo.
-
-## Abilitare note e allegati sulla tabella Proposal
-
-La soluzione fornita non attiva le note sulla tabella **Proposal**: si attivano a mano dopo l'importazione, una volta sola. Servono al percorso GitHub Copilot, il cui workflow conserva il business case come nota e lo legge con il Dataverse MCP Server. Nel percorso standard restano semplicemente vuote.
-
-### Abilitare gli allegati
-
-1. Nella soluzione **PMO Demand IT** aprire la tabella **Proposal** e selezionare **Properties**.
-2. Nel pannello delle proprietà selezionare **Enable attachments (including notes and files)**. L'opzione si trova sotto la descrizione della tabella; se non è visibile, espandere **Advanced options**.
-3. Selezionare **Save**.
-
-> [!WARNING]
-> **Scelta irreversibile**
->
-> Una volta salvata, l'opzione **Enable attachments** non si può più disattivare. Per la tabella **Proposal** è il comportamento voluto.
-
-4. Facoltativo, per vedere le note nel modulo: aprire il modulo principale **Information** della tabella **Proposal**, aggiungere il componente **Timeline** alla scheda **General** e selezionare **Save and publish**.
 
 ## Caricare i dati di partenza
 
@@ -360,21 +337,6 @@ La soluzione contiene un tema indaco con intestazione scura (`csm_/pmo/theme.xml
 >
 > Il valore di ambiente applica il tema a tutte le app model-driven dell'ambiente che usano il nuovo aspetto. In un ambiente condiviso chiedere prima agli altri maker, oppure saltare questo passaggio: icone, colori e home page funzionano anche senza.
 
-## Impostazioni per il percorso GitHub Copilot
-
-### Verificare il Dataverse MCP Server
-
-Se si seguirà il percorso GitHub Copilot, verificare che Copilot Studio possa usare il Dataverse MCP Server. Per aprire queste impostazioni serve il ruolo di amministratore di Power Platform: chi non lo ha chiede la verifica all'amministratore del tenant.
-
-1. Aprire il [Power Platform admin center](https://admin.powerplatform.microsoft.com/), **Manage**, **Environments**, selezionare l'ambiente e poi **Settings**.
-2. Espandere **Product** e selezionare **Features**.
-3. Nella sezione **Dataverse Model Context Protocol** verificare che **Allow MCP clients to interact with Dataverse MCP server** sia attivo (è attivo per impostazione predefinita per Copilot Studio).
-
-> [!IMPORTANT]
-> **Fatturazione**
->
-> L'uso del Dataverse MCP Server è soggetto a fatturazione. Usarlo nell'ambiente di laboratorio e con i dati fittizi forniti.
-
 ## Conoscenza PMO in SharePoint
 
 ### Creare la cartella SharePoint della conoscenza PMO
@@ -400,10 +362,11 @@ https://<tenant>.sharepoint.com/sites/ZavaPMO/Shared%20Documents/PMO%20Knowledge
 > [!IMPORTANT]
 > **Lab Completato**
 >
-> Il PMO Demand Hub è pronto: soluzione importata, note abilitate sulle proposte, programmi e criteri caricati e cartella della conoscenza PMO in SharePoint. In questo laboratorio si è visto:
+> Il PMO Demand Hub è pronto: soluzione importata, programmi e criteri caricati e cartella della conoscenza PMO in SharePoint. In questo laboratorio si è visto:
 >
 > - come è progettato un modello dati pensato per essere usato da agenti: codici leggibili, nomi logici espliciti, regole nei dati;
-> - come importare una soluzione non gestita con tabelle, app model-driven e risorse web, e che cosa va completato a mano dopo l'importazione;
-> - come caricare i dati di partenza e importare CSV con lookup nell'app PMO Demand Hub.
+> - come importare una soluzione non gestita con tabelle, app model-driven e risorse web e impostarla come soluzione preferita;
+> - come caricare i dati di partenza e importare CSV con lookup nell'app PMO Demand Hub;
+> - come preparare in SharePoint una cartella di conoscenza che l'agente legge sempre aggiornata.
 >
-> Nel prossimo laboratorio si sceglie il percorso e si crea il primo agente: l'Agente Demand IT, l'orchestratore del sistema.
+> Nel prossimo laboratorio si crea il primo agente: l'Agente Demand IT, l'orchestratore del sistema.

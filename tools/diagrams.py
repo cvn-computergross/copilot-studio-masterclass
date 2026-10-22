@@ -1,13 +1,23 @@
-"""Schemi dei lab Advanced della Standard Harness (S01, S02, S04, S05, S06).
+"""Schemi dei lab della Standard Harness: Advanced (S01, S02, S04, S05, S06) e Fundamentals (Lab 01-05).
 
-Disegna ogni schema come file SVG in docs/advanced/images/, nello stile delle slide del corso:
-riquadri tinti nel colore dell'argomento con glifo dell'Icon Pack (Phosphor duotone), logo
-Microsoft o icona dell'agente, frecce sottili colorate, ritorni tratteggiati.
+Disegna ogni schema come file SVG, nello stile delle slide del corso: riquadri tinti nel colore
+dell'argomento con glifo dell'Icon Pack (Phosphor duotone), logo Microsoft o icona dell'agente,
+frecce sottili colorate, ritorni tratteggiati. Gli schemi dell'Advanced vanno in
+docs/advanced/images/, quelli dei Fundamentals in docs/fondamentali/images/ (parametro out).
+
+Tipi di schema:
+  - Diagram: riquadri (node), corsie (lane), frecce con etichetta (arrow), numeri dei passi (badge);
+  - sequence(): attori in alto e messaggi numerati fra le loro linee verticali;
+  - Flow: un topic come nel canvas di Copilot Studio, dentro una corsia con il nome del topic:
+    nodi in colonna (step) con frecce dritte, rami di una Condition affiancati (branch) con
+    l'etichetta del ramo sulla freccia, che si riuniscono nel nodo successivo, e schede laterali
+    (side) per le variabili di input e output.
 
 Uso, dalla cartella principale della repo (servono Pillow e `npm install` già fatto):
     python tools/diagrams.py
 
-Per cambiare uno schema si modifica la sua funzione qui sotto e si rilancia lo script.
+Per cambiare uno schema si modifica la sua funzione qui sotto e si rilancia lo script: vengono
+rigenerati tutti gli schemi, Advanced e Fundamentals.
 
 Colori e tema scuro: i colori non sono scritti negli elementi ma in classi (dg-box, dg-label,
 dg-arrow...) e nelle classi di argomento f-... (le stesse del sito). Lo sfondo è trasparente.
@@ -43,7 +53,8 @@ except ImportError:  # pragma: no cover
 ROOT = Path(__file__).resolve().parent.parent
 GLYPHS = ROOT / "docs" / ".vitepress" / "theme" / "icons"
 LOGOS = ROOT / "docs" / "public" / "logos"
-OUT = ROOT / "docs" / "advanced" / "images"
+ADVANCED = ROOT / "docs" / "advanced" / "images"
+FUNDAMENTALS = ROOT / "docs" / "fondamentali" / "images"
 AGENT_ICONS = ROOT / "docs" / "resources" / "advanced" / "agent-icon"
 
 FONT = "Inter, 'Segoe UI', Helvetica, Arial, sans-serif"
@@ -227,8 +238,8 @@ def fam_class(fam):
 class Diagram:
     """Raccoglie le parti dello schema e la loro geometria; save() controlla e adatta il disegno."""
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, name, out=ADVANCED):
+        self.name, self.out = name, out
         self.parts, self.markers = [], {}
         self.nodes, self.lanes, self.pills, self.free, self.arrows, self.extent = [], [], [], [], [], []
         self.errors = []
@@ -294,12 +305,13 @@ class Diagram:
                                  f' markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head" d="M0 0 L10 5 L0 10 Z"/></marker>')
         return f"{self.name}-head-{fam}"
 
-    def arrow(self, pts, fam="ai-engine", dashed=False, label=None, at=None):
-        """Freccia a segmenti; l'etichetta (at = centro) deve stare su uno dei segmenti. fam=NEUTRAL: grigia."""
-        mid = self._marker(fam)
+    def arrow(self, pts, fam="ai-engine", dashed=False, label=None, at=None, head=True):
+        """Freccia a segmenti; l'etichetta (at = centro) deve stare su uno dei segmenti. fam=NEUTRAL: grigia.
+        head=False: linea senza punta (i rami di un topic che si riuniscono prima del nodo successivo)."""
         d = "M" + " L".join(f"{x:g} {y:g}" for x, y in pts)
         dash = ' stroke-dasharray="5 4"' if dashed else ""
-        g = [f'<path class="dg-arrow" d="{d}"{dash} marker-end="url(#{mid})"/>']
+        end = f' marker-end="url(#{self._marker(fam)})"' if head else ""
+        g = [f'<path class="dg-arrow" d="{d}"{dash}{end}/>']
         self.arrows.append((label, pts))
         if label:
             lx, ly = at or ((pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2)
@@ -402,13 +414,13 @@ class Diagram:
         x0, y0, x1, y1 = math.floor(x0), math.floor(y0), math.ceil(x1), math.ceil(y1)
         w, h = x1 - x0 + 2 * MARGIN, y1 - y0 + 2 * MARGIN
         dx, dy = MARGIN - x0, MARGIN - y0
-        OUT.mkdir(parents=True, exist_ok=True)
+        self.out.mkdir(parents=True, exist_ok=True)
         defs = "<defs>" + "".join(self.markers.values()) + "</defs>" if self.markers else ""
         svg = (f'<svg xmlns="http://www.w3.org/2000/svg" class="dg" viewBox="0 0 {w} {h}" width="{w}" height="{h}"'
                f' font-family="{FONT}">{style_block()}{defs}'
                f'<g transform="translate({dx} {dy})">' + "".join(self.parts) + "</g></svg>\n")
-        (OUT / f"{name}.svg").write_text(svg, encoding="utf-8")
-        print(f"schema {name} ({w}x{h})")
+        (self.out / f"{name}.svg").write_text(svg, encoding="utf-8")
+        print(f"schema {self.out.parent.name}/{name} ({w}x{h})")
 
 
 def _splits(text):
@@ -422,7 +434,7 @@ def _splits(text):
     return sorted(out, key=lambda c: (c[0], c[1]))
 
 
-def sequence(name, actors, messages, col_min=230):
+def sequence(name, actors, messages, col_min=230, out=ADVANCED):
     """Schema a corsie: attori in alto, linee verticali, chiamate piene e risposte tratteggiate.
 
     Le colonne si allargano se un'etichetta non sta fra le due linee nemmeno su due righe;
@@ -439,7 +451,7 @@ def sequence(name, actors, messages, col_min=230):
             col = max(col, min(text_width(text, 12, 500), two) + 20 + 8 + side)
     col = math.ceil(col)
     xs = [60 + col * i + col / 2 for i in range(n)]
-    d = Diagram(name)
+    d = Diagram(name, out)
     for (label, icon, fam), cx in zip(actors, xs):
         d.node(cx - col / 2 + 8, 20, col - 16, label, icon, fam, white=True, h=56)
     y, step = 110, 46
@@ -472,6 +484,104 @@ def sequence(name, actors, messages, col_min=230):
     for cx in xs:
         d.vline(cx, 76, last + 30)
     d.save()
+
+
+FLOW_GAP = 30       # spazio fra due nodi di un topic
+FLOW_PILL_GAP = 44  # ...quando sulla freccia c'è un'etichetta
+FLOW_FORK = 16      # dal fondo del nodo alla linea orizzontale da cui partono i rami
+FLOW_DROP = 40      # dalla linea dei rami al primo nodo del ramo (lì sta l'etichetta del ramo)
+
+
+def _dedupe(pts):
+    out = [pts[0]]
+    for p in pts[1:]:
+        if p != out[-1]:
+            out.append(p)
+    return out
+
+
+class Flow(Diagram):
+    """Un topic come nel canvas di Copilot Studio, dentro una corsia con il nome del topic.
+
+    step() aggiunge un nodo sotto il precedente, con una freccia dritta (e, se serve, un'etichetta);
+    branch() affianca i rami di una Condition: partono da una linea orizzontale sotto il nodo, con
+    il nome del ramo sulla freccia, e si riuniscono nel nodo del passo successivo; side() mette
+    accanto a un nodo una scheda (variabili di input o di output) collegata da una freccia
+    tratteggiata. Tutti i nodi sono schede bianche dentro la corsia; i controlli di Diagram valgono
+    anche qui (testi nei riquadri, etichette sulle frecce, frecce che attraversano riquadri)."""
+
+    def __init__(self, name, title, w=340, fam="topics", icon="chats-circle", out=FUNDAMENTALS):
+        super().__init__(name, out)
+        self.title, self.icon, self.fam = title, icon, fam
+        self.w, self.cx, self.prev = w, w / 2, []
+
+    def _place(self, label, icon, fam, sub, x, y, w, h=None):
+        return self.node(x, y, w, label, icon, fam, sub, white=True, h=h)
+
+    def step(self, label, icon, fam, sub=None, pill=None, w=None, h=None, afam="topics"):
+        """Nodo nella colonna centrale; pill = etichetta sulla freccia che arriva al nodo."""
+        w, cx = w or self.w, self.cx
+        if not self.prev:
+            y = 0
+        elif len(self.prev) == 1:
+            p = self.prev[0]
+            y = p["b"] + (FLOW_PILL_GAP if pill else FLOW_GAP)
+            self.arrow([(p["cx"], p["b"]), (cx, y)], afam, label=pill, at=(cx, (p["b"] + y) / 2) if pill else None)
+        else:  # i rami si riuniscono su una linea orizzontale, poi una sola freccia scende al nodo
+            ym = max(p["b"] for p in self.prev) + 18
+            for p in self.prev:
+                self.arrow(_dedupe([(p["cx"], p["b"]), (p["cx"], ym), (cx, ym)]), afam, head=False)
+            y = ym + (FLOW_PILL_GAP if pill else 22)
+            self.arrow([(cx, ym), (cx, y)], afam, label=pill, at=(cx, (ym + y) / 2) if pill else None)
+        n = self._place(label, icon, fam, sub, cx - w / 2, y, w, h)
+        self.prev = [n]
+        return n
+
+    def branch(self, cols, colw, sep=14):
+        """Rami affiancati sotto l'ultimo nodo. cols: (etichetta del ramo, [(label, icon, fam, sub), ...],
+        colore della freccia del ramo). Restituisce l'ultimo nodo di ogni ramo."""
+        p = self.prev[0]
+        total = len(cols) * colw + (len(cols) - 1) * sep
+        x0 = self.cx - total / 2
+        ybus = p["b"] + FLOW_FORK
+        top = ybus + FLOW_DROP
+        xs = [x0 + i * (colw + sep) + colw / 2 for i in range(len(cols))]
+        # prima i rami grigi: dove la linea orizzontale è in comune, resta sopra il colore del topic
+        for i in sorted(range(len(cols)), key=lambda i: cols[i][2] != NEUTRAL):
+            pill, _, afam = cols[i]
+            self.arrow(_dedupe([(p["cx"], p["b"]), (p["cx"], ybus), (xs[i], ybus), (xs[i], top)]), afam,
+                       label=pill, at=(xs[i], (ybus + top) / 2))
+        lasts = []
+        for ccx, (pill, nodes, afam) in zip(xs, cols):
+            y, last = top, None
+            for label, icon, fam, sub in nodes:
+                if last:
+                    y = last["b"] + FLOW_GAP
+                    self.arrow([(ccx, last["b"]), (ccx, y)], afam)
+                last = self._place(label, icon, fam, sub, ccx - colw / 2, y, colw)
+            lasts.append(last)
+        self.prev = lasts
+        return lasts
+
+    def side(self, n, label, icon, fam, sub, w, dx=40, right=True, into=True, afam=NEUTRAL, pill=None):
+        """Scheda accanto al nodo n, centrata in altezza; into=True: la freccia va dalla scheda al nodo."""
+        lines = sub.split("\n") if sub else []
+        h = 44 + 16 * len(lines) if lines else 48
+        x = n["r"] + dx if right else n["x"] - dx - w
+        c = self._place(label, icon, fam, sub, x, n["cy"] - h / 2, w, h)
+        a, b = ((c["x"], c["cy"]), (n["r"], c["cy"])) if right else ((c["r"], c["cy"]), (n["x"], c["cy"]))
+        self.arrow([a, b] if into else [b, a], afam, dashed=True, label=pill,
+                   at=((a[0] + b[0]) / 2, c["cy"]) if pill else None)
+        return c
+
+    def save(self):
+        """La corsia del topic avvolge tutti i nodi e le etichette; va disegnata sotto di loro."""
+        boxes = [r for _, r in self.nodes] + [r for _, r, _ in self.pills]
+        x0, y0 = min(b[0] for b in boxes) - 16, min(r[1] for _, r in self.nodes) - 48
+        x1, y1 = max(b[2] for b in boxes) + 16, max(b[3] for b in boxes) + 16
+        self.lane(x0, y0, x1 - x0, y1 - y0, self.title, self.icon, self.fam)
+        self.parts.insert(0, self.parts.pop())
+        super().save()
 
 
 # --- schemi -----------------------------------------------------------------------------
@@ -628,10 +738,234 @@ def workflow_revisione():
     sequence("workflow-revisione", a, m)
 
 
+# --- schemi dei Fundamentals ------------------------------------------------------------
+# Lab 01-05 della Standard Harness (docs/fondamentali/standard-harness/): nomi esatti degli
+# agenti, dei topic, delle variabili e degli strumenti creati nei lab. Se un lab cambia un nome,
+# va cambiato anche qui. I file vanno in docs/fondamentali/images/, con il prefisso del lab.
+F = FUNDAMENTALS
+
+
+def lab01_percorso():
+    """Lab 01: i passi della preparazione (a sinistra) e dove si trova ciò che creano (a destra)."""
+    d = Diagram("lab01-percorso-setup", F)
+    steps = [("Account Microsoft 365", "user-circle", "platform", "Business Basic, Try for free"),
+             ("Copilot Studio Trial", "logo:copilot-studio", "instructions", "aka.ms/TryCopilotStudio"),
+             ("Developer environment", "tray", "platform", "Power Apps Developer Plan"),
+             ("Pubblicazione", "shield-check", "platform", "ruolo Copilot Studio Authors"),
+             ("Solution e Publisher", "package", "lifecycle", "CSMFirstAgent, CSM Solutions"),
+             ("Primo agente", "robot", "agents", "IT Support")]
+    x, w, h, y0, pitch = 40, 270, 60, 40, 94
+    prev = None
+    for i, (label, icon, fam, sub) in enumerate(steps):
+        n = d.node(x, y0 + i * pitch, w, label, icon, fam, sub, h=h)
+        d.badge(22, n["cy"], i + 1)
+        if prev:
+            d.arrow([(prev["cx"], prev["b"]), (n["cx"], n["y"])], "instructions")
+        prev = n
+    # a destra: il tenant contiene account, licenza, gruppo e ambiente; l'ambiente la soluzione
+    T = 350
+    tl = d.lane(T, 20, 410, 552, "Tenant Microsoft 365", "buildings", "platform")
+    c1 = d.node(T + 40, 62, 355, "Account di lavoro", "user-circle", "platform", "licenza Microsoft 365 Business Basic", white=True)
+    c2 = d.node(T + 40, 134, 355, "Copilot Studio Trial", "logo:copilot-studio", "instructions", "licenza di prova di 30 giorni", white=True)
+    c4 = d.node(T + 40, 206, 355, "Gruppo AgentCreators", "users-three", "platform",
+                "security group con il ruolo Copilot Studio\nAuthors (Power Platform admin center)", white=True)
+    env = d.lane(T + 40, 298, 355, 260, "Developer environment", "tray", "platform")
+    sol = d.lane(T + 80, 340, 300, 204, "Solution CSMFirstAgent", "package", "lifecycle")
+    pub = d.node(T + 110, 382, 255, "Publisher CSM Solutions", "stamp", "lifecycle", "prefisso csm, valore 77000", white=True)
+    ag = d.node(T + 110, 454, 255, "Agente IT Support", "robot", "agents", "conoscenza Public website\nsupport.microsoft.com", white=True)
+    for n, k in ((c1, 1), (c2, 2), (c4, 4)):
+        d.badge(T + 20, n["cy"], k)
+    d.badge(T + 20, env["y"] + 23, 3)
+    d.badge(T + 60, sol["y"] + 23, 5)
+    d.badge(T + 95, pub["cy"], 5)
+    d.badge(T + 95, ag["cy"], 6)
+    d.save()
+
+
+def lab02_fonti():
+    """Lab 02: le fonti di conoscenza dell'agente IT Support e le impostazioni dell'AI generativa."""
+    d = Diagram("lab02-fonti-conoscenza", F)
+    x, w = 20, 350
+    src = [("Documento caricato", "upload-simple", "Zava_KB_Reset_M365_Password.docx\nper il reset della password"),
+           ("Files group VPN Guide", "folders", "Zava_Guida_VPN_v1, v2, v3.docx\nistruzioni: usa la versione più recente"),
+           ("SharePoint Help Desk CSM", "logo:sharepoint", "Documents: Playbook, Incident Report\nTemplate, SLA; con i permessi dell'utente"),
+           ("Public website", "globe", "support.microsoft.com\naggiunto nel Lab 01")]
+    nodes = [d.node(x, 20 + i * 92, w, label, icon, "knowledge", sub) for i, (label, icon, sub) in enumerate(src)]
+    ag = d.node(470, 140, 270, "Agente IT Support", "robot", "agents", "risponde citando la fonte\nnelle references")
+    st = d.node(470, 262, 270, "Settings · Generative AI", "sliders-horizontal", "system",
+                "Use general knowledge: off\nUse information from the Web: off")
+    bus = 425
+    for n in nodes:
+        d.arrow([(n["r"], n["cy"]), (bus, n["cy"]), (bus, ag["cy"]), (ag["x"], ag["cy"])], "knowledge", dashed=True)
+    d.arrow([(st["cx"], st["y"]), (ag["cx"], ag["b"])], NEUTRAL)
+    d.save()
+
+
+def lab03_agente():
+    """Lab 03: l'agente Help Desk, i due topic e il topic di sistema Escalate."""
+    d = Diagram("lab03-agente-help-desk", F)
+    L = 400
+    d.lane(L, 20, 380, 451, "Agente Help Desk · topic", "robot", "agents")
+    ins = d.node(L + 15, 62, 350, "Istruzioni", "clipboard-text", "instructions",
+                 "solo i Topic predefiniti, nessuna\nsoluzione improvvisata", white=True)
+    t1 = d.node(L + 15, 160, 350, "First Topic - Supporto Tecnico", "chats-circle", "topics",
+                "domanda Issue: Hardware, Software o\nNetwork; passi di troubleshooting", white=True)
+    esc = d.node(L + 15, 280, 350, "Escalate", "headset", "system", "topic di sistema", white=True)
+    t2 = d.node(L + 15, 380, 350, "Ticket Card", "chats-circle", "topics",
+                "Ask with adaptive card, riepilogo\ncon una formula card", white=True)
+    u = d.node(20, 270, 170, "Utente", "user-circle", "agents", "chat di test")
+    bus = 210
+    for t, phrase in ((t1, "Ho un problema tecnico"), (t2, "Voglio aprire un ticket")):
+        d.arrow([(u["r"], u["cy"]), (bus, u["cy"]), (bus, t["cy"]), (t["x"], t["cy"])], "topics",
+                label=phrase, at=((bus + L) / 2, t["cy"]))
+    d.arrow([(t1["cx"], t1["b"]), (esc["cx"], esc["y"])], NEUTRAL, dashed=True,
+            label="All other conditions", at=(t1["cx"], (t1["b"] + esc["y"]) / 2))
+    d.save()
+
+
+def lab03_supporto():
+    """Lab 03: il topic First Topic - Supporto Tecnico, con la domanda a scelta multipla e i rami."""
+    f = Flow("lab03-topic-supporto-tecnico", "Topic · First Topic - Supporto Tecnico", w=360)
+    f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione: problemi\ntecnici con strumenti, applicazioni, servizi")
+    f.step("Question", "question", "topics", "Salve User.DisplayName, tipologia di problema?\nMultiple choice options, variabile Issue")
+    msg = "chat-text"
+    f.branch([("Hardware Issues", [("Message", msg, "topics", "Problema Hardware:\n7 passi di controllo")], "topics"),
+              ("Software Issues", [("Message", msg, "topics", "Problema Software:\n8 passi di controllo")], "topics"),
+              ("Network Issues", [("Message", msg, "topics", "Problema di Rete:\n8 passi di controllo")], "topics"),
+              ("All other conditions", [("Redirect", "arrow-bend-up-right", "system", "Go to another topic:\nEscalate")], NEUTRAL)],
+             colw=182, sep=8)
+    f.step("End current topic", "stop-circle", "system", "Topic Management")
+    f.save()
+
+
+def lab03_ticket():
+    """Lab 03: il topic Ticket Card, con la scheda di input e il riepilogo in una formula card."""
+    f = Flow("lab03-topic-ticket-card", "Topic · Ticket Card", w=350)
+    f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione:\nticket di supporto per il reparto IT")
+    card = f.step("Ask with adaptive card", "cards", "topics", "Richiesta Ticket IT: campi obbligatori,\npulsanti Invia ticket e Annulla")
+    out = f.side(card, "Variabili di output", "brackets-curly", "topics",
+                 "Topic.nome, Topic.cognome,\nTopic.email, Topic.tipologia,\nTopic.descrizione", 240, into=False)
+    msg = f.step("Message", "chat-text", "topics", "Il seguente Ticket è stato inviato al Reparto IT\n+ formula card Riepilogo dati inseriti")
+    f.arrow([(out["cx"], out["b"]), (out["cx"], msg["cy"]), (msg["r"], msg["cy"])], NEUTRAL, dashed=True)
+    f.save()
+
+
+def lab04_agente():
+    """Lab 04: l'agente Redazione Annunci, dal topic all'email con l'annuncio in HTML."""
+    d = Diagram("lab04-agente-annunci", F)
+    u = d.node(40, 20, 330, "Utente", "user-circle", "agents", "Voglio creare un nuovo annuncio di lavoro")
+    d.lane(20, 110, 740, 354, "Agente Redazione Annunci", "robot", "agents")
+    tp = d.node(40, 152, 330, "Topic New Job Posting", "chats-circle", "topics",
+                "input RoleTitle, Seniority, PrimaryLocation", white=True)
+    pr = d.node(40, 246, 330, "Job Posting - Zava", "logo:ai-builder", "tools",
+                "prompt con il template aziendale\nZava S.p.A., in Markdown", white=True)
+    ms = d.node(40, 356, 330, "Message", "chat-text", "topics", "Topic.OutputAnnuncio.text in chat", white=True)
+    ins = d.node(410, 152, 330, "Istruzioni", "clipboard-text", "instructions",
+                 "Flusso di Lavoro: New Job Posting,\nTesto in HTML, Annuncio Mail", white=True)
+    ht = d.node(410, 262, 330, "Testo in HTML", "logo:ai-builder", "tools",
+                "prompt: Username = User.DisplayName,\nContent compilato dall'AI", white=True)
+    ml = d.node(410, 372, 330, "Annuncio Mail", "logo:outlook", "tools",
+                "Send an email (V2): To = User.Email,\nSubject e Body compilati dall'AI", white=True)
+    box = d.node(410, 494, 330, "Casella dell'utente", "logo:outlook", "tools", "email con l'annuncio in HTML")
+    d.arrow([(300, u["b"]), (300, tp["y"])], "topics")  # a destra del titolo della corsia
+    d.arrow([(tp["cx"], tp["b"]), (pr["cx"], pr["y"])], "topics")
+    d.arrow([(pr["cx"], pr["b"]), (ms["cx"], ms["y"])], "topics", label="OutputAnnuncio", at=(pr["cx"], (pr["b"] + ms["y"]) / 2))
+    d.arrow([(ms["r"], ms["cy"]), (390, ms["cy"]), (390, ht["cy"]), (ht["x"], ht["cy"])], "tools")
+    d.arrow([(ht["cx"], ht["b"]), (ml["cx"], ml["y"])], "tools", label="frammento HTML", at=(ht["cx"], (ht["b"] + ml["y"]) / 2))
+    d.arrow([(ml["cx"], ml["b"]), (box["cx"], box["y"])], "tools")
+    d.save()
+
+
+def lab04_topic():
+    """Lab 04: il topic New Job Posting, con le variabili di input e il prompt Job Posting - Zava."""
+    f = Flow("lab04-topic-new-job-posting", "Topic · New Job Posting", w=330)
+    tr = f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione:\nnuovo annuncio di lavoro (job posting)")
+    f.side(tr, "Variabili di input", "brackets-curly", "topics",
+           "RoleTitle: titolo standard del ruolo\nSeniority: Junior, Mid o Senior\nPrimaryLocation: sede o Remote/Hybrid", 300)
+    f.step("Job Posting - Zava", "logo:ai-builder", "tools", "prompt: role_title, seniority,\nprimary_location", afam="topics",
+           pill="RoleTitle · Seniority · PrimaryLocation")
+    f.step("Message", "chat-text", "topics", "Topic.OutputAnnuncio.text", pill="Topic.OutputAnnuncio")
+    f.save()
+
+
+def lab05_agente():
+    """Lab 05: l'agente Device Booker, i suoi topic, la lista Devices e l'agent flow."""
+    d = Diagram("lab05-agente-device-booker", F)
+    d.lane(20, 20, 310, 361, "Agente Device Booker", "robot", "agents")
+    av = d.node(35, 62, 280, "Topic Available devices", "chats-circle", "topics",
+                "Get items filtrato per VarDeviceType,\nrisultato in Global.VarDevices", white=True)
+    rq = d.node(35, 172, 280, "Topic Request device", "chats-circle", "topics",
+                "adaptive card con i dispositivi,\npoi l'agent flow", white=True)
+    d.node(35, 290, 280, "Istruzioni", "clipboard-text", "instructions",
+           "Action: /Available devices e\n/Request device; solo richieste", white=True)
+    sp = d.node(390, 20, 340, "Lista Devices", "logo:sharepoint", "knowledge",
+                "sito Help Desk CSM: Status, Asset Type,\nManufacturer, Model, Serial Number")
+    d.lane(390, 130, 340, 355, "Agent flow · Send device request email", "logo:power-automate", "tools")
+    tr = d.node(405, 172, 310, "When an agent calls the flow", "lightning", "triggers",
+                "input DeviceSharePointId, User,\nAdditionalComments (facoltativo)", white=True)
+    gd = d.node(405, 262, 310, "Get Device", "logo:sharepoint", "tools", "Get item della lista Devices per ID", white=True)
+    em = d.node(405, 336, 310, "Send an email to manager", "logo:outlook", "tools", "Request type: new device", white=True)
+    rs = d.node(405, 410, 310, "Respond to the agent", "flow-arrow", "tools", "output ModelValue = Model", white=True)
+    d.arrow([(av["r"], 79), (sp["x"], 79)], "knowledge")
+    d.arrow([(rq["r"], tr["cy"]), (tr["x"], tr["cy"])], "tools")
+    for a_, b_ in ((tr, gd), (gd, em), (em, rs)):
+        d.arrow([(a_["cx"], a_["b"]), (b_["cx"], b_["y"])], "tools")
+    d.arrow([(gd["r"], gd["cy"]), (755, gd["cy"]), (755, sp["cy"]), (sp["r"], sp["cy"])], "knowledge", dashed=True)
+    d.arrow([(rs["x"], rs["cy"]), (360, rs["cy"]), (360, rq["b"] - 14), (rq["r"], rq["b"] - 14)], NEUTRAL, dashed=True)
+    d.save()
+
+
+def lab05_sequenza():
+    """Lab 05: la richiesta di un dispositivo, dalla domanda dell'utente all'email al manager."""
+    a = [("Utente", "user-circle", "agents"), ("Device Booker", "robot", "ai-engine"),
+         ("Agent flow", "logo:power-automate", "tools"), ("Lista Devices", "logo:sharepoint", "knowledge")]
+    m = [(0, 1, "i want to request a new laptop", "call"),
+         (1, 1, "Available devices: VarDeviceType Laptop", "note"),
+         (1, 3, "Get items: Status Available, AssetType Laptop", "call"),
+         (3, 1, "Global.VarDevices", "reply"),
+         (1, 0, "Laptop disponibili; richiederne uno?", "reply"),
+         (0, 1, "Sì", "call"),
+         (1, 0, "Request device: adaptive card", "reply"),
+         (0, 1, "Submit Request: dispositivo e commenti", "call"),
+         (1, 2, "Send device request email", "call"),
+         (2, 3, "Get Device: Get item per ID", "call"),
+         (3, 2, "Manufacturer, Model, link", "reply"),
+         (2, 2, "Send an email to manager", "note"),
+         (2, 1, "ModelValue", "reply"),
+         (1, 0, "Thanks: richiesta inviata al manager", "reply")]
+    sequence("lab05-sequenza-richiesta", a, m, col_min=180, out=F)
+
+
+def lab05_available():
+    """Lab 05: il topic Available devices."""
+    f = Flow("lab05-topic-available-devices", "Topic · Available devices", w=360)
+    tr = f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione:\ndispositivi disponibili nella lista Devices")
+    f.side(tr, "Input e output", "brackets-curly", "topics",
+           "VarDeviceType: Laptop, Desktop\no Smartphone; VarAvailableDevices\n(Table) restituita all'agente", 275)
+    f.step("Get items", "logo:sharepoint", "tools", "lista Devices, view All items, Filter Query:\nStatus 'Available' e AssetType = VarDeviceType")
+    f.step("Set variable value", "brackets-curly", "topics", "Topic.VarAvailableDevices =\nGlobal.VarDevices.value", pill="Global.VarDevices")
+    f.save()
+
+
+def lab05_request():
+    """Lab 05: il topic Request device, con l'adaptive card e l'agent flow."""
+    f = Flow("lab05-topic-request-device", "Topic · Request device", w=360)
+    f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione: l'utente\nrisponde sì alla richiesta di un dispositivo")
+    f.step("Ask with adaptive card", "cards", "topics", "Device selection, formula card: le scelte\nvengono da ForAll(Global.VarDevices.value)")
+    f.step("Send device request email", "logo:power-automate", "tools",
+           "agent flow: DeviceSharePointId, User,\nAdditionalComments", pill="deviceSelectionId · commentsId")
+    f.step("Message", "chat-text", "topics", "Thanks, User.DisplayName. Your selected\ndevice, ModelValue, has been submitted",
+           pill="ModelValue")
+    f.step("Redirect", "arrow-bend-up-right", "system", "Go to another topic: End of Conversation")
+    f.save()
+
+
 if __name__ == "__main__":
     failed = []
     for build in (panoramica, architettura_standard, workflow_chat, workflow_email_standard,
-                  workflow_dossier, workflow_revisione):
+                  workflow_dossier, workflow_revisione,
+                  lab01_percorso, lab02_fonti, lab03_agente, lab03_supporto, lab03_ticket,
+                  lab04_agente, lab04_topic, lab05_agente, lab05_sequenza, lab05_available, lab05_request):
         try:
             build()
         except LayoutError as e:
