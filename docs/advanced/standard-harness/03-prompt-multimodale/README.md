@@ -433,14 +433,6 @@ Ecco la nostra proposta per la nuova intranet
 2. In **Requesters** non ci sono duplicati per la stessa email.
 3. Le proposte con programma ambiguo restano senza programma e l'agente chiede conferma.
 
-## Riferimenti Microsoft Learn
-
-- [Create a prompt](https://learn.microsoft.com/microsoft-copilot-studio/create-custom-prompt)
-- [Add knowledge to your prompt](https://learn.microsoft.com/microsoft-copilot-studio/use-your-own-prompt-data)
-- [Process responses with JSON output](https://learn.microsoft.com/microsoft-copilot-studio/process-responses-json-output)
-- [Use your prompt in Power Automate (Run a prompt)](https://learn.microsoft.com/ai-builder/use-a-custom-prompt-in-flow)
-- [Microsoft Dataverse connector](https://learn.microsoft.com/connectors/commondataserviceforapps/)
-
 > [!IMPORTANT]
 > **Lab Completato**
 >

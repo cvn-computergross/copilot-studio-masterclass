@@ -318,12 +318,3 @@ https://<tenant>.sharepoint.com/sites/ZavaPMO/Shared%20Documents/PMO%20Knowledge
 > - come progettare un modello dati pensato per essere usato da agenti: codici leggibili, nomi logici espliciti, regole nei dati;
 > - come creare tabelle, colonne a numerazione automatica, scelte e lookup in una soluzione;
 > - come preparare un'app model-driven e importare dati con lookup da CSV.
-
-## Riferimenti Microsoft Learn
-
-- [Create and edit tables using Power Apps](https://learn.microsoft.com/power-apps/maker/data-platform/create-edit-entities-portal)
-- [Autonumber columns](https://learn.microsoft.com/power-apps/maker/data-platform/autonumber-fields)
-- [Create and edit columns](https://learn.microsoft.com/power-apps/maker/data-platform/create-edit-field-portal)
-- [Configure the Dataverse MCP server for an environment](https://learn.microsoft.com/power-apps/maker/data-platform/data-platform-mcp-disable)
-- [Manage feature settings](https://learn.microsoft.com/power-platform/admin/settings-features)
-- [Add SharePoint as a knowledge source](https://learn.microsoft.com/microsoft-copilot-studio/knowledge-add-sharepoint)

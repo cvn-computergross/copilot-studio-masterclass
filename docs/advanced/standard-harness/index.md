@@ -16,3 +16,4 @@ Il caso pratico costruito con la **standard harness**: l'Agente Demand IT orches
 | [S05](./05-trigger-email/README.md) | Trigger autonomo via email | Trigger dell'agente, Power Automate, notifica Teams con adaptive card | 75 min |
 | [S06](./06-dossier-word/README.md) | Dossier Word | Prompt con output Document, template con segnaposto, flow con link di condivisione | 60 min |
 | [S07](./07-valutazioni-e-pubblicazione/README.md) | Valutazioni e pubblicazione | Set di test, Teams e Microsoft 365 Copilot, condivisione | 60 min |
+| [S08](./08-feedback-e-telemetria/README.md) | Feedback e telemetria | Reazioni da Teams, pagina Monitor, CSAT con adaptive card di approfondimento | 60 min |

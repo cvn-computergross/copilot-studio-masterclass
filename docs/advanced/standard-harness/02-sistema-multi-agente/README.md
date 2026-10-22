@@ -481,11 +481,3 @@ Devo prepararmi alla revisione della proposta PP-####. Quali sono i criteri del 
 > - come un agent flow riceve un file dalla chat tramite `System.Activity.Attachments`;
 > - come limitare l'uso di uno strumento al child agent;
 > - come pubblicare uno specialista e scriverne la descrizione di delega.
-
-## Riferimenti Microsoft Learn
-
-- [Add other agents](https://learn.microsoft.com/microsoft-copilot-studio/authoring-add-other-agents)
-- [Agent flows overview](https://learn.microsoft.com/microsoft-copilot-studio/flows-overview)
-- [Pass files to agent flows, connectors, and tools](https://learn.microsoft.com/microsoft-copilot-studio/guidance/pass-files-to-connectors)
-- [Add Dataverse as a knowledge source](https://learn.microsoft.com/microsoft-copilot-studio/knowledge-add-dataverse)
-- [Allow file input from users](https://learn.microsoft.com/microsoft-copilot-studio/image-input-analysis)

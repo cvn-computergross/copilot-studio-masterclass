@@ -301,14 +301,3 @@ Questa prova è facoltativa, ma è la dimostrazione che giustifica la scelta di 
 > - perché collegare la conoscenza da SharePoint invece di caricarla: versione sempre aggiornata e permessi dell'utente rispettati.
 >
 > Nel prossimo laboratorio l'orchestratore riceverà un child agent per l'intake e un agente connesso per la preparazione della revisione.
-
-## Riferimenti Microsoft Learn
-
-- [Create and delete agents](https://learn.microsoft.com/microsoft-copilot-studio/authoring-first-bot)
-- [Knowledge sources summary](https://learn.microsoft.com/microsoft-copilot-studio/knowledge-copilot-studio)
-- [Add SharePoint as a knowledge source](https://learn.microsoft.com/microsoft-copilot-studio/knowledge-add-sharepoint)
-- [Unstructured data as a knowledge source: the two SharePoint options](https://learn.microsoft.com/microsoft-copilot-studio/knowledge-unstructured-data#faq)
-- [Upload files as a knowledge source](https://learn.microsoft.com/microsoft-copilot-studio/knowledge-add-file-upload)
-- [Customize the look and feel of an agent](https://learn.microsoft.com/microsoft-copilot-studio/customize-default-canvas#change-the-agent-name-and-icon)
-- [Allow file input from users](https://learn.microsoft.com/microsoft-copilot-studio/image-input-analysis)
-- [Orchestrate agent behavior with generative AI](https://learn.microsoft.com/microsoft-copilot-studio/advanced-generative-actions)

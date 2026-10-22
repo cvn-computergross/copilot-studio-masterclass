@@ -404,10 +404,3 @@ Le email di prova coprono i casi reali della casella del PMO: una proposta corre
 > - come classificare un input con un prompt prima di scrivere dati;
 > - come pubblicare una adaptive card in Teams da un agent flow;
 > - perché un agente autonomo non deve prendere decisioni che richiedono una conferma umana.
-
-## Riferimenti Microsoft Learn
-
-- [Add an event trigger](https://learn.microsoft.com/microsoft-copilot-studio/authoring-triggers-about)
-- [Office 365 Outlook connector](https://learn.microsoft.com/connectors/office365/)
-- [Microsoft Teams connector](https://learn.microsoft.com/connectors/teams/)
-- [Use your prompt in Power Automate](https://learn.microsoft.com/ai-builder/use-a-custom-prompt-in-flow)

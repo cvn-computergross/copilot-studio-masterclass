@@ -293,10 +293,3 @@ Mi prepari il dossier di revisione?
 > - come generare un documento Word da un prompt con un template a segnaposto, incluse le tabelle ripetute;
 > - come leggere dati da tabelle collegate con la conoscenza Dataverse del prompt;
 > - come consegnare un file generato in un topic con un flow, OneDrive e un link di condivisione.
-
-## Riferimenti Microsoft Learn
-
-- [Document output (preview)](https://learn.microsoft.com/microsoft-copilot-studio/generate-document-output-prompt)
-- [Add knowledge to your prompt](https://learn.microsoft.com/microsoft-copilot-studio/use-your-own-prompt-data)
-- [OneDrive for Business connector](https://learn.microsoft.com/connectors/onedriveforbusiness/)
-- [Create and edit topics](https://learn.microsoft.com/microsoft-copilot-studio/authoring-create-edit-topics)

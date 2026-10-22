@@ -1,6 +1,6 @@
 # Lab S07 - Valutazioni e pubblicazione
 
-[Previous: S06](../06-dossier-word/README.md) | [Back to Standard Harness](../index.md)
+[Previous: S06](../06-dossier-word/README.md) | [Back to Standard Harness](../index.md) | [Next: S08](../08-feedback-e-telemetria/README.md)
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~60 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
 
@@ -244,11 +244,3 @@ Valuta la proposta PP-#### sul programma PG-200
 > - come creare e leggere test set con **Meaning match** e **Tool use**;
 > - perché i test ripetibili devono evitare effetti collaterali;
 > - come pubblicare un agente e provarlo in Microsoft 365 Copilot senza distribuirlo.
-
-## Riferimenti Microsoft Learn
-
-- [About agent evaluation](https://learn.microsoft.com/microsoft-copilot-studio/analytics-agent-evaluation-intro)
-- [Create a single response test set](https://learn.microsoft.com/microsoft-copilot-studio/analytics-agent-evaluation-create)
-- [Choose evaluation methods](https://learn.microsoft.com/microsoft-copilot-studio/analytics-agent-evaluation-overview)
-- [Run evaluations and view results](https://learn.microsoft.com/microsoft-copilot-studio/analytics-agent-evaluation-results)
-- [Connect and configure an agent for Teams and Microsoft 365](https://learn.microsoft.com/microsoft-copilot-studio/publication-add-bot-to-microsoft-teams)

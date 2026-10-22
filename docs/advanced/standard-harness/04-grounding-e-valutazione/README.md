@@ -393,13 +393,6 @@ Valuta la proposta PP-#### sul programma PG-500
 >
 > Eseguire due volte la valutazione della stessa proposta (chiedendo esplicitamente una rivalutazione) e confrontare i dettagli. I pesi e il calcolo sono identici; un livello al confine tra due valori può cambiare, ed è giusto che l'evidenza scritta permetta a una persona di accorgersene.
 
-## Riferimenti Microsoft Learn
-
-- [Add knowledge to your prompt](https://learn.microsoft.com/microsoft-copilot-studio/use-your-own-prompt-data)
-- [Add tools to custom agents (Ask the end user before running)](https://learn.microsoft.com/microsoft-copilot-studio/add-tools-custom-agent)
-- [Use variables in flows](https://learn.microsoft.com/power-automate/create-variable-store-values)
-- [Expression functions reference](https://learn.microsoft.com/azure/logic-apps/expression-functions-reference)
-
 > [!IMPORTANT]
 > **Lab Completato**
 >
