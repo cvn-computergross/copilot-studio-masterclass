@@ -22,12 +22,6 @@ Con il PMO Demand Hub del Lab 00 i dati del processo hanno finalmente un posto. 
 >
 > In nessun punto l'agente approva o respinge una proposta. La decisione resta al **Comitato di Valutazione Investimenti IT**. È una scelta di progetto (responsabilità e trasparenza), ripresa nelle istruzioni, nei documenti generati e nelle valutazioni di sicurezza.
 
-Lo schema mostra dove si arriverà alla fine della standard harness. Due canali di ingresso (chat e casella email del PMO), un orchestratore con un child agent e un agente connesso, un unico archivio dati in Dataverse. Le persone del PMO restano il punto di decisione: confermano programma e valutazione. Accanto a ogni componente è indicato il laboratorio in cui viene creato; nei codici degli schemi, `####` sta per le cifre generate da Dataverse (ad esempio PP-1003).
-
-![Panoramica del sistema: canali di ingresso, Agente Demand IT, Intake Proposte, Agente Comitato, dossier e PMO Demand Hub](../../images/panoramica-sistema.svg)
-
-Si parte dal centro dello schema: l'orchestratore, che in questo lab impara a rispondere sulle regole del processo a partire dai documenti del PMO.
-
 L'Ufficio Demand e PMO IT vuole un unico punto di contatto per i proponenti e per gli analisti: l'**Agente Demand IT**. Sarà l'**orchestratore** del sistema: riceve le richieste in chat, risponde sulle regole del processo, delega l'intake dei documenti a un child agent (S02), la preparazione della revisione a un agente connesso (S02) e, più avanti, la generazione del dossier (S06).
 
 In questo laboratorio viene creato l'agente nella soluzione del PMO, vengono scritte le sue istruzioni da orchestratore, gli viene data la conoscenza delle regole aziendali (linee guida del PMO e piano strategico) e vengono configurate le impostazioni generative.
@@ -39,6 +33,14 @@ In questo laboratorio viene creato l'agente nella soluzione del PMO, vengono scr
 - **File uploads attivo.** Il proponente allegherà il business case in chat: l'impostazione **File uploads** permette all'agente di ricevere e leggere il file.
 - **Schema name e soluzione decisi alla creazione.** Nella standard harness si possono impostare in **Advanced settings** durante la creazione dell'agente: scegliere un nome tecnico chiaro (`csm_agentedemand_std`) facilita l'ALM e distingue questo agente da quello del percorso GitHub Copilot.
 :::
+
+## Che cosa si costruisce
+
+Lo schema mostra dove si arriverà alla fine della standard harness. Due canali di ingresso (chat e casella email del PMO), un orchestratore con un child agent e un agente connesso, un unico archivio dati in Dataverse. Le persone del PMO restano il punto di decisione: confermano programma e valutazione. Accanto a ogni componente è indicato il laboratorio in cui viene creato; nei codici degli schemi, `####` sta per le cifre generate da Dataverse (ad esempio PP-1003).
+
+![Panoramica del sistema: canali di ingresso, Agente Demand IT, Intake Proposte, Agente Comitato, dossier e PMO Demand Hub](../../images/panoramica-sistema.svg)
+
+Si parte dal centro dello schema: l'orchestratore.
 
 ## Prerequisiti
 
@@ -75,12 +77,13 @@ L'orchestratore è il punto di ingresso unico per proponenti e analisti. Nella s
 ![](./images/passo1-02.png)
 
 4. Selezionare **Create** e attendere il provisioning. Si apre la pagina **Overview**.
+5. Verificare che nella soluzione **PMO Demand IT** compaia l'agente con schema name `csm_agentedemand_std`.
 
 ### Personalizzare icona e descrizione
 
 Un'icona riconoscibile aiuta proponenti e analisti a distinguere l'agente del PMO dagli altri agenti in Teams e in Microsoft 365 Copilot, ed è la prima cosa che vedono.
 
-1. Selezionare l'icona dell'agente nella barra in alto, poi **Change icon**, caricare [`demand-it-agent-192.png`](../../../resources/advanced/agent-icon/demand-it-agent-192.png) e selezionare **Save**.
+1. Selezionare l'icona dell'agente nella barra in alto, poi **Change icon**, caricare [`demand-it-agent-192.png`](../../../resources/advanced/agent-icon/demand-it-agent-192.png) e selezionare **Save**: l'agente mostra l'icona del PMO Demand IT.
 
 ![](./images/passo1-03.png)
 
@@ -282,13 +285,6 @@ Questa prova è facoltativa, ma è la dimostrazione che giustifica la scelta di 
 2. Ripetere in una nuova conversazione la domanda su quella regola: l'agente risponde con il valore nuovo.
 3. Ripristinare il testo originale.
 4. Se si dispone di un secondo utente di prova senza permessi sulla cartella, fare la stessa domanda con quell'utente: non riceve risposte dalle linee guida.
-
-### Verifica
-
-1. Le risposte sulle regole citano il documento delle linee guida nella cartella SharePoint; la domanda sull'allineamento strategico cita il Piano Strategico IT 2026-2028.
-2. L'agente mostra l'icona del PMO Demand IT.
-3. L'agente non approva proposte e non risponde a domande fuori ambito.
-4. Nella soluzione **PMO Demand IT** compare l'agente con schema name `csm_agentedemand_std`.
 
 > [!IMPORTANT]
 > **Lab Completato**

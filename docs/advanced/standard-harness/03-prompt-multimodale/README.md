@@ -38,7 +38,7 @@ Dopo S02 una proposta registrata contiene solo il file e un titolo provvisorio: 
 
 ## Prerequisiti
 
-Per svolgere questo lab occorre avere completato i laboratori S01 e S02 (Agente Demand IT, child agent **Intake Proposte** e agent flow **Carica business case**). Servono inoltre i business case BC-01, BC-03 e BC-05 (versione PDF) in [`resources/advanced/business-case`](../../../resources/advanced/business-case/).
+Per svolgere questo lab occorre avere completato i laboratori S01 e S02 (Agente Demand IT, child agent **Intake Proposte** e agent flow **Carica business case**). Servono inoltre i business case [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf), [`BC-03_Assistente_AI_servizio_clienti.pdf`](../../../resources/advanced/business-case/BC-03_Assistente_AI_servizio_clienti.pdf) e [`BC-05_Nuova_intranet_e_hub_dipendenti.pdf`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.pdf).
 
 ## Prompt "Estrai dati business case"
 
@@ -80,7 +80,7 @@ Messaggio: /Messaggio
 
 I segnaposto `/Documento`, `/Messaggio` e `/Programmi` vanno sostituiti con input veri e propri.
 
-1. Selezionare il testo `/Documento`, usare **Add content** (o digitare `/`), scegliere **Image or document** e chiamare l'input `Documento`. Come dato di esempio caricare `BC-01_Portale_fornitori_self-service.pdf`
+1. Selezionare il testo `/Documento`, usare **Add content** (o digitare `/`), scegliere **Image or document** e chiamare l'input `Documento`. Come dato di esempio caricare [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf)
 
 ![](./images/passo1-extra-03.png)
 
@@ -134,7 +134,7 @@ Formato di output: restituisci solo JSON valido con questa struttura:
 
 ![](./images/passo1-extra-07.png)
 
-4. Ripetere il test con `BC-03_Assistente_AI_servizio_clienti.pdf`: `ProgrammaDaConfermare` deve essere `true`
+4. Ripetere il test con [`BC-03_Assistente_AI_servizio_clienti.pdf`](../../../resources/advanced/business-case/BC-03_Assistente_AI_servizio_clienti.pdf): `ProgrammaDaConfermare` deve essere `true`
 5. Selezionare **Save**. Se compare **Configure for use in Agent**, selezionare **Cancel**: il prompt verrà usato in un flow.
 
 ## Agent flow "Analizza business case"
@@ -362,12 +362,12 @@ Identificatori: Proposta = PP-####, Proponente = RQ-####, Programma = PG-###. No
 
 I test riproducono i casi che il PMO incontra davvero: un business case completo, lo stesso documento inviato due volte (il proponente non deve duplicarsi), un documento con il programma da definire e uno con il programma indicato. Il controllo si fa nell'app, dove si vede che cosa è stato scritto.
 
-La sequenza completa in chat, dall'allegato alla valutazione, è nello schema della sezione *Testare l'agente* del [Lab S04](../04-grounding-e-valutazione/README.md): con questo lab sono attivi i passi da 1 a 7, fino al riepilogo con il programma da confermare.
+La sequenza completa in chat, dall'allegato alla valutazione, è nello schema della sezione [*Che cosa si costruisce*](../04-grounding-e-valutazione/README.md#che-cosa-si-costruisce) del Lab S04: con questo lab sono attivi i passi da 1 a 7, fino al riepilogo con il programma da confermare.
 
 ### Business case completo
 
 1. Nel pannello **Test** dell'Agente Demand IT avviare una **New test session**
-2. Allegare `BC-01_Portale_fornitori_self-service.pdf` e inserire:
+2. Allegare [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e inserire:
 
 ```text
 Nuova proposta dell'Ufficio Acquisti
@@ -380,7 +380,7 @@ Nuova proposta dell'Ufficio Acquisti
 
 ### Reinvio dello stesso documento
 
-1. Avviare una nuova sessione, allegare di nuovo `BC-01_Portale_fornitori_self-service.pdf` e inserire:
+1. Avviare una nuova sessione, allegare di nuovo [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e inserire:
 
 ```text
 Reinvio il business case del portale fornitori
@@ -390,7 +390,7 @@ Reinvio il business case del portale fornitori
 
 ### Programma da confermare
 
-1. Avviare una nuova sessione, allegare `BC-03_Assistente_AI_servizio_clienti.pdf` e inserire:
+1. Avviare una nuova sessione, allegare [`BC-03_Assistente_AI_servizio_clienti.pdf`](../../../resources/advanced/business-case/BC-03_Assistente_AI_servizio_clienti.pdf) e inserire:
 
 ```text
 Proposta per l'assistente AI del servizio clienti
@@ -414,7 +414,7 @@ Confermo PG-300
 
 ### Programma indicato
 
-1. Avviare una nuova sessione, allegare `BC-05_Nuova_intranet_e_hub_dipendenti.pdf` e inserire:
+1. Avviare una nuova sessione, allegare [`BC-05_Nuova_intranet_e_hub_dipendenti.pdf`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.pdf) e inserire:
 
 ```text
 Ecco la nostra proposta per la nuova intranet
@@ -426,12 +426,6 @@ Ecco la nostra proposta per la nuova intranet
 > **SystemError**
 >
 > Se si riceve `SystemError` e il nodo **Intake Proposte** mostra *No steps were taken*, verificare che il modello dell'Agente Demand IT sia **Claude Sonnet 4.6** e aprire una **New test session**.
-
-### Verificare i risultati
-
-1. Ogni proposta analizzata ha titolo, sintesi, budget, durata e proponente.
-2. In **Requesters** non ci sono duplicati per la stessa email.
-3. Le proposte con programma ambiguo restano senza programma e l'agente chiede conferma.
 
 > [!IMPORTANT]
 > **Lab Completato**

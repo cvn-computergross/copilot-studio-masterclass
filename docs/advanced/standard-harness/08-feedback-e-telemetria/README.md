@@ -325,12 +325,7 @@ Il programma proposto non era quello indicato nel business case.
 > [!IMPORTANT]
 > **Lab Completato**
 >
-> L'Agente Demand IT ora raccoglie le reazioni degli utenti da Teams e, quando il voto CSAT è basso, chiede il motivo con una adaptive card. Con questo lab il percorso della standard harness è completo. Verificare che:
->
-> 1. le reazioni con commento lasciate da Teams siano visibili in **Monitor**, sezione **Effectiveness**;
-> 2. un voto CSAT di 1 o 2 stelle apra la card di approfondimento e un voto di 4 o 5 no.
->
-> In questo lab si è visto:
+> L'Agente Demand IT ora raccoglie le reazioni degli utenti da Teams e, quando il voto CSAT è basso, chiede il motivo con una adaptive card. Con questo lab il percorso della standard harness è completo. In questo lab si è visto:
 >
 > - quale domanda risolvono valutazioni, reazioni e questionario CSAT;
 > - come raccogliere reazioni da un canale pubblicato e leggerle in Copilot Studio;

@@ -12,7 +12,7 @@ Questo lab porta la preparazione del dossier nell'Agente Demand IT: il documento
 
 Per ogni proposta valutata il PMO prepara un **dossier di revisione**: dati della proposta e del proponente, programma e budget, tabella dei criteri con livelli ed evidenze, punteggio, otto domande per lo sponsor e i rischi principali. Oggi ogni analista lo prepara a mano e con una struttura diversa; il Comitato fatica a confrontare i dossier.
 
-In questo lab il dossier verrà generato come **documento Word** a partire da un **template aziendale con segnaposto**, con un prompt che legge i dati della valutazione da Dataverse. Un agent flow salva il documento in OneDrive e restituisce un link; un topic lo consegna all'utente. In particolare verranno svolte le seguenti attività:
+In questo lab il dossier verrà generato come **documento Word** a partire da un **template aziendale con segnaposto**, con un prompt che legge i dati della valutazione da Dataverse. In particolare verranno svolte le seguenti attività:
 
 - Creare un prompt con output **Document (preview)** e un template Word.
 - Leggere dati da più tabelle collegate con la conoscenza Dataverse del prompt.
@@ -31,6 +31,12 @@ In questo lab il dossier verrà generato come **documento Word** a partire da un
 >
 > Nel percorso GitHub Copilot (G06) il layout è scritto in codice Python dentro una skill. Qui è in un file Word. Entrambe le soluzioni separano il **layout** (fisso) dal **contenuto** (generato).
 
+## Che cosa si costruisce
+
+Lo schema mostra i componenti di questo lab. Il topic chiede il codice della valutazione se manca e chiama l'agent flow **Genera dossier**, che genera il documento con il prompt a output Word, lo salva in OneDrive e crea un link di condivisione. Il topic consegna il link in chat con una adaptive card.
+
+![Generazione del dossier di revisione](../../images/workflow-dossier.svg)
+
 ## Prerequisiti
 
 Per svolgere questo lab occorre avere:
@@ -43,7 +49,7 @@ Per svolgere questo lab occorre avere:
 
 ### Esaminare il template
 
-1. Aprire `Zava_Dossier_Revisione_Template.docx` in Word. Contiene:
+1. Aprire [`Zava_Dossier_Revisione_Template.docx`](../../../resources/advanced/template/Zava_Dossier_Revisione_Template.docx) in Word. Contiene:
    - campi singoli come `{{TitoloProposta}}`, `{{CodiceValutazione}}`, `{{Punteggio}}`, `{{Rischi}}`;
    - una tabella dei criteri con la riga `{{criteri.Criterio}}`, `{{criteri.Peso}}`, `{{criteri.Livello}}`, `{{criteri.Evidenza}}`, `{{criteri.Punti}}`: la riga verrà ripetuta per ogni criterio;
    - una tabella delle domande con `{{domande.Numero}}`, `{{domande.Criterio}}`, `{{domande.Domanda}}`, `{{domande.Verifica}}`;
@@ -133,10 +139,6 @@ Programma: /Programma
 ## Topic "Genera dossier di revisione"
 
 Il dossier si chiede in conversazione, ma il file va consegnato in un posto condiviso. Un topic raccoglie il codice della valutazione, un flow genera il documento con il prompt, lo salva in OneDrive e restituisce un link di condivisione da aprire o inoltrare.
-
-Lo schema mostra i componenti di questa sezione. Il topic chiede il codice della valutazione se manca e chiama l'agent flow **Genera dossier**, che genera il documento con il prompt a output Word, lo salva in OneDrive e crea un link di condivisione. Il topic consegna il link in chat con una adaptive card.
-
-![Generazione del dossier di revisione](../../images/workflow-dossier.svg)
 
 ### Creare il topic
 
@@ -269,26 +271,21 @@ Genera il dossier di revisione per la valutazione AS-####
 
 ![](./images/passo4-extra-19.png)
 
-2. Aprire il link: controllare intestazione, dati del proponente, programma e budget, tabella dei criteri (una riga per criterio, stessi livelli della valutazione), punteggio, indicazione, 8 domande e rischi.
-3. Generare il dossier della valutazione di BC-04: il primo rischio deve riguardare il budget oltre la disponibilità del programma.
-4. Chiedere il dossier senza indicare il codice: il topic deve chiederlo.
+2. Aprire il link: controllare intestazione, dati del proponente, programma e budget, tabella dei criteri (una riga per criterio, stessi livelli della valutazione), punteggio, indicazione, 8 domande, rischi e la nota finale sull'uso dell'intelligenza artificiale, come nel layout del template.
+3. Controllare che il link sia di sola lettura e valido per l'organizzazione.
+4. Generare il dossier della valutazione di BC-04: il primo rischio deve riguardare il budget oltre la disponibilità del programma.
+5. Chiedere il dossier senza indicare il codice: il topic deve chiederlo.
 
 ```
 Mi prepari il dossier di revisione?
 ```
 
-5. Generare due volte lo stesso dossier e confrontare i file: struttura, titoli e tabelle sono identici; la formulazione di domande e rischi può variare.
+6. Generare due volte lo stesso dossier e confrontare i file: struttura, titoli e tabelle sono identici; la formulazione di domande e rischi può variare.
 
 > [!IMPORTANT]
 > **Lab Completato**
 >
-> L'Agente Demand IT ora genera il dossier di revisione in Word a partire dalla valutazione registrata e lo consegna con un link. Verificare che:
->
-> 1. il documento rispetti il layout del template e la nota finale sull'IA sia sempre presente;
-> 2. livelli e punteggio coincidano con la valutazione registrata;
-> 3. il link sia di sola lettura e valido per l'organizzazione.
->
-> In questo lab si è visto:
+> L'Agente Demand IT ora genera il dossier di revisione in Word a partire dalla valutazione registrata e lo consegna con un link. In questo lab si è visto:
 >
 > - come generare un documento Word da un prompt con un template a segnaposto, incluse le tabelle ripetute;
 > - come leggere dati da tabelle collegate con la conoscenza Dataverse del prompt;

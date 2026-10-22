@@ -28,6 +28,12 @@ In questo laboratorio viene creato un **child agent** per l'intake, con un **age
 - **Solo PDF in questa fase.** Il prompt che analizzerà il documento in S03 accetta come input solo PDF o immagini. Il child agent quindi accetta il PDF e chiede di convertire i file Word: è un vincolo della standard harness che il percorso GitHub Copilot non ha.
 :::
 
+## Che cosa si costruisce
+
+Lo schema mostra l'architettura completa della standard harness alla fine del percorso. In questo lab nascono le due deleghe principali dell'**Agente Demand IT**: l'intake al child agent **Intake Proposte**, che per ora ha il solo agent flow **Carica business case**, e la preparazione della revisione all'**Agente Comitato**. Gli altri agent flow, il topic del dossier e il trigger email si aggiungono in S03-S06.
+
+![Architettura multi-agente della Standard Harness](../../images/architettura-standard.svg)
+
 ## Prerequisiti
 
 Per svolgere questo lab occorre avere terminato il laboratorio S01 ed avere creato l'**Agente Demand IT**. Servono inoltre i business case [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e [`BC-05_Nuova_intranet_e_hub_dipendenti.docx`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.docx).
@@ -373,10 +379,6 @@ Usalo per preparare la sessione di revisione di una proposta (PP-####) e per ogn
 
 L'orchestratore ora ha due collaboratori. Due righe esplicite nelle istruzioni rendono la delega prevedibile: intake e valutazione vanno a **Intake Proposte**, preparazione della revisione all'**Agente Comitato**.
 
-Lo schema mostra l'architettura completa della standard harness alla fine del percorso. In questo lab nascono le due deleghe principali: l'**Agente Demand IT** passa l'intake al child agent **Intake Proposte**, che per ora ha il solo agent flow **Carica business case**, e la preparazione della revisione all'**Agente Comitato**, connesso e con Dataverse come conoscenza. Gli altri agent flow, il topic del dossier e il trigger email si aggiungono in S03-S06.
-
-![Architettura multi-agente della Standard Harness](../../images/architettura-standard.svg)
-
 ### Aggiornare le istruzioni dell'orchestratore
 
 1. Aprire l'**Agente Demand IT** e aggiungere in fondo alle **Instructions**:
@@ -405,7 +407,7 @@ Il test copre i tre percorsi costruiti: un file non ammesso che deve essere rifi
 ### Rifiuto di un file Word
 
 1. Nel pannello **Test** dell'Agente Demand IT avviare una nuova sessione.
-2. Allegare `BC-05_Nuova_intranet_e_hub_dipendenti.docx` e scrivere:
+2. Allegare [`BC-05_Nuova_intranet_e_hub_dipendenti.docx`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.docx) e scrivere:
 
 ```text
 Ecco la nostra proposta per la nuova intranet
@@ -417,7 +419,7 @@ Il child agent deve rifiutare il file Word e chiedere il PDF, senza chiamare il 
 
 ### Registrazione di un business case PDF
 
-1. In una nuova sessione allegare `BC-01_Portale_fornitori_self-service.pdf` e scrivere:
+1. In una nuova sessione allegare [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e scrivere:
 
 ```text
 Vi invio il business case del portale fornitori per la valutazione
@@ -465,12 +467,6 @@ Devo prepararmi alla revisione della proposta PP-####. Quali sono i criteri del 
 > **L'orchestratore non delega**
 >
 > Se l'orchestratore risponde da solo citando **Conoscenza PMO** invece di delegare, controllare tre cose: la riga sulla delega all'Agente Comitato nelle istruzioni (sezione *Aggiornare le istruzioni dell'orchestratore*), con il riferimento `/Agente Comitato` inserito come elemento dinamico e non come testo; la descrizione dell'agente connesso (sezione *Collegare l'Agente Comitato all'orchestratore*), che deve citare i dati del PMO Demand Hub; una **New test session** dopo il salvataggio. Le linee guida del PMO contengono anche un elenco dei criteri, ed è per questo che l'orchestratore è tentato di rispondere da solo.
-
-### Verifica
-
-1. Il DOCX viene rifiutato con la richiesta del PDF; il PDF viene registrato con codice PP-####.
-2. La riga della proposta contiene il file e i valori di canale, stato e data.
-3. L'orchestratore delega allo specialista solo la richiesta di preparazione della revisione.
 
 > [!IMPORTANT]
 > **Lab Completato**

@@ -151,27 +151,34 @@
 
 /* 5. Contenuto ------------------------------------------------------------- */
 /* callout: davanti al titolo il glifo dell'Icon Pack (markdown.ts), come le altre icone:
-   contorno scuro e strato duotone blu (note, suggerimenti) o rosso (avvisi, pericoli) */
+   contorno scuro e strato duotone nel colore del tipo di callout */
 .vp-doc .custom-block .custom-block-title { display: flex; align-items: center; gap: 6px; }
 .vp-doc .custom-block-title .callout-icon { flex: none; vertical-align: 0; }
 .vp-doc .custom-block-title .callout-icon svg { width: 18px; height: 18px; }
-/* note, suggerimenti e cose importanti in blu; avvisi e pericoli in rosso */
-:root {
-  --vp-custom-block-note-bg: var(--instructions-tint);
-  --vp-custom-block-note-text: var(--vp-c-text-1);
-  --vp-custom-block-important-border: transparent;
-  --vp-custom-block-important-bg: var(--instructions-tint);
-  --vp-custom-block-important-text: var(--vp-c-text-1);
-  --vp-custom-block-warning-border: transparent;
-  --vp-custom-block-warning-bg: var(--risk-tint);
-  --vp-custom-block-warning-text: var(--vp-c-text-1);
-  --vp-custom-block-caution-border: transparent;
-  --vp-custom-block-caution-bg: var(--risk-tint);
-  --vp-custom-block-caution-text: var(--vp-c-text-1);
+/* un colore per tipo, dai colori per argomento: sfondo nella tinta, titolo nel colore pieno
+   (in chiaro e in scuro il titolo resta sopra 4.5:1 sulla sua tinta)
+     NOTE, ::: info   blu     (instructions)
+     TIP, ::: tip     verde   (knowledge)
+     IMPORTANT        indaco  (topics)
+     WARNING, ::: warning  ambra (platform)
+     CAUTION, ::: danger   rosso (risk) */
+.vp-doc .custom-block:is(.note, .info) { --callout: var(--instructions); --callout-tint: var(--instructions-tint); }
+.vp-doc .custom-block.tip              { --callout: var(--knowledge);    --callout-tint: var(--knowledge-tint); }
+.vp-doc .custom-block.important        { --callout: var(--topics);       --callout-tint: var(--topics-tint); }
+.vp-doc .custom-block.warning          { --callout: var(--platform-ink); --callout-tint: var(--platform-tint); }
+/* l'ambra pieno sulla sua tinta è appena sotto 4.5:1: per il titolo, in chiaro, un tono più scuro */
+:root { --platform-ink: #845800; }
+.dark { --platform-ink: var(--platform); }
+.vp-doc .custom-block:is(.caution, .danger) { --callout: var(--risk);    --callout-tint: var(--risk-tint); }
+.vp-doc .custom-block:is(.note, .info, .tip, .important, .warning, .caution, .danger) {
+  border-color: transparent;
+  background-color: var(--callout-tint);
+  color: var(--vp-c-text-1);
 }
-.vp-doc .custom-block:is(.note, .tip, .info, .important) .custom-block-title { color: var(--instructions); }
-.vp-doc .custom-block:is(.warning, .danger, .caution) .custom-block-title { color: var(--risk); }
-
+.vp-doc .custom-block:is(.note, .info, .tip, .important, .warning, .caution, .danger) .custom-block-title { color: var(--callout); }
+.vp-doc .custom-block:is(.note, .info, .tip, .important, .warning, .caution, .danger) :not(pre) > code {
+  background-color: color-mix(in srgb, var(--callout) 12%, transparent);
+}
 /* 6. Icone ------------------------------------------------------------------ */
 /* glifi dell'Icon Pack (Phosphor duotone): contorno scuro e strato duotone pieno nel
    colore dell'argomento (classe f-…); senza classe, blu */
@@ -185,6 +192,22 @@
 /* davanti a un titolo o a una voce di tabella */
 .vp-doc :is(h2, h3) > :is(.icon, .logo):first-child { margin-right: .4em; }
 .vp-doc td > :is(.icon, .logo):first-child { margin-right: .35em; }
+
+/* file da scaricare (docs/resources/, markdown.ts): una pillola con il glifo download-simple,
+   diversa dai link normali e dal testo da copiare (blocchi di codice). Se non sta nella riga
+   passa intera alla successiva (glifo e nome insieme); solo un nome più lungo della riga va a capo */
+.vp-doc a.download {
+  display: inline-block; max-width: 100%; line-height: 1.5;
+  padding: 1px 9px 1px 7px; border-radius: 999px;
+  background-color: var(--instructions-tint); border: 1px solid color-mix(in srgb, var(--instructions) 28%, transparent);
+  color: var(--instructions); font-weight: 600; text-decoration: none;
+  overflow-wrap: anywhere; transition: background-color .2s, border-color .2s;
+}
+.vp-doc a.download:hover { background-color: color-mix(in srgb, var(--instructions) 18%, transparent); border-color: var(--instructions); color: var(--instructions); }
+.vp-doc a.download .download-icon { margin-right: .3em; vertical-align: -.2em; }
+.vp-doc a.download .download-icon svg { width: 1.1em; height: 1.1em; }
+.vp-doc a.download code { background: transparent; padding: 0; color: inherit; font-weight: 600; }
+.vp-doc .custom-block a.download { color: var(--instructions); text-decoration: none; }
 
 /* schemi dell'Advanced (tools/diagrams.py): markdown.ts li inserisce nella pagina come SVG,
    senza il loro <style>; qui i colori, che seguono il tema del sito (.dark). Riquadri,

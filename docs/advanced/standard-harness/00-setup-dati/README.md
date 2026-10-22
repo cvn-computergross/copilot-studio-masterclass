@@ -30,11 +30,11 @@ Tutte le persone sono interne a Zava S.p.A. Non è un dettaglio: Work IQ e i con
 
 Il primo passo non riguarda ancora gli agenti. Oggi i dati del processo sono sparsi tra la casella email e un foglio Excel: serve prima un archivio comune e strutturato, che persone e agenti possano leggere e scrivere.
 
-Questo archivio è il **PMO Demand Hub**, e il corso lo fornisce già pronto, come Agent Academy fa per l'Hiring Agent: una soluzione Dataverse con le cinque tabelle del processo (Programmi, Criteri di valutazione, Proponenti, Proposte, Valutazioni) e l'app model-driven **PMO Demand Hub** per consultarle, modificarle e importare dati. In questo laboratorio la soluzione viene importata e poi letta con attenzione: nomi logici, codici automatici, scelte e relazioni sono quelli che gli agenti useranno in tutti i laboratori successivi. Poi vengono caricati i dati di partenza (cinque programmi di investimento con i loro criteri pesati) e viene preparata in SharePoint la cartella con i documenti di conoscenza del PMO. In particolare verranno svolte le seguenti attività:
+Questo archivio è il **PMO Demand Hub**, e il corso lo fornisce già pronto, come Agent Academy fa per l'Hiring Agent: una soluzione Dataverse con le cinque tabelle del processo (Programmi, Criteri di valutazione, Proponenti, Proposte, Valutazioni) e l'app model-driven **PMO Demand Hub** per consultarle, modificarle e importare dati. In questo laboratorio si legge prima con attenzione che cosa contiene la soluzione: nomi logici, codici automatici, scelte e relazioni sono quelli che gli agenti useranno in tutti i laboratori successivi. Poi la soluzione viene importata, vengono caricati i dati di partenza (cinque programmi di investimento con i loro criteri pesati) e viene preparata in SharePoint la cartella con i documenti di conoscenza del PMO. In particolare verranno svolte le seguenti attività:
 
-- Importare la soluzione **PMO Demand IT** e abilitare note e allegati sulla tabella **Proposal**.
 - Capire tabelle, colonne, scelte e relazioni del modello dati.
-- Esplorare l'app **PMO Demand Hub**: home page, import CSV e Proposal Board.
+- Conoscere l'app **PMO Demand Hub**: home page, import CSV e Proposal Board.
+- Importare la soluzione **PMO Demand IT** e abilitare note e allegati sulla tabella **Proposal**.
 - Caricare i cinque programmi e i 25 criteri di valutazione.
 - Verificare il Dataverse MCP Server per il percorso GitHub Copilot.
 - Preparare la cartella SharePoint della conoscenza PMO.
@@ -56,63 +56,9 @@ Questo laboratorio è condiviso dai due percorsi, standard e GitHub Copilot: dop
 - **Proposal Status come scelta personalizzata.** Lo stato di sistema (Active, Inactive) resta disponibile per archiviare; lo stato del processo ha valori propri.
 :::
 
-> [!TIP]
-> **Dove lavorare**
->
-> Lavorare in [Power Apps](https://make.powerapps.com/) per importare la soluzione e aprire l'app. Prima di iniziare controllare in alto a destra che l'ambiente sia quello di laboratorio.
-
-## Prerequisiti
-
-Per svolgere questo lab occorre avere a disposizione:
-
-- Un ambiente di laboratorio con Dataverse (lo stesso dei fondamenti va bene) e il ruolo **System Customizer** o **System Administrator**.
-- La soluzione [`PMODemandIT_1_0_0_0.zip`](../../../resources/advanced/solution/PMODemandIT_1_0_0_0.zip) (non gestita, versione 1.0.0.0). Contiene anche il publisher **CSM Solutions** con prefisso `csm` e prefisso delle scelte `77000`: se esiste già dal modulo 1 dei fondamenti, l'importazione lo aggiorna. La descrizione completa in inglese è nel [README della soluzione](../../../resources/advanced/solution/README.md).
-- I file [`programs.csv`](../../../resources/advanced/data/programs.csv) e [`evaluation-criteria.csv`](../../../resources/advanced/data/evaluation-criteria.csv), se si vogliono caricare i dati da CSV invece che con **Load starter data**.
-- Un sito SharePoint dove poter creare cartelle e caricare file (per la cartella della conoscenza PMO), e i file [`Zava_PMO_Linee_Guida_Business_Case.docx`](../../../resources/advanced/conoscenza/Zava_PMO_Linee_Guida_Business_Case.docx) e [`Zava_Piano_Strategico_IT_2026-2028.pdf`](../../../resources/advanced/conoscenza/Zava_Piano_Strategico_IT_2026-2028.pdf).
-
-Per i laboratori successivi servono anche:
-
-- le licenze per i connettori Office 365 Outlook, Office 365 Users, Microsoft Teams e OneDrive for Business nel tenant di laboratorio;
-- i materiali del caso pratico in [`resources/advanced`](../../../resources/advanced/) (business case, email di prova, template del dossier, skill): ogni lab indica nei prerequisiti i file che usa;
-- per il percorso GitHub Copilot: il Microsoft Dataverse MCP Server disponibile nell'ambiente (vedi *Impostazioni per il percorso GitHub Copilot*), Work IQ abilitato nel tenant, capacità di Copilot Credits e un secondo utente del tenant, con casella di posta, da usare come sponsor o architetto nei test di pianificazione. Tutti i partecipanti alle riunioni devono essere **interni** al tenant.
-
-## Importare la soluzione
-
-Una soluzione è il contenitore che il PMO sposterà da un ambiente all'altro: sviluppo, collaudo, produzione. Se tabelle, app e agenti nascono fuori dalla soluzione, al momento del rilascio vanno cercati e aggiunti uno per uno, con il rischio di dimenticarne qualcuno. La soluzione **PMO Demand IT** è **non gestita**: dopo l'importazione si può modificare, e impostarla come soluzione preferita fa sì che tutto ciò che viene creato da qui in poi (agenti, flow, prompt) ci finisca automaticamente.
-
-### Importare il file della soluzione
-
-1. In [Power Apps](https://make.powerapps.com/) verificare l'ambiente, selezionare **Solutions** e poi **Import solution**.
-2. Selezionare **Browse**, scegliere `PMODemandIT_1_0_0_0.zip` e selezionare **Next**.
-3. Controllare i dettagli (soluzione **PMO Demand IT**, publisher **CSM Solutions**, versione 1.0.0.0) e selezionare **Import**. L'importazione richiede qualche minuto: attendere il messaggio di conferma.
-4. Aprire la soluzione **PMO Demand IT** e selezionare **Publish all customizations**.
-5. Tornare all'elenco delle soluzioni, selezionare i tre puntini accanto a **PMO Demand IT**, scegliere **Set preferred solution** e confermare. Da ora agenti, flow e prompt finiranno in questa soluzione.
-
-> [!NOTE]
-> **Componenti già presenti**
->
-> Se l'ambiente contiene già il publisher CSM Solutions, la soluzione PMO Demand IT o una tabella `csm_program` con la sola colonna Name (ad esempio da un tentativo precedente fatto a mano), l'importazione li aggiorna e aggiunge le colonne mancanti: non serve eliminarli prima. Se invece segnala un conflitto su una colonna esistente con un tipo diverso, eliminare quella colonna o quella tabella e importare di nuovo.
-
-## Abilitare note e allegati sulla tabella Proposal
-
-Le note sono una capacità della tabella che Dataverse imposta quando la tabella viene creata o modificata, non un componente che il file della soluzione può portare con sé: per questo si attivano a mano dopo l'importazione. Servono al percorso GitHub Copilot, il cui workflow conserva il business case come nota e lo legge con il Dataverse MCP Server. Nel percorso standard restano semplicemente vuote.
-
-### Abilitare gli allegati
-
-1. Nella soluzione **PMO Demand IT** aprire la tabella **Proposal** e selezionare **Properties**.
-2. Espandere **Advanced options** e selezionare **Enable attachments (including notes and files)**.
-3. Selezionare **Save**.
-
-> [!WARNING]
-> **Scelta irreversibile**
->
-> Una volta salvata, l'opzione **Enable attachments** non si può più disattivare. Per la tabella **Proposal** è il comportamento voluto.
-
-4. Facoltativo, per vedere le note nel modulo: aprire il modulo principale **Information** della tabella **Proposal**, aggiungere il componente **Timeline** alla scheda **General** e selezionare **Save and publish**.
-
 ## Che cosa contiene la soluzione
 
-Non c'è niente da costruire, ma prima di scrivere il primo agente conviene leggere il modello: ogni prompt, flow e skill dei laboratori successivi cita queste tabelle, questi nomi logici e questi valori. Per vederli nel proprio ambiente aprire la soluzione, selezionare una tabella e poi **Columns**: la colonna **Logical name** (o **Name**) mostra il nome logico.
+Non c'è niente da costruire, ma prima di scrivere il primo agente conviene leggere il modello: ogni prompt, flow e skill dei laboratori successivi cita queste tabelle, questi nomi logici e questi valori. Dopo l'importazione si possono ritrovare nel proprio ambiente: aprire la soluzione, selezionare una tabella e poi **Columns**; la colonna **Logical name** (o **Name**) mostra il nome logico.
 
 | Componente | Nome | Contenuto |
 | --- | --- | --- |
@@ -206,7 +152,7 @@ La valutazione è separata dalla proposta perché è un atto preciso, con data, 
 
 ### Codici automatici e scelte
 
-Le colonne **Requester Code**, **Proposal Code** e **Assessment Code** sono a numerazione automatica: Dataverse assegna il valore al salvataggio, partendo dal seed predefinito 1000. Il primo proponente è quindi RQ-1000, la prima proposta PP-1000, la prima valutazione AS-1000.
+Le colonne **Requester Code**, **Proposal Code** e **Assessment Code** sono a numerazione automatica: Dataverse assegna il valore al salvataggio, partendo dal seed predefinito 1000. In un ambiente nuovo il primo proponente è quindi RQ-1000, la prima proposta PP-1000, la prima valutazione AS-1000.
 
 Le tre colonne di scelta sono locali (appartengono alla colonna, non sono scelte globali condivise con altre tabelle) e usano il prefisso `77000` del publisher. Gli agenti scrivono questi valori numerici:
 
@@ -225,11 +171,11 @@ Le tre colonne di scelta sono locali (appartengono alla colonna, non sono scelte
 
 | Elemento | Che cosa offre |
 | --- | --- |
-| Modulo principale **Information** | Scheda **General** su due colonne (dettagli a sinistra, testi lunghi e file a destra), codice e scelte nell'intestazione, una scheda per ogni tabella collegata |
+| Modulo principale **Information** | Scheda **General** su due colonne (dettagli a sinistra, testi lunghi e file a destra), codici automatici e scelte nell'intestazione, una scheda per ogni tabella collegata |
 | Sottogriglie modificabili | Su un programma: **Evaluation Criteria**, **Proposals**, **Assessments**; su un proponente: **Proposals**; su una proposta: **Assessments**. Pesi, stati e altri valori si cambiano direttamente nella griglia |
 | Creazione rapida | Un modulo di creazione rapida per ogni tabella, aperto da **New** nella home page o da **+ New** in un lookup o in una sottogriglia |
 | Altri moduli | Modulo a scheda (elenchi sugli schermi piccoli) e modulo di visualizzazione rapida per ogni tabella |
-| Viste | Active, Inactive e My per ogni tabella, più **Proposals to Assess**, **Assessed Proposals**, **Proposals with Review Scheduled**, **Recommended Assessments** e **Assessments Needing Further Review** |
+| Viste | Active e Inactive per ogni tabella, più **Proposals to Assess**, **Assessed Proposals**, **Proposals with Review Scheduled**, **Recommended Assessments** e **Assessments Needing Further Review** |
 
 Le colonne File (**Business Case Document** e **Review Dossier**) compaiono anche nelle viste principali: nel modulo si seleziona la colonna per caricare un file e il nome del file per scaricarlo.
 
@@ -243,17 +189,11 @@ L'app **PMO Demand Hub** contiene le cinque tabelle e due pagine web, organizzat
 | Demand | Proposal Board (pagina web `csm_/pmo/board.html`), Proposals, Assessments, Requesters |
 | Portfolio | Programs, Evaluation Criteria |
 
-Ogni tabella ha un'icona Phosphor duotone e un colore: Program blu, Evaluation Criterion viola, Requester verde acqua, Proposal ambra, Assessment verde. Le animazioni usano anime.js, incluso nella soluzione (`csm_/pmo/anime.min.js`), quindi le pagine non dipendono da una CDN esterna.
+Ogni tabella ha un'icona Phosphor duotone e un colore: Program blu, Evaluation Criterion viola, Requester verde acqua, Proposal ambra, Assessment verde. Le animazioni usano anime.js, incluso nella soluzione (`csm_/pmo/anime.min.js`), quindi le pagine non dipendono da una CDN esterna; per chi ha attivato la riduzione del movimento nel sistema operativo le animazioni vengono saltate.
 
 ## Come funziona l'app PMO Demand Hub
 
 Gli agenti scrivono, ma sono le persone del PMO a controllare: per ogni prova dei laboratori si aprirà l'app per verificare i record. L'app è anche lo strumento con cui gli analisti correggono a mano ciò che un agente non deve modificare, per esempio il programma di una proposta o lo stato del processo.
-
-### Aprire l'app
-
-1. Nella soluzione **PMO Demand IT** selezionare l'app **PMO Demand Hub** e poi **Play** (oppure aprirla da **Apps** in Power Apps).
-2. Copiare l'indirizzo dell'app dalla barra del browser e annotarlo: servirà nel Lab S05 per i link nelle card di Teams.
-3. Scorrere la home page e aprire **Proposal Board** dal gruppo **Demand**. Per ora tabelle e colonne sono vuote: i dati arrivano nella sezione *Caricare i dati di partenza*.
 
 ### Home page
 
@@ -300,36 +240,74 @@ Le viste delle tabelle restano il posto per il lavoro in blocco: filtri, esporta
 
 ![](./images/passo4-03.png)
 
-### Rendere modificabili le viste principali (facoltativo)
+## Prerequisiti
 
-Le sottogriglie dei moduli sono già modificabili. Per modificare direttamente anche gli elenchi principali (per esempio cambiare il peso di molti criteri dalla vista Evaluation Criteria) occorre attivare la griglia modificabile sulla tabella, dall'esplora soluzioni classico.
+Per svolgere questo lab occorre avere a disposizione:
 
-1. Aprire la soluzione **PMO Demand IT** e, nella barra dei comandi, selezionare **...** e poi **Switch to classic**.
-2. Espandere **Entities**, aprire la tabella (ad esempio **Evaluation Criterion**), selezionare la scheda **Controls** e poi **Add Control**.
-3. Selezionare **Editable Grid** (oppure **Power Apps grid control**, la versione più recente, se l'ambiente la propone) e poi **Add**. Nella nuova riga selezionare **Web** come client.
-4. Selezionare **Save** e poi **Publish**. Ripetere per le altre tabelle che interessano, di solito Evaluation Criteria e Programs.
+- Un ambiente di laboratorio con Dataverse (lo stesso dei fondamenti va bene) e il ruolo **System Customizer** o **System Administrator**.
+- La soluzione [`PMODemandIT_1_0_0_0.zip`](../../../resources/advanced/solution/PMODemandIT_1_0_0_0.zip) (non gestita, versione 1.0.0.0). Contiene anche il publisher **CSM Solutions** (`CSMSolutions`) con prefisso `csm` e prefisso delle scelte `77000`: se esiste già dal Lab 01 dei fondamenti, l'importazione lo aggiorna.
+- I file [`programs.csv`](../../../resources/advanced/data/programs.csv) e [`evaluation-criteria.csv`](../../../resources/advanced/data/evaluation-criteria.csv), se si vogliono caricare i dati da CSV invece che con **Load starter data**.
+- Un sito SharePoint dove poter creare cartelle e caricare file (per la cartella della conoscenza PMO), e i file [`Zava_PMO_Linee_Guida_Business_Case.docx`](../../../resources/advanced/conoscenza/Zava_PMO_Linee_Guida_Business_Case.docx) e [`Zava_Piano_Strategico_IT_2026-2028.pdf`](../../../resources/advanced/conoscenza/Zava_Piano_Strategico_IT_2026-2028.pdf).
 
-### Attivare il tema personalizzato (facoltativo)
+Per i laboratori successivi servono anche:
 
-La soluzione contiene un tema indaco con intestazione scura (`csm_/pmo/theme.xml`). Il tema è un valore di impostazione dell'ambiente, che il file della soluzione non può impostare senza conoscere l'ambiente: per questo si attiva a mano.
+- le licenze per i connettori Office 365 Outlook, Office 365 Users, Microsoft Teams e OneDrive for Business nel tenant di laboratorio;
+- i [materiali del caso pratico](../../../resources/advanced/) (business case, email di prova, template del dossier, skill): ogni lab indica nei prerequisiti i file che usa;
+- per il percorso GitHub Copilot: il Microsoft Dataverse MCP Server disponibile nell'ambiente (vedi *Impostazioni per il percorso GitHub Copilot*), Work IQ abilitato nel tenant, capacità di Copilot Credits e un secondo utente del tenant, con casella di posta, da usare come sponsor o architetto nei test di pianificazione. Tutti i partecipanti alle riunioni devono essere **interni** al tenant.
 
-1. Nella soluzione **PMO Demand IT** selezionare **Add existing**, **More**, **Setting**.
-2. Cercare *custom theme*, selezionare **Custom theme definition**, poi **Next** e **Add**.
-3. Selezionare **Custom theme definition** nella soluzione e poi **Edit**. In **Setting environment value** selezionare **New environment value** e inserire `csm_/pmo/theme.xml`.
-4. Selezionare **Save** e poi **Publish all customizations**.
+## Importare la soluzione
+
+Una soluzione è il contenitore che il PMO sposterà da un ambiente all'altro: sviluppo, collaudo, produzione. Se tabelle, app e agenti nascono fuori dalla soluzione, al momento del rilascio vanno cercati e aggiunti uno per uno, con il rischio di dimenticarne qualcuno. La soluzione **PMO Demand IT** è **non gestita**: dopo l'importazione si può modificare, e impostarla come soluzione preferita fa sì che i componenti creati da qui in poi fuori dal contesto di una soluzione ci finiscano per impostazione predefinita.
+
+> [!TIP]
+> **Dove lavorare**
+>
+> Lavorare in [Power Apps](https://make.powerapps.com/) per importare la soluzione e aprire l'app. Prima di iniziare controllare in alto a destra che l'ambiente sia quello di laboratorio.
+
+### Importare il file della soluzione
+
+1. In [Power Apps](https://make.powerapps.com/) verificare l'ambiente, selezionare **Solutions** e poi **Import solution**.
+2. Selezionare **Browse**, scegliere il file [`PMODemandIT_1_0_0_0.zip`](../../../resources/advanced/solution/PMODemandIT_1_0_0_0.zip) scaricato e selezionare **Next**.
+3. Controllare i dettagli (soluzione **PMO Demand IT**, publisher **CSM Solutions**, versione 1.0.0.0) e selezionare **Import**. L'importazione richiede qualche minuto: attendere il messaggio di conferma.
+4. Aprire la soluzione **PMO Demand IT** e selezionare **Publish all customizations**.
+5. Tornare all'elenco delle soluzioni, selezionare **PMO Demand IT** e poi **Set preferred solution** nella barra dei comandi (oppure nel menu **...** accanto al nome), e confermare. Da ora i nuovi componenti finiscono per impostazione predefinita in questa soluzione; quando un lab chiede di scegliere la soluzione, ad esempio in **Advanced settings** alla creazione di un agente, selezionare comunque **PMO Demand IT**.
+6. Verificare che **PMO Demand IT** sia indicata come soluzione preferita nell'elenco delle soluzioni e che, aperta, contenga le cinque tabelle e l'app **PMO Demand Hub**.
+
+> [!NOTE]
+> **Componenti già presenti**
+>
+> Se l'ambiente contiene già il publisher CSM Solutions, la soluzione PMO Demand IT o una tabella `csm_program` con la sola colonna Name (ad esempio da un tentativo precedente fatto a mano), l'importazione li aggiorna e aggiunge le colonne mancanti: non serve eliminarli prima. Se invece segnala un conflitto su una colonna esistente con un tipo diverso, eliminare quella colonna o quella tabella e importare di nuovo.
+
+## Abilitare note e allegati sulla tabella Proposal
+
+La soluzione fornita non attiva le note sulla tabella **Proposal**: si attivano a mano dopo l'importazione, una volta sola. Servono al percorso GitHub Copilot, il cui workflow conserva il business case come nota e lo legge con il Dataverse MCP Server. Nel percorso standard restano semplicemente vuote.
+
+### Abilitare gli allegati
+
+1. Nella soluzione **PMO Demand IT** aprire la tabella **Proposal** e selezionare **Properties**.
+2. Nel pannello delle proprietà selezionare **Enable attachments (including notes and files)**. L'opzione si trova sotto la descrizione della tabella; se non è visibile, espandere **Advanced options**.
+3. Selezionare **Save**.
 
 > [!WARNING]
-> **Ambiente condiviso**
+> **Scelta irreversibile**
 >
-> Il valore di ambiente applica il tema a tutte le app model-driven dell'ambiente che usano il nuovo aspetto. In un ambiente condiviso chiedere prima agli altri maker, oppure saltare questo passaggio: icone, colori e home page funzionano anche senza.
+> Una volta salvata, l'opzione **Enable attachments** non si può più disattivare. Per la tabella **Proposal** è il comportamento voluto.
+
+4. Facoltativo, per vedere le note nel modulo: aprire il modulo principale **Information** della tabella **Proposal**, aggiungere il componente **Timeline** alla scheda **General** e selezionare **Save and publish**.
 
 ## Caricare i dati di partenza
 
 All'inizio servono solo programmi e criteri: sono le regole con cui gli agenti valuteranno le proposte. Proponenti, proposte e valutazioni partono vuoti, perché li creano gli agenti durante i laboratori.
 
+### Aprire l'app
+
+1. Nella soluzione **PMO Demand IT** selezionare l'app **PMO Demand Hub** e poi **Play** (oppure aprirla da **Apps** in Power Apps).
+2. Copiare l'indirizzo dell'app dalla barra del browser, fino al parametro `appid` incluso (ad esempio `https://<org>.crm4.dynamics.com/main.aspx?appid=<id>`), e annotarlo: servirà nel Lab S05 per i link nelle card di Teams.
+3. Scorrere la home page e aprire **Proposal Board** dal gruppo **Demand**. Per ora tabelle e colonne sono vuote: i dati arrivano con il passo successivo.
+
 ### Caricare programmi e criteri
 
-1. Aprire l'app **PMO Demand Hub** e, nella home page, selezionare **Load starter data**.
+1. Tornare a **Home** nel gruppo **Overview** e selezionare **Load starter data**.
 2. Attendere la fine dell'operazione: le schede di **Manage data** mostrano 5 righe in **Programs** e 25 in **Evaluation Criteria**. Se programmi e criteri esistono già, vengono aggiornati e non duplicati.
 
 > [!NOTE]
@@ -337,8 +315,8 @@ All'inizio servono solo programmi e criteri: sono le regole con cui gli agenti v
 >
 > In alternativa si possono usare i file CSV:
 >
-> - **Pannello Import CSV.** Nella home page selezionare **Import CSV**, scegliere **Programs** e trascinare `programs.csv`, poi scegliere **Evaluation Criteria** e trascinare `evaluation-criteria.csv`.
-> - **Importazione standard di Power Apps.** Nella soluzione aprire la tabella **Program**, selezionare **Import** e poi **Import data from Excel** (accetta anche i CSV) e caricare `programs.csv`; ripetere con la tabella **Evaluation Criterion** e `evaluation-criteria.csv`. Il CSV usa i nomi visualizzati delle colonne come intestazioni, per questo la mappatura si risolve quasi da sola; la colonna **Program** va associata al lookup Program, che si risolve per nome del programma (univoco).
+> - **Pannello Import CSV.** Nella home page selezionare **Import CSV**, scegliere **Programs** e trascinare [`programs.csv`](../../../resources/advanced/data/programs.csv), poi scegliere **Evaluation Criteria** e trascinare [`evaluation-criteria.csv`](../../../resources/advanced/data/evaluation-criteria.csv).
+> - **Importazione standard di Power Apps.** Nella soluzione aprire la tabella **Program**, selezionare **Import** e poi **Import data from Excel** (accetta anche i CSV) e caricare `programs.csv`; ripetere con la tabella **Evaluation Criterion** e `evaluation-criteria.csv`. Il CSV usa i nomi visualizzati delle colonne come intestazioni, per questo la mappatura si risolve quasi da sola; la colonna **Program** va associata al lookup Program, che si risolve per nome del programma (i cinque nomi sono tutti diversi).
 
 ### Verificare i dati
 
@@ -354,12 +332,39 @@ All'inizio servono solo programmi e criteri: sono le regole con cui gli agenti v
 
 2. Aprire un programma e selezionare la scheda **Evaluation Criteria**: mostra i suoi 5 criteri in una griglia modificabile e la somma dei pesi è 100.
 3. Controllare che **Requesters**, **Proposals** e **Assessments** siano vuoti.
+4. Verificare la numerazione automatica: in **Proposals** selezionare **New**, inserire un **Title** di prova e selezionare **Save**. Dopo il salvataggio il **Proposal Code** compare nell'intestazione del modulo e nella vista **Active Proposals**, nel formato `PP-####` (in un ambiente nuovo `PP-1000`).
+5. Eliminare la proposta di prova (**Delete** nella barra dei comandi, poi confermare), così **Proposals** torna vuota. Il codice usato non viene riassegnato: la prima proposta registrata dagli agenti avrà il numero successivo.
+
+## Passaggi facoltativi
+
+### Rendere modificabili le viste principali
+
+Le sottogriglie dei moduli sono già modificabili. Per modificare direttamente anche gli elenchi principali (per esempio cambiare il peso di molti criteri dalla vista Evaluation Criteria) occorre attivare la griglia modificabile sulla tabella, dall'esplora soluzioni classico.
+
+1. Aprire la soluzione **PMO Demand IT** e, nella barra dei comandi, selezionare **...** e poi **Switch to classic**.
+2. Espandere **Entities**, aprire la tabella (ad esempio **Evaluation Criterion**), selezionare la scheda **Controls** e poi **Add Control**.
+3. Selezionare **Editable Grid** (oppure **Power Apps grid control**, la versione più recente, se l'ambiente la propone) e poi **Add**. Nella nuova riga selezionare **Web** come client.
+4. Selezionare **Save** e poi **Publish**. Ripetere per le altre tabelle che interessano, di solito Evaluation Criteria e Programs. Gli utenti possono comunque passare dalla griglia modificabile a quella in sola lettura mentre usano l'app.
+
+### Attivare il tema personalizzato
+
+La soluzione contiene un tema indaco con intestazione scura (`csm_/pmo/theme.xml`). Il tema si applica con il valore di ambiente dell'impostazione **Custom theme definition**, che vale per tutte le app model-driven dell'ambiente: per questo la soluzione non lo imposta e lo si attiva a mano, solo se si vuole.
+
+1. Nella soluzione **PMO Demand IT** selezionare **Add existing**, **More**, **Setting**.
+2. Cercare *custom theme*, selezionare **Custom theme definition**, poi **Next** e **Add**.
+3. Selezionare **Custom theme definition** nella soluzione e poi **Edit**. In **Setting environment value** selezionare **New environment value** e inserire `csm_/pmo/theme.xml`.
+4. Selezionare **Save** e poi **Publish all customizations**.
+
+> [!WARNING]
+> **Ambiente condiviso**
+>
+> Il valore di ambiente applica il tema a tutte le app model-driven dell'ambiente che usano il nuovo aspetto. In un ambiente condiviso chiedere prima agli altri maker, oppure saltare questo passaggio: icone, colori e home page funzionano anche senza.
 
 ## Impostazioni per il percorso GitHub Copilot
 
-### Abilitare il Dataverse MCP Server
+### Verificare il Dataverse MCP Server
 
-Se si seguirà il percorso GitHub Copilot, verificare che Copilot Studio possa usare il Dataverse MCP Server.
+Se si seguirà il percorso GitHub Copilot, verificare che Copilot Studio possa usare il Dataverse MCP Server. Per aprire queste impostazioni serve il ruolo di amministratore di Power Platform: chi non lo ha chiede la verifica all'amministratore del tenant.
 
 1. Aprire il [Power Platform admin center](https://admin.powerplatform.microsoft.com/), **Manage**, **Environments**, selezionare l'ambiente e poi **Settings**.
 2. Espandere **Product** e selezionare **Features**.
@@ -378,8 +383,8 @@ Le linee guida e il piano strategico sono documenti che il PMO aggiorna. Se veng
 
 1. Aprire il sito SharePoint del laboratorio. Se non se ne ha uno, creare un sito del team chiamato `Zava PMO` (da [SharePoint](https://www.office.com/launch/sharepoint), **Create site**, **Team site**).
 2. Aprire la raccolta **Documents** e creare una cartella `PMO Knowledge`.
-3. Caricare nella cartella `Zava_PMO_Linee_Guida_Business_Case.docx` e `Zava_Piano_Strategico_IT_2026-2028.pdf`.
-4. Aprire la cartella e copiare l'indirizzo dalla barra del browser. Annotarlo: verrà usato nel lab 01 come fonte di conoscenza. Deve avere una forma simile a:
+3. Caricare nella cartella [`Zava_PMO_Linee_Guida_Business_Case.docx`](../../../resources/advanced/conoscenza/Zava_PMO_Linee_Guida_Business_Case.docx) e [`Zava_Piano_Strategico_IT_2026-2028.pdf`](../../../resources/advanced/conoscenza/Zava_Piano_Strategico_IT_2026-2028.pdf).
+4. Annotare l'indirizzo diretto della cartella: verrà usato nel Lab S01 come fonte di conoscenza. Si ottiene aggiungendo all'indirizzo del sito il percorso della raccolta e della cartella; l'indirizzo che compare nella barra del browser quando si apre la cartella (`.../Forms/AllItems.aspx?id=...`) e i link di condivisione hanno un'altra forma e non vanno usati. L'indirizzo deve essere simile a:
 
 ```
 https://<tenant>.sharepoint.com/sites/ZavaPMO/Shared%20Documents/PMO%20Knowledge
@@ -390,23 +395,15 @@ https://<tenant>.sharepoint.com/sites/ZavaPMO/Shared%20Documents/PMO%20Knowledge
 > [!NOTE]
 > **Un solo sito per la classe**
 >
-> Se il docente prepara un solo sito per tutta la classe, basta una cartella condivisa in lettura. Gli utenti guest non ricevono risposte da SharePoint, e se il tenant usa **Restricted SharePoint Search** la fonte SharePoint è bloccata: in questi casi usare il caricamento diretto dei file descritto nel lab 01.
+> Se il docente prepara un solo sito per tutta la classe, basta una cartella condivisa in lettura. Gli utenti guest non ricevono risposte da SharePoint, e se il tenant usa **Restricted SharePoint Search** la fonte SharePoint è bloccata: in questi casi usare il caricamento diretto dei file descritto nel Lab S01.
 
 > [!IMPORTANT]
 > **Lab Completato**
 >
-> Il PMO Demand Hub è pronto: soluzione importata, note abilitate sulle proposte, programmi e criteri caricati e cartella della conoscenza PMO in SharePoint. Verificare che:
+> Il PMO Demand Hub è pronto: soluzione importata, note abilitate sulle proposte, programmi e criteri caricati e cartella della conoscenza PMO in SharePoint. In questo laboratorio si è visto:
 >
-> 1. la soluzione **PMO Demand IT** sia la soluzione preferita e contenga le cinque tabelle e l'app **PMO Demand Hub**;
-> 2. sulla tabella **Proposal** sia attivo **Enable attachments (including notes and files)**;
-> 3. **Programs** contenga 5 righe (PG-100 ... PG-500) ed **Evaluation Criteria** 25 righe, con pesi che sommano a 100 per ogni programma;
-> 4. creando a mano una proposta di prova nell'app, il **Proposal Code** venga assegnato al salvataggio nel formato `PP-1000` (eliminare poi la riga di prova);
-> 5. l'indirizzo dell'app e quello della cartella SharePoint `PMO Knowledge`, che contiene i due documenti, siano stati annotati.
->
-> In questo laboratorio si è visto:
->
-> - come importare una soluzione non gestita con tabelle, app model-driven e risorse web, e che cosa va completato a mano dopo l'importazione;
 > - come è progettato un modello dati pensato per essere usato da agenti: codici leggibili, nomi logici espliciti, regole nei dati;
+> - come importare una soluzione non gestita con tabelle, app model-driven e risorse web, e che cosa va completato a mano dopo l'importazione;
 > - come caricare i dati di partenza e importare CSV con lookup nell'app PMO Demand Hub.
 >
 > Nel prossimo laboratorio si sceglie il percorso e si crea il primo agente: l'Agente Demand IT, l'orchestratore del sistema.

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// "Choose your experience": in cima alla panoramica e ai lab di una harness, le due harness
+// "Choose your experience": in cima alla panoramica di una harness (non nei lab), le due harness
 // dello stesso livello affiancate; quella della pagina è evidenziata, l'altra porta alla sua panoramica.
 // Le esperienze sono elencate in content.ts (EXPERIENCES).
 import { computed } from 'vue'
@@ -10,7 +10,9 @@ const { page, theme } = useData()
 const level = computed(() => page.value.relativePath.split('/')[0])
 const current = computed(() => page.value.relativePath.split('/')[1])
 const experiences = computed<{ section: string; title: string; text: string }[]>(() => (theme.value.experiences ?? {})[level.value] ?? [])
-const visible = computed(() => experiences.value.some((e) => e.section === current.value))
+// solo sulla panoramica della sezione (docs/<livello>/<sezione>/index.md), non sui lab
+const isOverview = computed(() => /^[^/]+\/[^/]+\/index\.md$/.test(page.value.relativePath))
+const visible = computed(() => isOverview.value && experiences.value.some((e) => e.section === current.value))
 </script>
 
 <template>

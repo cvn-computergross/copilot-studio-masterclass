@@ -24,9 +24,15 @@ Il cuore del lavoro del PMO è la valutazione: per ogni criterio del programma, 
 - **Indicazione, non decisione.** Il flow registra una **raccomandazione** per il Comitato. La parola "approvata" non compare mai.
 :::
 
+## Che cosa si costruisce
+
+Lo schema riassume il percorso in chat costruito tra S02 e questo lab. La registrazione della proposta è automatica (passi 1-7: delega a **Intake Proposte**, rifiuto dei DOCX, **Carica business case** e **Analizza business case**). La scelta del programma, se manca, e la registrazione della valutazione richiedono sempre una conferma (passi 8-13): **Crea valutazione** parte solo dopo il consenso dell'utente e restituisce punteggio, indicazione e codice AS-####.
+
+![Sequenza di intake e valutazione in chat](../../images/workflow-chat.svg)
+
 ## Prerequisiti
 
-Per svolgere questo lab occorre avere completato i laboratori S01-S03, con almeno le proposte di BC-01, BC-03 e BC-05 analizzate. Serve inoltre il business case `BC-04_Migrazione_data_center_Bologna_cloud.pdf`.
+Per svolgere questo lab occorre avere completato i laboratori S01-S03, con almeno le proposte di BC-01, BC-03 e BC-05 analizzate. Serve inoltre il business case [`BC-04_Migrazione_data_center_Bologna_cloud.pdf`](../../../resources/advanced/business-case/BC-04_Migrazione_data_center_Bologna_cloud.pdf).
 
 ## Prompt "Valuta proposta"
 
@@ -75,7 +81,7 @@ Sintesi: /Sintesi
 Gli input si creano sostituendo i segnaposto: selezionare il testo, poi **Add content** oppure digitare `/`.
 
 1. Sostituire `/CodiceProgramma` con un input **Text** `CodiceProgramma`, valore di esempio `PG-100` (servirà anche per i filtri)
-2. Sostituire `/Documento` con un input **Image or document** `Documento`, esempio `BC-01_Portale_fornitori_self-service.pdf`
+2. Sostituire `/Documento` con un input **Image or document** `Documento`, esempio [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf)
 3. Sostituire `/Sintesi` con un input **Text** `Sintesi`, esempio:
 
 ```text
@@ -328,10 +334,6 @@ Processo di valutazione
 
 I test coprono i casi tipici del ciclo: una proposta solida (BC-01), una proposta con budget superiore a quello del programma (BC-04, dove la regola di budget deve limitare l'indicazione) e una proposta senza programma (BC-03, dove deve decidere una persona).
 
-Lo schema riassume il percorso in chat costruito tra S02 e questo lab. La registrazione della proposta è automatica (passi 1-7: delega a **Intake Proposte**, rifiuto dei DOCX, **Carica business case** e **Analizza business case**). La scelta del programma, se manca, e la registrazione della valutazione richiedono sempre una conferma (passi 8-13): **Crea valutazione** parte solo dopo il consenso dell'utente e restituisce punteggio, indicazione e codice AS-####.
-
-![Sequenza di intake e valutazione in chat](../../images/workflow-chat.svg)
-
 ### Proposta solida
 
 1. Avviare una nuova sessione di test e inserire il seguente prompt, sostituendo `PP-####` con il codice della proposta BC-01:
@@ -357,7 +359,7 @@ Valuta la proposta PP-#### sul programma PG-100
 
 ### Budget superiore al programma
 
-1. In una nuova sessione allegare `BC-04_Migrazione_data_center_Bologna_cloud.pdf` (verrà registrato e analizzato) con il messaggio:
+1. In una nuova sessione allegare [`BC-04_Migrazione_data_center_Bologna_cloud.pdf`](../../../resources/advanced/business-case/BC-04_Migrazione_data_center_Bologna_cloud.pdf) (verrà registrato e analizzato) con il messaggio:
 
 ```text
 Proposta di migrazione del data center di Bologna in cloud
@@ -377,16 +379,13 @@ Valuta la proposta PP-#### sul programma PG-500
 
 ![](./images/passo4-extra-32.png)
 
-### Verificare i risultati
+3. Controllare che la regola di budget declassi BC-04 a **Needs Further Review**.
+
+### Valutazioni nel PMO Demand Hub
 
 1. Aprire **Assessments** nel PMO Demand Hub: ogni riga ha codice AS-####, punteggio, dettaglio e raccomandazione; le proposte valutate sono in stato **Assessed** e collegate al programma.
 
 ![](./images/passo4-extra-33.png)
-
-2. Verificare che:
-   - il punteggio registrato sia la somma esatta di fattore per peso delle righe del dettaglio;
-   - la regola di budget declassi BC-04 a **Needs Further Review**;
-   - lo strumento non venga eseguito senza conferma.
 
 > [!TIP]
 > **Rivalutare la stessa proposta**

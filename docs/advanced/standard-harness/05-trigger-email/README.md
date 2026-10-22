@@ -35,6 +35,12 @@ In questo lab verrà aggiunto all'Agente Demand IT un **trigger su evento**: qua
 - **Un'email per proposta, un'esecuzione per email.** L'impostazione **Split On** fa partire un'esecuzione per ogni messaggio, anche se ne arrivano diversi insieme.
 :::
 
+## Che cosa si costruisce
+
+Lo schema mostra il flow del trigger costruito in questo lab: l'agente viene chiamato solo dopo la classificazione con il prompt **Classifica email PMO** e la registrazione di ogni PDF in Dataverse, e non crea valutazioni. Le email incerte producono un avviso per la verifica manuale; risposte automatiche e messaggi non pertinenti terminano senza azioni.
+
+![Flow del trigger email: classificazione, registrazione dei PDF e chiamata all'agente](../../images/workflow-email-standard.svg)
+
 ## Prerequisiti
 
 Per svolgere questo lab occorre avere:
@@ -71,7 +77,7 @@ Oggetto: /Oggetto
 Testo: /Testo
 ```
 
-3. Creare gli input di testo `Oggetto` e `Testo` con valori di esempio presi da `email-02-risposta-automatica.txt`. Lasciare l'output su **Text**.
+3. Creare gli input di testo `Oggetto` e `Testo` con valori di esempio presi da [`email-02-risposta-automatica.txt`](../../../resources/advanced/email/email-02-risposta-automatica.txt). Lasciare l'output su **Text**.
 4. Selezionare **Test** e provare i testi delle email 01, 02, 03 e 04: si devono ottenere Proposta, RispostaAutomatica, NonPertinente e Incerta. Se una categoria è sbagliata, rendere più precisa la descrizione e riprovare.
 5. Selezionare **Save** (annullare l'eventuale configurazione come strumento).
 
@@ -80,10 +86,6 @@ Testo: /Testo
 ## Trigger "Nuova proposta via email"
 
 Il trigger permette all'agente di lavorare senza che nessuno apra la chat: quando arriva un'email, parte un flow che può chiamare l'agente. Il filtro sull'oggetto e sugli allegati applica fin da subito le regole delle linee guida e riduce le esecuzioni inutili.
-
-Lo schema mostra il flow del trigger come risulta alla fine di questa sezione. Il flow classifica l'email con il prompt **Classifica email PMO**, registra ogni PDF in Dataverse e solo allora chiama l'agente, che analizza la proposta e avvisa il PMO senza creare valutazioni. Le email incerte producono un avviso per la verifica manuale; risposte automatiche e messaggi non pertinenti terminano senza azioni.
-
-![Flow del trigger email: classificazione, registrazione dei PDF e chiamata all'agente](../../images/workflow-email-standard.svg)
 
 ### Aggiungere il trigger all'agente
 
@@ -258,7 +260,7 @@ Email PMO da verificare manualmente
 > [!TIP]
 > **Email con più allegati**
 >
-> Il ciclo sugli allegati gestisce anche email con più business case (provare `email-05-due-proposte.txt`): ogni PDF diventa una proposta distinta. Il file Word dello stesso messaggio viene ignorato dalla condizione: in un processo reale conviene avvisare il mittente di inviarlo in PDF.
+> Il ciclo sugli allegati gestisce anche email con più business case (provare [`email-05-due-proposte.txt`](../../../resources/advanced/email/email-05-due-proposte.txt)): ogni PDF diventa una proposta distinta. Il file Word dello stesso messaggio viene ignorato dalla condizione: in un processo reale conviene avvisare il mittente di inviarlo in PDF.
 
 ## Agent flow "Notifica PMO in Teams"
 
@@ -360,7 +362,7 @@ Le email di prova coprono i casi reali della casella del PMO: una proposta corre
 
 ### Proposta ricevuta via email
 
-1. Da Outlook inviare a se stessi il messaggio di `email-01-proposta-singola.txt` allegando `BC-01_Portale_fornitori_self-service.pdf` (copiare oggetto e corpo, non la riga "Scopo del test").
+1. Da Outlook inviare a se stessi il messaggio di [`email-01-proposta-singola.txt`](../../../resources/advanced/email/email-01-proposta-singola.txt) allegando [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) (copiare oggetto e corpo, non la riga "Scopo del test").
 
 ![](./images/passo6-extra-29.png)
 
@@ -378,27 +380,23 @@ Le email di prova coprono i casi reali della casella del PMO: una proposta corre
 
 ![](./images/passo6-extra-33.png)
 
+5. Aprire l'app **PMO Demand Hub**, **Proposals**: la nuova proposta ha **Channel** Email. In **Assessments** non c'è nessuna valutazione per questa proposta: l'automazione non crea valutazioni.
+
 ### Email da scartare o da verificare
 
-1. Inviare i messaggi di `email-02-risposta-automatica.txt` e `email-03-newsletter.txt` **con un PDF allegato**: le esecuzioni terminano senza creare proposte.
+1. Inviare i messaggi di [`email-02-risposta-automatica.txt`](../../../resources/advanced/email/email-02-risposta-automatica.txt) e [`email-03-newsletter.txt`](../../../resources/advanced/email/email-03-newsletter.txt) **con un PDF allegato**: le esecuzioni terminano senza creare proposte.
 
 > [!NOTE]
 > **Perché allegare un PDF**
 >
 > L'allegato serve a far passare i messaggi dal primo livello di filtro (oggetto e allegati), così si vede lavorare il secondo: è la situazione di una notifica di mancato recapito o di una newsletter che cita "Proposta progetto" e porta un documento.
 
-2. Inviare `email-04-richiesta-ambigua.txt`: si riceve l'email "Email PMO da verificare manualmente" e nessuna proposta viene creata.
+2. Inviare [`email-04-richiesta-ambigua.txt`](../../../resources/advanced/email/email-04-richiesta-ambigua.txt): si riceve l'email "Email PMO da verificare manualmente" e nessuna proposta viene creata.
 
 > [!IMPORTANT]
 > **Lab Completato**
 >
-> L'Agente Demand IT ora lavora anche senza chat: le email del PMO vengono classificate, le proposte registrate, analizzate e notificate in Teams. Verificare che:
->
-> 1. solo le email classificate come Proposta creino righe in **Proposals**, con **Channel** Email;
-> 2. ogni proposta ricevuta via email venga analizzata (titolo, proponente, programma) e notificata in Teams;
-> 3. nessuna valutazione venga creata dall'automazione.
->
-> In questo lab si è visto:
+> L'Agente Demand IT ora lavora anche senza chat: le email del PMO vengono classificate, le proposte registrate, analizzate e notificate in Teams. In questo lab si è visto:
 >
 > - come un trigger dell'agente viene esteso in Power Automate e invia un messaggio all'agente;
 > - come classificare un input con un prompt prima di scrivere dati;

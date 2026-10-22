@@ -1,7 +1,7 @@
 // Tema del sito: il tema predefinito di VitePress con qualche aggiunta.
 //   header      dopo il nome del corso, "· Standard Harness · Lab 05" (HeaderPath)
 //   colonna dx  pulsante Cerca e barra di avanzamento del lab            (AsideTools)
-//   sopra testo selettore del percorso nelle pagine delle harness       (ExperienceSwitch)
+//   sopra testo selettore del percorso nella panoramica delle harness   (ExperienceSwitch)
 //               barra di avanzamento sugli schermi senza colonna destra (DocProgress)
 //   fondo       copyright e loghi EDUlabs/CVN e Computer Gross          (SiteFooter)
 // Caselle dei passi (checklist.ts) e animazioni anime.js (animations.ts) si preparano

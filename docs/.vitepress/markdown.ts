@@ -53,13 +53,14 @@ const ALERT_TITLES: Record<string, [string, string]> = {
   caution: ['CAUTION', 'Pericolo'],
 }
 
-// glifo e colore davanti al titolo dei callout: blu per note e suggerimenti, rosso per avvisi e pericoli
+// glifo e colore davanti al titolo dei callout (gli stessi colori del riquadro in style.css):
+// nota blu, suggerimento verde, importante indaco, attenzione ambra, pericolo rosso
 const ALERT_ICONS: Record<string, [string, string]> = {
   note: ['note-pencil', 'f-instructions'],
-  tip: ['lightbulb', 'f-instructions'],
-  important: ['info', 'f-instructions'],
+  tip: ['lightbulb', 'f-knowledge'],
+  important: ['info', 'f-topics'],
   info: ['info', 'f-instructions'],
-  warning: ['warning', 'f-risk'],
+  warning: ['warning', 'f-platform'],
   caution: ['prohibit', 'f-risk'],
   danger: ['prohibit', 'f-risk'],
 }
@@ -175,19 +176,30 @@ export function masterclass(md: MarkdownIt) {
 
   // link relativi: ".../README.md" punta alla pagina del lab, che nel sito è ".../index.md";
   // un file da scaricare (docs/resources/) resta un file, con l'attributo download
+  // un file da scaricare si distingue dal testo da copiare e dai link normali: davanti al
+  // nome il glifo download-simple, e il link è una "pillola" (a.download in style.css)
   md.core.ruler.push('masterclass-links', (state) => {
+    const file = state.env?.relativePath ?? ''
     for (const block of state.tokens) {
-      for (const token of block.children ?? []) {
+      const children = block.children ?? []
+      for (let i = 0; i < children.length; i++) {
+        const token = children[i]
         if (token.type !== 'link_open') continue
         const href = token.attrGet('href')
         if (!href || /^[a-z]+:/i.test(href)) continue
         if (/(^|\/)resources\//.test(href)) {
           // una cartella o una pagina Markdown dei materiali si apre su GitHub; un file si scarica
           if (/\/$|\.md(#|$)/.test(href)) {
-            const target = path.posix.normalize(path.posix.join(path.posix.dirname(state.env?.relativePath ?? ''), href))
+            const target = path.posix.normalize(path.posix.join(path.posix.dirname(file), href))
             token.attrSet('href', `${REPO}/${href.endsWith('/') ? 'tree' : 'blob'}/main/docs/${target}`)
             token.attrSet('target', '_blank')
-          } else token.attrSet('download', '')
+          } else {
+            token.attrSet('download', '')
+            token.attrJoin('class', 'download')
+            const icon = new state.Token('html_inline', '', 0)
+            icon.content = phosphor('download-simple', ['download-icon', 'f-instructions'], file)
+            children.splice(i + 1, 0, icon)
+          }
         } else token.attrSet('href', href.replace(/(^|\/)README\.md(?=#|$)/, '$1index.md'))
       }
     }
