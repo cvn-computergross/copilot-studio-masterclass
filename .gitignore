@@ -1,4 +1,15 @@
+# dipendenze e output del sito
 node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
-tools/
+
+# configurazione locale di Claude Code (anteprima, permessi)
+.claude/
+
+# cache Python degli script in tools/
+__pycache__/
+*.pyc
+
+# file di sistema
+.DS_Store
+Thumbs.db
