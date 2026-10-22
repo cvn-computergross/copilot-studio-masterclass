@@ -6,7 +6,7 @@
 
 ## Scenario
 
-I business case arrivano al PMO da funzioni diverse e con qualità diverse. Per mettere alla prova gli agenti il caso pratico usa sei documenti di prova, in [`materiali/business-case`](../../../resources/advanced/business-case/), costruiti per esercitare situazioni diverse:
+I business case arrivano al PMO da funzioni diverse e con qualità diverse. Per mettere alla prova gli agenti il caso pratico usa sei documenti di prova, in [`resources/advanced/business-case`](../../../resources/advanced/business-case/), costruiti per esercitare situazioni diverse:
 
 | File | Proposta | Programma | Che cosa mette alla prova |
 | --- | --- | --- | --- |
@@ -38,7 +38,7 @@ Dopo S02 una proposta registrata contiene solo il file e un titolo provvisorio: 
 
 ## Prerequisiti
 
-Per svolgere questo lab occorre avere completato i laboratori S01 e S02 (Agente Demand IT, child agent **Intake Proposte** e agent flow **Carica business case**). Servono inoltre i business case BC-01, BC-03 e BC-05 (versione PDF) in [`materiali/business-case`](../../../resources/advanced/business-case/).
+Per svolgere questo lab occorre avere completato i laboratori S01 e S02 (Agente Demand IT, child agent **Intake Proposte** e agent flow **Carica business case**). Servono inoltre i business case BC-01, BC-03 e BC-05 (versione PDF) in [`resources/advanced/business-case`](../../../resources/advanced/business-case/).
 
 ## Prompt "Estrai dati business case"
 

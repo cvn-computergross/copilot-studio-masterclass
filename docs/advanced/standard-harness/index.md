@@ -8,7 +8,7 @@ Il caso pratico costruito con la **standard harness**: l'Agente Demand IT orches
 
 | Lab | Titolo | Che cosa impari | Tempo |
 | --- | --- | --- | --- |
-| [00](./00-setup-dati/README.md) | Setup dati | Soluzione, tabelle Dataverse, app e dati di esempio | 90 min |
+| [00](./00-setup-dati/README.md) | Setup dati | Import della soluzione pronta, modello dati Dataverse, app PMO Demand Hub e dati di partenza | 45 min |
 | [S01](./01-agente-orchestratore/README.md) | Agente orchestratore | Creazione nella soluzione, istruzioni, conoscenza del PMO, impostazioni generative | 45 min |
 | [S02](./02-sistema-multi-agente/README.md) | Sistema multi-agente | Child agent, agent flow con file, connected agent con Dataverse come conoscenza | 90 min |
 | [S03](./03-prompt-multimodale/README.md) | Prompt multimodale | Prompt con input documento e output JSON, deduplica del proponente | 75 min |

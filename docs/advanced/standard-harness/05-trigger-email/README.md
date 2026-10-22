@@ -42,7 +42,7 @@ Per svolgere questo lab occorre avere:
 - completato i laboratori S01-S04;
 - una casella di posta del tenant di laboratorio (la propria) e accesso a Microsoft Teams;
 - l'indirizzo dell'app **PMO Demand Hub** annotato nel Lab 00;
-- le email di prova in [`materiali/email`](../../../resources/advanced/email/);
+- le email di prova in [`resources/advanced/email`](../../../resources/advanced/email/);
 - un team in Microsoft Teams per il PMO, ad esempio `Zava PMO`, con un canale `Proposte` in cui il flow pubblicherà le notifiche. Per crearli: in Teams selezionare **Teams**, **+** (**Join or create a team**), **Create team**, nome `Zava PMO`; poi, nel team, **...**, **Add channel**, nome `Proposte`.
 
 ## Prompt "Classifica email PMO"

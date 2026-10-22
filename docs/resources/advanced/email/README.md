@@ -16,7 +16,7 @@ Come usarli:
 
 1. Apri Outlook con un account del tuo tenant di laboratorio.
 2. Crea un nuovo messaggio verso la casella monitorata dal trigger (di solito la tua).
-3. Copia **Oggetto** e **Corpo** dal file di prova e allega i file indicati in **Allegati**, presi dalla cartella `materiali/business-case`.
+3. Copia **Oggetto** e **Corpo** dal file di prova e allega i file indicati in **Allegati**, presi dalla cartella [`business-case`](../business-case/).
 4. Invia il messaggio solo quando il trigger è attivo (vedi le istruzioni del lab).
 
 Tutti i nomi, gli indirizzi e gli importi sono fittizi. Non inviare questi messaggi a indirizzi esterni al tuo tenant.

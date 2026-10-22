@@ -2,7 +2,7 @@
 
 Previous: Start | [Back to Standard Harness](../index.md) | [Next: S01](../01-agente-orchestratore/README.md)
 
-<!-- icon: clock-countdown --> **Tempo stimato:** ~90 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard e GitHub Copilot (laboratorio condiviso)
+<!-- icon: clock-countdown --> **Tempo stimato:** ~45 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard e GitHub Copilot (laboratorio condiviso)
 
 ## Scenario
 
@@ -30,39 +30,44 @@ Tutte le persone sono interne a Zava S.p.A. Non è un dettaglio: Work IQ e i con
 
 Il primo passo non riguarda ancora gli agenti. Oggi i dati del processo sono sparsi tra la casella email e un foglio Excel: serve prima un archivio comune e strutturato, che persone e agenti possano leggere e scrivere.
 
-Prima che un agente possa registrare e valutare proposte, il PMO ha bisogno di un posto dove i dati vivono in modo strutturato: il **PMO Demand Hub**. In questo laboratorio vengono create in Dataverse le cinque tabelle del processo (Programmi, Criteri di valutazione, Proponenti, Proposte, Valutazioni), un'app model-driven per consultarle e i dati di partenza: cinque programmi di investimento con i loro criteri pesati. Infine viene preparata in SharePoint la cartella con i documenti di conoscenza del PMO.
+Questo archivio è il **PMO Demand Hub**, e il corso lo fornisce già pronto, come Agent Academy fa per l'Hiring Agent: una soluzione Dataverse con le cinque tabelle del processo (Programmi, Criteri di valutazione, Proponenti, Proposte, Valutazioni) e l'app model-driven **PMO Demand Hub** per consultarle, modificarle e importare dati. In questo laboratorio la soluzione viene importata e poi letta con attenzione: nomi logici, codici automatici, scelte e relazioni sono quelli che gli agenti useranno in tutti i laboratori successivi. Poi vengono caricati i dati di partenza (cinque programmi di investimento con i loro criteri pesati) e viene preparata in SharePoint la cartella con i documenti di conoscenza del PMO. In particolare verranno svolte le seguenti attività:
 
-Agent Academy fornisce per l'Hiring Agent una soluzione già pronta da importare. Qui il modello viene costruito a mano: richiede più tempo, ma permette di capire ogni scelta che gli agenti useranno dopo (nomi logici, codici automatici, scelte, relazioni).
+- Importare la soluzione **PMO Demand IT** e abilitare note e allegati sulla tabella **Proposal**.
+- Capire tabelle, colonne, scelte e relazioni del modello dati.
+- Esplorare l'app **PMO Demand Hub**: home page, import CSV e Proposal Board.
+- Caricare i cinque programmi e i 25 criteri di valutazione.
+- Verificare il Dataverse MCP Server per il percorso GitHub Copilot.
+- Preparare la cartella SharePoint della conoscenza PMO.
 
 Ogni record del PMO Demand Hub ha un codice leggibile: Proposta `PP-####`, Valutazione `AS-####`, Proponente `RQ-####`, Programma `PG-###`. Gli agenti leggono questi codici dai risultati degli strumenti e non li inventano mai. I codici del proprio ambiente saranno diversi da quelli degli esempi: nelle prove si controlla la forma, non il valore.
 
 Questo laboratorio è condiviso dai due percorsi, standard e GitHub Copilot: dopo il setup si sceglie un percorso e si svolgono i lab in ordine, perché ogni lab estende il precedente. Chi vuole confrontare le harness può svolgere anche l'altro percorso nello stesso ambiente: gli agenti del percorso GitHub Copilot hanno il suffisso ` - GH`, così i componenti non si confondono.
 
-> [!TIP]
-> **Percorso rapido**
->
-> Anche per questo corso c'è una soluzione pronta: [`PMODemandIT_1_0_0_0.zip`](../../../resources/advanced/solution/PMODemandIT_1_0_0_0.zip). Contiene le stesse tabelle, colonne e nomi logici in inglese descritti qui, più l'app PMO Demand Hub con home page, import CSV e Proposal Board. Se la si importa (**Solutions**, **Import solution**), saltare le sezioni da *Creare la soluzione* a *Creare l'app PMO Demand Hub*, abilitare a mano **Enable attachments** sulla tabella **Proposal** e riprendere da *Importare programmi e criteri*. Le istruzioni dettagliate sono nel [README della soluzione](../../../resources/advanced/solution/README.md).
-
 ::: details <!-- icon: lightbulb f-instructions --> Perché queste scelte
+- **Una soluzione pronta invece del modello costruito a mano.** Il centro del corso sono gli agenti, non il designer delle tabelle. Importare la soluzione richiede pochi minuti e garantisce che nomi logici e valori delle scelte siano esattamente quelli citati da prompt, skill e flow dei laboratori: non resta nessun errore di battitura da scoprire quando un agente fallisce una scrittura.
 - **Dataverse invece di una lista SharePoint o di un Excel.** Il processo ha relazioni (una proposta ha un proponente, un programma, una o più valutazioni), regole sui tipi di dato e codici univoci. Dataverse le gestisce in modo nativo, rispetta la sicurezza per ruolo ed è la fonte che entrambe le harness sanno leggere e scrivere (connettore e prompt nella standard harness, Dataverse MCP Server nella GitHub Copilot harness).
-- **Codici con numerazione automatica.** Persone e agenti si scambiano codici leggibili (PP-1003), non GUID. Il codice lo genera Dataverse, così l'agente non ha mai motivo di inventarlo.
+- **Codici con numerazione automatica.** Persone e agenti si scambiano codici leggibili (PP-1003), non GUID. Il codice lo genera Dataverse, così l'agente non ha mai motivo di inventarlo: rilegge quello assegnato al salvataggio.
 - **Criteri come righe di una tabella.** Pesi e descrizioni sono dati che il PMO può cambiare senza toccare gli agenti. Il grounding legge sempre la versione aggiornata.
-- **Nomi logici decisi esplicitamente.** Prompt, skill e flow citano i nomi logici delle colonne (`csm_requestedbudget`, `csm_proposalstatus`...). Impostarli in modo esplicito evita sorprese e rende le istruzioni copiabili da questo laboratorio.
+- **Nomi logici decisi esplicitamente.** Prompt, skill e flow citano i nomi logici delle colonne (`csm_requestedbudget`, `csm_proposalstatus`...) e i valori numerici delle scelte. Nella soluzione sono fissati una volta per tutte: le istruzioni dei laboratori si possono copiare così come sono.
+- **Scelte locali e lookup veri.** Canale, stato e raccomandazione sono scelte proprie della colonna, con i valori numerici del publisher (770000000, 770000001...); i collegamenti tra tabelle sono lookup, non testi con un codice, così un agente non può collegare una proposta a un programma che non esiste.
+- **Budget come numero intero.** Evita le colonne di tipo valuta (tasso di cambio, valuta della transazione) ed è sufficiente per confronti e regole.
+- **Programma vuoto finché non è confermato.** Quando una proposta potrebbe rientrare in due programmi decide una persona: un lookup vuoto rende visibile lo stato "da confermare".
 - **Due modi di conservare il documento.** Una colonna **File** per il percorso standard (il flow carica e riscarica il PDF per il prompt) e le **note** abilitate per il percorso GitHub Copilot (il contenuto della nota è leggibile con il Dataverse MCP Server). Nel percorso che non si usa, la colonna o le note rimangono semplicemente vuote.
+- **Proposal Status come scelta personalizzata.** Lo stato di sistema (Active, Inactive) resta disponibile per archiviare; lo stato del processo ha valori propri.
 :::
 
 > [!TIP]
 > **Dove lavorare**
 >
-> Lavorare in [Power Apps](https://make.powerapps.com/) per le tabelle e l'app: il designer delle tabelle offre tutte le opzioni necessarie, inclusa la numerazione automatica. Prima di iniziare controllare in alto a destra che l'ambiente sia quello di laboratorio.
+> Lavorare in [Power Apps](https://make.powerapps.com/) per importare la soluzione e aprire l'app. Prima di iniziare controllare in alto a destra che l'ambiente sia quello di laboratorio.
 
 ## Prerequisiti
 
 Per svolgere questo lab occorre avere a disposizione:
 
 - Un ambiente di laboratorio con Dataverse (lo stesso dei fondamenti va bene) e il ruolo **System Customizer** o **System Administrator**.
-- Il publisher **CSM Solutions** con prefisso `csm` e prefisso delle scelte `77000` (creato nel modulo 1 dei fondamenti; se non esiste, crearlo durante la creazione della soluzione).
-- I file [`programs.csv`](../../../resources/advanced/data/programs.csv) e [`evaluation-criteria.csv`](../../../resources/advanced/data/evaluation-criteria.csv).
+- La soluzione [`PMODemandIT_1_0_0_0.zip`](../../../resources/advanced/solution/PMODemandIT_1_0_0_0.zip) (non gestita, versione 1.0.0.0). Contiene anche il publisher **CSM Solutions** con prefisso `csm` e prefisso delle scelte `77000`: se esiste già dal modulo 1 dei fondamenti, l'importazione lo aggiorna. La descrizione completa in inglese è nel [README della soluzione](../../../resources/advanced/solution/README.md).
+- I file [`programs.csv`](../../../resources/advanced/data/programs.csv) e [`evaluation-criteria.csv`](../../../resources/advanced/data/evaluation-criteria.csv), se si vogliono caricare i dati da CSV invece che con **Load starter data**.
 - Un sito SharePoint dove poter creare cartelle e caricare file (per la cartella della conoscenza PMO), e i file [`Zava_PMO_Linee_Guida_Business_Case.docx`](../../../resources/advanced/conoscenza/Zava_PMO_Linee_Guida_Business_Case.docx) e [`Zava_Piano_Strategico_IT_2026-2028.pdf`](../../../resources/advanced/conoscenza/Zava_Piano_Strategico_IT_2026-2028.pdf).
 
 Per i laboratori successivi servono anche:
@@ -71,143 +76,139 @@ Per i laboratori successivi servono anche:
 - i materiali del caso pratico in [`resources/advanced`](../../../resources/advanced/) (business case, email di prova, template del dossier, skill): ogni lab indica nei prerequisiti i file che usa;
 - per il percorso GitHub Copilot: il Microsoft Dataverse MCP Server disponibile nell'ambiente (vedi *Impostazioni per il percorso GitHub Copilot*), Work IQ abilitato nel tenant, capacità di Copilot Credits e un secondo utente del tenant, con casella di posta, da usare come sponsor o architetto nei test di pianificazione. Tutti i partecipanti alle riunioni devono essere **interni** al tenant.
 
-## Soluzione
+## Importare la soluzione
 
-### Creare la soluzione
+Una soluzione è il contenitore che il PMO sposterà da un ambiente all'altro: sviluppo, collaudo, produzione. Se tabelle, app e agenti nascono fuori dalla soluzione, al momento del rilascio vanno cercati e aggiunti uno per uno, con il rischio di dimenticarne qualcuno. La soluzione **PMO Demand IT** è **non gestita**: dopo l'importazione si può modificare, e impostarla come soluzione preferita fa sì che tutto ciò che viene creato da qui in poi (agenti, flow, prompt) ci finisca automaticamente.
 
-Una soluzione è il contenitore che il PMO sposterà da un ambiente all'altro: sviluppo, collaudo, produzione. Se tabelle, app e agenti nascono fuori dalla soluzione, al momento del rilascio vanno cercati e aggiunti uno per uno, con il rischio di dimenticarne qualcuno. Impostarla come soluzione preferita fa sì che tutto ciò che viene creato da qui in poi ci finisca automaticamente.
+### Importare il file della soluzione
 
-1. In Power Apps selezionare **Solutions** e poi **New solution**.
-2. Compilare i campi:
+1. In [Power Apps](https://make.powerapps.com/) verificare l'ambiente, selezionare **Solutions** e poi **Import solution**.
+2. Selezionare **Browse**, scegliere `PMODemandIT_1_0_0_0.zip` e selezionare **Next**.
+3. Controllare i dettagli (soluzione **PMO Demand IT**, publisher **CSM Solutions**, versione 1.0.0.0) e selezionare **Import**. L'importazione richiede qualche minuto: attendere il messaggio di conferma.
+4. Aprire la soluzione **PMO Demand IT** e selezionare **Publish all customizations**.
+5. Tornare all'elenco delle soluzioni, selezionare i tre puntini accanto a **PMO Demand IT**, scegliere **Set preferred solution** e confermare. Da ora agenti, flow e prompt finiranno in questa soluzione.
 
-| Campo | Valore |
-| --- | --- |
-| Display name | `PMO Demand IT` |
-| Name | `PMODemandIT` |
-| Publisher | **CSM Solutions** (se manca, selezionare **New publisher** e crearlo con i valori del modulo 1) |
-
-3. Selezionare **Create**.
-4. Nell'elenco delle soluzioni selezionare i tre puntini accanto a **PMO Demand IT**, scegliere **Set preferred solution** e confermare. Da ora tabelle, app, agenti e flow finiranno in questa soluzione.
-
-## Tabelle Dataverse
-
-### Tabella Programma
-
-Il programma di investimento è il punto di partenza di ogni valutazione: decide quali criteri si applicano e quale budget è disponibile. Viene creato per primo perché criteri, proposte e valutazioni lo citeranno con un lookup. Il codice PG-### è inserito dal PMO (arriva dal piano degli investimenti), per questo è un testo obbligatorio e non un numero automatico.
-
-1. Aprire la soluzione **PMO Demand IT**, selezionare **New**, **Table** e poi **Table (advanced properties)** (in alcune versioni **Set advanced properties**).
-2. Nella scheda **Properties** inserire:
-   - **Display name**: `Program`
-   - **Plural name**: `Programs`
-   - **Description**: `Programmi di investimento IT con budget e criteri di valutazione`
-   - espandere **Advanced options** e verificare che **Schema name** sia `csm_Program` (il nome logico diventerà `csm_program`).
-3. Nella scheda **Primary column** impostare **Display name** `Name`. Il nome logico diventerà `csm_name`.
-
-> [!IMPORTANT]
-> **Colonna primaria**
+> [!NOTE]
+> **Componenti già presenti**
 >
-> Il nome della colonna primaria non si può cambiare dopo il salvataggio della tabella. Per questo viene usato un nome semplice (`Name`) per tutte le tabelle anagrafiche.
+> Se l'ambiente contiene già il publisher CSM Solutions, la soluzione PMO Demand IT o una tabella `csm_program` con la sola colonna Name (ad esempio da un tentativo precedente fatto a mano), l'importazione li aggiorna e aggiunge le colonne mancanti: non serve eliminarli prima. Se invece segnala un conflitto su una colonna esistente con un tipo diverso, eliminare quella colonna o quella tabella e importare di nuovo.
 
-4. Selezionare **Save** e attendere la creazione.
-5. Nella tabella, area **Columns**, aggiungere le colonne con **New column**. Per ognuna espandere **Advanced options** e controllare lo **Schema name** prima di salvare:
+## Abilitare note e allegati sulla tabella Proposal
 
-| Display name | Data type | Altre impostazioni | Schema name |
+Le note sono una capacità della tabella che Dataverse imposta quando la tabella viene creata o modificata, non un componente che il file della soluzione può portare con sé: per questo si attivano a mano dopo l'importazione. Servono al percorso GitHub Copilot, il cui workflow conserva il business case come nota e lo legge con il Dataverse MCP Server. Nel percorso standard restano semplicemente vuote.
+
+### Abilitare gli allegati
+
+1. Nella soluzione **PMO Demand IT** aprire la tabella **Proposal** e selezionare **Properties**.
+2. Espandere **Advanced options** e selezionare **Enable attachments (including notes and files)**.
+3. Selezionare **Save**.
+
+> [!WARNING]
+> **Scelta irreversibile**
+>
+> Una volta salvata, l'opzione **Enable attachments** non si può più disattivare. Per la tabella **Proposal** è il comportamento voluto.
+
+4. Facoltativo, per vedere le note nel modulo: aprire il modulo principale **Information** della tabella **Proposal**, aggiungere il componente **Timeline** alla scheda **General** e selezionare **Save and publish**.
+
+## Che cosa contiene la soluzione
+
+Non c'è niente da costruire, ma prima di scrivere il primo agente conviene leggere il modello: ogni prompt, flow e skill dei laboratori successivi cita queste tabelle, questi nomi logici e questi valori. Per vederli nel proprio ambiente aprire la soluzione, selezionare una tabella e poi **Columns**: la colonna **Logical name** (o **Name**) mostra il nome logico.
+
+| Componente | Nome | Contenuto |
+| --- | --- | --- |
+| Tabelle | 5 tabelle con prefisso `csm_` | Program, Evaluation Criterion, Requester, Proposal, Assessment, con moduli e viste |
+| App model-driven | **PMO Demand Hub** (`csm_PMODemandHub`) | Navigazione in tre gruppi, home page e Proposal Board |
+| Risorse web | `csm_/pmo/...` | Home page e Proposal Board (HTML, CSS, JavaScript), anime.js 4.2.2, icone delle tabelle, logo e icona dell'app, tema personalizzato |
+| Publisher | **CSM Solutions** (`CSMSolutions`) | Prefisso `csm`, prefisso delle scelte `77000` |
+
+### Tabelle e relazioni
+
+| Tabella | Nome logico | Colonna primaria | Collegata a (lookup) |
 | --- | --- | --- | --- |
-| Program Code | Text | Required: Business required; Maximum character count: 10 | `csm_programcode` |
-| Description | Multiple lines of text (Plain text) | | `csm_description` |
-| Available Budget (EUR) | Whole number | Minimum 0 | `csm_availablebudget` |
+| Program | `csm_program` | Name (`csm_name`) | - |
+| Evaluation Criterion | `csm_criterion` | Name (`csm_name`) | Program |
+| Requester | `csm_requester` | Name (`csm_name`) | - |
+| Proposal | `csm_proposal` | Title (`csm_title`) | Requester, Program |
+| Assessment | `csm_assessment` | Title (`csm_title`) | Proposal, Program |
 
-### Tabella Criterio di valutazione
+Tutte le relazioni sono lookup molti a uno. Eliminare un programma o una proposta non elimina le righe collegate: il lookup su criteri, proposte o valutazioni rimane vuoto. Le tabelle hanno un proprietario (colonna **Owner**), quindi la sicurezza per ruolo di Dataverse vale anche per gli agenti.
+
+### Program
+
+Il programma di investimento è il punto di partenza di ogni valutazione: decide quali criteri si applicano e quale budget è disponibile. Criteri, proposte e valutazioni lo citano con un lookup. Il codice PG-### è inserito dal PMO (arriva dal piano degli investimenti), per questo è un testo obbligatorio e non un numero automatico.
+
+| Colonna | Nome logico | Tipo e regole |
+| --- | --- | --- |
+| Name | `csm_name` | Testo, obbligatorio |
+| Program Code | `csm_programcode` | Testo, obbligatorio, massimo 10 caratteri |
+| Description | `csm_description` | Testo su più righe |
+| Available Budget (EUR) | `csm_availablebudget` | Numero intero, minimo 0 |
+
+### Evaluation Criterion
 
 I criteri sono il cuore della valutazione e cambiano più spesso degli agenti: il PMO può modificare un peso o una descrizione senza toccare istruzioni, prompt o skill. Tenerli come righe collegate al programma permette agli agenti di leggere sempre la versione in vigore.
 
-1. Nella soluzione selezionare **New**, **Table**, **Table (advanced properties)**.
-2. Inserire **Display name** `Evaluation Criterion`, **Plural name** `Evaluation Criteria`, **Description** `Criteri pesati di un programma`. In **Advanced options** impostare lo **Schema name** a `csm_Criterion` (il prefisso è già presente: scrivere solo `Criterion`).
-3. Nella scheda **Primary column** impostare **Display name** `Name`. Selezionare **Save**.
-4. Aggiungere le colonne:
+| Colonna | Nome logico | Tipo e regole |
+| --- | --- | --- |
+| Name | `csm_name` | Testo, obbligatorio |
+| Description | `csm_description` | Testo su più righe |
+| Weight | `csm_weight` | Numero intero da 0 a 100; i pesi di un programma sommano a 100 |
+| Program | `csm_program` | Lookup a **Program** |
 
-| Display name | Data type | Altre impostazioni | Schema name |
-| --- | --- | --- | --- |
-| Description | Multiple lines of text | | `csm_description` |
-| Weight | Whole number | Minimum 0, Maximum 100 | `csm_weight` |
-| Program | Lookup | Related table: **Program** | `csm_program` |
+### Requester
 
-### Tabella Proponente
+Lo stesso dipendente può presentare più proposte nel corso dell'anno. Una tabella separata, con l'email come chiave di deduplica, evita di ricopiare nome, ruolo e funzione in ogni proposta e permette di vedere lo storico di chi propone.
 
-Lo stesso dipendente può presentare più proposte nel corso dell'anno. Una tabella separata, con l'email come chiave di deduplica, evita di ricopiare nome, ruolo e funzione in ogni proposta e permette di vedere lo storico di chi propone. Il codice RQ-#### lo genera Dataverse, quindi nessun agente avrà motivo di inventarlo.
+| Colonna | Nome logico | Tipo e regole |
+| --- | --- | --- |
+| Name | `csm_name` | Testo, obbligatorio |
+| Requester Code | `csm_requestercode` | Numerazione automatica `RQ-{SEQNUM:4}` |
+| Email | `csm_email` | Testo in formato email |
+| Role | `csm_role` | Testo |
+| Department | `csm_department` | Testo |
 
-1. Creare la tabella **Requester** (plurale **Requesters**, schema `csm_Requester`, colonna primaria **Name**).
-2. Aggiungere le colonne:
+### Proposal
 
-| Display name | Data type | Altre impostazioni | Schema name |
-| --- | --- | --- | --- |
-| Requester Code | Autonumber | Autonumber type: **String prefixed number**; Prefix `RQ`; Minimum number of digits `4`; Seed value `1000` | `csm_requestercode` |
-| Email | Email | | `csm_email` |
-| Role | Text | | `csm_role` |
-| Department | Text | | `csm_department` |
+La proposta è la tabella su cui lavorano tutti: intake, valutazione, dossier, pianificazione. Contiene i dati estratti dal business case, i dati sul canale di arrivo (chat o email) e lo stato del processo. Due scelte meritano attenzione: lo **Proposal Status** è una colonna propria, distinta dallo stato di sistema, e il documento si conserva in due modi perché le due harness lo leggono in modo diverso (colonna **Business Case Document** e note).
 
-### Tabella Proposta
+| Colonna | Nome logico | Tipo e regole |
+| --- | --- | --- |
+| Title | `csm_title` | Testo, obbligatorio |
+| Proposal Code | `csm_proposalcode` | Numerazione automatica `PP-{SEQNUM:4}` |
+| Summary | `csm_summary` | Testo su più righe, massimo 4000 caratteri |
+| Cover Message | `csm_message` | Testo su più righe, massimo 4000 caratteri |
+| Source Email | `csm_sourceemail` | Testo in formato email |
+| Requested Budget (EUR) | `csm_requestedbudget` | Numero intero, minimo 0 |
+| Duration (Months) | `csm_durationmonths` | Numero intero da 0 a 120 |
+| Channel | `csm_channel` | Scelta: Chat, Email |
+| Proposal Status | `csm_proposalstatus` | Scelta: Received, Assessed, Review Scheduled |
+| Submission Date | `csm_submissiondate` | Solo data |
+| Requester | `csm_requester` | Lookup a **Requester** |
+| Program | `csm_program` | Lookup a **Program**, vuoto finché il programma non è confermato |
+| Business Case Document | `csm_businesscasedocument` | File, fino a 32 MB |
 
-La proposta è la tabella su cui lavorano tutti: intake, valutazione, dossier, pianificazione. Contiene i dati estratti dal business case, i dati sul canale di arrivo (chat o email) e lo stato del processo. Due scelte meritano attenzione: lo **Proposal Status** è una colonna propria, distinta dallo stato di sistema, e il documento si conserva in due modi perché le due harness lo leggono in modo diverso.
-
-1. Creare la tabella **Proposal** (plurale **Proposals**, schema `csm_Proposal`).
-2. Nella scheda **Properties** selezionare **Enable attachments (including notes and files)**.
-3. Nella scheda **Primary column** impostare **Display name** `Title`. Selezionare **Save**.
-4. Aggiungere le colonne:
-
-| Display name | Data type | Altre impostazioni | Schema name |
-| --- | --- | --- | --- |
-| Proposal Code | Autonumber | String prefixed number; Prefix `PP`; Minimum digits `4`; Seed `1000` | `csm_proposalcode` |
-| Summary | Multiple lines of text | Maximum character count 4000 | `csm_summary` |
-| Cover Message | Multiple lines of text | Maximum character count 4000 | `csm_message` |
-| Source Email | Email | | `csm_sourceemail` |
-| Requested Budget (EUR) | Whole number | Minimum 0 | `csm_requestedbudget` |
-| Duration (Months) | Whole number | Minimum 0 | `csm_durationmonths` |
-| Channel | Choice | Nuova scelta locale con opzioni `Chat`, `Email` | `csm_channel` |
-| Proposal Status | Choice | Nuova scelta locale con opzioni `Received`, `Assessed`, `Review Scheduled`; Default: `Received` | `csm_proposalstatus` |
-| Submission Date | Date only | | `csm_submissiondate` |
-| Requester | Lookup | Related table: **Requester** | `csm_requester` |
-| Program | Lookup | Related table: **Program** | `csm_program` |
-| Business Case Document | File | Maximum file size: lasciare il valore predefinito | `csm_businesscasedocument` |
-
-> [!NOTE]
-> **Colonne di tipo Choice**
->
-> Per le colonne **Choice**, nel campo **Sync this choice with** scegliere **New choice** (scelta locale) e inserire le opzioni nell'ordine indicato. Con il prefisso del publisher `77000` i valori numerici saranno 770000000, 770000001 e 770000002: gli agenti li usano per scrivere lo stato.
-
-### Tabella Valutazione
+### Assessment
 
 La valutazione è separata dalla proposta perché è un atto preciso, con data, programma di riferimento, punteggio e motivazione: se il Comitato chiede una rivalutazione, la storia resta leggibile. Il **Criteria Detail** conserva la tabella riga per riga, così il dossier può riportare i livelli registrati senza rivalutare la proposta.
 
-1. Creare la tabella **Assessment** (plurale **Assessments**, schema `csm_Assessment`, colonna primaria **Title**).
-2. Aggiungere le colonne:
-
-| Display name | Data type | Altre impostazioni | Schema name |
-| --- | --- | --- | --- |
-| Assessment Code | Autonumber | String prefixed number; Prefix `AS`; Minimum digits `4`; Seed `1000` | `csm_assessmentcode` |
-| Proposal | Lookup | Related table: **Proposal** | `csm_proposal` |
-| Program | Lookup | Related table: **Program** | `csm_program` |
-| Score | Decimal number | Decimal places: 1; Minimum 0; Maximum 100 | `csm_score` |
-| Criteria Detail | Multiple lines of text | Maximum character count 10000 | `csm_criteriadetail` |
-| Rationale | Multiple lines of text | Maximum character count 4000 | `csm_rationale` |
-| Recommendation | Choice | Nuova scelta locale: `Recommended`, `Needs Further Review`, `Not Recommended` | `csm_recommendation` |
-| Assessment Date | Date only | | `csm_assessmentdate` |
-
-### Verificare nomi logici e valori
-
-Prompt, skill e flow dei laboratori citano nomi logici e valori numerici delle scelte. Se nel proprio ambiente un nome è diverso (ad esempio per un errore di battitura nello schema name), è molto più facile annotarlo ora che scoprirlo quando un agente fallisce una scrittura.
-
-1. Per ogni tabella aprire **Columns** e confrontare il **Logical name** (o **Name**) con i valori attesi:
-
-| Tabella | Nome logico | Colonne principali (nome logico) |
+| Colonna | Nome logico | Tipo e regole |
 | --- | --- | --- |
-| Program | `csm_program` | `csm_name`, `csm_programcode`, `csm_description`, `csm_availablebudget` |
-| Evaluation Criterion | `csm_criterion` | `csm_name`, `csm_description`, `csm_weight`, `csm_program` |
-| Requester | `csm_requester` | `csm_name`, `csm_requestercode`, `csm_email`, `csm_role`, `csm_department` |
-| Proposal | `csm_proposal` | `csm_title`, `csm_proposalcode`, `csm_summary`, `csm_message`, `csm_sourceemail`, `csm_requestedbudget`, `csm_durationmonths`, `csm_channel`, `csm_proposalstatus`, `csm_submissiondate`, `csm_requester`, `csm_program`, `csm_businesscasedocument` |
-| Assessment | `csm_assessment` | `csm_title`, `csm_assessmentcode`, `csm_proposal`, `csm_program`, `csm_score`, `csm_criteriadetail`, `csm_rationale`, `csm_recommendation`, `csm_assessmentdate` |
+| Title | `csm_title` | Testo, obbligatorio |
+| Assessment Code | `csm_assessmentcode` | Numerazione automatica `AS-{SEQNUM:4}` |
+| Proposal | `csm_proposal` | Lookup a **Proposal** |
+| Program | `csm_program` | Lookup a **Program** |
+| Score | `csm_score` | Numero decimale da 0 a 100, un decimale |
+| Criteria Detail | `csm_criteriadetail` | Testo su più righe, massimo 10000 caratteri |
+| Rationale | `csm_rationale` | Testo su più righe, massimo 4000 caratteri |
+| Recommendation | `csm_recommendation` | Scelta: Recommended, Needs Further Review, Not Recommended |
+| Assessment Date | `csm_assessmentdate` | Solo data |
+| Review Dossier | `csm_reviewdossier` | File, fino a 32 MB, per conservare il dossier sul record (nel Lab S06 il dossier viene salvato in OneDrive) |
 
-2. Aprire le colonne **Proposal Status**, **Channel** e **Recommendation** e annotare i valori delle opzioni. Valori attesi:
+### Codici automatici e scelte
+
+Le colonne **Requester Code**, **Proposal Code** e **Assessment Code** sono a numerazione automatica: Dataverse assegna il valore al salvataggio, partendo dal seed predefinito 1000. Il primo proponente è quindi RQ-1000, la prima proposta PP-1000, la prima valutazione AS-1000.
+
+Le tre colonne di scelta sono locali (appartengono alla colonna, non sono scelte globali condivise con altre tabelle) e usano il prefisso `77000` del publisher. Gli agenti scrivono questi valori numerici:
 
 | Colonna | Opzioni e valori |
 | --- | --- |
@@ -215,54 +216,144 @@ Prompt, skill e flow dei laboratori citano nomi logici e valori numerici delle s
 | Proposal Status (`csm_proposalstatus`) | Received (770000000), Assessed (770000001), Review Scheduled (770000002) |
 | Recommendation (`csm_recommendation`) | Recommended (770000000), Needs Further Review (770000001), Not Recommended (770000002) |
 
-3. Se un nome logico o un valore è diverso, **annotarlo**: nei laboratori successivi sostituire il valore del testo da copiare con quello reale. Non ricreare le colonne, a meno di essere ancora all'inizio.
-
-## App PMO Demand Hub
+> [!NOTE]
+> **Nessun valore predefinito**
+>
+> Le colonne di scelta non hanno un valore predefinito. Lo stato **Received** di una nuova proposta lo scrivono i flow di intake (Lab S02 e S05); il Proposal Board mostra nella colonna Received anche le proposte create a mano senza stato.
 
 ### Moduli e viste
 
-Le tabelle nuove mostrano nel modulo e nella vista solo poche colonne. Occorre aggiungere le altre.
+| Elemento | Che cosa offre |
+| --- | --- |
+| Modulo principale **Information** | Scheda **General** su due colonne (dettagli a sinistra, testi lunghi e file a destra), codice e scelte nell'intestazione, una scheda per ogni tabella collegata |
+| Sottogriglie modificabili | Su un programma: **Evaluation Criteria**, **Proposals**, **Assessments**; su un proponente: **Proposals**; su una proposta: **Assessments**. Pesi, stati e altri valori si cambiano direttamente nella griglia |
+| Creazione rapida | Un modulo di creazione rapida per ogni tabella, aperto da **New** nella home page o da **+ New** in un lookup o in una sottogriglia |
+| Altri moduli | Modulo a scheda (elenchi sugli schermi piccoli) e modulo di visualizzazione rapida per ogni tabella |
+| Viste | Active, Inactive e My per ogni tabella, più **Proposals to Assess**, **Assessed Proposals**, **Proposals with Review Scheduled**, **Recommended Assessments** e **Assessments Needing Further Review** |
 
-1. Da **Tables** aprire **Proposal** e, nella pagina della tabella, selezionare **Update forms and views**.
-2. Selezionare tutte le colonne create per la tabella Proposta, scegliere il modulo principale (**Information**) e la vista **Active Proposals**, poi confermare.
-3. Ripetere per **Program**, **Evaluation Criterion**, **Requester** e **Assessment**.
-4. Selezionare **Publish all customizations** nella soluzione.
+Le colonne File (**Business Case Document** e **Review Dossier**) compaiono anche nelle viste principali: nel modulo si seleziona la colonna per caricare un file e il nome del file per scaricarlo.
 
-> [!TIP]
-> **Colonne di codice automatico**
+### L'app model-driven
+
+L'app **PMO Demand Hub** contiene le cinque tabelle e due pagine web, organizzate in tre gruppi di navigazione:
+
+| Gruppo | Voci |
+| --- | --- |
+| Overview | Home (pagina web `csm_/pmo/home.html`) |
+| Demand | Proposal Board (pagina web `csm_/pmo/board.html`), Proposals, Assessments, Requesters |
+| Portfolio | Programs, Evaluation Criteria |
+
+Ogni tabella ha un'icona Phosphor duotone e un colore: Program blu, Evaluation Criterion viola, Requester verde acqua, Proposal ambra, Assessment verde. Le animazioni usano anime.js, incluso nella soluzione (`csm_/pmo/anime.min.js`), quindi le pagine non dipendono da una CDN esterna.
+
+## Come funziona l'app PMO Demand Hub
+
+Gli agenti scrivono, ma sono le persone del PMO a controllare: per ogni prova dei laboratori si aprirà l'app per verificare i record. L'app è anche lo strumento con cui gli analisti correggono a mano ciò che un agente non deve modificare, per esempio il programma di una proposta o lo stato del processo.
+
+### Aprire l'app
+
+1. Nella soluzione **PMO Demand IT** selezionare l'app **PMO Demand Hub** e poi **Play** (oppure aprirla da **Apps** in Power Apps).
+2. Copiare l'indirizzo dell'app dalla barra del browser e annotarlo: servirà nel Lab S05 per i link nelle card di Teams.
+3. Scorrere la home page e aprire **Proposal Board** dal gruppo **Demand**. Per ora tabelle e colonne sono vuote: i dati arrivano nella sezione *Caricare i dati di partenza*.
+
+### Home page
+
+La home page si apre per prima e inizia con **Manage data**: una scheda per tabella con il numero di righe attive e quattro azioni.
+
+| Azione | Che cosa fa |
+| --- | --- |
+| View | Apre la vista della tabella |
+| New | Apre il modulo di creazione rapida |
+| Import | Apre il pannello di importazione per quella tabella |
+| CSV | Scarica un modello CSV con i nomi di colonna corretti; per Programs ed Evaluation Criteria il modello contiene già i dati dei laboratori |
+
+Accanto ci sono **Load starter data**, che crea o aggiorna in un solo passo i 5 programmi e i 25 criteri dei laboratori, e **Import CSV**. Sotto, la sezione **Portfolio at a glance** legge i dati dal vivo con la Web API di Dataverse: numeri chiave, barre del budget per programma (richiesto rispetto a disponibile, arancione quando un programma è oltre il budget), il grafico delle raccomandazioni, le ultime proposte con il loro stato e le quattro fasi del processo. Selezionando un programma o una proposta si apre il record.
+
+Le immagini di questa sezione mostrano le pagine con i dati di esempio (etichetta **Preview data**), cioè come appaiono aperte fuori dall'app, dove nulla viene scritto in Dataverse.
+
+![](./images/passo4-01.png)
+
+### Pannello Import CSV
+
+Il pannello funziona in quattro passi: scegliere la tabella, trascinare il file, controllare l'anteprima e selezionare **Import rows**. Si occupa dei dettagli che di solito fanno fallire un'importazione:
+
+- **Separatori e formati.** Virgola, punto e virgola (Excel in italiano salva con il punto e virgola) o tabulazione. Numeri come `180000`, `180.000` o `180,000`, decimali con il punto o con la virgola. Date come `YYYY-MM-DD` o `DD/MM/YYYY`.
+- **Nomi di colonna.** Nomi visualizzati in inglese, nomi logici e le intestazioni italiane dei file originali dei laboratori (ad esempio *Codice programma*, *Budget disponibile (EUR)*, *Peso*, *Programma*).
+- **Lookup.** Programma per Program Code o Name, proponente per Email, Requester Code o Name, proposta per Proposal Code o Title.
+- **Scelte.** Per etichetta (*Email*, *Review Scheduled*, *Needs Further Review*) o per valore (*770000001*).
+- **Creare o aggiornare.** Con **Update existing rows** selezionato, le righe che corrispondono alla chiave vengono aggiornate invece che duplicate. Chiavi: Program Code per i programmi, Name e Program per i criteri, Email per i proponenti, Title per proposte e valutazioni.
+- **Errori chiari.** Le righe con problemi vengono saltate ed elencate con numero di riga e motivo, ad esempio *Program "PG-999" not found in Programs*. Le altre righe vengono importate.
+
+Le tabelle padre vanno importate per prime: Programs, poi Evaluation Criteria e Requesters, poi Proposals, infine Assessments. Il pannello usa i permessi dell'utente connesso: si può importare solo nelle tabelle in cui si ha il permesso di creare e scrivere righe.
+
+![](./images/passo4-02.png)
+
+### Proposal Board
+
+**Proposal Board**, prima voce del gruppo **Demand**, mostra le proposte attive come schede in tre colonne: Received, Assessed, Review Scheduled. Ogni colonna riporta il numero di proposte e il loro budget richiesto totale.
+
+- **Cambiare stato** trascinando una scheda in un'altra colonna, oppure con il menu dello stato in fondo alla scheda (funziona anche da tastiera). La modifica viene salvata subito nella colonna **Proposal Status** e il messaggio di conferma ha il pulsante **Undo**. Se il salvataggio non riesce (ad esempio perché l'utente non può modificare le proposte), la scheda torna nella sua colonna e viene mostrato il motivo.
+- **Leggere una proposta a colpo d'occhio**: codice, budget richiesto (in rosso quando supera il budget disponibile del programma), codice del programma oppure *Program to be confirmed*, punteggio dell'ultima valutazione colorato secondo la raccomandazione, proponente.
+- **Trovare le proposte** con la casella di ricerca (titolo, codice, proponente) e il filtro per programma, che prevede anche *Program to be confirmed*.
+- **Aprire il record** selezionando il titolo; **New proposal** apre il modulo di creazione rapida.
+
+Le viste delle tabelle restano il posto per il lavoro in blocco: filtri, esportazione in Excel, importazione e modifica in griglia.
+
+![](./images/passo4-03.png)
+
+### Rendere modificabili le viste principali (facoltativo)
+
+Le sottogriglie dei moduli sono già modificabili. Per modificare direttamente anche gli elenchi principali (per esempio cambiare il peso di molti criteri dalla vista Evaluation Criteria) occorre attivare la griglia modificabile sulla tabella, dall'esplora soluzioni classico.
+
+1. Aprire la soluzione **PMO Demand IT** e, nella barra dei comandi, selezionare **...** e poi **Switch to classic**.
+2. Espandere **Entities**, aprire la tabella (ad esempio **Evaluation Criterion**), selezionare la scheda **Controls** e poi **Add Control**.
+3. Selezionare **Editable Grid** (oppure **Power Apps grid control**, la versione più recente, se l'ambiente la propone) e poi **Add**. Nella nuova riga selezionare **Web** come client.
+4. Selezionare **Save** e poi **Publish**. Ripetere per le altre tabelle che interessano, di solito Evaluation Criteria e Programs.
+
+### Attivare il tema personalizzato (facoltativo)
+
+La soluzione contiene un tema indaco con intestazione scura (`csm_/pmo/theme.xml`). Il tema è un valore di impostazione dell'ambiente, che il file della soluzione non può impostare senza conoscere l'ambiente: per questo si attiva a mano.
+
+1. Nella soluzione **PMO Demand IT** selezionare **Add existing**, **More**, **Setting**.
+2. Cercare *custom theme*, selezionare **Custom theme definition**, poi **Next** e **Add**.
+3. Selezionare **Custom theme definition** nella soluzione e poi **Edit**. In **Setting environment value** selezionare **New environment value** e inserire `csm_/pmo/theme.xml`.
+4. Selezionare **Save** e poi **Publish all customizations**.
+
+> [!WARNING]
+> **Ambiente condiviso**
 >
-> Le colonne di codice automatico conviene renderle di sola lettura nel modulo: il valore viene assegnato al salvataggio. Se l'opzione **Update forms and views** non è disponibile nella propria versione, aprire il modulo **Information** nel designer e trascinare le colonne nella sezione **General**.
+> Il valore di ambiente applica il tema a tutte le app model-driven dell'ambiente che usano il nuovo aspetto. In un ambiente condiviso chiedere prima agli altri maker, oppure saltare questo passaggio: icone, colori e home page funzionano anche senza.
 
-### Creare l'app PMO Demand Hub
+## Caricare i dati di partenza
 
-Gli agenti scrivono, ma sono le persone del PMO a controllare: per ogni prova dei laboratori si aprirà l'app per verificare i record. Un'app model-driven con le cinque tabelle è anche lo strumento con cui gli analisti correggeranno a mano ciò che un agente non deve modificare.
+All'inizio servono solo programmi e criteri: sono le regole con cui gli agenti valuteranno le proposte. Proponenti, proposte e valutazioni partono vuoti, perché li creano gli agenti durante i laboratori.
 
-1. Nella soluzione selezionare **New**, **App**, **Model-driven app**.
-2. Inserire **Name** `PMO Demand Hub` e **Description** `App del PMO per proposte, valutazioni e programmi`. Selezionare **Create**.
-3. Nel designer selezionare **Add page**, **Dataverse table**, e selezionare **Program**, **Evaluation Criterion**, **Requester**, **Proposal** e **Assessment**. Selezionare **Add**.
-4. Selezionare **Save** e poi **Publish**.
-5. Selezionare **Play**: l'app si apre con le cinque tabelle nella navigazione. Annotare l'indirizzo dell'app (servirà per i link nelle card di Teams).
+### Caricare programmi e criteri
 
-### Importare programmi e criteri
-
-**Programs**
-
-1. Nell'app selezionare **Programs**.
-2. Nella barra dei comandi aprire i tre puntini (**More**), selezionare la freccia accanto a **Import from Excel** e poi **Import from CSV**.
-3. Selezionare **Choose File**, scegliere `programs.csv` e premere **Next**. Lasciare invariate le opzioni del delimitatore e selezionare **Review Mapping**.
-4. Controllare che ogni colonna del CSV sia associata alla colonna con lo stesso nome visualizzato (`Name`, `Program Code`, `Description`, `Available Budget (EUR)`), poi selezionare **Finish Import** e **Done**.
-5. Selezionare **Refresh** dopo qualche istante: devono comparire i cinque programmi PG-100 ... PG-500.
-
-**Evaluation Criteria**
-
-1. Selezionare **Evaluation Criteria** e ripetere l'importazione con `evaluation-criteria.csv`.
-2. In **Review Mapping**, la colonna **Program** è un lookup: invece del segno di spunta mostra una lente. Selezionarla e verificare che il riferimento usi la colonna **Name** della tabella **Program**, poi premere **OK**.
-3. Selezionare **Finish Import**, **Done** e **Refresh**: devono comparire 25 criteri, 5 per programma.
+1. Aprire l'app **PMO Demand Hub** e, nella home page, selezionare **Load starter data**.
+2. Attendere la fine dell'operazione: le schede di **Manage data** mostrano 5 righe in **Programs** e 25 in **Evaluation Criteria**. Se programmi e criteri esistono già, vengono aggiornati e non duplicati.
 
 > [!NOTE]
-> **Mappatura automatica**
+> **Caricare i dati da CSV**
 >
-> Il CSV usa i nomi visualizzati delle colonne come intestazioni: per questo la mappatura si risolve quasi da sola. Il lookup si risolve per nome del programma, che è univoco.
+> In alternativa si possono usare i file CSV:
+>
+> - **Pannello Import CSV.** Nella home page selezionare **Import CSV**, scegliere **Programs** e trascinare `programs.csv`, poi scegliere **Evaluation Criteria** e trascinare `evaluation-criteria.csv`.
+> - **Importazione standard di Power Apps.** Nella soluzione aprire la tabella **Program**, selezionare **Import** e poi **Import data from Excel** (accetta anche i CSV) e caricare `programs.csv`; ripetere con la tabella **Evaluation Criterion** e `evaluation-criteria.csv`. Il CSV usa i nomi visualizzati delle colonne come intestazioni, per questo la mappatura si risolve quasi da sola; la colonna **Program** va associata al lookup Program, che si risolve per nome del programma (univoco).
+
+### Verificare i dati
+
+1. Aprire **Programs** dal gruppo **Portfolio** e controllare i cinque programmi:
+
+| Codice | Programma | Budget disponibile (EUR) |
+| --- | --- | --- |
+| PG-100 | Digital Process Transformation | 600000 |
+| PG-200 | Security and Compliance | 450000 |
+| PG-300 | Data and Artificial Intelligence | 500000 |
+| PG-400 | Modern Workplace | 300000 |
+| PG-500 | Infrastructure and Cloud | 800000 |
+
+2. Aprire un programma e selezionare la scheda **Evaluation Criteria**: mostra i suoi 5 criteri in una griglia modificabile e la somma dei pesi è 100.
+3. Controllare che **Requesters**, **Proposals** e **Assessments** siano vuoti.
 
 ## Impostazioni per il percorso GitHub Copilot
 
@@ -301,20 +392,21 @@ https://<tenant>.sharepoint.com/sites/ZavaPMO/Shared%20Documents/PMO%20Knowledge
 >
 > Se il docente prepara un solo sito per tutta la classe, basta una cartella condivisa in lettura. Gli utenti guest non ricevono risposte da SharePoint, e se il tenant usa **Restricted SharePoint Search** la fonte SharePoint è bloccata: in questi casi usare il caricamento diretto dei file descritto nel lab 01.
 
-## Verificare il setup
-
-1. La soluzione **PMO Demand IT** contiene cinque tabelle e l'app **PMO Demand Hub**.
-2. **Programs** contiene 5 righe con codici PG-100 ... PG-500 e budget.
-3. **Evaluation Criteria** contiene 25 righe; per ogni programma la somma dei pesi è 100 (verificabile con un filtro sulla colonna **Program**).
-4. Creando a mano una proposta di prova nell'app, il **Proposal Code** viene assegnato al salvataggio nel formato `PP-1000`. Eliminare poi la riga di prova.
-5. Eventuali differenze di nomi logici o valori delle scelte sono state annotate.
-6. La cartella SharePoint `PMO Knowledge` contiene i due documenti e il suo indirizzo è stato annotato.
-
 > [!IMPORTANT]
 > **Lab Completato**
 >
-> Il PMO Demand Hub è pronto: soluzione, cinque tabelle, app model-driven, programmi e criteri importati e cartella della conoscenza PMO in SharePoint. In questo laboratorio si è visto:
+> Il PMO Demand Hub è pronto: soluzione importata, note abilitate sulle proposte, programmi e criteri caricati e cartella della conoscenza PMO in SharePoint. Verificare che:
 >
-> - come progettare un modello dati pensato per essere usato da agenti: codici leggibili, nomi logici espliciti, regole nei dati;
-> - come creare tabelle, colonne a numerazione automatica, scelte e lookup in una soluzione;
-> - come preparare un'app model-driven e importare dati con lookup da CSV.
+> 1. la soluzione **PMO Demand IT** sia la soluzione preferita e contenga le cinque tabelle e l'app **PMO Demand Hub**;
+> 2. sulla tabella **Proposal** sia attivo **Enable attachments (including notes and files)**;
+> 3. **Programs** contenga 5 righe (PG-100 ... PG-500) ed **Evaluation Criteria** 25 righe, con pesi che sommano a 100 per ogni programma;
+> 4. creando a mano una proposta di prova nell'app, il **Proposal Code** venga assegnato al salvataggio nel formato `PP-1000` (eliminare poi la riga di prova);
+> 5. l'indirizzo dell'app e quello della cartella SharePoint `PMO Knowledge`, che contiene i due documenti, siano stati annotati.
+>
+> In questo laboratorio si è visto:
+>
+> - come importare una soluzione non gestita con tabelle, app model-driven e risorse web, e che cosa va completato a mano dopo l'importazione;
+> - come è progettato un modello dati pensato per essere usato da agenti: codici leggibili, nomi logici espliciti, regole nei dati;
+> - come caricare i dati di partenza e importare CSV con lookup nell'app PMO Demand Hub.
+>
+> Nel prossimo laboratorio si sceglie il percorso e si crea il primo agente: l'Agente Demand IT, l'orchestratore del sistema.
