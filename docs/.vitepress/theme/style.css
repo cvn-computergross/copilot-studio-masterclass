@@ -339,6 +339,8 @@
 .site-footer__logos img { height: 24px; width: auto; }
 .site-footer__sep { width: 1px; height: 22px; background: var(--vp-c-divider); }
 @media (min-width: 960px) {
+  /* il menu laterale è fisso: con molte voci scenderebbe sopra il fondo pagina */
+  .site-footer { position: relative; z-index: calc(var(--vp-z-index-sidebar) + 1); }
   .Layout:has(.VPSidebar) .site-footer { padding-left: var(--vp-sidebar-width); }
 }
 @media (min-width: 1440px) {
