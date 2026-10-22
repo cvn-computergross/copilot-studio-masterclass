@@ -2,6 +2,14 @@
 
 [Previous: S06](../06-dossier-word/README.md) | [Back to Standard Harness](../index.md)
 
+## Scenario
+
+Con S06 il sistema della standard harness è completo: due canali di ingresso, intake e valutazione con conferma, preparazione della revisione e dossier per il Comitato. Prima di consegnarlo al PMO restano due domande: l'agente continua a comportarsi bene dopo ogni modifica? E resiste a chi prova a usarlo in modo scorretto?
+
+La seconda domanda riguarda anche i documenti. Un business case è un dato, non un'istruzione: BC-06 (Dashboard vendite in tempo reale) contiene di proposito un testo di prompt injection, e l'agente deve ignorarlo e segnalarlo. Il test set di sicurezza di questo lab riprende lo stesso tipo di testo. Vale anche un altro principio del progetto, **solo persone interne**: nessun contatto automatico con soggetti esterni.
+
+Infine l'agente deve arrivare dove lavorano proponenti e analisti, cioè in Teams e in Microsoft 365 Copilot. In questo lab viene pubblicato e aperto in Microsoft 365 Copilot, per ora solo da chi lo ha costruito.
+
 Finora gli agenti sono stati provati a mano, nel pannello di test. Funziona per capire un comportamento, ma non dice se una modifica ha rotto qualcosa che prima funzionava: nei laboratori precedenti istruzioni, prompt e flow sono stati cambiati più volte, e domani qualcuno cambierà un peso o una descrizione. Prima di mettere l'Agente Demand IT nelle mani del PMO servono **test ripetibili** e un rilascio controllato.
 
 In questo lab verranno creati due set di test (comportamento di base e sicurezza) ed eseguiti; poi l'agente verrà pubblicato e aperto in **Microsoft 365 Copilot** solo per sé, per provarlo da lì. In particolare verranno svolte le seguenti attività:

@@ -2,6 +2,12 @@
 
 [Previous: S04](../04-grounding-e-valutazione/README.md) | [Back to Standard Harness](../index.md) | [Next: S06](../06-dossier-word/README.md)
 
+## Scenario
+
+Con S04 il ciclo in chat è completo: un business case allegato viene registrato, analizzato e valutato dopo la conferma di un analista. Il processo del PMO però nasce dalla casella email condivisa, dove le proposte arrivano in formati diversi e spesso senza tutte le informazioni richieste.
+
+Questo lab aggiunge il secondo canale di ingresso dello schema generale di S01: le email passano da un flow che le filtra e registra le proposte, poi l'agente le analizza con gli stessi strumenti della chat e avvisa il PMO in Teams. La valutazione resta in chat, perché richiede la conferma di una persona del PMO.
+
 Molti proponenti non usano la chat: inviano il business case alla casella del PMO con un oggetto che inizia con "Proposta progetto". Oggi qualcuno controlla la casella, scarta risposte automatiche e newsletter, registra le proposte e avvisa i colleghi. L'obiettivo è che succeda da solo.
 
 In questo lab verrà aggiunto all'Agente Demand IT un **trigger su evento**: quando arriva un'email, un flow di Power Automate la classifica, registra le proposte in PDF e chiede all'agente di analizzarle e di avvisare il PMO in Teams con una **adaptive card**. In particolare verranno svolte le seguenti attività:
@@ -77,6 +83,10 @@ Testo: /Testo
 ## Trigger "Nuova proposta via email"
 
 Il trigger permette all'agente di lavorare senza che nessuno apra la chat: quando arriva un'email, parte un flow che può chiamare l'agente. Il filtro sull'oggetto e sugli allegati applica fin da subito le regole delle linee guida e riduce le esecuzioni inutili.
+
+Lo schema mostra il flow del trigger come risulta alla fine di questa sezione. Il flow classifica l'email con il prompt **Classifica email PMO**, registra ogni PDF in Dataverse e solo allora chiama l'agente, che analizza la proposta e avvisa il PMO senza creare valutazioni. Le email incerte producono un avviso per la verifica manuale; risposte automatiche e messaggi non pertinenti terminano senza azioni.
+
+![Flow del trigger email: classificazione, registrazione dei PDF e chiamata all'agente](../../images/workflow-email-standard.svg)
 
 ### Aggiungere il trigger all'agente
 

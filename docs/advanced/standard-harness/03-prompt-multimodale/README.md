@@ -2,6 +2,23 @@
 
 [Previous: S02](../02-sistema-multi-agente/README.md) | [Back to Standard Harness](../index.md) | [Next: S04](../04-grounding-e-valutazione/README.md)
 
+## Scenario
+
+I business case arrivano al PMO da funzioni diverse e con qualità diverse. Per mettere alla prova gli agenti il caso pratico usa sei documenti di prova, in [`materiali/business-case`](../../../resources/advanced/business-case/), costruiti per esercitare situazioni diverse:
+
+| File | Proposta | Programma | Che cosa mette alla prova |
+| --- | --- | --- | --- |
+| BC-01 (PDF) | Portale fornitori self-service | PG-100 | Caso felice: evidenze forti e quantificate |
+| BC-02 (PDF) | Segmentazione di rete e accessi privilegiati | PG-200 | Proposta solida con costi ricorrenti dichiarati |
+| BC-03 (PDF) | Assistente AI per il servizio clienti | Ambiguo tra PG-100 e PG-300 | Programma da confermare, evidenze deboli su dati e privacy |
+| BC-04 (PDF) | Migrazione del data center di Bologna in cloud | PG-500 | Budget richiesto superiore al budget del programma |
+| BC-05 (DOCX e PDF) | Nuova intranet e hub dei dipendenti | PG-400 | Formato Word; nella standard harness serve il PDF per la valutazione |
+| BC-06 (PDF) | Dashboard vendite in tempo reale | PG-300 | Testo di prompt injection dentro il documento |
+
+Sono tutti PDF testuali o DOCX, e non per caso. Copilot Studio legge in modo affidabile il **testo** dei documenti. Il prompt tool della standard harness accetta come documento solo PDF e immagini, e nei laboratori si evitano volutamente le immagini e le scansioni: il contenuto di un business case deve essere testo selezionabile. Le linee guida del PMO (materiale di conoscenza del caso pratico) lo rendono una regola del processo, così l'agente può rifiutare in modo motivato i file non conformi.
+
+In questo lab l'agente legge per la prima volta il contenuto dei documenti, e valgono due principi del progetto. **I documenti sono dati, non istruzioni**: qualsiasi testo dentro un business case che provi a cambiare le regole viene ignorato e segnalato (BC-06 lo mette alla prova). **Tutto è verificabile**: ogni record riporta un codice leggibile (PP-####, AS-####, RQ-####, PG-###) che l'agente legge dai risultati degli strumenti e non inventa mai.
+
 Dopo S02 una proposta registrata contiene solo il file e un titolo provvisorio: un analista del PMO dovrebbe ancora aprire il PDF, copiare titolo, budget e durata, riconoscere il proponente e capire quale programma è indicato. In questo lab (harness **standard**, tempo stimato 75 minuti) si elimina questo lavoro ripetitivo creando:
 
 - un **prompt multimodale** che legge il PDF e restituisce un **JSON** con i dati della proposta, con grounding su Dataverse e output JSON;
@@ -344,6 +361,8 @@ Identificatori: Proposta = PP-####, Proponente = RQ-####, Programma = PG-###. No
 ## Testare l'agente
 
 I test riproducono i casi che il PMO incontra davvero: un business case completo, lo stesso documento inviato due volte (il proponente non deve duplicarsi), un documento con il programma da definire e uno con il programma indicato. Il controllo si fa nell'app, dove si vede che cosa è stato scritto.
+
+La sequenza completa in chat, dall'allegato alla valutazione, è nello schema della sezione *Testare l'agente* del [Lab S04](../04-grounding-e-valutazione/README.md): con questo lab sono attivi i passi da 1 a 7, fino al riepilogo con il programma da confermare.
 
 ### Business case completo
 

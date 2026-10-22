@@ -2,6 +2,12 @@
 
 [Previous: S03](../03-prompt-multimodale/README.md) | [Back to Standard Harness](../index.md) | [Next: S05](../05-trigger-email/README.md)
 
+## Scenario
+
+Dopo S03 ogni proposta registrata ha titolo, sintesi, budget, durata e proponente, e il programma è collegato quando il documento lo indica senza ambiguità. Resta il passaggio più delicato del processo manuale: la valutazione con i criteri pesati, che oggi ogni analista fa a mano e interpreta a modo suo.
+
+La valutazione segue due principi del progetto. **La persona decide**: l'agente propone, mostra le evidenze e chiede conferma prima di ogni scrittura che ha conseguenze. **Il calcolo non lo fa il modello**: pesi e regole stanno in Dataverse; somma, soglie e layout dei documenti sono affidati a espressioni o codice.
+
 Il cuore del lavoro del PMO è la valutazione: per ogni criterio del programma, quanto il business case lo soddisfa? Oggi due analisti possono dare due punteggi diversi alla stessa proposta, perché pesi e soglie vengono applicati a mano e non sempre allo stesso modo. In questo lab (harness **standard**, tempo stimato 90 minuti) la valutazione diventa un processo in tre parti:
 
 - un **prompt con grounding su Dataverse** legge i criteri del programma dal vivo (conoscenza filtrata da un input, con relazione uno a molti) e, per ciascuno, assegna un livello di evidenza con una frase tratta dal documento;
@@ -321,6 +327,10 @@ Processo di valutazione
 ## Testare l'agente
 
 I test coprono i casi tipici del ciclo: una proposta solida (BC-01), una proposta con budget superiore a quello del programma (BC-04, dove la regola di budget deve limitare l'indicazione) e una proposta senza programma (BC-03, dove deve decidere una persona).
+
+Lo schema riassume il percorso in chat costruito tra S02 e questo lab. La registrazione della proposta è automatica (passi 1-7: delega a **Intake Proposte**, rifiuto dei DOCX, **Carica business case** e **Analizza business case**). La scelta del programma, se manca, e la registrazione della valutazione richiedono sempre una conferma (passi 8-13): **Crea valutazione** parte solo dopo il consenso dell'utente e restituisce punteggio, indicazione e codice AS-####.
+
+![Sequenza di intake e valutazione in chat](../../images/workflow-chat.svg)
 
 ### Proposta solida
 

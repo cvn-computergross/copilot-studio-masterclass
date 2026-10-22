@@ -2,6 +2,12 @@
 
 [Previous: S05](../05-trigger-email/README.md) | [Back to Standard Harness](../index.md) | [Next: S07](../07-valutazioni-e-pubblicazione/README.md)
 
+## Scenario
+
+Dopo S05 le proposte arrivano al PMO dalla chat e dalla casella email, e ognuna può avere una valutazione confermata da un analista. Il passo successivo è il **Comitato di Valutazione Investimenti IT**, che decide sulla base di un dossier di revisione. Oggi ogni dossier costa a un analista circa due ore di lavoro.
+
+Questo lab porta la preparazione del dossier nell'Agente Demand IT: il documento nasce dalla valutazione registrata e ha sempre la stessa struttura. Il dossier aiuta il Comitato a decidere, non decide al suo posto: come in tutto il sistema, l'agente non approva né respinge la proposta.
+
 Per ogni proposta valutata il PMO prepara un **dossier di revisione**: dati della proposta e del proponente, programma e budget, tabella dei criteri con livelli ed evidenze, punteggio, otto domande per lo sponsor e i rischi principali. Oggi ogni analista lo prepara a mano e con una struttura diversa; il Comitato fatica a confrontare i dossier.
 
 In questo lab il dossier verrà generato come **documento Word** a partire da un **template aziendale con segnaposto**, con un prompt che legge i dati della valutazione da Dataverse. Un agent flow salva il documento in OneDrive e restituisce un link; un topic lo consegna all'utente. In particolare verranno svolte le seguenti attività:
@@ -132,6 +138,10 @@ Programma: /Programma
 ## Topic "Genera dossier di revisione"
 
 Il dossier si chiede in conversazione, ma il file va consegnato in un posto condiviso. Un topic raccoglie il codice della valutazione, un flow genera il documento con il prompt, lo salva in OneDrive e restituisce un link di condivisione da aprire o inoltrare.
+
+Lo schema mostra i componenti di questa sezione. Il topic chiede il codice della valutazione se manca e chiama l'agent flow **Genera dossier**, che genera il documento con il prompt a output Word, lo salva in OneDrive e crea un link di condivisione. Il topic consegna il link in chat con una adaptive card.
+
+![Generazione del dossier di revisione](../../images/workflow-dossier.svg)
 
 ### Creare il topic
 

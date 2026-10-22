@@ -19,12 +19,7 @@ export const SECTIONS: [string, string][] = [
 ]
 
 // pagine di riferimento di un livello, nel menu prima delle sezioni (file in docs/<livello>/)
-const LEVEL_PAGES: Record<string, [string, string][]> = {
-  advanced: [
-    ['scenario', 'Scenario'],
-    ['architettura-e-workflow', 'Architecture & workflow'],
-  ],
-}
+const LEVEL_PAGES: Record<string, [string, string][]> = {}
 
 // selettore "Choose your experience" in cima alle pagine delle harness (ExperienceSwitch.vue)
 export const EXPERIENCES: Record<string, { section: string; title: string; text: string }[]> = {

@@ -24,7 +24,8 @@ docs/                         # the guides: also the source of the website
 │   ├── standard-harness/     # index.md + NN-lab-name/README.md (+ images/)
 │   └── github-harness/
 ├── advanced/                 # Advanced: the case study
-│   ├── index.md, scenario.md, architettura-e-workflow.md   # reference pages
+│   ├── index.md              # case study overview
+│   ├── images/               # architecture and workflow diagrams (SVG)
 │   ├── standard-harness/     # 00-setup-dati, 01-...07-...
 │   └── github-harness/
 ├── resources/                # files to download: fondamentali/NN-lab-name/, advanced/<topic>/

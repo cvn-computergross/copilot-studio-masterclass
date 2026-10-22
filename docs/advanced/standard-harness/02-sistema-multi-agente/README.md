@@ -2,6 +2,12 @@
 
 [Previous: S01](../01-agente-orchestratore/README.md) | [Back to Standard Harness](../index.md) | [Next: S03](../03-prompt-multimodale/README.md)
 
+## Scenario
+
+In S01 l'Agente Demand IT ha imparato a rispondere sulle regole del processo. Un proponente però vuole consegnare il suo business case, e oggi lo fa per email: un analista apre il documento, lo registra nel foglio Excel e, più avanti, organizza la revisione con sponsor e architetto. Questo lab porta in chat due passaggi del processo: la registrazione della proposta nel PMO Demand Hub e la preparazione della revisione.
+
+Il sistema cresce secondo un principio che vale per tutto il percorso, il **minimo privilegio**: ogni agente riceve solo gli strumenti che gli servono. Il child agent dell'intake scrive nel PMO Demand Hub; lo specialista della revisione legge, non scrive.
+
 Il PMO ha due esigenze con caratteristiche diverse:
 
 - **Intake dei business case.** Un proponente allega un documento in chat: va registrato nel PMO Demand Hub con il file originale, sempre allo stesso modo. È un lavoro interno all'Agente Demand IT, senza un pubblico proprio.
@@ -370,6 +376,10 @@ Usalo per preparare la sessione di revisione di una proposta (PP-####) e per ogn
 
 L'orchestratore ora ha due collaboratori. Due righe esplicite nelle istruzioni rendono la delega prevedibile: intake e valutazione vanno a **Intake Proposte**, preparazione della revisione all'**Agente Comitato**.
 
+Lo schema mostra l'architettura completa della standard harness alla fine del percorso. In questo lab nascono le due deleghe principali: l'**Agente Demand IT** passa l'intake al child agent **Intake Proposte**, che per ora ha il solo agent flow **Carica business case**, e la preparazione della revisione all'**Agente Comitato**, connesso e con Dataverse come conoscenza. Gli altri agent flow, il topic del dossier e il trigger email si aggiungono in S03-S06.
+
+![Architettura multi-agente della Standard Harness](../../images/architettura-standard.svg)
+
 ### Aggiornare le istruzioni dell'orchestratore
 
 1. Aprire l'**Agente Demand IT** e aggiungere in fondo alle **Instructions**:
@@ -436,6 +446,10 @@ Nella mappa delle attività deve comparire **Intake Proposte** che chiama **Cari
 ![](./images/passo9-extra-34.png)
 
 ### Delega all'Agente Comitato
+
+Lo schema mostra il percorso della richiesta: l'orchestratore delega all'Agente Comitato, che legge i dati della proposta in Dataverse e prepara briefing e domande sui criteri più pesati. La risposta dello specialista arriva direttamente all'utente; l'orchestratore aggiunge al massimo una frase.
+
+![Preparazione della revisione con l'agente connesso](../../images/workflow-revisione.svg)
 
 1. Provare la delega allo specialista, sostituendo `PP-####` con il codice restituito nella prova precedente:
 

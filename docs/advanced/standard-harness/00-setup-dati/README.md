@@ -2,6 +2,32 @@
 
 Previous: Start | [Back to Standard Harness](../index.md) | [Next: S01](../01-agente-orchestratore/README.md)
 
+## Scenario
+
+Zava S.p.A. è una società tecnologica italiana con 420 dipendenti, sede a Milano e uffici a Torino, Bologna e Roma. Ogni anno le funzioni aziendali (Acquisti, Vendite, Risorse Umane, Servizio Clienti, IT Operations, Sicurezza) propongono nuovi progetti IT. Le proposte vengono finanziate attraverso cinque **programmi di investimento**, ciascuno con un budget e con criteri di valutazione propri.
+
+Il processo è gestito dall'**Ufficio Demand e PMO IT** e oggi funziona così:
+
+- le proposte arrivano in una casella email condivisa, in formati diversi, spesso senza tutte le informazioni richieste;
+- un analista apre ogni documento, lo registra in un foglio Excel e lo assegna a un programma;
+- la valutazione con i criteri pesati viene fatta a mano, con interpretazioni diverse da analista ad analista;
+- per ogni proposta valutata si prepara un dossier per il Comitato (circa due ore di lavoro);
+- la sessione di revisione con lo sponsor e l'architetto di riferimento si organizza con molti scambi di email.
+
+I problemi sono noti: tempi di presa in carico lunghi, valutazioni poco confrontabili, dossier con strutture diverse, poco tempo per l'analisi vera e propria. Nei laboratori di questo percorso il PMO affida la parte ripetitiva a un sistema di agenti, guidato dall'**Agente Demand IT**, e lascia le decisioni alle persone coinvolte nel processo:
+
+| Attore | Ruolo nel processo | Interagisce con |
+| --- | --- | --- |
+| Proponente | Responsabile di funzione che presenta il business case | Agente Demand IT (chat) oppure email |
+| Analista PMO | Verifica, conferma il programma, conferma la registrazione della valutazione | Agente Demand IT, PMO Demand Hub, Teams |
+| Sponsor interno | Dirigente che risponde della proposta | Sessione di revisione |
+| Architetto di riferimento | Valuta gli aspetti tecnici per il programma | Agente Comitato, sessione di revisione |
+| Comitato | Decide | Dossier di revisione |
+
+Tutte le persone sono interne a Zava S.p.A. Non è un dettaglio: Work IQ e i connettori di calendario leggono disponibilità e profili solo all'interno del proprio tenant, per cui lo scenario non prevede di pianificare riunioni con persone esterne.
+
+Il primo passo non riguarda ancora gli agenti. Oggi i dati del processo sono sparsi tra la casella email e un foglio Excel: serve prima un archivio comune e strutturato, che persone e agenti possano leggere e scrivere.
+
 Prima che un agente possa registrare e valutare proposte, il PMO ha bisogno di un posto dove i dati vivono in modo strutturato: il **PMO Demand Hub**. In questo laboratorio vengono create in Dataverse le cinque tabelle del processo (Programmi, Criteri di valutazione, Proponenti, Proposte, Valutazioni), un'app model-driven per consultarle e i dati di partenza: cinque programmi di investimento con i loro criteri pesati. Infine viene preparata in SharePoint la cartella con i documenti di conoscenza del PMO.
 
 Agent Academy fornisce per l'Hiring Agent una soluzione già pronta da importare. Qui il modello viene costruito a mano: richiede più tempo, ma permette di capire ogni scelta che gli agenti useranno dopo (nomi logici, codici automatici, scelte, relazioni).
