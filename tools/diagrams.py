@@ -751,7 +751,7 @@ def lab01_percorso():
     steps = [("Account Microsoft 365", "user-circle", "platform", "Business Basic, Try for free"),
              ("Copilot Studio Trial", "logo:copilot-studio", "instructions", "aka.ms/TryCopilotStudio"),
              ("Developer environment", "tray", "platform", "Power Apps Developer Plan"),
-             ("Pubblicazione", "shield-check", "platform", "ruolo Copilot Studio Authors"),
+             ("Accesso", "shield-check", "platform", "ruolo Copilot Studio Authors"),
              ("Solution e Publisher", "package", "lifecycle", "CSMFirstAgent, CSM Solutions"),
              ("Primo agente", "robot", "agents", "IT Support")]
     x, w, h, y0, pitch = 40, 270, 60, 40, 94
