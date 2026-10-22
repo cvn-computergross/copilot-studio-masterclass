@@ -6,7 +6,8 @@ Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdo
 
 ## Start here
 
-| | |
+| Resource | Description |
+| --- | --- |
 | [Student info](./docs/info.md) | Accounts, sandbox and what happens at the end of the course |
 | **Fundamentals** | The basics of Copilot Studio |
 | [Standard Harness](./docs/fondamentali/standard-harness/index.md) | Labs 01-05 in the Copilot Studio portal |
