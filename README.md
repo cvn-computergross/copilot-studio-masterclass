@@ -2,10 +2,11 @@
 
 Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdown, readable here on GitHub, and are also published as a website.
 
+[Guida](https://cvn-computergross.github.io/copilot-studio-masterclass/)
+
 ## Start here
 
 | | |
-|---|---|
 | [Student info](./docs/info.md) | Accounts, sandbox and what happens at the end of the course |
 | **Fundamentals** | The basics of Copilot Studio |
 | [Standard Harness](./docs/fondamentali/standard-harness/index.md) | Labs 01-05 in the Copilot Studio portal |
