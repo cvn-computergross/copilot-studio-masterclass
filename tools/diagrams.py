@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 GLYPHS = ROOT / "docs" / ".vitepress" / "theme" / "icons"
 LOGOS = ROOT / "docs" / "public" / "logos"
 OUT = ROOT / "docs" / "advanced" / "images"
+AGENT_ICONS = ROOT / "docs" / "resources" / "advanced" / "agent-icon"
 
 FONT = "Segoe UI, Inter, Helvetica, Arial, sans-serif"
 INK, BODY, MUTED, RULE, ICON = "#1B1B1B", "#363B42", "#6B7480", "#E2E5E9", "#1F2937"
@@ -42,10 +43,13 @@ FAM = {
 
 
 def icon_svg(spec, x, y, size, fam):
-    """Glifo Phosphor (contorno scuro, strato duotone nel colore dell'argomento) o logo."""
-    if spec.startswith("logo:"):
-        name = spec[5:]
-        file = next(f for f in (LOGOS / f"{name}.svg", LOGOS / f"{name}.png") if f.exists())
+    """Glifo Phosphor (contorno scuro, strato duotone nel colore dell'argomento), logo o icona di un agente."""
+    if spec.startswith(("logo:", "agent:")):
+        kind, name = spec.split(":", 1)
+        if kind == "agent":  # icona dell'agente caricata nei lab
+            file = AGENT_ICONS / name
+        else:
+            file = next(f for f in (LOGOS / f"{name}.svg", LOGOS / f"{name}.png") if f.exists())
         mime = "image/svg+xml" if file.suffix == ".svg" else "image/png"
         data = base64.b64encode(file.read_bytes()).decode()
         return f'<image x="{x}" y="{y}" width="{size}" height="{size}" href="data:{mime};base64,{data}" preserveAspectRatio="xMidYMid meet"/>'
@@ -152,204 +156,150 @@ def sequence(name, actors, messages, width=1000):
 
 
 # --- schemi -----------------------------------------------------------------------------
+# Ogni schema riporta i nomi esatti dei componenti creati nei lab Advanced della Standard
+# Harness (Lab 00, S01-S07). Se un lab cambia un nome, va cambiato anche qui.
+
+DA = "agent:demand-it-agent-192.png"     # icona caricata in S01
+COM = "agent:committee-agent-192.png"    # icona dell'Agente Comitato
+
 
 def panoramica():
-    d = Diagram(1015, 440)
+    """S01-S07: chi parla con chi."""
+    d = Diagram(1015, 460)
     A, B, C, D = 20, 275, 530, 785
-    u = d.node(A, 40, 200, "Proponenti e analisti", "users-three", "agents", "Teams, Microsoft 365 Copilot")
-    mail = d.node(A, 210, 200, "Casella del PMO", "logo:outlook", "tools", "oggetto Proposta progetto")
-    p = d.node(A, 360, 200, "Analista PMO", "user-check", "agents", "decide e conferma")
-    da = d.node(B, 40, 200, "Agente Demand IT", "cpu", "ai-engine", "orchestratore")
-    auto = d.node(B, 210, 200, "Automazione email", "lightning", "triggers", "flow o workflow")
-    intk = d.node(C, 10, 200, "Intake e valutazione", "robot", "agents", "child agent o skill")
-    doc = d.node(C, 95, 200, "Dossier di revisione", "logo:word", "lifecycle", "documento Word")
-    ac = d.node(C, 180, 200, "Agente Comitato", "link", "agents", "agente connesso")
-    teams = d.node(C, 300, 200, "Scheda Teams", "logo:teams", "tools", "per il PMO")
-    dv = d.node(D, 10, 200, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse")
-    cal = d.node(D, 180, 200, "Calendari interni", "calendar-dots", "platform", "Outlook o Work IQ")
+    u = d.node(A, 40, 200, "Proponenti e analisti", "users-three", "agents", "Teams e M365 Copilot (S07)")
+    mail = d.node(A, 250, 200, "Casella del PMO", "logo:outlook", "tools", "oggetto Proposta progetto")
+    kn = d.node(B, 140, 200, "PMO Knowledge", "logo:sharepoint", "knowledge", "conoscenza SharePoint")
+    da = d.node(B, 40, 200, "Agente Demand IT", DA, "ai-engine", "orchestratore (S01)")
+    trg = d.node(B, 250, 200, "Flow del trigger", "logo:power-automate", "triggers", "When a new email arrives (S05)")
+    intk = d.node(C, 10, 200, "Intake Proposte", "robot", "agents", "child agent (S02-S05)")
+    com = d.node(C, 100, 200, "Agente Comitato", COM, "agents", "agente connesso (S02)")
+    dos = d.node(C, 190, 200, "Genera dossier", "logo:power-automate", "tools", "topic e agent flow (S06)")
+    teams = d.node(D, 10, 200, "Canale del PMO", "logo:teams", "tools", "Notifica PMO in Teams")
+    dv = d.node(D, 100, 200, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse (Lab 00)")
+    od = d.node(D, 190, 200, "OneDrive", "logo:onedrive", "tools", "dossier Word e link")
     d.arrow([(u["r"], 70), (B, 70)], "ai-engine")
-    d.arrow([(mail["r"], 240), (B, 240)], "triggers")
-    d.arrow([(auto["cx"], 210), (auto["cx"], da["b"])], "triggers")
-    for target, ty in ((intk, 40), (doc, 125), (ac, 210)):
+    d.arrow([(kn["cx"], kn["y"]), (kn["cx"], da["b"])], "knowledge", dashed=True)
+    d.arrow([(mail["r"], 280), (B, 280)], "triggers")
+    for ty in (40, 130, 220):
         d.arrow([(da["r"], 70), (505, 70), (505, ty), (C, ty)], "ai-engine")
-    d.text(510, 202, "delega", 11, MUTED, 500)
-    d.arrow([(intk["r"], 40), (D, 40)], "knowledge")
-    d.arrow([(ac["r"], 195), (757, 195), (757, 60), (D, 60)], "knowledge")
-    d.arrow([(ac["r"], 225), (D, 225)], "platform")
-    d.arrow([(auto["r"], 262), (1000, 262), (1000, 40), (dv["r"], 40)], "triggers")
-    d.arrow([(auto["r"], 252), (500, 252), (500, 330), (C, 330)], "triggers")
-    d.arrow([(p["r"], 385), (248, 385), (248, 90), (B, 90)], dashed=True, color=NEUTRAL_ARROW, label="conferma", at=(248, 315))
-    d.arrow([(p["r"], 400), (auto["cx"], 400), (auto["cx"], auto["b"])], dashed=True, color=NEUTRAL_ARROW, label="revisione umana", at=(330, 400))
+    d.arrow([(trg["r"], 300), (497, 300), (497, 100), (da["r"], 100)], "triggers", label="Sends a prompt", at=(430, 335))
+    d.arrow([(intk["r"], 40), (D, 40)], "tools")
+    d.arrow([(intk["r"], 55), (757, 55), (757, 120), (D, 120)], "knowledge")
+    d.arrow([(com["r"], 140), (D, 140)], "knowledge", dashed=True)
+    d.arrow([(dos["r"], 220), (D, 220)], "tools")
+    d.arrow([(trg["cx"], trg["b"]), (trg["cx"], 430), (1000, 430), (1000, 130), (dv["r"], 130)], "triggers", label="Registra proposta email", at=(700, 430))
     d.save("panoramica-sistema")
 
 
 def architettura_standard():
-    d = Diagram(1010, 560)
-    d.lane(20, 20, 620, 420, "Agente Demand IT · csm_agentedemand_std", "cpu", "ai-engine")
-    d.node(40, 60, 280, "Conoscenza", "books", "knowledge", "Linee guida PMO, Piano strategico", white=True)
-    top = d.node(340, 60, 280, "Topic Genera dossier", "chats-circle", "topics", "di revisione", white=True)
-    trg = d.node(340, 140, 280, "Trigger Nuova proposta", "lightning", "triggers", "via email", white=True)
-    d.lane(40, 150, 280, 275, "Child agent · Intake proposte", "robot", "agents")
-    steps = [("Carica business case", None), ("Analizza business case", "prompt Estrai dati"),
-             ("Crea valutazione", "prompt Valuta, conferma utente"), ("Notifica PMO in Teams", None)]
-    for i, (label, sub) in enumerate(steps):
-        d.node(55, 190 + 58 * i, 250, label, "logo:power-automate", "tools", sub, white=True, h=50)
-    d.lane(680, 20, 310, 130, "Agente Comitato · std", "link", "agents")
-    k2 = d.node(695, 60, 280, "Conoscenza Dataverse", "logo:dataverse", "knowledge", "5 tabelle csm_", white=True)
-    fd = d.node(680, 180, 310, "Flow Genera dossier", "logo:power-automate", "tools", "prompt Dossier, OneDrive e link")
-    pa = d.node(680, 270, 310, "Power Automate", "logo:power-automate", "tools", "Classifica email PMO, ciclo PDF")
-    dv = d.node(340, 480, 300, "Dataverse", "logo:dataverse", "knowledge", "tabelle csm_ del PMO Demand Hub")
-    d.arrow([(640, 40), (680, 40)], "agents", label="agente connesso", at=(660, 160 - 120))
-    d.arrow([(top["r"], 85), (665, 85), (665, 205), (680, 205)], "topics")
-    d.arrow([(trg["r"], 165), (655, 165), (655, 295), (680, 295)], "triggers")
-    d.arrow([(180, 425), (180, 505), (dv["x"], 505)], "knowledge", label="scrive", at=(180, 465))
-    d.arrow([(pa["cx"], pa["b"]), (pa["cx"], 495), (dv["r"], 495)], "knowledge")
-    d.arrow([(k2["r"], 88), (1000, 88), (1000, 520), (dv["r"], 520)], "knowledge", dashed=True)
+    """S01-S06: i componenti dell'Agente Demand IT e dello specialista."""
+    d = Diagram(1010, 620)
+    d.lane(20, 20, 620, 470, "Agente Demand IT · csm_agentedemand_std", DA, "ai-engine")
+    d.node(40, 62, 280, "Conoscenza PMO Knowledge", "logo:sharepoint", "knowledge", "Linee guida PMO, Piano Strategico IT", white=True)
+    top = d.node(340, 62, 280, "Topic", "chats-circle", "topics", "Genera dossier di revisione", white=True)
+    trg = d.node(340, 140, 280, "Trigger", "lightning", "triggers", "When a new email arrives (V3)", white=True)
+    d.lane(40, 150, 280, 325, "Intake Proposte · child agent", "robot", "agents")
+    tools = [("Carica business case", "crea proposta e carica il PDF"),
+             ("Analizza business case", "prompt Estrai dati business case"),
+             ("Crea valutazione", "prompt Valuta proposta,\nconferma dell'utente"),
+             ("Notifica PMO in Teams", "adaptive card nel canale")]
+    ys = [190, 255, 320, 401]
+    for (label, sub), y in zip(tools, ys):
+        d.node(55, y, 250, label, "logo:power-automate", "tools", sub, white=True, h=74 if "\n" in sub else 58)
+    d.lane(680, 20, 310, 150, "Agente Comitato · connesso", COM, "agents")
+    k2 = d.node(695, 62, 280, "Conoscenza Dataverse", "logo:dataverse", "knowledge", "Program, Evaluation Criterion,\nRequester, Proposal, Assessment", white=True)
+    fd = d.node(680, 200, 310, "Agent flow Genera dossier", "logo:power-automate", "tools", "prompt Dossier di revisione")
+    od = d.node(680, 285, 310, "OneDrive", "logo:onedrive", "tools", "Dossier_AS-####.docx, link")
+    pa = d.node(680, 370, 310, "Flow del trigger", "logo:power-automate", "triggers", "prompt Classifica email PMO,\nRegistra proposta email")
+    dv = d.node(340, 530, 300, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse, soluzione PMO Demand IT")
+    d.arrow([(640, 45), (680, 45)], "agents")
+    d.arrow([(top["r"], 87), (665, 87), (665, 225), (680, 225)], "topics")
+    d.arrow([(fd["cx"], fd["b"]), (od["cx"], od["y"])], "tools")
+    d.arrow([(trg["r"], 165), (655, 165), (655, 395), (680, 395)], "triggers")
+    d.arrow([(180, 475), (180, 555), (dv["x"], 555)], "knowledge", label="scrivono", at=(180, 512))
+    d.arrow([(pa["cx"], pa["b"]), (pa["cx"], 545), (dv["r"], 545)], "triggers")
+    d.arrow([(k2["r"], 95), (1000, 95), (1000, 575), (dv["r"], 575)], "knowledge", dashed=True)
     d.save("architettura-standard")
 
 
-def architettura_github():
-    d = Diagram(1010, 540)
-    d.lane(20, 20, 620, 330, "Agente Demand IT - GH · csm_agentedemand_gh", "cpu", "ai-engine")
-    d.node(40, 60, 280, "Conoscenza", "books", "knowledge", "Linee guida PMO, Piano strategico", white=True)
-    mcp1 = d.node(40, 140, 280, "Dataverse MCP Server", "hard-drives", "tools",
-                  "modalità User\nsearch, describe, read_query,\ncreate_record, update_record", white=True)
-    skills = [("proposal-intake", None, "puzzle-piece"), ("proposal-scoring", "sola lettura, rubrica", "puzzle-piece"),
-              ("evaluation-recording", "dopo conferma", "puzzle-piece"), ("review-dossier-document", "Python, python-docx", "code")]
-    for i, (label, sub, icon) in enumerate(skills):
-        d.node(340, 60 + 68 * i, 280, label, icon, "github", sub, white=True, h=56)
-    d.lane(680, 20, 310, 250, "Agente Comitato - GH", "link", "agents")
-    mcp2 = d.node(695, 60, 280, "Dataverse MCP Server", "hard-drives", "tools", "modalità Maker\nsearch, describe, read_query", white=True)
-    d.node(695, 160, 280, "Work IQ (Preview)", "calendar-dots", "platform", "persone e calendari interni", white=True)
-    d.lane(20, 380, 620, 130, "Workflow · Intake proposte via email", "tree-view", "github")
-    cl = d.node(40, 425, 170, "Classify", "arrows-split", "github", white=True, h=56)
-    ai = d.node(240, 425, 180, "Agente inline", "robot", "agents", "Conferma programma", white=True, h=56)
-    ap = d.node(450, 425, 170, "Nodo Agent", "cpu", "ai-engine", "orchestratore", white=True, h=56)
-    dv = d.node(680, 425, 310, "Dataverse", "logo:dataverse", "knowledge", "tabelle e note")
-    d.arrow([(cl["r"], 453), (ai["x"], 453)], "github")
-    d.arrow([(ai["r"], 453), (ap["x"], 453)], "github")
-    d.arrow([(640, 40), (680, 40)], "agents", label="agente connesso", at=(660, 40))
-    d.arrow([(ap["cx"], ap["y"]), (ap["cx"], 350)], "ai-engine", label="chiama", at=(ap["cx"], 400))
-    d.arrow([(180, mcp1["b"]), (180, 365), (660, 365), (660, 445), (dv["x"], 445)], "knowledge")
-    d.arrow([(mcp2["r"], 90), (1000, 90), (1000, 450), (dv["r"], 450)], "knowledge")
-    d.arrow([(640, 480), (dv["x"], 480)], "github")
-    d.save("architettura-github")
-
-
 def workflow_chat():
-    a = [("Analista o proponente", "user-circle", "agents"), ("Agente Demand IT", "cpu", "ai-engine"),
-         ("Intake: child agent o skill", "robot", "agents"), ("Dataverse", "logo:dataverse", "knowledge")]
-    m = [(0, 1, "Allega il business case PDF o DOCX", "call"), (1, 2, "Delega o carica la skill", "call"),
-         (2, 2, "Controlli: formato, dimensione, testo", "note"), (2, 3, "Cerca il proponente per email", "call"),
-         (2, 3, "Crea o riusa proponente, crea proposta", "call"), (3, 2, "Codici SP-xxxxx e PP-xxxxx", "reply"),
-         (2, 0, "Riepilogo; programma da confermare se ambiguo", "reply"), (0, 1, "Valuta la proposta", "call"),
-         (1, 3, "Legge programma e criteri pesati", "call"), (1, 0, "Tabella criteri, punteggio, indicazione", "reply"),
-         (0, 1, "Conferma la registrazione", "call"), (1, 3, "Crea valutazione AS-xxxxx, stato Assessed", "call"),
-         (1, 0, "Codice della valutazione", "reply")]
+    """S02-S04: intake, analisi e valutazione in chat."""
+    a = [("Utente", "user-circle", "agents"), ("Agente Demand IT", DA, "ai-engine"),
+         ("Intake Proposte", "robot", "agents"), ("PMO Demand Hub", "logo:dataverse", "knowledge")]
+    m = [(0, 1, "Allega il business case", "call"), (1, 2, "Delega l'intake", "call"),
+         (2, 2, "Accetta solo PDF: un DOCX viene rifiutato", "note"),
+         (2, 3, "Carica business case: proposta e PDF", "call"), (3, 2, "Codice PP-####", "reply"),
+         (2, 3, "Analizza business case: Estrai dati, proponente RQ-####", "call"),
+         (2, 0, "Riepilogo; programma PG-### da confermare se manca", "reply"),
+         (0, 1, "Valuta la proposta", "call"), (1, 2, "Delega la valutazione", "call"),
+         (2, 0, "Conferma richiesta prima di Crea valutazione", "reply"), (0, 2, "Conferma", "call"),
+         (2, 3, "Crea valutazione: Valuta proposta, punteggio, AS-####", "call"),
+         (2, 0, "Punteggio, indicazione e codice AS-####", "reply")]
     sequence("workflow-chat", a, m)
 
 
 def workflow_email_standard():
-    d = Diagram(1000, 760)
-    x, w = 220, 330
-    t = d.node(x, 20, w, "When a new email arrives (V3)", "logo:outlook", "triggers", "oggetto Proposta progetto, con allegati")
+    """S05: il flow del trigger in Power Automate."""
+    d = Diagram(1000, 850)
+    x, w = 200, 340
+    t = d.node(x, 20, w, "When a new email arrives (V3)", "logo:outlook", "triggers", "Split On: una esecuzione per email")
     h = d.node(x, 104, w, "Html to text", "file-text", "tools")
-    c = d.node(x, 180, w, "Run a prompt", "logo:ai-builder", "tools", "Classifica email PMO")
-    dec = d.node(x, 264, w, "Proposta rilevata?", "git-branch", "system")
-    lo = d.node(x, 350, w, "Per ogni allegato PDF", "arrows-clockwise", "tools")
-    r = d.node(x, 426, w, "Crea la proposta in Dataverse", "logo:dataverse", "knowledge", "e carica il documento")
-    ag = d.node(x, 510, w, "Sends a prompt to the specified copilot", "cpu", "ai-engine", "Agente Demand IT")
-    an = d.node(x, 594, w, "Analizza business case", "sparkle", "agents")
-    nt = d.node(x, 670, w, "Notifica PMO in Teams", "logo:teams", "tools")
-    fine = d.node(650, 264, 300, "Fine senza azioni", "x-circle", "system")
-    man = d.node(650, 350, 300, "Email al PMO", "logo:outlook", "tools", "da verificare manualmente")
-    for a, b in ((t, h), (h, c), (c, dec), (dec, lo), (lo, r), (r, ag), (ag, an), (an, nt)):
-        d.arrow([(a["cx"], a["b"]), (b["cx"], b["y"])], "instructions")
+    c = d.node(x, 180, w, "Classifica", "logo:ai-builder", "tools", "prompt Classifica email PMO")
+    dec = d.node(x, 264, w, "Proposta rilevata", "git-branch", "system", "Classifica contiene Proposta?")
+    lo = d.node(x, 348, w, "Per ogni allegato", "arrows-clockwise", "tools", "condizione Allegato PDF")
+    r = d.node(x, 432, w, "Registra proposta email", "logo:dataverse", "knowledge", "riga in Proposals, canale Email")
+    cd = d.node(x, 516, w, "Carica documento email", "logo:dataverse", "knowledge", "PDF in Business Case Document")
+    ag = d.node(x, 600, w, "Sends a prompt to the specified copilot", DA, "ai-engine", "Agente Demand IT")
+    an = d.node(x, 684, w, "Analizza business case", "robot", "agents", "strumento di Intake Proposte")
+    nt = d.node(x, 768, w, "Notifica PMO in Teams", "logo:teams", "tools", "adaptive card")
+    dv = d.node(650, 264, 320, "Da verificare", "git-branch", "system", "Classifica contiene Incerta?")
+    man = d.node(650, 360, 320, "Avvisa verifica manuale", "logo:outlook", "tools", "Send an email (V2)")
+    fine = d.node(650, 456, 320, "Fine senza azioni", "x-circle", "system", "RispostaAutomatica o NonPertinente")
+    for a_, b_ in ((t, h), (h, c), (c, dec), (dec, lo), (lo, r), (r, cd), (cd, ag), (ag, an), (an, nt)):
+        d.arrow([(a_["cx"], a_["b"]), (b_["cx"], b_["y"])], "instructions")
     d.text(dec["cx"] + 8, dec["b"] + 24, "Sì", 11, MUTED, 600)
-    d.arrow([(dec["r"], dec["cy"]), (fine["x"], fine["cy"])], color=NEUTRAL_ARROW, label="No: risposta automatica o non pertinente", at=(600, dec["cy"] - 18))
-    d.arrow([(dec["r"], dec["cy"] + 10), (600, dec["cy"] + 10), (600, man["cy"]), (man["x"], man["cy"])], "platform", label="Incerta", at=(600, 335))
+    d.arrow([(dec["r"], dec["cy"]), (dv["x"], dv["cy"])], color=NEUTRAL_ARROW, label="No", at=(595, dec["cy"]))
+    d.arrow([(dv["cx"], dv["b"]), (man["cx"], man["y"])], "platform", label="Sì", at=(dv["cx"] + 20, 338))
+    d.arrow([(dv["r"], dv["cy"]), (985, dv["cy"]), (985, fine["cy"]), (fine["r"], fine["cy"])], color=NEUTRAL_ARROW, label="No", at=(985, 400))
     d.save("workflow-email-standard")
 
 
-def workflow_email_github():
-    d = Diagram(1000, 760)
-    x, w = 250, 300
-    t = d.node(x, 20, w, "When a new email arrives", "logo:outlook", "triggers", "Proposta progetto, solo con allegati")
-    v = d.node(x, 104, w, "Avvia elenco proposte", "stack", "system", "variabile ProposteRegistrate")
-    cl = d.node(x, 188, w, "Classifica email", "arrows-split", "github", "nodo Classify")
-    e1 = d.node(680, 188, 300, "Fine, Succeeded", "check-circle", "system", "RispostaAutomatica o NonPertinente")
-    hr = d.node(680, 290, 300, "Human review", "user-check", "agents", "Verifica email non chiara")
-    iff = d.node(680, 384, 300, "Il revisore conferma?", "git-branch", "system")
-    e3 = d.node(680, 470, 300, "Fine, Succeeded", "check-circle", "system")
-    ge = d.node(680, 600, 300, "Scope Gestisci errore", "warning-circle", "risk", "avviso in Teams, End Failed")
-    d.lane(180, 272, 440, 470, "Scope · Elabora proposta", "tree-structure", "github")
-    rows = [("Per ogni allegato", "formato ammesso: PDF o DOCX", "arrows-clockwise", "tools"),
-            ("Registra proposta", "documento come nota, ricorda la proposta", "logo:dataverse", "knowledge"),
-            ("Agente inline Conferma programma", "Request for information se ambiguo", "robot", "agents"),
-            ("Completa con Agente Demand IT", "proposal-intake e proposal-scoring", "cpu", "ai-engine"),
-            ("Notifica PMO in Teams", "scheda adattiva", "logo:teams", "tools")]
-    nodes = [d.node(200, 312 + 84 * i, 400, l, ic, f, s, white=True, h=60) for i, (l, s, ic, f) in enumerate(rows)]
-    for a, b in zip(nodes, nodes[1:]):
-        d.arrow([(a["cx"], a["b"]), (b["cx"], b["y"])], "github")
-    d.arrow([(t["cx"], t["b"]), (v["cx"], v["y"])], "github")
-    d.arrow([(v["cx"], v["b"]), (cl["cx"], cl["y"])], "github")
-    d.arrow([(cl["cx"], cl["b"]), (cl["cx"], 272)], "github", label="Proposta", at=(cl["cx"] + 48, 258))
-    d.arrow([(cl["r"], cl["cy"]), (e1["x"], e1["cy"])], color=NEUTRAL_ARROW)
-    d.arrow([(cl["r"], cl["cy"] + 12), (650, cl["cy"] + 12), (650, hr["cy"]), (hr["x"], hr["cy"])], "agents", label="Other", at=(650, 268))
-    d.arrow([(hr["cx"], hr["b"]), (iff["cx"], iff["y"])], "agents")
-    d.arrow([(iff["cx"], iff["b"]), (e3["cx"], e3["y"])], color=NEUTRAL_ARROW, label="No", at=(iff["cx"] + 22, 452))
-    d.arrow([(iff["x"], iff["cy"]), (620, iff["cy"])], "agents", label="Yes", at=(648, iff["cy"] - 14))
-    d.arrow([(620, 700), (650, 700), (650, ge["cy"]), (ge["x"], ge["cy"])], "risk", label="Failed o TimedOut", at=(800, 680))
-    d.save("workflow-email-github")
-
-
 def workflow_dossier():
-    d = Diagram(1015, 400)
-    r = d.node(20, 168, 190, "Richiesta", "user-circle", "agents", "dossier per AS-xxxxx")
-    s = d.node(240, 168, 140, "Harness", "git-branch", "system")
-    d.lane(415, 10, 585, 180, "Standard harness", "logo:copilot-studio", "standard")
-    t1 = d.node(430, 50, 170, "Topic", "chats-circle", "standard", "Genera dossier", white=True)
-    f = d.node(615, 50, 165, "Agent flow", "logo:power-automate", "tools", white=True, h=60)
-    p = d.node(795, 50, 190, "Prompt Dossier", "logo:ai-builder", "tools", "output Document,\nmodello Word", white=True)
-    o = d.node(795, 128, 190, "OneDrive /PMO Dossier", "logo:onedrive", "tools", "link di condivisione", white=True, h=50)
-    d.lane(415, 205, 585, 185, "GitHub Copilot harness", "logo:github", "github")
-    k = d.node(430, 245, 170, "Skill", "puzzle-piece", "github", "review-dossier-document", white=True)
-    m = d.node(615, 245, 165, "Dataverse MCP", "logo:dataverse", "knowledge", "valutazione e criteri", white=True)
-    j = d.node(795, 245, 190, "dossier_input.json", "code", "github", white=True, h=60)
-    py = d.node(795, 322, 190, "generate_dossier.py", "code", "github", "validazione e punteggio", white=True, h=56)
-    w = d.node(615, 322, 165, "dossier_revisione", "logo:word", "lifecycle", ".docx allegato in chat", white=True, h=56)
-    d.arrow([(r["r"], r["cy"]), (s["x"], s["cy"])], "instructions")
-    d.arrow([(s["cx"], s["y"]), (s["cx"], 80), (t1["x"], 80)], "standard", label="Standard", at=(s["cx"], 125))
-    d.arrow([(s["cx"], s["b"]), (s["cx"], 275), (k["x"], 275)], "github", label="GitHub Copilot", at=(s["cx"], 240))
-    d.arrow([(t1["r"], 80), (f["x"], 80)], "standard")
-    d.arrow([(f["r"], 80), (p["x"], 80)], "standard")
-    d.arrow([(p["cx"], p["b"]), (o["cx"], o["y"])], "standard")
-    d.arrow([(k["r"], 275), (m["x"], 275)], "github")
-    d.arrow([(m["r"], 275), (j["x"], 275)], "github")
-    d.arrow([(j["cx"], j["b"]), (py["cx"], py["y"])], "github")
-    d.arrow([(py["x"], py["cy"]), (w["r"], w["cy"])], "github")
+    """S06: dal topic al link del documento."""
+    d = Diagram(1015, 330)
+    u = d.node(20, 30, 210, "Utente", "user-circle", "agents", "Mi prepari il dossier\ndi AS-####?")
+    top = d.node(270, 30, 230, "Topic", "chats-circle", "topics", "Genera dossier di revisione,\nchiede il codice se manca")
+    d.lane(540, 15, 455, 300, "Agent flow · Genera dossier", "logo:power-automate", "tools")
+    p = d.node(555, 55, 425, "Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione: output Document,\ntemplate Word, conoscenza Dataverse", white=True)
+    f = d.node(555, 140, 425, "Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx", white=True, h=58)
+    sl = d.node(555, 210, 425, "Create share link", "logo:onedrive", "tools", "View, Organization: output DossierURL", white=True, h=58)
+    card = d.node(270, 210, 230, "Adaptive card", "cards", "topics", "link al dossier in chat")
+    d.arrow([(u["r"], 64), (top["x"], 64)], "topics")
+    d.arrow([(top["r"], 64), (p["x"], 64)], "topics", label="CodiceValutazione", at=(520, 92))
+    d.arrow([(p["cx"], p["b"]), (f["cx"], f["y"])], "tools")
+    d.arrow([(f["cx"], f["b"]), (sl["cx"], sl["y"])], "tools")
+    d.arrow([(sl["x"], sl["cy"]), (card["r"], sl["cy"])], "tools", dashed=True)
     d.save("workflow-dossier")
 
 
 def workflow_revisione():
-    a = [("Analista PMO", "user-circle", "agents"), ("Agente Demand IT", "cpu", "ai-engine"),
-         ("Agente Comitato", "link", "agents"), ("Dataverse", "logo:dataverse", "knowledge"),
-         ("Calendari interni", "calendar-dots", "platform")]
-    m = [(0, 1, "Preparami alla revisione di PP-xxxxx", "call"), (1, 2, "Delega come agente connesso", "call"),
-         (2, 3, "Legge proposta, criteri, valutazione", "call"), (2, 0, "Briefing e domande per sponsor e architetto", "reply"),
-         (2, 0, "Offre di prenotare 30 minuti", "reply"), (0, 2, "Sì, con il collega, la prossima settimana", "call"),
-         (2, 4, "Risolve la persona e cerca orari liberi", "call"), (2, 0, "Al massimo tre opzioni", "reply"),
-         (0, 2, "Confermo l'orario scelto", "call"), (2, 4, "Crea l'evento e invia l'invito", "call"),
-         (2, 0, "Evento riletto e confermato", "reply")]
+    """S02: preparazione della revisione con l'agente connesso."""
+    a = [("Utente", "user-circle", "agents"), ("Agente Demand IT", DA, "ai-engine"),
+         ("Agente Comitato", COM, "agents"), ("PMO Demand Hub", "logo:dataverse", "knowledge")]
+    m = [(0, 1, "Preparami alla revisione di PP-####", "call"), (1, 2, "Delega all'agente connesso", "call"),
+         (2, 3, "Legge proposta, criteri e pesi", "call"),
+         (2, 0, "Briefing e domande per sponsor e architetto", "reply"),
+         (1, 0, "Al più una frase in aggiunta", "reply")]
     sequence("workflow-revisione", a, m)
 
 
 if __name__ == "__main__":
+    for old in OUT.glob("*.svg"):
+        old.unlink()
     panoramica()
     architettura_standard()
-    architettura_github()
     workflow_chat()
     workflow_email_standard()
-    workflow_email_github()
     workflow_dossier()
     workflow_revisione()

@@ -3,15 +3,13 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { defineConfig } from 'vitepress'
-import { withMermaid } from 'vitepress-plugin-mermaid'
 import { DOCS, EXPERIENCES, LEVELS, SECTIONS, sidebar } from './content'
 import { masterclass } from './markdown'
 
 const base = '/copilot-studio-masterclass/'
 const repo = 'https://github.com/cvn-computergross/copilot-studio-masterclass'
 
-// withMermaid: i diagrammi ```mermaid delle guide (che GitHub disegna già) diventano figure anche nel sito
-export default withMermaid(defineConfig({
+export default defineConfig({
   lang: 'it-IT',
   title: 'Copilot Studio Masterclass',
   description: 'Laboratori pratici per creare agenti con Microsoft Copilot Studio',
@@ -22,8 +20,8 @@ export default withMermaid(defineConfig({
   srcExclude: ['resources/**'],
   head: [['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}logos/copilot-studio.svg` }]],
 
-  // anime.js e Mermaid (con fastdom, che è CommonJS) preparati subito dal server di sviluppo
-  vite: { optimizeDeps: { include: ['animejs/lib/anime.es.js', 'mermaid', 'fastdom'] } },
+  // anime.js preparato subito dal server di sviluppo
+  vite: { optimizeDeps: { include: ['animejs/lib/anime.es.js'] } },
 
   // i file da scaricare (docs/resources/) non sono pagine: i lab li collegano con un link
   // relativo, che funziona su GitHub; nel sito vengono copiati così come sono
@@ -58,4 +56,4 @@ export default withMermaid(defineConfig({
     returnToTopLabel: 'Return to top',
     search: { provider: 'local' },
   } as any,
-}))
+})

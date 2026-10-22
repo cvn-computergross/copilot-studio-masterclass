@@ -51,7 +51,7 @@ Le guide restano scritte per GitHub e non vanno modificate per il sito. A ogni b
 - sostituisce i segnaposto delle icone e il numero dei lab;
 - nei lab, separa un passo numerato scritto subito sotto un paragrafo, così diventa un passo come gli altri.
 
-I diagrammi ```` ```mermaid ```` li disegna il plugin `vitepress-plugin-mermaid`. I callout di GitHub (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`…) VitePress li riconosce da solo; qui se ne traduce il titolo in italiano.
+Gli schemi dell'Advanced sono SVG generati da `tools/diagrams.py` (glifi Phosphor e loghi Microsoft): si modificano lì e si rigenerano con `python tools/diagrams.py`. I callout di GitHub (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`…) VitePress li riconosce da solo; qui se ne traduce il titolo in italiano.
 
 Nel browser, `theme/checklist.ts` mette una casella davanti a ogni passo numerato dei lab e ricorda le spunte; la barra di avanzamento sta nella colonna destra (o sopra il testo, sugli schermi più stretti).
 

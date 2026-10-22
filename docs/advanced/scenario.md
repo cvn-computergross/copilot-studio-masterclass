@@ -50,19 +50,9 @@ Copilot Studio legge in modo affidabile il **testo** dei documenti. Il prompt to
 
 ## I componenti del sistema
 
-```mermaid
-flowchart LR
-  P["Proponente"] -- "chat con allegato" --> DA["Agente Demand IT<br/>(orchestratore)"]
-  M["Casella PMO"] -- "email con allegato" --> AUT["Automazione su evento<br/>(trigger o workflow)"]
-  AUT --> DV
-  AUT --> DA
-  DA -- "leggi e scrivi" --> DV[("PMO Demand Hub<br/>Dataverse")]
-  DA -- "briefing e pianificazione" --> AC["Agente Comitato<br/>(connected agent)"]
-  AC -- "sola lettura" --> DV
-  AC -- "persone e calendari interni" --> CAL["Outlook / Work IQ"]
-  DA -- "dossier Word" --> DOC["Dossier di revisione"]
-  AUT -- "card" --> T["Teams PMO"]
-```
+![Panoramica del sistema: canali di ingresso, Agente Demand IT, Intake Proposte, Agente Comitato, dossier e PMO Demand Hub](./images/panoramica-sistema.svg)
+
+Gli schemi di dettaglio sono in [Architettura e workflow](./architettura-e-workflow.md).
 
 | Componente | Standard harness | GitHub Copilot harness |
 | --- | --- | --- |
