@@ -2,7 +2,7 @@
 
 Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdown, readable here on GitHub, and are also published as a website.
 
-[Guida](https://cvn-computergross.github.io/copilot-studio-masterclass/)
+[Guida del Copilot Studio Masterclass](https://cvn-computergross.github.io/copilot-studio-masterclass/)
 
 ## Start here
 
