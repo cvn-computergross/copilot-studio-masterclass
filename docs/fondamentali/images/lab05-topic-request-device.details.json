@@ -1,0 +1,94 @@
+{
+ "diagram": "lab05-topic-request-device",
+ "details": {
+  "f05-card": {
+   "title": "Ask with adaptive card",
+   "icon": "cards",
+   "fam": "topics",
+   "lab": "Lab 05",
+   "role": "Prima un JSON segnaposto, poi la stessa scheda come Formula card: le scelte sono i dispositivi letti da Available devices.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Card payload JSON",
+     "icon": "code",
+     "fam": "topics",
+     "sub": "segnaposto: crea le variabili di output deviceSelectionId e commentsId"
+    },
+    {
+     "label": "Formula card",
+     "icon": "function",
+     "fam": "topics",
+     "sub": "Device selection, con riferimento a Global.VarDevices.value"
+    },
+    {
+     "label": "deviceSelectionId",
+     "icon": "list-bullets",
+     "fam": "topics",
+     "sub": "Input.ChoiceSet: ForAll(Global.VarDevices.value, title Model, value ID; NA se vuoti)"
+    },
+    {
+     "label": "commentsId",
+     "icon": "textbox",
+     "fam": "topics",
+     "sub": "Input.Text multiriga, sotto Additional Information"
+    },
+    {
+     "label": "FactSet",
+     "icon": "list-bullets",
+     "fam": "topics",
+     "sub": "Request type: New Device; Response time: 3-5 Business Days"
+    },
+    {
+     "label": "Submit Request",
+     "icon": "paper-plane-tilt",
+     "fam": "topics",
+     "sub": "Action.Submit, id deviceSubmittedId"
+    }
+   ]
+  },
+  "f05-callflow": {
+   "title": "Send device request email",
+   "icon": "logo:power-automate",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Nodo dell'agent flow sotto la card (Add a tool): gli input del flow prendono la scelta e i commenti dell'utente.",
+   "layout": "list",
+   "steps": [
+    {
+     "group": "Input",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "DeviceSharePointId",
+       "icon": "brackets-curly",
+       "fam": "tools",
+       "sub": "deviceSelectionId"
+      },
+      {
+       "label": "User",
+       "icon": "user-circle",
+       "fam": "tools",
+       "sub": "User.DisplayName"
+      },
+      {
+       "label": "AdditionalComments",
+       "icon": "function",
+       "fam": "tools",
+       "sub": "Advanced Inputs: If(IsBlank(Topic.commentsId), \"\", Topic.commentsId)"
+      }
+     ]
+    },
+    {
+     "label": "Output ModelValue",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "il modello del dispositivo, nel messaggio di conferma"
+    }
+   ],
+   "file": "power-automate.svg"
+  }
+ }
+}

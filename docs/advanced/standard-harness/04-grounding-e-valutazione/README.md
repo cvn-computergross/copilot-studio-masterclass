@@ -26,7 +26,7 @@ Il cuore del lavoro del PMO è la valutazione: per ogni criterio del programma, 
 
 ## Che cosa si costruisce
 
-Lo schema riassume il percorso in chat costruito tra S02 e questo lab. La registrazione della proposta è automatica (passi 1-7: delega a **Intake Proposte**, rifiuto dei DOCX, **Carica business case** e **Analizza business case**). La scelta del programma, se manca, e la registrazione della valutazione richiedono sempre una conferma (passi 8-13): **Crea valutazione** parte solo dopo il consenso dell'utente e restituisce punteggio, indicazione e codice AS-####.
+Lo schema riassume il percorso in chat costruito tra S02 e questo lab. La registrazione della proposta è automatica (passi 1-7: delega a **Intake Proposte**, rifiuto dei DOCX, **Carica business case** e **Analizza business case**). La scelta del programma, se manca, e la registrazione della valutazione richiedono sempre una conferma (passi 8-13): **Crea valutazione** parte solo dopo il consenso dell'utente e restituisce la tabella dei criteri, punteggio, indicazione e codice AS-####.
 
 ![Sequenza di intake e valutazione in chat](../../images/workflow-chat.svg)
 
@@ -380,6 +380,23 @@ Valuta la proposta PP-#### sul programma PG-500
 ![](./images/passo4-extra-32.png)
 
 3. Controllare che la regola di budget declassi BC-04 a **Needs Further Review**.
+
+### Proposta senza programma
+
+1. In una nuova sessione chiedere la valutazione della proposta BC-03 analizzata in S03, senza indicare il programma, sostituendo `PP-####` con il suo codice:
+
+```text
+Valuta la proposta PP-####
+```
+
+2. L'agente non sceglie il programma da solo: chiede di confermare un codice PG-### tra i programmi compatibili (PG-100 e PG-300) e non chiama **Crea valutazione**.
+3. Confermare il programma scrivendo proposta e programma nello stesso messaggio (vedere il suggerimento *Proposta e programma nello stesso messaggio*), poi approvare l'esecuzione:
+
+```text
+Valuta la proposta PP-#### sul programma PG-300
+```
+
+4. Controllare che la tabella riporti i 5 criteri di PG-300 e, in **Proposals** nel PMO Demand Hub, che la proposta BC-03 sia ora collegata al programma PG-300.
 
 ### Valutazioni nel PMO Demand Hub
 

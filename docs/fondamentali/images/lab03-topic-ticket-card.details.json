@@ -1,0 +1,99 @@
+{
+ "diagram": "lab03-topic-ticket-card",
+ "details": {
+  "f03-card": {
+   "title": "Ask with adaptive card",
+   "icon": "cards",
+   "fam": "topics",
+   "lab": "Lab 03",
+   "role": "Mostra la scheda Richiesta Ticket IT: ogni campo, con il suo id, diventa una variabile di output del nodo.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Edit adaptive card",
+     "icon": "note-pencil",
+     "fam": "topics",
+     "sub": "Card payload: Ctrl + A, poi il JSON del lab (version 1.5)"
+    },
+    {
+     "group": "Campi obbligatori",
+     "icon": "cards",
+     "fam": "topics",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "nome · cognome",
+       "icon": "textbox",
+       "fam": "topics",
+       "sub": "Input.Text, label Nome e Cognome"
+      },
+      {
+       "label": "email",
+       "icon": "at",
+       "fam": "topics",
+       "sub": "Input.Text style Email, controllato con una regex"
+      },
+      {
+       "label": "tipologia",
+       "icon": "list-bullets",
+       "fam": "topics",
+       "sub": "Input.ChoiceSet: Hardware, Software, Rete, Altro"
+      },
+      {
+       "label": "descrizione",
+       "icon": "textbox",
+       "fam": "topics",
+       "sub": "Input.Text multiriga, al massimo 2000 caratteri"
+      }
+     ]
+    },
+    {
+     "label": "Invia ticket · Annulla",
+     "icon": "paper-plane-tilt",
+     "fam": "topics",
+     "sub": "Action.Submit, data action submitTicket o cancel"
+    },
+    {
+     "label": "Variabili di output",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "Topic.nome, Topic.cognome, Topic.email, Topic.tipologia, Topic.descrizione"
+    }
+   ]
+  },
+  "f03-message": {
+   "title": "Message",
+   "icon": "chat-text",
+   "fam": "topics",
+   "lab": "Lab 03",
+   "role": "Send a message con il testo di conferma e una formula card in Power Fx, che può leggere le variabili del topic.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Testo",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "Il seguente Ticket è stato inviato al Reparto IT"
+    },
+    {
+     "label": "+ Add › Adaptive card › Formula",
+     "icon": "function",
+     "fam": "topics",
+     "sub": "in una card JSON non si possono inserire variabili"
+    },
+    {
+     "label": "Riepilogo dati inseriti",
+     "icon": "cards",
+     "fam": "topics",
+     "sub": "TextBlock Medium, Bolder"
+    },
+    {
+     "label": "FactSet",
+     "icon": "list-bullets",
+     "fam": "topics",
+     "sub": "Nome, Cognome, Email, Tipologia di problema, Descrizione: Text(Topic.…)"
+    }
+   ]
+  }
+ }
+}

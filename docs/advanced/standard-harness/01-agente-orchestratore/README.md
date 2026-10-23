@@ -14,7 +14,6 @@ Con il PMO Demand Hub del Lab 00 i dati del processo hanno finalmente un posto. 
 - registrare la valutazione solo dopo la conferma di una persona del PMO;
 - generare il **dossier di revisione** in Word con una struttura sempre uguale;
 - preparare i revisori con briefing e domande mirate;
-- trovare uno slot libero per la sessione di revisione tra persone interne e creare l'invito dopo conferma;
 - notificare il PMO in Teams quando arriva una proposta per email.
 
 > [!IMPORTANT]

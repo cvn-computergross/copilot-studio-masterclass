@@ -1,0 +1,85 @@
+{
+ "diagram": "lab05-topic-available-devices",
+ "details": {
+  "f05-io": {
+   "title": "Input e output",
+   "icon": "brackets-curly",
+   "fam": "topics",
+   "lab": "Lab 05",
+   "role": "Variabili del topic, create in … › Details › Topic details: l'input lo ricava l'agente, l'output torna all'agente.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "VarDeviceType · Input",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "Identify as User's entire response; List of possible values: Laptop, Desktop, Smartphone"
+    },
+    {
+     "label": "VarAvailableDevices · Output",
+     "icon": "table",
+     "fam": "topics",
+     "sub": "tipo Table; List of available devices by device type"
+    }
+   ]
+  },
+  "f05-getitems": {
+   "title": "Get items",
+   "icon": "logo:sharepoint",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Azione Get items del connettore SharePoint (Add a tool › Connector): legge solo i dispositivi disponibili del tipo richiesto.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Site Address e List Name",
+     "icon": "logo:sharepoint",
+     "fam": "knowledge",
+     "sub": "sito Help Desk CSM, lista Devices",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Filter Query · Formula",
+     "icon": "funnel",
+     "fam": "tools",
+     "sub": "Concatenate(\"Status eq 'Available' and AssetType eq '\", Topic.VarDeviceType, \"'\")"
+    },
+    {
+     "label": "Limit Columns by View",
+     "icon": "sliders-horizontal",
+     "fam": "tools",
+     "sub": "All items"
+    },
+    {
+     "label": "Output Global.VarDevices",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "rinominata VarDevices e resa Global: la usa anche Request device"
+    }
+   ],
+   "file": "sharepoint.png"
+  },
+  "f05-setvar": {
+   "title": "Set variable value",
+   "icon": "brackets-curly",
+   "fam": "topics",
+   "lab": "Lab 05",
+   "role": "Nodo Variable Management › Set a variable value: copia i dispositivi letti da Get items nella variabile di output del topic.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Set variable",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "VarAvailableDevices, output del topic (Table)"
+    },
+    {
+     "label": "To value · Formula",
+     "icon": "function",
+     "fam": "topics",
+     "sub": "Global.VarDevices.value: gli elementi restituiti da Get items"
+    }
+   ]
+  }
+ }
+}

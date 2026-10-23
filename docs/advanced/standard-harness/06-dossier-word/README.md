@@ -43,7 +43,7 @@ Per svolgere questo lab occorre avere:
 
 - almeno una Valutazione registrata (S04);
 - il template [`Zava_Dossier_Revisione_Template.docx`](../../../resources/advanced/template/Zava_Dossier_Revisione_Template.docx);
-- OneDrive for Business attivo per il proprio account (basta averlo aperto almeno una volta da [office.com](https://www.office.com/)). Non serve creare cartelle: il dossier viene salvato nella radice, **I miei file**.
+- OneDrive for Business attivo per il proprio account (basta averlo aperto almeno una volta da [office.com](https://www.office.com/)). Non serve creare cartelle: il dossier viene salvato in **I miei file**, nella cartella **Documents** (percorso `/Documents` dell'azione **Create file**).
 
 ## Template del dossier
 

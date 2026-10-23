@@ -14,14 +14,14 @@
      "icon": "flask",
      "fam": "instructions",
      "sub": "le prove dei lab in Copilot Studio",
-     "lab": "S01-S06"
+     "lab": "S01-S06, S08"
     },
     {
      "label": "Conferme dell'analista",
      "icon": "user-check",
      "fam": "agents",
      "sub": "programma e registrazione della valutazione",
-     "lab": "S04"
+     "lab": "S03-S04"
     },
     {
      "label": "Teams and Microsoft 365 Copilot",
@@ -35,7 +35,7 @@
      "label": "Reazioni e CSAT",
      "icon": "thumbs-up",
      "fam": "lifecycle",
-     "sub": "feedback degli utenti in Teams",
+     "sub": "reazioni in Teams, CSAT a fine conversazione",
      "lab": "S08"
     }
    ]
@@ -44,7 +44,7 @@
    "title": "PMO Knowledge",
    "icon": "logo:sharepoint",
    "fam": "knowledge",
-   "lab": "S01",
+   "lab": "Lab 00, S01",
    "role": "Cartella SharePoint con le regole del PMO: è la fonte Conoscenza PMO dell'Agente Demand IT.",
    "layout": "list",
    "steps": [
@@ -115,8 +115,8 @@
      "label": "Istruzioni",
      "icon": "clipboard-text",
      "fam": "instructions",
-     "sub": "ruolo, ambito, responsabilità, identificatori, delega",
-     "lab": "S01"
+     "sub": "ruolo, ambito, responsabilità, identificatori, sicurezza, delega",
+     "lab": "S01-S06"
     },
     {
      "label": "Conoscenza PMO",
@@ -162,11 +162,32 @@
      "lab": "S06"
     },
     {
+     "label": "Demand IT - Base",
+     "icon": "list-checks",
+     "fam": "lifecycle",
+     "sub": "test set: 6 casi, Meaning match 70",
+     "lab": "S07"
+    },
+    {
      "label": "Teams and Microsoft 365 Copilot",
      "icon": "rocket-launch",
      "fam": "lifecycle",
      "sub": "canale dopo la pubblicazione",
      "lab": "S07"
+    },
+    {
+     "label": "Reazioni degli utenti",
+     "icon": "thumbs-up",
+     "fam": "lifecycle",
+     "sub": "User feedback, lette in Monitor",
+     "lab": "S08"
+    },
+    {
+     "label": "Approfondimento CSAT negativo",
+     "icon": "chats-circle",
+     "fam": "topics",
+     "sub": "topic: adaptive card dopo un voto CSAT di 1-2 stelle",
+     "lab": "S08"
     }
    ]
   },
@@ -189,7 +210,7 @@
      "label": "Html to text",
      "icon": "file-text",
      "fam": "tools",
-     "sub": "testo del Body"
+     "sub": "Content Conversion, testo del Body"
     },
     {
      "label": "Classifica",
@@ -246,44 +267,77 @@
      ]
     },
     {
-     "label": "Per ogni allegato",
+     "group": "Per ogni allegato · For each su Attachments",
      "icon": "arrows-clockwise",
      "fam": "tools",
-     "sub": "condizione Allegato PDF",
+     "layout": "flow",
+     "steps": [
+      {
+       "label": "Allegato PDF",
+       "icon": "git-branch",
+       "fam": "system",
+       "sub": "Content-Type application/pdf?",
+       "branches": [
+        {
+         "label": "No",
+         "fam": "neutral",
+         "steps": [
+          {
+           "label": "Allegato ignorato",
+           "icon": "x-circle",
+           "fam": "system",
+           "sub": "es. il file Word"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "label": "Registra proposta email",
+       "icon": "logo:dataverse",
+       "fam": "knowledge",
+       "sub": "riga in Proposals, canale Email",
+       "pill": "Sì",
+       "file": "dataverse.svg"
+      },
+      {
+       "label": "Carica documento email",
+       "icon": "logo:dataverse",
+       "fam": "knowledge",
+       "sub": "PDF in Business Case Document",
+       "file": "dataverse.svg"
+      },
+      {
+       "label": "Sends a prompt to the specified copilot",
+       "icon": "agent:demand-it-agent-192.png",
+       "fam": "ai-engine",
+       "sub": "Agente Demand IT, con il codice PP-####"
+      }
+     ],
      "pill": "Sì"
     },
     {
-     "label": "Registra proposta email",
-     "icon": "logo:dataverse",
-     "fam": "knowledge",
-     "sub": "riga in Proposals, canale Email",
-     "file": "dataverse.svg"
-    },
-    {
-     "label": "Carica documento email",
-     "icon": "logo:dataverse",
-     "fam": "knowledge",
-     "sub": "PDF in Business Case Document",
-     "file": "dataverse.svg"
-    },
-    {
-     "label": "Sends a prompt to the specified copilot",
+     "group": "Agente Demand IT · Intake Proposte",
      "icon": "agent:demand-it-agent-192.png",
      "fam": "ai-engine",
-     "sub": "Agente Demand IT"
-    },
-    {
-     "label": "Analizza business case",
-     "icon": "robot",
-     "fam": "agents",
-     "sub": "strumento di Intake Proposte"
-    },
-    {
-     "label": "Notifica PMO in Teams",
-     "icon": "logo:teams",
-     "fam": "tools",
-     "sub": "adaptive card",
-     "file": "teams.png"
+     "layout": "flow",
+     "steps": [
+      {
+       "label": "Analizza business case",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "agent flow di Intake Proposte",
+       "file": "power-automate.svg"
+      },
+      {
+       "label": "Notifica PMO in Teams",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "adaptive card in Teams (Flow bot)",
+       "file": "power-automate.svg"
+      }
+     ],
+     "pill": "messaggio all'agente"
     }
    ],
    "file": "power-automate.svg"
@@ -293,7 +347,7 @@
    "icon": "robot",
    "fam": "agents",
    "lab": "S02-S05",
-   "role": "Child agent dell'Agente Demand IT: registra e analizza i business case e, dopo una conferma, crea la valutazione.",
+   "role": "Child agent dell'Agente Demand IT: registra e analizza i business case, avvisa il PMO in Teams per le proposte via email e, dopo una conferma, crea la valutazione.",
    "layout": "list",
    "steps": [
     {
@@ -301,7 +355,7 @@
      "icon": "clipboard-text",
      "fam": "instructions",
      "sub": "un solo PDF per volta, codici mai inventati",
-     "lab": "S02"
+     "lab": "S02-S05"
     },
     {
      "group": "Tools · agent flow",
@@ -409,6 +463,13 @@
      "icon": "plugs-connected",
      "fam": "agents",
      "sub": "pubblicato e collegato all'Agente Demand IT"
+    },
+    {
+     "label": "Comitato - Sicurezza",
+     "icon": "list-checks",
+     "fam": "lifecycle",
+     "sub": "test set: 7 casi, Meaning match 70",
+     "lab": "S07"
     }
    ]
   },
@@ -436,7 +497,7 @@
        "label": "Run a prompt",
        "icon": "logo:ai-builder",
        "fam": "tools",
-       "sub": "prompt Dossier di revisione, output Document",
+       "sub": "prompt Dossier di revisione, output Document (preview)",
        "file": "ai-builder.svg"
       },
       {
@@ -468,11 +529,11 @@
    "file": "power-automate.svg"
   },
   "teams-channel": {
-   "title": "Canale del PMO",
+   "title": "Teams del PMO",
    "icon": "logo:teams",
    "fam": "tools",
    "lab": "S05",
-   "role": "Dove il PMO vede arrivare le proposte ricevute per email, già registrate e analizzate.",
+   "role": "Dove il PMO vede arrivare le proposte ricevute per email, già registrate e analizzate (chat con Flow bot, oppure canale Proposte se scelto).",
    "layout": "flow",
    "steps": [
     {
@@ -486,7 +547,7 @@
      "label": "Post card in a chat or channel",
      "icon": "logo:teams",
      "fam": "tools",
-     "sub": "Post as Flow bot",
+     "sub": "Post as Flow bot, Post in Chat with Flow bot",
      "file": "teams.png"
     },
     {
@@ -567,7 +628,7 @@
    "icon": "logo:onedrive",
    "fam": "tools",
    "lab": "S06",
-   "role": "OneDrive for Business dell'autore: qui l'agent flow Genera dossier salva il dossier di revisione.",
+   "role": "OneDrive for Business dell'autore: l'agent flow Genera dossier salva il dossier di revisione in I miei file, cartella Documents.",
    "layout": "flow",
    "steps": [
     {

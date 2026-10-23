@@ -1,0 +1,182 @@
+{
+ "diagram": "lab01-percorso-setup",
+ "details": {
+  "f01-devenv": {
+   "title": "Developer environment",
+   "icon": "tray",
+   "fam": "platform",
+   "lab": "Lab 01",
+   "role": "Ambiente di sviluppo separato da quello Default, in cui si svolgono i lab: si ottiene con il Power Apps Developer Plan.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Power Apps Developer Plan",
+     "icon": "globe",
+     "fam": "platform",
+     "sub": "aka.ms/PowerAppsDevPlan"
+    },
+    {
+     "label": "Start free",
+     "icon": "user-check",
+     "fam": "platform",
+     "sub": "email address, checkbox, poi Start free"
+    },
+    {
+     "label": "Power Apps",
+     "icon": "logo:power-apps",
+     "fam": "lifecycle",
+     "sub": "si apre make.powerapps.com con il nuovo environment",
+     "file": "power-apps.svg"
+    },
+    {
+     "label": "Environment in Copilot Studio",
+     "icon": "sliders-horizontal",
+     "fam": "platform",
+     "sub": "box Environment in alto a destra: dal default al developer environment"
+    }
+   ]
+  },
+  "f01-accesso": {
+   "title": "Accesso",
+   "icon": "shield-check",
+   "fam": "platform",
+   "lab": "Lab 01",
+   "role": "Con la trial la pubblicazione non è consentita per impostazione predefinita: serve il ruolo Copilot Studio Authors, assegnato a un security group.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Microsoft 365 admin center",
+     "icon": "users-three",
+     "fam": "platform",
+     "sub": "Teams & groups › Active teams & groups"
+    },
+    {
+     "label": "Add a security group",
+     "icon": "users-three",
+     "fam": "platform",
+     "sub": "Security groups: AgentCreators, Next, Create group"
+    },
+    {
+     "label": "Add members",
+     "icon": "user-plus",
+     "fam": "platform",
+     "sub": "Members › view all and manage members: il proprio account"
+    },
+    {
+     "label": "Power Platform admin center",
+     "icon": "sliders-horizontal",
+     "fam": "platform",
+     "sub": "Home › Manage › Tenant Settings"
+    },
+    {
+     "label": "Copilot Studio Authors",
+     "icon": "shield-check",
+     "fam": "platform",
+     "sub": "da All Users al gruppo AgentCreators, Done e Save"
+    }
+   ]
+  },
+  "f01-solution": {
+   "title": "Solution e Publisher",
+   "icon": "package",
+   "fam": "lifecycle",
+   "lab": "Lab 01",
+   "role": "Il contenitore dell'agente, creato nel Solution Explorer di Copilot Studio (… › Solutions › + New solution) con un publisher nuovo.",
+   "layout": "flow",
+   "steps": [
+    {
+     "group": "+ New publisher",
+     "icon": "stamp",
+     "fam": "lifecycle",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "CSM Solutions",
+       "icon": "stamp",
+       "fam": "lifecycle",
+       "sub": "Display Name; Name CSMSolutions"
+      },
+      {
+       "label": "Copilot Studio Masterclass",
+       "icon": "note-pencil",
+       "fam": "lifecycle",
+       "sub": "Description"
+      },
+      {
+       "label": "csm · 77000",
+       "icon": "key",
+       "fam": "lifecycle",
+       "sub": "Prefix e Prefix value"
+      }
+     ]
+    },
+    {
+     "group": "New solution",
+     "icon": "package",
+     "fam": "lifecycle",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "CSMFirstAgent",
+       "icon": "package",
+       "fam": "lifecycle",
+       "sub": "Display Name e Name, Version 1.0.0.0"
+      },
+      {
+       "label": "Set as your preferred solution",
+       "icon": "check-circle",
+       "fam": "lifecycle",
+       "sub": "Current preferred Solution: CSMFirstAgent"
+      },
+      {
+       "label": "More Options",
+       "icon": "sliders-horizontal",
+       "fam": "lifecycle",
+       "sub": "campi lasciati vuoti, poi Create"
+      }
+     ]
+    }
+   ]
+  },
+  "f01-agente": {
+   "title": "Agente IT Support",
+   "icon": "robot",
+   "fam": "agents",
+   "lab": "Lab 01",
+   "role": "Il primo agente, minimale e senza connettori né azioni: lo si crea descrivendolo in linguaggio naturale e gli si aggiunge un sito pubblico.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Agents",
+     "icon": "robot",
+     "fam": "agents",
+     "sub": "home page di Copilot Studio"
+    },
+    {
+     "label": "Descrizione in linguaggio naturale",
+     "icon": "chat-text",
+     "fam": "instructions",
+     "sub": "IT Support: Assistente di supporto IT di primo livello per l'azienda Zava"
+    },
+    {
+     "label": "Limiti e tono",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "niente recupero password, bypass MFA, sblocco account o codici; tono professionale, calmo e neutro"
+    },
+    {
+     "label": "Add knowledge · Public website",
+     "icon": "globe",
+     "fam": "knowledge",
+     "sub": "https://support.microsoft.com"
+    },
+    {
+     "label": "Test",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "finestra Test your Agent, prima della pubblicazione"
+    }
+   ]
+  }
+ }
+}

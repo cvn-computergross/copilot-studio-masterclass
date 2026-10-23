@@ -1,4 +1,4 @@
-"""Schemi dei lab della Standard Harness: Advanced (S01, S02, S04, S05, S06) e Fundamentals (Lab 01-05).
+"""Schemi dei lab della Standard Harness: Advanced (S01, S02, S04, S05, S06, S08) e Fundamentals (Lab 01-05).
 
 Disegna ogni schema come file SVG, nello stile delle slide del corso: riquadri tinti nel colore
 dell'argomento con glifo dell'Icon Pack (Phosphor duotone), logo Microsoft o icona dell'agente,
@@ -110,6 +110,10 @@ RULES = """
 .dg-badge circle{fill:var(--dg-badge)}
 .dg-badge text{fill:var(--dg-badge-ink)}
 """.strip()
+# alone dei testi dei messaggi nelle sequenze: le linee verticali passano sotto il testo senza
+# tagliarlo. Identica in theme/style.css; nel file SVG da solo solo negli schemi che la usano,
+# così gli altri restano invariati.
+HALO = ".dg-msg{paint-order:stroke;stroke:var(--dg-bg);stroke-width:4px;stroke-linejoin:round}"
 
 PAD = 12      # margine minimo fra la fine di un testo e il bordo destro del suo riquadro
 MARGIN = 6    # margine fra il contenuto e il bordo del disegno, uguale sui quattro lati
@@ -123,9 +127,10 @@ class LayoutError(Exception):
     """Uno schema non rispetta i controlli di impaginazione."""
 
 
-def style_block(hint=False):
+def style_block(hint=False, halo=False):
     """<style> del file SVG da solo: colori chiari e, con il sistema in tema scuro, quelli scuri.
-    hint=True: lo schema ha riquadri con dettaglio, il cui pallino "i" nel file da solo si nasconde."""
+    hint=True: lo schema ha riquadri con dettaglio, il cui pallino "i" nel file da solo si nasconde.
+    halo=True: lo schema ha testi di messaggi (dg-msg) con l'alone."""
     def rgba(hexcolor, a):
         r, g, b = (int(hexcolor[i:i + 2], 16) for i in (1, 3, 5))
         return f"rgba({r},{g},{b},{a})"
@@ -136,6 +141,7 @@ def style_block(hint=False):
     # il pallino "i" dei riquadri con dettaglio serve solo nel sito (dove il dettaglio si apre):
     # nel file SVG da solo resta nascosto
     hide = ".dg-hint{display:none}" if hint else ""
+    hide += HALO if halo else ""
     return f"<style>{light}{RULES.replace(chr(10), '')}{hide}@media (prefers-color-scheme: dark){{{dark}}}</style>"
 
 
@@ -461,7 +467,7 @@ class Diagram:
         if not self.details:  # data-icon serve solo ai dettagli interattivi
             body = re.sub(r'<image data-icon="[^"]*" ', "<image ", body)
         svg = (f'<svg xmlns="http://www.w3.org/2000/svg" class="dg" viewBox="0 0 {w} {h}" width="{w}" height="{h}"'
-               f' font-family="{FONT}">{style_block(bool(self.details))}{defs}'
+               f' font-family="{FONT}">{style_block(bool(self.details), "dg-msg" in body)}{defs}'
                f'<g transform="translate({dx} {dy})">' + body + "</g></svg>\n")
         (self.out / f"{name}.svg").write_text(svg, encoding="utf-8")
         save_details(self, body)
@@ -501,6 +507,7 @@ def sequence(name, actors, messages, col_min=230, out=ADVANCED):
     for (label, icon, fam), cx in zip(actors, xs):
         d.node(cx - col / 2 + 8, 20, col - 16, label, icon, fam, white=True, h=56)
     y, step = 110, 46
+    first = len(d.parts)  # le linee verticali vanno disegnate prima (sotto) dei messaggi
     for i, (a, b, text, kind) in enumerate(messages):
         lines = [text]
         # spazio per il testo: fra le due linee, o (nota) dalla linea fino alla successiva
@@ -520,8 +527,8 @@ def sequence(name, actors, messages, col_min=230, out=ADVANCED):
             x1, x2 = xs[a], xs[b]
             sign = 1 if x2 > x1 else -1
             d.arrow([(x1 + 4 * sign, y), (x2 - 4 * sign, y)], NEUTRAL if reply else "instructions", dashed=reply)
-            for k, line in enumerate(reversed(lines)):
-                box = d._text((x1 + x2) / 2, y - 7 - 15 * k, line, 12, "dg-sub" if reply else "dg-body", 500, "middle")
+            for k, line in enumerate(reversed(lines)):  # dg-msg: alone, le linee verticali non tagliano il testo
+                box = d._text((x1 + x2) / 2, y - 7 - 15 * k, line, 12, "dg-sub dg-msg" if reply else "dg-body dg-msg", 500, "middle")
                 if box[0] < min(x1, x2) + side - 0.5 or box[2] > max(x1, x2) - side + 0.5:
                     d.errors.append(f"messaggio '{line}': esce dallo spazio fra le linee")
                 d.extent.append(box)
@@ -529,6 +536,7 @@ def sequence(name, actors, messages, col_min=230, out=ADVANCED):
         y += step
     for cx in xs:
         d.vline(cx, 76, last + 30)
+    d.parts[first:first] = [d.parts.pop() for _ in xs][::-1]
     d.save()
 
 
@@ -561,11 +569,12 @@ class Flow(Diagram):
         self.title, self.icon, self.fam = title, icon, fam
         self.w, self.cx, self.prev = w, w / 2, []
 
-    def _place(self, label, icon, fam, sub, x, y, w, h=None):
-        return self.node(x, y, w, label, icon, fam, sub, white=True, h=h)
+    def _place(self, label, icon, fam, sub, x, y, w, h=None, detail=None):
+        return self.node(x, y, w, label, icon, fam, sub, white=True, h=h, detail=detail)
 
-    def step(self, label, icon, fam, sub=None, pill=None, w=None, h=None, afam="topics"):
-        """Nodo nella colonna centrale; pill = etichetta sulla freccia che arriva al nodo."""
+    def step(self, label, icon, fam, sub=None, pill=None, w=None, h=None, afam="topics", detail=None):
+        """Nodo nella colonna centrale; pill = etichetta sulla freccia che arriva al nodo.
+        detail: id in DETAILS, come in node()."""
         w, cx = w or self.w, self.cx
         if not self.prev:
             y = 0
@@ -579,7 +588,7 @@ class Flow(Diagram):
                 self.arrow(_dedupe([(p["cx"], p["b"]), (p["cx"], ym), (cx, ym)]), afam, head=False)
             y = ym + (FLOW_PILL_GAP if pill else 22)
             self.arrow([(cx, ym), (cx, y)], afam, label=pill, at=(cx, (ym + y) / 2) if pill else None)
-        n = self._place(label, icon, fam, sub, cx - w / 2, y, w, h)
+        n = self._place(label, icon, fam, sub, cx - w / 2, y, w, h, detail)
         self.prev = [n]
         return n
 
@@ -609,12 +618,12 @@ class Flow(Diagram):
         self.prev = lasts
         return lasts
 
-    def side(self, n, label, icon, fam, sub, w, dx=40, right=True, into=True, afam=NEUTRAL, pill=None):
+    def side(self, n, label, icon, fam, sub, w, dx=40, right=True, into=True, afam=NEUTRAL, pill=None, detail=None):
         """Scheda accanto al nodo n, centrata in altezza; into=True: la freccia va dalla scheda al nodo."""
         lines = sub.split("\n") if sub else []
         h = 44 + 16 * len(lines) if lines else 48
         x = n["r"] + dx if right else n["x"] - dx - w
-        c = self._place(label, icon, fam, sub, x, n["cy"] - h / 2, w, h)
+        c = self._place(label, icon, fam, sub, x, n["cy"] - h / 2, w, h, detail)
         a, b = ((c["x"], c["cy"]), (n["r"], c["cy"])) if right else ((c["r"], c["cy"]), (n["x"], c["cy"]))
         self.arrow([a, b] if into else [b, a], afam, dashed=True, label=pill,
                    at=((a[0] + b[0]) / 2, c["cy"]) if pill else None)
@@ -632,7 +641,7 @@ class Flow(Diagram):
 
 # --- schemi -----------------------------------------------------------------------------
 # Ogni schema riporta i nomi esatti dei componenti creati nei lab Advanced della Standard
-# Harness (Lab 00, S01-S07). Se un lab cambia un nome, va cambiato anche qui.
+# Harness (Lab 00, S01-S08). Se un lab cambia un nome, va cambiato anche qui.
 
 DA = "agent:demand-it-agent-192.png"     # icona caricata in S01
 COM = "agent:committee-agent-192.png"    # icona dell'Agente Comitato
@@ -681,19 +690,22 @@ DETAILS = {
     "demand-it": D(
         "Agente Demand IT", DA, "ai-engine", "S01",
         "Orchestratore e punto di ingresso unico: risponde sulle regole del PMO e delega agli altri componenti.",
-        [N("Istruzioni", "clipboard-text", "instructions", "ruolo, ambito, responsabilità, identificatori, delega", lab="S01"),
+        [N("Istruzioni", "clipboard-text", "instructions", "ruolo, ambito, responsabilità, identificatori, sicurezza, delega", lab="S01-S06"),
          N("Conoscenza PMO", "logo:sharepoint", "knowledge", "cartella SharePoint PMO Knowledge", lab="S01"),
          N("Impostazioni generative", "sliders-horizontal", "platform", "niente web, File uploads attivo, Claude Sonnet 4.6", lab="S01"),
          N("Intake Proposte", "robot", "agents", "child agent", lab="S02"),
          N("Agente Comitato", COM, "agents", "agente connesso", lab="S02"),
          N("Nuova proposta via email", "lightning", "triggers", "trigger When a new email arrives (V3)", lab="S05"),
          N("Genera dossier di revisione", "chats-circle", "topics", "topic con l'agent flow Genera dossier", lab="S06"),
-         N("Teams and Microsoft 365 Copilot", "rocket-launch", "lifecycle", "canale dopo la pubblicazione", lab="S07")],
+         N("Demand IT - Base", "list-checks", "lifecycle", "test set: 6 casi, Meaning match 70", lab="S07"),
+         N("Teams and Microsoft 365 Copilot", "rocket-launch", "lifecycle", "canale dopo la pubblicazione", lab="S07"),
+         N("Reazioni degli utenti", "thumbs-up", "lifecycle", "User feedback, lette in Monitor", lab="S08"),
+         N("Approfondimento CSAT negativo", "chats-circle", "topics", "topic: adaptive card dopo un voto CSAT di 1-2 stelle", lab="S08")],
         layout="list"),
     "intake": D(
         "Intake Proposte", "robot", "agents", "S02-S05",
-        "Child agent dell'Agente Demand IT: registra e analizza i business case e, dopo una conferma, crea la valutazione.",
-        [N("Istruzioni", "clipboard-text", "instructions", "un solo PDF per volta, codici mai inventati", lab="S02"),
+        "Child agent dell'Agente Demand IT: registra e analizza i business case, avvisa il PMO in Teams per le proposte via email e, dopo una conferma, crea la valutazione.",
+        [N("Istruzioni", "clipboard-text", "instructions", "un solo PDF per volta, codici mai inventati", lab="S02-S05"),
          G("Tools · agent flow", "wrench", "tools", [
              N("Carica business case", "logo:power-automate", "tools", "crea la proposta e carica il PDF", lab="S02"),
              N("Analizza business case", "logo:power-automate", "tools", "prompt Estrai dati business case", lab="S03"),
@@ -707,7 +719,8 @@ DETAILS = {
         [N("Istruzioni", "clipboard-text", "instructions", "briefing e domande, non contatta i proponenti"),
          G("Conoscenza Dataverse", "logo:dataverse", "knowledge", TABLES, layout="list"),
          N("Impostazioni generative", "sliders-horizontal", "platform", "niente web, File uploads disattivato, Claude Sonnet 4.6"),
-         N("Let other agents connect", "plugs-connected", "agents", "pubblicato e collegato all'Agente Demand IT")],
+         N("Let other agents connect", "plugs-connected", "agents", "pubblicato e collegato all'Agente Demand IT"),
+         N("Comitato - Sicurezza", "list-checks", "lifecycle", "test set: 7 casi, Meaning match 70", lab="S07")],
         layout="list"),
     "comitato-kb": D(
         "Conoscenza Dataverse", "logo:dataverse", "knowledge", "S02",
@@ -720,7 +733,7 @@ DETAILS = {
          N("App PMO Demand Hub", "logo:power-apps", "lifecycle", "Home, Proposal Board, moduli e viste")],
         layout="list"),
     "pmo-knowledge": D(
-        "PMO Knowledge", "logo:sharepoint", "knowledge", "S01",
+        "PMO Knowledge", "logo:sharepoint", "knowledge", "Lab 00, S01",
         "Cartella SharePoint con le regole del PMO: è la fonte Conoscenza PMO dell'Agente Demand IT.",
         [N("Zava_PMO_Linee_Guida_Business_Case.docx", "file-text", "knowledge", "formati, struttura, soglie, regola di budget", lab="Lab 00"),
          N("Zava_Piano_Strategico_IT_2026-2028.pdf", "file-text", "knowledge", "obiettivi OS1-OS5 con i KPI", lab="Lab 00"),
@@ -729,10 +742,10 @@ DETAILS = {
     "users": D(
         "Proponenti e analisti", "users-three", "agents", "S01-S08",
         "Chi usa l'Agente Demand IT: i proponenti allegano il business case, gli analisti del PMO confermano.",
-        [N("Pannello Test", "flask", "instructions", "le prove dei lab in Copilot Studio", lab="S01-S06"),
-         N("Conferme dell'analista", "user-check", "agents", "programma e registrazione della valutazione", lab="S04"),
+        [N("Pannello Test", "flask", "instructions", "le prove dei lab in Copilot Studio", lab="S01-S06, S08"),
+         N("Conferme dell'analista", "user-check", "agents", "programma e registrazione della valutazione", lab="S03-S04"),
          N("Teams and Microsoft 365 Copilot", "logo:teams", "lifecycle", "canale dopo la pubblicazione", lab="S07"),
-         N("Reazioni e CSAT", "thumbs-up", "lifecycle", "feedback degli utenti in Teams", lab="S08")],
+         N("Reazioni e CSAT", "thumbs-up", "lifecycle", "reazioni in Teams, CSAT a fine conversazione", lab="S08")],
         layout="list"),
     "mailbox": D(
         "Casella del PMO", "logo:outlook", "tools", "S05",
@@ -744,18 +757,23 @@ DETAILS = {
         "Flow del trigger", "logo:power-automate", "triggers", "S05",
         "Flow del trigger Nuova proposta via email: classifica l'email, registra ogni PDF e chiama l'agente.",
         [N("When a new email arrives (V3)", "logo:outlook", "triggers", "Split On: una esecuzione per email"),
-         N("Html to text", "file-text", "tools", "testo del Body"),
+         N("Html to text", "file-text", "tools", "Content Conversion, testo del Body"),
          N("Classifica", "logo:ai-builder", "tools", "prompt Classifica email PMO"),
          N("Proposta rilevata", "git-branch", "system", "Classifica contiene Proposta?", branches=[
              B("No", [N("Da verificare", "git-branch", "system", "Classifica contiene Incerta?", branches=[
                  B("Sì", [N("Avvisa verifica manuale", "logo:outlook", "tools", "Send an email (V2)")], fam="platform"),
                  B("No", [N("Fine senza azioni", "x-circle", "system", "RispostaAutomatica o NonPertinente")])])])]),
-         N("Per ogni allegato", "arrows-clockwise", "tools", "condizione Allegato PDF", pill="Sì"),
-         N("Registra proposta email", "logo:dataverse", "knowledge", "riga in Proposals, canale Email"),
-         N("Carica documento email", "logo:dataverse", "knowledge", "PDF in Business Case Document"),
-         N("Sends a prompt to the specified copilot", DA, "ai-engine", "Agente Demand IT"),
-         N("Analizza business case", "robot", "agents", "strumento di Intake Proposte"),
-         N("Notifica PMO in Teams", "logo:teams", "tools", "adaptive card")]),
+         G("Per ogni allegato · For each su Attachments", "arrows-clockwise", "tools", [
+             N("Allegato PDF", "git-branch", "system", "Content-Type application/pdf?", branches=[
+                 B("No", [N("Allegato ignorato", "x-circle", "system", "es. il file Word")])]),
+             N("Registra proposta email", "logo:dataverse", "knowledge", "riga in Proposals, canale Email", pill="Sì"),
+             N("Carica documento email", "logo:dataverse", "knowledge", "PDF in Business Case Document"),
+             N("Sends a prompt to the specified copilot", DA, "ai-engine", "Agente Demand IT, con il codice PP-####")],
+           pill="Sì"),
+         G("Agente Demand IT · Intake Proposte", DA, "ai-engine", [
+             N("Analizza business case", "logo:power-automate", "tools", "agent flow di Intake Proposte"),
+             N("Notifica PMO in Teams", "logo:power-automate", "tools", "adaptive card in Teams (Flow bot)")],
+           pill="messaggio all'agente")]),
     "trigger-email": D(
         "Nuova proposta via email", "lightning", "triggers", "S05",
         "Trigger dell'Agente Demand IT: il flow che genera si completa in Power Automate.",
@@ -768,7 +786,7 @@ DETAILS = {
         "Topic Genera dossier di revisione con l'agent flow Genera dossier: dal codice AS-#### al documento Word.",
         [N("Genera dossier di revisione", "chats-circle", "topics", "topic: chiede il codice se manca"),
          G("Agent flow · Genera dossier", "logo:power-automate", "tools", [
-             N("Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione, output Document"),
+             N("Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione, output Document (preview)"),
              N("Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx"),
              N("Create share link", "logo:onedrive", "tools", "View, Organization")], pill="CodiceValutazione"),
          N("Adaptive card", "cards", "topics", "pulsante Apri il dossier", pill="DossierURL")]),
@@ -784,21 +802,21 @@ DETAILS = {
         "Agent flow Genera dossier", "logo:power-automate", "tools", "S06",
         "Genera il dossier Word con il prompt, lo salva in OneDrive e restituisce un link di sola lettura.",
         [N(TRIGGER_FLOW, "lightning", "triggers", "input CodiceValutazione"),
-         N("Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione, output Document"),
+         N("Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione, output Document (preview)"),
          N("Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx"),
          N("Create share link", "logo:onedrive", "tools", "Link type View, scope Organization"),
          N(RESPOND, "flow-arrow", "tools", "output DossierURL")]),
     "onedrive": D(
         "OneDrive", "logo:onedrive", "tools", "S06",
-        "OneDrive for Business dell'autore: qui l'agent flow Genera dossier salva il dossier di revisione.",
+        "OneDrive for Business dell'autore: l'agent flow Genera dossier salva il dossier di revisione in I miei file, cartella Documents.",
         [N("Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx"),
          N("Create share link", "logo:onedrive", "tools", "View, Organization: Web URL"),
          N("Apri il dossier", "cards", "topics", "pulsante dell'adaptive card nel topic", pill="DossierURL")]),
     "teams-channel": D(
-        "Canale del PMO", "logo:teams", "tools", "S05",
-        "Dove il PMO vede arrivare le proposte ricevute per email, già registrate e analizzate.",
+        "Teams del PMO", "logo:teams", "tools", "S05",
+        "Dove il PMO vede arrivare le proposte ricevute per email, già registrate e analizzate (chat con Flow bot, oppure canale Proposte se scelto).",
         [N("Notifica PMO in Teams", "logo:power-automate", "tools", "agent flow di Intake Proposte"),
-         N("Post card in a chat or channel", "logo:teams", "tools", "Post as Flow bot"),
+         N("Post card in a chat or channel", "logo:teams", "tools", "Post as Flow bot, Post in Chat with Flow bot"),
          N("Adaptive card", "cards", "tools", "proposta, titolo, proponente, programma, avvisi"),
          N("Apri le proposte nel PMO Demand Hub", "logo:power-apps", "lifecycle", "Action.OpenUrl")]),
     "carica-bc": D(
@@ -818,7 +836,7 @@ DETAILS = {
          N("Cerca proponente", "logo:dataverse", "knowledge", "List rows in Requesters per email"),
          N("Proponente nuovo", "git-branch", "system", "nessun proponente con quella email?", branches=[
              B("Sì", [N("Crea proponente", "logo:dataverse", "knowledge", "Add a new row in Requesters")], fam="knowledge")]),
-         N("Aggiorna proposta", "logo:dataverse", "knowledge", "titolo, sintesi, budget, proponente"),
+         N("Aggiorna proposta", "logo:dataverse", "knowledge", "titolo, sintesi, budget, durata, proponente"),
          N("Programma indicato", "git-branch", "system", "un solo programma valido nel documento?", branches=[
              B("Sì", [N("Cerca programma", "logo:dataverse", "knowledge", "List rows in Programs"),
                       N("Collega programma", "logo:dataverse", "knowledge", "Update a row: Program")], fam="knowledge")]),
@@ -833,7 +851,7 @@ DETAILS = {
          N("Per ogni criterio", "arrows-clockwise", "tools", "Punti, Punteggio e Dettaglio"),
          N("Raccomandazione", "function", "tools", "soglie 75 e 55, regola di budget"),
          N("Registra valutazione", "logo:dataverse", "knowledge", "Add a new row in Assessments, AS-####"),
-         N("Aggiorna proposta", "logo:dataverse", "knowledge", "Proposal Status Assessed"),
+         N("Aggiorna proposta", "logo:dataverse", "knowledge", "Program e Proposal Status Assessed"),
          N(RESPOND, "flow-arrow", "tools", "codice, punteggio, indicazione")]),
     "notifica-teams": D(
         "Notifica PMO in Teams", "logo:power-automate", "tools", "S05",
@@ -841,7 +859,332 @@ DETAILS = {
         [N(TRIGGER_FLOW, "lightning", "triggers", "CodiceProposta, Title, Requester, Program, Avvisi"),
          N("Post card in a chat or channel", "logo:teams", "tools", "Flow bot, adaptive card con FactSet"),
          N(RESPOND, "flow-arrow", "tools", "Esito: Notifica inviata")]),
+    "topic-csat": D(
+        "Approfondimento CSAT negativo", "chats-circle", "topics", "S08",
+        "Topic dell'Agente Demand IT richiamato da End of Conversation quando il voto CSAT è di 1 o 2 stelle: chiede il motivo.",
+        [N("Trigger", "lightning", "triggers", "It's redirected to: parte solo da Go to another topic"),
+         N("Ask with adaptive card", "cards", "topics", "Ci aiuti a migliorare?: motivo e commento, output motivoId e noteId"),
+         N("Send a message", "chat-text", "topics", "Grazie, il tuo commento aiuta l'azienda a migliorare l'agente.")]),
 }
+
+# Dettagli dei Fundamentals (Lab 01-05): solo per i riquadri che nascondono impostazioni del lab
+# (nomi, valori, formule); gli altri restano semplici. Id con il prefisso del lab (f01-...).
+IDENTIFY = "Identify as User's entire response"
+DETAILS.update({
+    # Lab 01 - lab01-percorso-setup
+    "f01-devenv": D(
+        "Developer environment", "tray", "platform", "Lab 01",
+        "Ambiente di sviluppo separato da quello Default, in cui si svolgono i lab: si ottiene con il Power Apps Developer Plan.",
+        [N("Power Apps Developer Plan", "globe", "platform", "aka.ms/PowerAppsDevPlan"),
+         N("Start free", "user-check", "platform", "email address, checkbox, poi Start free"),
+         N("Power Apps", "logo:power-apps", "lifecycle", "si apre make.powerapps.com con il nuovo environment"),
+         N("Environment in Copilot Studio", "sliders-horizontal", "platform", "box Environment in alto a destra: dal default al developer environment")]),
+    "f01-accesso": D(
+        "Accesso", "shield-check", "platform", "Lab 01",
+        "Con la trial la pubblicazione non è consentita per impostazione predefinita: serve il ruolo Copilot Studio Authors, assegnato a un security group.",
+        [N("Microsoft 365 admin center", "users-three", "platform", "Teams & groups › Active teams & groups"),
+         N("Add a security group", "users-three", "platform", "Security groups: AgentCreators, Next, Create group"),
+         N("Add members", "user-plus", "platform", "Members › view all and manage members: il proprio account"),
+         N("Power Platform admin center", "sliders-horizontal", "platform", "Home › Manage › Tenant Settings"),
+         N("Copilot Studio Authors", "shield-check", "platform", "da All Users al gruppo AgentCreators, Done e Save")]),
+    "f01-solution": D(
+        "Solution e Publisher", "package", "lifecycle", "Lab 01",
+        "Il contenitore dell'agente, creato nel Solution Explorer di Copilot Studio (… › Solutions › + New solution) con un publisher nuovo.",
+        [G("+ New publisher", "stamp", "lifecycle", [
+             N("CSM Solutions", "stamp", "lifecycle", "Display Name; Name CSMSolutions"),
+             N("Copilot Studio Masterclass", "note-pencil", "lifecycle", "Description"),
+             N("csm · 77000", "key", "lifecycle", "Prefix e Prefix value")], layout="list"),
+         G("New solution", "package", "lifecycle", [
+             N("CSMFirstAgent", "package", "lifecycle", "Display Name e Name, Version 1.0.0.0"),
+             N("Set as your preferred solution", "check-circle", "lifecycle", "Current preferred Solution: CSMFirstAgent"),
+             N("More Options", "sliders-horizontal", "lifecycle", "campi lasciati vuoti, poi Create")], layout="list")]),
+    "f01-agente": D(
+        "Agente IT Support", "robot", "agents", "Lab 01",
+        "Il primo agente, minimale e senza connettori né azioni: lo si crea descrivendolo in linguaggio naturale e gli si aggiunge un sito pubblico.",
+        [N("Agents", "robot", "agents", "home page di Copilot Studio"),
+         N("Descrizione in linguaggio naturale", "chat-text", "instructions",
+           "IT Support: Assistente di supporto IT di primo livello per l'azienda Zava"),
+         N("Limiti e tono", "prohibit", "risk", "niente recupero password, bypass MFA, sblocco account o codici; tono professionale, calmo e neutro"),
+         N("Add knowledge · Public website", "globe", "knowledge", "https://support.microsoft.com"),
+         N("Test", "flask", "instructions", "finestra Test your Agent, prima della pubblicazione")]),
+    # Lab 02 - lab02-fonti-conoscenza
+    "f02-upload": D(
+        "Documento caricato", "upload-simple", "knowledge", "Lab 02",
+        "Un singolo file caricato come fonte di conoscenza dell'agente IT Support, per le domande sul reset della password.",
+        [N("+ Add knowledge › Upload", "upload-simple", "knowledge", "Knowledge, nel menu in alto accanto al nome dell'agente"),
+         N("Zava_KB_Reset_M365_Password.docx", "file-text", "knowledge", "file fino a 512 MB; serve la Dataverse search nell'environment"),
+         N("Description", "note-pencil", "knowledge", "Usa questa Knowledge quando un Utente vuole resettare la Password."),
+         N("Test", "flask", "instructions", "Come posso resettare la Password? Il documento compare nelle references")]),
+    "f02-vpn": D(
+        "Files group VPN Guide", "folders", "knowledge", "Lab 02",
+        "Le tre versioni della guida alla VPN ZavaSecure caricate come un solo gruppo, con istruzioni per scegliere la versione giusta.",
+        [N("Upload as a group", "folders", "knowledge", "Zava_Guida_VPN_v1, v2 e v3.docx, al posto di Add to agent"),
+         N("Name e Description", "note-pencil", "knowledge", "VPN Guide; usa la versione più aggiornata (v3), a meno che non sia richiesta una versione diversa"),
+         N("Ready", "check-circle", "knowledge", "si apre il file group per modificarne i dettagli"),
+         N("Instructions", "clipboard-text", "instructions",
+           "nomi Zava_Guida_\"topic\"_vX: sempre la versione più recente, le precedenti solo se l'utente lo chiede esplicitamente"),
+         N("Test", "flask", "instructions", "Come configuro la VPN secondo la guida del 2022?")]),
+    "f02-sharepoint": D(
+        "SharePoint Help Desk CSM", "logo:sharepoint", "knowledge", "Lab 02",
+        "La raccolta Documents del sito Help Desk CSM: l'agente risponde solo con i documenti che l'utente è autorizzato a vedere.",
+        [G("Sito SharePoint · Prerequisiti", "logo:sharepoint", "knowledge", [
+             N("Team Site › Standard Team", "buildings", "knowledge", "Help Desk CSM-Vostro Nome, indirizzo HelpDeskCSM"),
+             N("Documents › + Upload", "files", "knowledge",
+               "Zava_Help_Desk_Playbook, Zava_Incident_Report_Template_Example, Zava_Help_Desk_SLA")], layout="list"),
+         N("+ Add knowledge › SharePoint", "logo:sharepoint", "knowledge", "Browse Item, sito Help Desk CSM, Documents, Confirm Selection"),
+         N("Description", "note-pencil", "knowledge",
+           "Documentazione essenziale e risorse per supportare la gestione dei servizi IT e l'assistenza agli utenti finali."),
+         N("Autenticazione dell'utente", "shield-check", "platform", "nelle risposte solo i dati che l'utente può visualizzare"),
+         N("Test", "flask", "instructions", "Quali sono gli orari standard rispetto alla disponibilità del supporto di emergenza?")]),
+    "f02-web": D(
+        "Public website", "globe", "knowledge", "Lab 01",
+        "Il sito pubblico aggiunto alla creazione dell'agente: con la ricerca sul web disattivata resta una delle sue fonti.",
+        [N("Add knowledge › Public website", "globe", "knowledge", "https://support.microsoft.com", lab="Lab 01"),
+         N("Limite", "warning", "platform", "al massimo 4 URL di siti pubblici", lab="Lab 02"),
+         N("Use information from the Web: off", "sliders-horizontal", "system", "Settings › Generative AI: niente risposte dal resto del web", lab="Lab 02")],
+        layout="list"),
+    # Lab 03 - lab03-agente-help-desk
+    "f03-supporto": D(
+        "First Topic - Supporto Tecnico", "chats-circle", "topics", "Lab 03",
+        "Topic con risposte standard: chiede il tipo di problema e risponde con i passaggi di troubleshooting dell'Help Desk.",
+        [N("Trigger", "lightning", "triggers", "descrizione: problematiche tecniche con strumenti, applicazioni o servizi aziendali"),
+         N("Question", "question", "topics", "Multiple choice options, variabile Issue"),
+         N("Condition", "git-branch", "system", "un ramo per opzione, creato in automatico", branches=[
+             B("Hardware Issues", [N("Message", "chat-text", "topics", "7 passaggi di troubleshooting")], fam="topics"),
+             B("Software Issues", [N("Message", "chat-text", "topics", "8 passaggi di troubleshooting")], fam="topics"),
+             B("Network Issues", [N("Message", "chat-text", "topics", "8 passaggi di troubleshooting")], fam="topics"),
+             B("All other conditions", [N("Redirect", "arrow-bend-up-right", "system", "Go to another topic: Escalate")])]),
+         N("End current topic", "stop-circle", "system", "Topic Management")]),
+    "f03-ticket": D(
+        "Ticket Card", "chats-circle", "topics", "Lab 03",
+        "Topic che raccoglie i dati del ticket in una adaptive card e ne mostra il riepilogo in chat.",
+        [N("Trigger", "lightning", "triggers", "descrizione: creazione di un ticket di supporto per il reparto IT"),
+         N("Ask with adaptive card", "cards", "topics", "Richiesta Ticket IT: nome, cognome, email, tipologia, descrizione"),
+         N("Message", "chat-text", "topics", "Il seguente Ticket è stato inviato al Reparto IT, con la formula card",
+           pill="Topic.nome … Topic.descrizione")]),
+    "f03-escalate": D(
+        "Escalate", "headset", "system", "Lab 03",
+        "Topic di sistema dell'agente: ci arriva First Topic - Supporto Tecnico quando la risposta non è una delle tre opzioni.",
+        [N("Question", "question", "topics", "variabile Issue: Hardware, Software o Network Issues"),
+         N("All other conditions", "git-branch", "system", "ramo creato in automatico per ogni altra risposta"),
+         N("Redirect", "arrow-bend-up-right", "system", "Topic Management › Go to another topic › Escalate"),
+         N("Escalate", "headset", "system", "topic di sistema già presente nell'agente: non si crea nel lab")]),
+    # Lab 03 - lab03-topic-supporto-tecnico
+    "f03-question": D(
+        "Question", "question", "topics", "Lab 03",
+        "Nodo Ask a question: chiede il tipo di problema con opzioni fisse e salva la scelta nella variabile Issue.",
+        [N("Ask a question", "question", "topics", "Salve User.DisplayName, potresti identificare la tipologia di problema?"),
+         N("User.DisplayName", "brackets-curly", "topics", "variabile inserita con il simbolo {x}"),
+         N("Identify: Multiple choice options", "list-bullets", "topics", "Hardware Issues, Software Issues, Network Issues"),
+         N("Variabile Issue", "brackets-curly", "topics", "nome cambiato nelle Variable Properties"),
+         N("Condition", "git-branch", "system", "creata in automatico: un ramo per opzione e All other conditions")],
+        layout="list"),
+    # Lab 03 - lab03-topic-ticket-card
+    "f03-card": D(
+        "Ask with adaptive card", "cards", "topics", "Lab 03",
+        "Mostra la scheda Richiesta Ticket IT: ogni campo, con il suo id, diventa una variabile di output del nodo.",
+        [N("Edit adaptive card", "note-pencil", "topics", "Card payload: Ctrl + A, poi il JSON del lab (version 1.5)"),
+         G("Campi obbligatori", "cards", "topics", [
+             N("nome · cognome", "textbox", "topics", "Input.Text, label Nome e Cognome"),
+             N("email", "at", "topics", "Input.Text style Email, controllato con una regex"),
+             N("tipologia", "list-bullets", "topics", "Input.ChoiceSet: Hardware, Software, Rete, Altro"),
+             N("descrizione", "textbox", "topics", "Input.Text multiriga, al massimo 2000 caratteri")], layout="list"),
+         N("Invia ticket · Annulla", "paper-plane-tilt", "topics", "Action.Submit, data action submitTicket o cancel"),
+         N("Variabili di output", "brackets-curly", "topics", "Topic.nome, Topic.cognome, Topic.email, Topic.tipologia, Topic.descrizione")],
+        layout="list"),
+    "f03-message": D(
+        "Message", "chat-text", "topics", "Lab 03",
+        "Send a message con il testo di conferma e una formula card in Power Fx, che può leggere le variabili del topic.",
+        [N("Testo", "chat-text", "topics", "Il seguente Ticket è stato inviato al Reparto IT"),
+         N("+ Add › Adaptive card › Formula", "function", "topics", "in una card JSON non si possono inserire variabili"),
+         N("Riepilogo dati inseriti", "cards", "topics", "TextBlock Medium, Bolder"),
+         N("FactSet", "list-bullets", "topics", "Nome, Cognome, Email, Tipologia di problema, Descrizione: Text(Topic.…)")],
+        layout="list"),
+    # Lab 04 - lab04-agente-annunci
+    "f04-topic": D(
+        "Topic New Job Posting", "chats-circle", "topics", "Lab 04",
+        "Guida la creazione dell'annuncio: l'agente ricava ruolo, seniority e sede dalla conversazione, il prompt compila il template.",
+        [N("Trigger", "lightning", "triggers",
+           "nuovo annuncio di lavoro (job posting), pubblica una nuova posizione, crea un annuncio di lavoro…"),
+         G("Variabili di input · Details", "brackets-curly", "topics", [
+             N("RoleTitle", "brackets-curly", "topics", "titolo standard del ruolo, es. Software Engineer"),
+             N("Seniority", "brackets-curly", "topics", "Junior, Mid o Senior"),
+             N("PrimaryLocation", "brackets-curly", "topics", "Città, Paese oppure Remote o Hybrid")], layout="list"),
+         N("Job Posting - Zava", "logo:ai-builder", "tools", "prompt action, output OutputAnnuncio"),
+         N("Message", "chat-text", "topics", "Topic.OutputAnnuncio.text", pill="OutputAnnuncio")]),
+    "f04-prompt": D(
+        "Job Posting - Zava", "logo:ai-builder", "tools", "Lab 04",
+        "Prompt con il template aziendale: dai tre input deduce il resto dell'annuncio e lo restituisce in Markdown.",
+        [N("RUOLO", "user-circle", "instructions", "specialista di carriera che aiuta i team HR di Zava S.p.A."),
+         N("OBIETTIVI", "target", "instructions", "input [role_title], [seniority], [primary_location]; il resto si deduce; output in Markdown"),
+         N("REGOLE DI INFERENZA", "lightbulb", "instructions",
+           "retribuzione CCNL Commercio e mercato milanese, (suggerito) se incerta; 6-8 responsabilità, 5-7 requisiti obbligatori, 3-5 preferenziali; tono per seniority"),
+         N("CONTENUTI AZIENDALI FISSI", "buildings", "instructions",
+           "COMPANY_OVERVIEW, POLICIES (Hybrid, Remote o in sede), BENEFITS, APPLICATION: sempre verbatim"),
+         N("TEMPLATE DI OUTPUT", "article", "instructions",
+           "sede, retribuzione, profilo aziendale, riepilogo, responsabilità, requisiti, benefit, candidatura"),
+         N("Regole e best practice", "list-checks", "instructions", "testi fissi mai riscritti, ordine e titoli del template rispettati"),
+         N("Input e output", "brackets-curly", "tools", "tre input Text (add content › Text); output OutputAnnuncio")],
+        layout="list"),
+    "f04-istruzioni": D(
+        "Istruzioni", "clipboard-text", "instructions", "Lab 04",
+        "Le istruzioni dell'agente, inserite dopo i tool: l'ordine dei tre passi e le regole; i nomi degli strumenti si collegano con /.",
+        [N("# Contesto", "clipboard-text", "instructions", "Agente Redazione Annunci: redige con il template, genera l'output e lo invia via email"),
+         G("# Flusso di Lavoro", "list-numbers", "instructions", [
+             N("New Job Posting", "chats-circle", "topics", "crea l'annuncio di lavoro"),
+             N("Testo in HTML", "logo:ai-builder", "tools", "converte l'annuncio in chat in HTML per la mail"),
+             N("Annuncio Mail", "logo:outlook", "tools", "invia la mail all'utente")]),
+         N("# Regole", "list-checks", "instructions",
+           "niente contenuti nuovi, solo italiano, HTML solo con lo strumento, annuncio invariato; output finale: l'invio dell'email")],
+        layout="list"),
+    "f04-html": D(
+        "Testo in HTML", "logo:ai-builder", "tools", "Lab 04",
+        "Prompt aggiunto come tool (Tools › Add a tool › Create new › Prompt): converte l'annuncio in un frammento HTML per l'email.",
+        [G("Input", "brackets-curly", "tools", [
+             N("Username", "user-circle", "tools", "Custom value: User.DisplayName (System)"),
+             N("Content", "sparkle", "tools", "Dynamically fill with AI: la risposta finale più rilevante dell'assistente, senza cambiarla")],
+           layout="list"),
+         N("Regole critiche", "warning", "risk", "solo HTML grezzo: niente Markdown, escape dei caratteri o blocchi ```"),
+         N("Inizio fisso", "chat-text", "tools", "<p>Ciao [USERNAME],</p> e Ecco il job posting che hai richiesto"),
+         N("Mappatura Markdown → HTML", "code", "tools", "h1, h2 con emoji, p, ul e li, b, a, hr; CSS inline su ogni elemento"),
+         N("Bottone CTA", "envelope-simple", "tools", "mailto:careers@zava.it, Invia la tua candidatura"),
+         N("Output", "flow-arrow", "tools", "solo il frammento HTML finale, senza html, head, body o style")],
+        layout="list"),
+    "f04-mail": D(
+        "Annuncio Mail", "logo:outlook", "tools", "Lab 04",
+        "Azione Send an email (V2) del connettore Office 365 Outlook, aggiunta come tool: invia l'annuncio in HTML all'utente.",
+        [N("Credential to use", "key", "platform", "Additional details: Maker-provided credentials"),
+         G("Input", "brackets-curly", "tools", [
+             N("To", "user-circle", "tools", "Custom value: User.Email (System)"),
+             N("Subject", "sparkle", "tools", "Dynamically fill with AI: frase molto breve (max ~8 parole), senza HTML"),
+             N("Body", "sparkle", "tools", "Dynamically fill with AI: l'intero frammento HTML di Testo in HTML")], layout="list"),
+         N("Completion", "chat-text", "topics", "After running: Send specific response, La mail da lei richiesta è stata inviata.")],
+        layout="list"),
+    # Lab 04 - lab04-topic-new-job-posting
+    "f04-inputs": D(
+        "Variabili di input", "brackets-curly", "topics", "Lab 04",
+        "Create in Details › Input › Create a new variable: l'agente le ricava dalla conversazione, guidato dalla descrizione di ognuna.",
+        [N("RoleTitle", "brackets-curly", "topics", "solo il nome della posizione, normalizzato in un titolo standard; ignora seniority e sede"),
+         N("Seniority", "brackets-curly", "topics",
+           "Junior | Mid | Senior: entry/graduate → Junior, intermediate → Mid, senior/lead/principal/staff/head → Senior"),
+         N("PrimaryLocation", "brackets-curly", "topics", "Città, Paese oppure Remote o Hybrid (con la città, se disponibile)"),
+         N(IDENTIFY, "sliders-horizontal", "topics", "per tutte e tre le variabili")],
+        layout="list"),
+    "f04-node-prompt": D(
+        "Job Posting - Zava", "logo:ai-builder", "tools", "Lab 04",
+        "Nodo del prompt sotto il trigger (Add node › Add a tool › New Prompt): gli input del prompt prendono le variabili del topic.",
+        [G("Input del prompt · con …", "brackets-curly", "tools", [
+             N("role_title", "textbox", "tools", "RoleTitle"),
+             N("seniority", "textbox", "tools", "Seniority"),
+             N("primary_location", "textbox", "tools", "PrimaryLocation")], layout="list"),
+         N("Outputs", "brackets-curly", "topics", "Select a variable › Create a new variable: OutputAnnuncio"),
+         N("Message", "chat-text", "topics", "Send a message con la formula Topic.OutputAnnuncio.text")],
+        layout="list"),
+    # Lab 05 - lab05-agente-device-booker
+    "f05-available": D(
+        "Topic Available devices", "chats-circle", "topics", "Lab 05",
+        "Legge dalla lista Devices i dispositivi disponibili del tipo richiesto e li restituisce all'agente.",
+        [N("Trigger", "lightning", "triggers", "descrizione: dispositivi disponibili nella lista SharePoint Devices"),
+         N("Get items", "logo:sharepoint", "tools", "Status 'Available' e AssetType = VarDeviceType", pill="VarDeviceType"),
+         N("Set variable value", "brackets-curly", "topics", "VarAvailableDevices (Table) = Global.VarDevices.value",
+           pill="Global.VarDevices")]),
+    "f05-request": D(
+        "Topic Request device", "chats-circle", "topics", "Lab 05",
+        "Propone i dispositivi disponibili in una adaptive card e passa la scelta all'agent flow, che scrive al manager.",
+        [N("Trigger", "lightning", "triggers", "l'utente risponde sì alla richiesta di un dispositivo"),
+         N("Ask with adaptive card", "cards", "topics", "Device selection: scelte da Global.VarDevices.value e commenti"),
+         N("Send device request email", "logo:power-automate", "tools", "agent flow", pill="deviceSelectionId · commentsId"),
+         N("Message", "chat-text", "topics", "Thanks, User.DisplayName…", pill="ModelValue"),
+         N("Redirect", "arrow-bend-up-right", "system", "Go to another topic: End of Conversation")]),
+    "f05-istruzioni": D(
+        "Istruzioni", "clipboard-text", "instructions", "Lab 05",
+        "Le istruzioni di Device Booker: i due topic si collegano con / al posto dei nomi tra parentesi quadre.",
+        [N("# Context", "clipboard-text", "instructions", "vedere i dispositivi disponibili e richiederli dalla SharePoint Device Inventory List"),
+         G("# Action", "list-numbers", "instructions", [
+             N("/Available devices", "chats-circle", "topics", "i dispositivi con stato Available, prima della richiesta"),
+             N("/Request device", "chats-circle", "topics", "la richiesta di un dispositivo disponibile")], layout="list"),
+         N("# Rules", "list-checks", "instructions",
+           "solo lettura e richieste: niente approvazioni, modifiche all'inventario, manutenzione o resi; tono professionale e conciso")],
+        layout="list"),
+    "f05-devices": D(
+        "Lista Devices", "logo:sharepoint", "knowledge", "Lab 05",
+        "Lista presente di default nel sito Help Desk CSM del Lab 02, con le colonne del lab e sei dispositivi (Devices-CSM.csv).",
+        [G("Colonne", "table", "knowledge", [
+             N("Status", "check-circle", "knowledge", "Available o In use: filtro di Get items"),
+             N("Asset Type", "list-bullets", "knowledge", "Laptop, Desktop o Smartphone: filtro AssetType"),
+             N("Manufacturer · Model", "file-text", "knowledge", "nell'email al manager; Model anche nell'adaptive card"),
+             N("Title · Color · Serial Number", "file-text", "knowledge", "dati del dispositivo"),
+             N("Purchase Date · Purchase Price · Order #", "coins", "knowledge", "dati di acquisto")], layout="list"),
+         N("Get items", "logo:sharepoint", "tools", "topic Available devices: elenco filtrato"),
+         N("Get item · Get Device", "logo:sharepoint", "tools", "agent flow: un elemento per ID, con il Link to item")],
+        layout="list"),
+    "f05-flow": D(
+        "Send device request email", "logo:power-automate", "tools", "Lab 05",
+        "Agent flow chiamato dal topic Request device: recupera il dispositivo, scrive al manager e restituisce il modello. Save draft, poi Publish.",
+        [N(TRIGGER_FLOW, "lightning", "triggers", "input Text: DeviceSharePointId, User, AdditionalComments (facoltativo)"),
+         N("Get Device", "logo:sharepoint", "tools", "Get item della lista Devices, Id = DeviceSharePointId"),
+         N("Send an email to manager", "logo:outlook", "tools", "Send an email (V2): Request type: new device"),
+         N(RESPOND, "flow-arrow", "tools", "output Text ModelValue = Model")]),
+    "f05-getdevice": D(
+        "Get Device", "logo:sharepoint", "tools", "Lab 05",
+        "Azione Get item di SharePoint, rinominata: legge dalla lista Devices il dispositivo scelto nell'adaptive card.",
+        [N("Site Address e List Name", "logo:sharepoint", "knowledge", "sito Help Desk CSM, lista Devices"),
+         N("Id", "brackets-curly", "tools", "fx: DeviceSharePointId, input del trigger"),
+         N("Limit Columns by View", "sliders-horizontal", "tools", "Advanced parameters › Show All: All items"),
+         N("Usati dopo", "flow-arrow", "tools", "Manufacturer, Model, Link to item")],
+        layout="list"),
+    "f05-email": D(
+        "Send an email to manager", "logo:outlook", "tools", "Lab 05",
+        "Azione Send an email (V2) di Office 365 Outlook, rinominata: la richiesta arriva al manager già completa.",
+        [N("To", "user-circle", "tools", "il proprio account"),
+         N("Subject", "note-pencil", "tools", "Request type: new device"),
+         N("Body", "envelope-simple", "tools", "New device requested from User; Manufacturer e Model del Get Device"),
+         N("Link to item in SharePoint", "link", "tools", "editor HTML </>: <a href=\"Link to item\">…</a>"),
+         N("Additional comments", "function", "tools", "if(empty(AdditionalComments), 'None', AdditionalComments)")],
+        layout="list"),
+    # Lab 05 - lab05-topic-available-devices
+    "f05-io": D(
+        "Input e output", "brackets-curly", "topics", "Lab 05",
+        "Variabili del topic, create in … › Details › Topic details: l'input lo ricava l'agente, l'output torna all'agente.",
+        [N("VarDeviceType · Input", "brackets-curly", "topics", f"{IDENTIFY}; List of possible values: Laptop, Desktop, Smartphone"),
+         N("VarAvailableDevices · Output", "table", "topics", "tipo Table; List of available devices by device type")],
+        layout="list"),
+    "f05-getitems": D(
+        "Get items", "logo:sharepoint", "tools", "Lab 05",
+        "Azione Get items del connettore SharePoint (Add a tool › Connector): legge solo i dispositivi disponibili del tipo richiesto.",
+        [N("Site Address e List Name", "logo:sharepoint", "knowledge", "sito Help Desk CSM, lista Devices"),
+         N("Filter Query · Formula", "funnel", "tools", "Concatenate(\"Status eq 'Available' and AssetType eq '\", Topic.VarDeviceType, \"'\")"),
+         N("Limit Columns by View", "sliders-horizontal", "tools", "All items"),
+         N("Output Global.VarDevices", "brackets-curly", "topics", "rinominata VarDevices e resa Global: la usa anche Request device")],
+        layout="list"),
+    "f05-setvar": D(
+        "Set variable value", "brackets-curly", "topics", "Lab 05",
+        "Nodo Variable Management › Set a variable value: copia i dispositivi letti da Get items nella variabile di output del topic.",
+        [N("Set variable", "brackets-curly", "topics", "VarAvailableDevices, output del topic (Table)"),
+         N("To value · Formula", "function", "topics", "Global.VarDevices.value: gli elementi restituiti da Get items")],
+        layout="list"),
+    # Lab 05 - lab05-topic-request-device
+    "f05-card": D(
+        "Ask with adaptive card", "cards", "topics", "Lab 05",
+        "Prima un JSON segnaposto, poi la stessa scheda come Formula card: le scelte sono i dispositivi letti da Available devices.",
+        [N("Card payload JSON", "code", "topics", "segnaposto: crea le variabili di output deviceSelectionId e commentsId"),
+         N("Formula card", "function", "topics", "Device selection, con riferimento a Global.VarDevices.value"),
+         N("deviceSelectionId", "list-bullets", "topics", "Input.ChoiceSet: ForAll(Global.VarDevices.value, title Model, value ID; NA se vuoti)"),
+         N("commentsId", "textbox", "topics", "Input.Text multiriga, sotto Additional Information"),
+         N("FactSet", "list-bullets", "topics", "Request type: New Device; Response time: 3-5 Business Days"),
+         N("Submit Request", "paper-plane-tilt", "topics", "Action.Submit, id deviceSubmittedId")],
+        layout="list"),
+    "f05-callflow": D(
+        "Send device request email", "logo:power-automate", "tools", "Lab 05",
+        "Nodo dell'agent flow sotto la card (Add a tool): gli input del flow prendono la scelta e i commenti dell'utente.",
+        [G("Input", "brackets-curly", "tools", [
+             N("DeviceSharePointId", "brackets-curly", "tools", "deviceSelectionId"),
+             N("User", "user-circle", "tools", "User.DisplayName"),
+             N("AdditionalComments", "function", "tools", "Advanced Inputs: If(IsBlank(Topic.commentsId), \"\", Topic.commentsId)")],
+           layout="list"),
+         N("Output ModelValue", "brackets-curly", "topics", "il modello del dispositivo, nel messaggio di conferma")],
+        layout="list"),
+})
 
 
 def _walk(steps):
@@ -895,24 +1238,24 @@ def save_details(d, body):
 
 
 def panoramica():
-    """S01-S07: chi parla con chi."""
+    """S01-S08: chi parla con chi."""
     d = Diagram("panoramica-sistema")
     WA, WB, WC, WD = 232, 250, 210, 200     # larghezze delle quattro colonne, 55 px fra l'una e l'altra
     A = 20
     B = A + WA + 55
     C = B + WB + 55
     D = C + WC + 55
-    u = d.node(A, 40, WA, "Proponenti e analisti", "users-three", "agents", "Teams e M365 Copilot (S07)", detail="users")
-    kn = d.node(A, 140, WA, "PMO Knowledge", "logo:sharepoint", "knowledge", "conoscenza SharePoint", detail="pmo-knowledge")
-    mail = d.node(A, 250, WA, "Casella del PMO", "logo:outlook", "tools", "oggetto Proposta progetto", detail="mailbox")
+    u = d.node(A, 40, WA, "Proponenti e analisti", "users-three", "agents", "Copilot e Teams (S07-S08)", detail="users")
+    kn = d.node(A, 140, WA, "PMO Knowledge", "logo:sharepoint", "knowledge", "SharePoint (Lab 00, S01)", detail="pmo-knowledge")
+    mail = d.node(A, 250, WA, "Casella del PMO", "logo:outlook", "tools", "Proposta progetto (S05)", detail="mailbox")
     da = d.node(B, 40, WB, "Agente Demand IT", DA, "ai-engine", "orchestratore (S01)", detail="demand-it")
     trg = d.node(B, 250, WB, "Flow del trigger", "logo:power-automate", "triggers", "When a new email arrives (S05)", detail="flow-trigger")
     intk = d.node(C, 10, WC, "Intake Proposte", "robot", "agents", "child agent (S02-S05)", detail="intake")
     com = d.node(C, 100, WC, "Agente Comitato", COM, "agents", "agente connesso (S02)", detail="comitato")
     dos = d.node(C, 190, WC, "Genera dossier", "logo:power-automate", "tools", "topic e agent flow (S06)", detail="genera-dossier")
-    teams = d.node(D, 10, WD, "Canale del PMO", "logo:teams", "tools", "Notifica PMO in Teams", detail="teams-channel")
+    teams = d.node(D, 10, WD, "Teams del PMO", "logo:teams", "tools", "Notifica PMO (S05)", detail="teams-channel")
     dv = d.node(D, 100, WD, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse (Lab 00)", detail="pmo-hub")
-    od = d.node(D, 190, WD, "OneDrive", "logo:onedrive", "tools", "dossier Word e link", detail="onedrive")
+    od = d.node(D, 190, WD, "OneDrive", "logo:onedrive", "tools", "dossier Word (S06)", detail="onedrive")
     d.arrow([(u["r"], u["cy"]), (B, u["cy"])], "ai-engine")
     d.arrow([(kn["r"], kn["cy"]), (B + 40, kn["cy"]), (B + 40, da["b"])], "knowledge", dashed=True)
     d.arrow([(mail["r"], mail["cy"]), (B, mail["cy"])], "triggers")
@@ -925,6 +1268,9 @@ def panoramica():
     d.arrow([(intk["r"], intk["cy"] + 15), (bus2, intk["cy"] + 15), (bus2, dv["cy"] - 10), (D, dv["cy"] - 10)], "knowledge")
     d.arrow([(com["r"], dv["cy"] + 10), (D, dv["cy"] + 10)], "knowledge", dashed=True)
     d.arrow([(dos["r"], od["cy"]), (D, od["cy"])], "tools")
+    # il prompt Dossier di revisione legge valutazione, proposta, proponente e programma
+    gy = (com["b"] + dos["y"]) / 2
+    d.arrow([(dos["r"] - 24, dos["y"]), (dos["r"] - 24, gy), (D + 40, gy), (D + 40, dv["b"])], "knowledge", dashed=True)
     right = dv["r"] + 25
     d.arrow([(trg["r"], trg["cy"]), (right, trg["cy"]), (right, dv["cy"]), (dv["r"], dv["cy"])], "triggers",
             label="Registra proposta email", at=(dos["cx"], trg["cy"]))
@@ -932,17 +1278,18 @@ def panoramica():
 
 
 def architettura_standard():
-    """S01-S06: i componenti dell'Agente Demand IT e dello specialista."""
+    """S01-S08: i componenti dell'Agente Demand IT e dello specialista."""
     d = Diagram("architettura-standard")
     d.lane(20, 20, 620, 382, "Agente Demand IT · csm_agentedemand_std", DA, "ai-engine", detail="demand-it")
     top = d.node(342, 62, 280, "Topic", "chats-circle", "topics", "Genera dossier di revisione", white=True, detail="topic-dossier")
-    trg = d.node(342, 140, 280, "Trigger", "lightning", "triggers", "When a new email arrives (V3)", white=True, detail="trigger-email")
-    d.node(342, 218, 280, "Conoscenza PMO Knowledge", "logo:sharepoint", "knowledge", "Linee guida PMO, Piano Strategico IT", white=True, detail="pmo-knowledge")
+    trg = d.node(342, 140, 280, "Trigger", "lightning", "triggers", "Nuova proposta via email", white=True, detail="trigger-email")
+    d.node(342, 218, 280, "Conoscenza PMO", "logo:sharepoint", "knowledge", "cartella SharePoint PMO Knowledge", white=True, detail="pmo-knowledge")
+    d.node(342, 296, 280, "Topic", "chats-circle", "topics", "Approfondimento CSAT negativo\nda End of Conversation (S08)", white=True, detail="topic-csat")
     intake = d.lane(40, 62, 284, 325, "Intake Proposte · child agent", "robot", "agents", detail="intake")
     tools = [("Carica business case", "crea proposta e carica il PDF", "carica-bc"),
              ("Analizza business case", "prompt Estrai dati business case", "analizza-bc"),
              ("Crea valutazione", "prompt Valuta proposta,\nconferma dell'utente", "crea-val"),
-             ("Notifica PMO in Teams", "adaptive card nel canale", "notifica-teams")]
+             ("Notifica PMO in Teams", "adaptive card in Teams", "notifica-teams")]
     ys = [102, 167, 232, 313]
     for (label, sub, det), y in zip(tools, ys):
         d.node(55, y, 254, label, "logo:power-automate", "tools", sub, white=True, h=74 if "\n" in sub else 58, detail=det)
@@ -950,7 +1297,8 @@ def architettura_standard():
     k2 = d.node(695, 62, 280, "Conoscenza Dataverse", "logo:dataverse", "knowledge", "Program, Evaluation Criterion,\nRequester, Proposal, Assessment", white=True, detail="comitato-kb")
     fd = d.node(680, 200, 310, "Agent flow Genera dossier", "logo:power-automate", "tools", "prompt Dossier di revisione", detail="flow-dossier")
     od = d.node(680, 285, 310, "OneDrive", "logo:onedrive", "tools", "Dossier_AS-####.docx, link", detail="onedrive")
-    pa = d.node(680, 370, 310, "Flow del trigger", "logo:power-automate", "triggers", "prompt Classifica email PMO,\nRegistra proposta email", detail="flow-trigger")
+    pa = d.node(680, 370, 310, "Flow del trigger", "logo:power-automate", "triggers",
+                "prompt Classifica email PMO,\nRegistra proposta email,\nSends a prompt all'agente", detail="flow-trigger")
     dv = d.node(340, 490, 300, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse, soluzione PMO Demand IT", detail="pmo-hub")
     d.arrow([(640, 45), (680, 45)], "agents")
     d.arrow([(top["r"], top["cy"]), (665, top["cy"]), (665, fd["cy"]), (680, fd["cy"])], "topics")
@@ -971,33 +1319,51 @@ def workflow_chat():
          (2, 3, "Carica business case: proposta e PDF", "call"), (3, 2, "Codice PP-####", "reply"),
          (2, 3, "Analizza business case: Estrai dati, proponente RQ-####", "call"),
          (2, 0, "Riepilogo; programma PG-### da confermare se manca", "reply"),
-         (0, 1, "Valuta la proposta", "call"), (1, 2, "Delega la valutazione", "call"),
+         (0, 1, "Valuta PP-#### sul programma PG-###", "call"), (1, 2, "Delega la valutazione", "call"),
          (2, 0, "Conferma richiesta prima di Crea valutazione", "reply"), (0, 2, "Conferma", "call"),
          (2, 3, "Crea valutazione: Valuta proposta, punteggio, AS-####", "call"),
-         (2, 0, "Punteggio, indicazione e codice AS-####", "reply")]
+         (2, 0, "Tabella criteri, punteggio, indicazione, AS-####", "reply")]
     sequence("workflow-chat", a, m)
 
 
 def workflow_email_standard():
     """S05: il flow del trigger in Power Automate."""
     d = Diagram("workflow-email-standard")
-    x, w = 200, 340
-    t = d.node(x, 20, w, "When a new email arrives (V3)", "logo:outlook", "triggers", "Split On: una esecuzione per email")
-    h = d.node(x, 104, w, "Html to text", "file-text", "tools")
-    c = d.node(x, 180, w, "Classifica", "logo:ai-builder", "tools", "prompt Classifica email PMO")
-    dec = d.node(x, 264, w, "Proposta rilevata", "git-branch", "system", "Classifica contiene Proposta?")
-    lo = d.node(x, 348, w, "Per ogni allegato", "arrows-clockwise", "tools", "condizione Allegato PDF")
-    r = d.node(x, 432, w, "Registra proposta email", "logo:dataverse", "knowledge", "riga in Proposals, canale Email")
-    cd = d.node(x, 516, w, "Carica documento email", "logo:dataverse", "knowledge", "PDF in Business Case Document")
-    ag = d.node(x, 600, w, "Sends a prompt to the specified copilot", DA, "ai-engine", "Agente Demand IT")
-    an = d.node(x, 684, w, "Analizza business case", "robot", "agents", "strumento di Intake Proposte")
-    nt = d.node(x, 768, w, "Notifica PMO in Teams", "logo:teams", "tools", "adaptive card")
-    dv = d.node(650, 264, 320, "Da verificare", "git-branch", "system", "Classifica contiene Incerta?")
-    man = d.node(650, 360, 320, "Avvisa verifica manuale", "logo:outlook", "tools", "Send an email (V2)")
-    fine = d.node(650, 456, 320, "Fine senza azioni", "x-circle", "system", "RispostaAutomatica o NonPertinente")
-    for a_, b_ in ((t, h), (h, c), (c, dec), (dec, lo), (lo, r), (r, cd), (cd, ag), (ag, an), (an, nt)):
+    x, w = 60, 340                     # colonna principale; a destra (R) il ramo No di Proposta rilevata
+    LX, LW, R, RW = 40, 600, 670, 290  # corsie del ciclo e dell'agente, colonna R
+    t = d.node(x, 20, w, "When a new email arrives (V3)", "logo:outlook", "triggers",
+               "Subject Filter Proposta progetto, con allegati\nSplit On: una esecuzione per email")
+    h = d.node(x, t["b"] + 30, w, "Html to text", "file-text", "tools", "Content Conversion, Body")
+    c = d.node(x, h["b"] + 30, w, "Classifica", "logo:ai-builder", "tools", "prompt Classifica email PMO")
+    dec = d.node(x, c["b"] + 30, w, "Proposta rilevata", "git-branch", "system", "Classifica contiene Proposta?")
+    # ciclo For each sugli allegati: la condizione Allegato PDF e, nel ramo Sì, registrazione e chiamata all'agente
+    ly = dec["b"] + 44
+    ap = d.node(x, ly + 42, w, "Allegato PDF", "git-branch", "system", "Content-Type application/pdf?", white=True)
+    ig = d.node(LX + LW - 190, ap["y"], 180, "Allegato ignorato", "x-circle", "system", "es. il file Word", white=True)
+    r = d.node(x, ap["b"] + 44, w, "Registra proposta email", "logo:dataverse", "knowledge", "riga in Proposals, canale Email", white=True)
+    cd = d.node(x, r["b"] + 30, w, "Carica documento email", "logo:dataverse", "knowledge", "PDF in Business Case Document", white=True)
+    ag = d.node(x, cd["b"] + 30, w, "Sends a prompt to the specified copilot", DA, "ai-engine",
+                "Agente Demand IT, con il codice PP-####", white=True)
+    d.lane(LX, ly, LW, ag["b"] + 16 - ly, "Per ogni allegato", "arrows-clockwise", "tools")
+    d.parts.insert(0, d.parts.pop())   # la corsia sotto i riquadri
+    # l'agente analizza e notifica con gli strumenti di Intake Proposte: riquadri a destra del titolo
+    ay = ag["b"] + 16 + 44
+    ax = LX + LW - 20 - w
+    an = d.node(ax, ay + 42, w, "Analizza business case", "logo:power-automate", "tools", "agent flow di Intake Proposte", white=True)
+    nt = d.node(ax, an["b"] + 30, w, "Notifica PMO in Teams", "logo:power-automate", "tools", "adaptive card in Teams (Flow bot)", white=True)
+    d.lane(LX, ay, LW, nt["b"] + 16 - ay, "Agente Demand IT · Intake Proposte", DA, "ai-engine")
+    d.parts.insert(0, d.parts.pop())
+    dv = d.node(R, dec["y"], RW, "Da verificare", "git-branch", "system", "Classifica contiene Incerta?")
+    man = d.node(R, dv["b"] + 36, RW, "Avvisa verifica manuale", "logo:outlook", "tools", "Send an email (V2)")
+    fine = d.node(R, man["b"] + 36, RW, "Fine senza azioni", "x-circle", "system", "RispostaAutomatica o NonPertinente")
+    for a_, b_ in ((t, h), (h, c), (c, dec), (r, cd), (cd, ag), (an, nt)):
         d.arrow([(a_["cx"], a_["b"]), (b_["cx"], b_["y"])], "instructions")
-    d.text(dec["cx"] + 8, (dec["b"] + lo["y"]) / 2 + 4, "Sì", 11, "dg-sub", 600)
+    d.arrow([(dec["cx"], dec["b"]), (ap["cx"], ap["y"])], "instructions", label="Sì", at=(dec["cx"], (dec["b"] + ly) / 2))
+    d.arrow([(ap["cx"], ap["b"]), (r["cx"], r["y"])], "instructions", label="Sì", at=(ap["cx"], (ap["b"] + r["y"]) / 2))
+    d.arrow([(ap["r"], ap["cy"]), (ig["x"], ap["cy"])], NEUTRAL, label="No", at=((ap["r"] + ig["x"]) / 2, ap["cy"]))
+    lane_b = ag["b"] + 16
+    d.arrow([(ag["r"], ag["cy"]), (an["cx"], ag["cy"]), (an["cx"], an["y"])], "ai-engine", dashed=True,
+            label="messaggio all'agente", at=(an["cx"], (lane_b + ay) / 2))
     d.arrow([(dec["r"], dec["cy"]), (dv["x"], dv["cy"])], NEUTRAL, label="No", at=((dec["r"] + dv["x"]) / 2, dec["cy"]))
     d.arrow([(dv["cx"], dv["b"]), (man["cx"], man["y"])], "platform", label="Sì", at=(dv["cx"], (dv["b"] + man["y"]) / 2))
     loop = dv["r"] + 30
@@ -1011,21 +1377,23 @@ def workflow_dossier():
     d = Diagram("workflow-dossier")
     lane_x, lane_y = 615, 20               # spazio fra Topic e corsia per l'etichetta CodiceValutazione
     row = lane_y + 40
-    p_h, f_h, sl_h = 76, 58, 58            # altezze di Run a prompt, Create file, Create share link
-    f_y = row + p_h + 9
-    sl_y = f_y + f_h + 12
+    p_h, f_h, sl_h = 92, 58, 58            # altezze di Run a prompt, Create file, Create share link
+    f_y = row + p_h + 28                   # spazio per vedere le frecce fra i passi del flow
+    sl_y = f_y + f_h + 28
     d.lane(lane_x, lane_y, 370, sl_y + sl_h + 15 - lane_y, "Agent flow · Genera dossier", "logo:power-automate", "tools")
     u = d.node(20, row, 190, "Utente", "user-circle", "agents", "Mi prepari il dossier\ndi AS-####?")
     top = d.node(250, row, 230, "Topic", "chats-circle", "topics", "Genera dossier di revisione,\nchiede il codice se manca")
-    p = d.node(lane_x + 15, row, 340, "Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione: output Document,\ntemplate Word, conoscenza Dataverse", white=True, h=p_h)
+    p = d.node(lane_x + 15, row, 340, "Run a prompt", "logo:ai-builder", "tools",
+               "prompt Dossier di revisione:\noutput Document (preview), template Word,\nconoscenza Dataverse", white=True, h=p_h)
     f = d.node(lane_x + 15, f_y, 340, "Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx", white=True, h=f_h)
-    sl = d.node(lane_x + 15, sl_y, 340, "Create share link", "logo:onedrive", "tools", "View, Organization: output DossierURL", white=True, h=sl_h)
-    card = d.node(250, sl["cy"] - 30, 230, "Adaptive card", "cards", "topics", "link al dossier in chat")
+    sl = d.node(lane_x + 15, sl_y, 340, "Create share link", "logo:onedrive", "tools", "View, Organization: Web URL", white=True, h=sl_h)
+    card = d.node(250, sl["cy"] - 30, 230, "Adaptive card", "cards", "topics", "pulsante Apri il dossier")
     d.arrow([(u["r"], u["cy"]), (top["x"], u["cy"])], "topics")
     d.arrow([(top["r"], top["cy"]), (p["x"], top["cy"])], "topics", label="CodiceValutazione", at=((top["r"] + lane_x) / 2, top["cy"]))
     d.arrow([(p["cx"], p["b"]), (f["cx"], f["y"])], "tools")
     d.arrow([(f["cx"], f["b"]), (sl["cx"], sl["y"])], "tools")
-    d.arrow([(sl["x"], sl["cy"]), (card["r"], sl["cy"])], "tools", dashed=True)
+    d.arrow([(sl["x"], sl["cy"]), (card["r"], sl["cy"])], "tools", dashed=True,
+            label="DossierURL", at=((card["r"] + lane_x) / 2, sl["cy"]))
     d.save()
 
 
@@ -1040,6 +1408,23 @@ def workflow_revisione():
     sequence("workflow-revisione", a, m)
 
 
+def workflow_csat():
+    """S08: il topic di sistema End of Conversation con il voto CSAT e l'approfondimento dei voti bassi."""
+    f = Flow("workflow-csat", "Topic di sistema · End of Conversation", w=330, fam="system", icon="gear-six", out=ADVANCED)
+    f.step("Domande di chiusura", "question", "system", "conferma della chiusura e richiesta\nsoddisfatta: nodi già presenti")
+    f.step("Set variable value", "brackets-curly", "topics", "VarCSATRating = 0, sopra il nodo CSAT")
+    f.step("Domanda CSAT", "question", "topics", "da 1 a 5 stelle, risposta salvata\nin Topic.VarCSATRating")
+    f.step("Condition", "git-branch", "system", "VarCSATRating is greater than\nor equal to 3")
+    f.branch([("3, 4 o 5 stelle", [("Nessun approfondimento", "check-circle", "system", "la conversazione prosegue")], "topics"),
+              ("All other conditions", [("Go to another topic", "arrow-bend-up-right", "system", "Approfondimento CSAT negativo"),
+                                        ("Ask with adaptive card", "cards", "topics", "nel topic richiamato: Ci aiuti\na migliorare?, output motivoId\ne noteId"),
+                                        ("Send a message", "chat-text", "topics", "Grazie, il tuo commento aiuta\nl'azienda a migliorare l'agente.")],
+               NEUTRAL)],
+             colw=270)
+    f.step("Domanda finale", "question", "system", "End of Conversation riprende")
+    f.save()
+
+
 # --- schemi dei Fundamentals ------------------------------------------------------------
 # Lab 01-05 della Standard Harness (docs/fondamentali/standard-harness/): nomi esatti degli
 # agenti, dei topic, delle variabili e degli strumenti creati nei lab. Se un lab cambia un nome,
@@ -1050,16 +1435,16 @@ F = FUNDAMENTALS
 def lab01_percorso():
     """Lab 01: i passi della preparazione (a sinistra) e dove si trova ciò che creano (a destra)."""
     d = Diagram("lab01-percorso-setup", F)
-    steps = [("Account Microsoft 365", "user-circle", "platform", "Business Basic, Try for free"),
-             ("Copilot Studio Trial", "logo:copilot-studio", "instructions", "aka.ms/TryCopilotStudio"),
-             ("Developer environment", "tray", "platform", "Power Apps Developer Plan"),
-             ("Accesso", "shield-check", "platform", "ruolo Copilot Studio Authors"),
-             ("Solution e Publisher", "package", "lifecycle", "CSMFirstAgent, CSM Solutions"),
-             ("Primo agente", "robot", "agents", "IT Support")]
+    steps = [("Account Microsoft 365", "user-circle", "platform", "Business Basic, Try for free", None),
+             ("Copilot Studio Trial", "logo:copilot-studio", "instructions", "aka.ms/TryCopilotStudio", None),
+             ("Developer environment", "tray", "platform", "Power Apps Developer Plan", "f01-devenv"),
+             ("Accesso", "shield-check", "platform", "ruolo Copilot Studio Authors", "f01-accesso"),
+             ("Solution e Publisher", "package", "lifecycle", "CSMFirstAgent, CSM Solutions", "f01-solution"),
+             ("Primo agente", "robot", "agents", "IT Support", "f01-agente")]
     x, w, h, y0, pitch = 40, 270, 60, 40, 94
     prev = None
-    for i, (label, icon, fam, sub) in enumerate(steps):
-        n = d.node(x, y0 + i * pitch, w, label, icon, fam, sub, h=h)
+    for i, (label, icon, fam, sub, det) in enumerate(steps):
+        n = d.node(x, y0 + i * pitch, w, label, icon, fam, sub, h=h, detail=det)
         d.badge(22, n["cy"], i + 1)
         if prev:
             d.arrow([(prev["cx"], prev["b"]), (n["cx"], n["y"])], "instructions")
@@ -1088,11 +1473,12 @@ def lab02_fonti():
     """Lab 02: le fonti di conoscenza dell'agente IT Support e le impostazioni dell'AI generativa."""
     d = Diagram("lab02-fonti-conoscenza", F)
     x, w = 20, 350
-    src = [("Documento caricato", "upload-simple", "Zava_KB_Reset_M365_Password.docx\nper il reset della password"),
-           ("Files group VPN Guide", "folders", "Zava_Guida_VPN_v1, v2, v3.docx\nistruzioni: usa la versione più recente"),
-           ("SharePoint Help Desk CSM", "logo:sharepoint", "Documents: Playbook, Incident Report\nTemplate, SLA; con i permessi dell'utente"),
-           ("Public website", "globe", "support.microsoft.com\naggiunto nel Lab 01")]
-    nodes = [d.node(x, 20 + i * 92, w, label, icon, "knowledge", sub) for i, (label, icon, sub) in enumerate(src)]
+    src = [("Documento caricato", "upload-simple", "Zava_KB_Reset_M365_Password.docx\nper il reset della password", "f02-upload"),
+           ("Files group VPN Guide", "folders", "Zava_Guida_VPN_v1, v2, v3.docx\nistruzioni: usa la versione più recente", "f02-vpn"),
+           ("SharePoint Help Desk CSM", "logo:sharepoint", "Documents: Playbook, Incident Report\nTemplate, SLA; con i permessi dell'utente", "f02-sharepoint"),
+           ("Public website", "globe", "support.microsoft.com\naggiunto nel Lab 01", "f02-web")]
+    nodes = [d.node(x, 20 + i * 92, w, label, icon, "knowledge", sub, detail=det)
+             for i, (label, icon, sub, det) in enumerate(src)]
     ag = d.node(470, 140, 270, "Agente IT Support", "robot", "agents", "risponde citando la fonte\nnelle references")
     st = d.node(470, 262, 270, "Settings · Generative AI", "sliders-horizontal", "system",
                 "Use general knowledge: off\nUse information from the Web: off")
@@ -1111,10 +1497,10 @@ def lab03_agente():
     ins = d.node(L + 15, 62, 350, "Istruzioni", "clipboard-text", "instructions",
                  "solo i Topic predefiniti, nessuna\nsoluzione improvvisata", white=True)
     t1 = d.node(L + 15, 160, 350, "First Topic - Supporto Tecnico", "chats-circle", "topics",
-                "domanda Issue: Hardware, Software o\nNetwork; passi di troubleshooting", white=True)
-    esc = d.node(L + 15, 280, 350, "Escalate", "headset", "system", "topic di sistema", white=True)
+                "domanda Issue: Hardware, Software o\nNetwork; passi di troubleshooting", white=True, detail="f03-supporto")
+    esc = d.node(L + 15, 280, 350, "Escalate", "headset", "system", "topic di sistema", white=True, detail="f03-escalate")
     t2 = d.node(L + 15, 380, 350, "Ticket Card", "chats-circle", "topics",
-                "Ask with adaptive card, riepilogo\ncon una formula card", white=True)
+                "Ask with adaptive card, riepilogo\ncon una formula card", white=True, detail="f03-ticket")
     u = d.node(20, 270, 170, "Utente", "user-circle", "agents", "chat di test")
     bus = 210
     for t, phrase in ((t1, "Ho un problema tecnico"), (t2, "Voglio aprire un ticket")):
@@ -1129,7 +1515,7 @@ def lab03_supporto():
     """Lab 03: il topic First Topic - Supporto Tecnico, con la domanda a scelta multipla e i rami."""
     f = Flow("lab03-topic-supporto-tecnico", "Topic · First Topic - Supporto Tecnico", w=360)
     f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione: problemi\ntecnici con strumenti, applicazioni, servizi")
-    f.step("Question", "question", "topics", "Salve User.DisplayName, tipologia di problema?\nMultiple choice options, variabile Issue")
+    f.step("Question", "question", "topics", "Salve User.DisplayName, tipologia di problema?\nMultiple choice options, variabile Issue", detail="f03-question")
     msg = "chat-text"
     f.branch([("Hardware Issues", [("Message", msg, "topics", "Problema Hardware:\n7 passi di controllo")], "topics"),
               ("Software Issues", [("Message", msg, "topics", "Problema Software:\n8 passi di controllo")], "topics"),
@@ -1144,10 +1530,10 @@ def lab03_ticket():
     """Lab 03: il topic Ticket Card, con la scheda di input e il riepilogo in una formula card."""
     f = Flow("lab03-topic-ticket-card", "Topic · Ticket Card", w=350)
     f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione:\nticket di supporto per il reparto IT")
-    card = f.step("Ask with adaptive card", "cards", "topics", "Richiesta Ticket IT: campi obbligatori,\npulsanti Invia ticket e Annulla")
+    card = f.step("Ask with adaptive card", "cards", "topics", "Richiesta Ticket IT: campi obbligatori,\npulsanti Invia ticket e Annulla", detail="f03-card")
     out = f.side(card, "Variabili di output", "brackets-curly", "topics",
                  "Topic.nome, Topic.cognome,\nTopic.email, Topic.tipologia,\nTopic.descrizione", 240, into=False)
-    msg = f.step("Message", "chat-text", "topics", "Il seguente Ticket è stato inviato al Reparto IT\n+ formula card Riepilogo dati inseriti")
+    msg = f.step("Message", "chat-text", "topics", "Il seguente Ticket è stato inviato al Reparto IT\n+ formula card Riepilogo dati inseriti", detail="f03-message")
     f.arrow([(out["cx"], out["b"]), (out["cx"], msg["cy"]), (msg["r"], msg["cy"])], NEUTRAL, dashed=True)
     f.save()
 
@@ -1158,16 +1544,16 @@ def lab04_agente():
     u = d.node(40, 20, 330, "Utente", "user-circle", "agents", "Voglio creare un nuovo annuncio di lavoro")
     d.lane(20, 110, 740, 354, "Agente Redazione Annunci", "robot", "agents")
     tp = d.node(40, 152, 330, "Topic New Job Posting", "chats-circle", "topics",
-                "input RoleTitle, Seniority, PrimaryLocation", white=True)
+                "input RoleTitle, Seniority, PrimaryLocation", white=True, detail="f04-topic")
     pr = d.node(40, 246, 330, "Job Posting - Zava", "logo:ai-builder", "tools",
-                "prompt con il template aziendale\nZava S.p.A., in Markdown", white=True)
+                "prompt con il template aziendale\nZava S.p.A., in Markdown", white=True, detail="f04-prompt")
     ms = d.node(40, 356, 330, "Message", "chat-text", "topics", "Topic.OutputAnnuncio.text in chat", white=True)
     ins = d.node(410, 152, 330, "Istruzioni", "clipboard-text", "instructions",
-                 "Flusso di Lavoro: New Job Posting,\nTesto in HTML, Annuncio Mail", white=True)
+                 "Flusso di Lavoro: New Job Posting,\nTesto in HTML, Annuncio Mail", white=True, detail="f04-istruzioni")
     ht = d.node(410, 262, 330, "Testo in HTML", "logo:ai-builder", "tools",
-                "prompt: Username = User.DisplayName,\nContent compilato dall'AI", white=True)
+                "prompt: Username = User.DisplayName,\nContent compilato dall'AI", white=True, detail="f04-html")
     ml = d.node(410, 372, 330, "Annuncio Mail", "logo:outlook", "tools",
-                "Send an email (V2): To = User.Email,\nSubject e Body compilati dall'AI", white=True)
+                "Send an email (V2): To = User.Email,\nSubject e Body compilati dall'AI", white=True, detail="f04-mail")
     box = d.node(410, 494, 330, "Casella dell'utente", "logo:outlook", "tools", "email con l'annuncio in HTML")
     d.arrow([(300, u["b"]), (300, tp["y"])], "topics")  # a destra del titolo della corsia
     d.arrow([(tp["cx"], tp["b"]), (pr["cx"], pr["y"])], "topics")
@@ -1183,9 +1569,9 @@ def lab04_topic():
     f = Flow("lab04-topic-new-job-posting", "Topic · New Job Posting", w=330)
     tr = f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione:\nnuovo annuncio di lavoro (job posting)")
     f.side(tr, "Variabili di input", "brackets-curly", "topics",
-           "RoleTitle: titolo standard del ruolo\nSeniority: Junior, Mid o Senior\nPrimaryLocation: sede o Remote/Hybrid", 300)
+           "RoleTitle: titolo standard del ruolo\nSeniority: Junior, Mid o Senior\nPrimaryLocation: sede o Remote/Hybrid", 300, detail="f04-inputs")
     f.step("Job Posting - Zava", "logo:ai-builder", "tools", "prompt: role_title, seniority,\nprimary_location", afam="topics",
-           pill="RoleTitle · Seniority · PrimaryLocation")
+           pill="RoleTitle · Seniority · PrimaryLocation", detail="f04-node-prompt")
     f.step("Message", "chat-text", "topics", "Topic.OutputAnnuncio.text", pill="Topic.OutputAnnuncio")
     f.save()
 
@@ -1195,18 +1581,18 @@ def lab05_agente():
     d = Diagram("lab05-agente-device-booker", F)
     d.lane(20, 20, 310, 361, "Agente Device Booker", "robot", "agents")
     av = d.node(35, 62, 280, "Topic Available devices", "chats-circle", "topics",
-                "Get items filtrato per VarDeviceType,\nrisultato in Global.VarDevices", white=True)
+                "Get items filtrato per VarDeviceType,\nrisultato in Global.VarDevices", white=True, detail="f05-available")
     rq = d.node(35, 172, 280, "Topic Request device", "chats-circle", "topics",
-                "adaptive card con i dispositivi,\npoi l'agent flow", white=True)
+                "adaptive card con i dispositivi,\npoi l'agent flow", white=True, detail="f05-request")
     d.node(35, 290, 280, "Istruzioni", "clipboard-text", "instructions",
-           "Action: /Available devices e\n/Request device; solo richieste", white=True)
+           "Action: /Available devices e\n/Request device; solo richieste", white=True, detail="f05-istruzioni")
     sp = d.node(390, 20, 340, "Lista Devices", "logo:sharepoint", "knowledge",
-                "sito Help Desk CSM: Status, Asset Type,\nManufacturer, Model, Serial Number")
-    d.lane(390, 130, 340, 355, "Agent flow · Send device request email", "logo:power-automate", "tools")
+                "sito Help Desk CSM: Status, Asset Type,\nManufacturer, Model, Serial Number", detail="f05-devices")
+    d.lane(390, 130, 340, 355, "Agent flow · Send device request email", "logo:power-automate", "tools", detail="f05-flow")
     tr = d.node(405, 172, 310, "When an agent calls the flow", "lightning", "triggers",
                 "input DeviceSharePointId, User,\nAdditionalComments (facoltativo)", white=True)
-    gd = d.node(405, 262, 310, "Get Device", "logo:sharepoint", "tools", "Get item della lista Devices per ID", white=True)
-    em = d.node(405, 336, 310, "Send an email to manager", "logo:outlook", "tools", "Request type: new device", white=True)
+    gd = d.node(405, 262, 310, "Get Device", "logo:sharepoint", "tools", "Get item della lista Devices per ID", white=True, detail="f05-getdevice")
+    em = d.node(405, 336, 310, "Send an email to manager", "logo:outlook", "tools", "Request type: new device", white=True, detail="f05-email")
     rs = d.node(405, 410, 310, "Respond to the agent", "flow-arrow", "tools", "output ModelValue = Model", white=True)
     d.arrow([(av["r"], 79), (sp["x"], 79)], "knowledge")
     d.arrow([(rq["r"], tr["cy"]), (tr["x"], tr["cy"])], "tools")
@@ -1243,9 +1629,9 @@ def lab05_available():
     f = Flow("lab05-topic-available-devices", "Topic · Available devices", w=360)
     tr = f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione:\ndispositivi disponibili nella lista Devices")
     f.side(tr, "Input e output", "brackets-curly", "topics",
-           "VarDeviceType: Laptop, Desktop\no Smartphone; VarAvailableDevices\n(Table) restituita all'agente", 275)
-    f.step("Get items", "logo:sharepoint", "tools", "lista Devices, view All items, Filter Query:\nStatus 'Available' e AssetType = VarDeviceType")
-    f.step("Set variable value", "brackets-curly", "topics", "Topic.VarAvailableDevices =\nGlobal.VarDevices.value", pill="Global.VarDevices")
+           "VarDeviceType: Laptop, Desktop\no Smartphone; VarAvailableDevices\n(Table) restituita all'agente", 275, detail="f05-io")
+    f.step("Get items", "logo:sharepoint", "tools", "lista Devices, view All items, Filter Query:\nStatus 'Available' e AssetType = VarDeviceType", detail="f05-getitems")
+    f.step("Set variable value", "brackets-curly", "topics", "Topic.VarAvailableDevices =\nGlobal.VarDevices.value", pill="Global.VarDevices", detail="f05-setvar")
     f.save()
 
 
@@ -1253,9 +1639,9 @@ def lab05_request():
     """Lab 05: il topic Request device, con l'adaptive card e l'agent flow."""
     f = Flow("lab05-topic-request-device", "Topic · Request device", w=360)
     f.step("Trigger", "lightning", "triggers", "The agent chooses, dalla descrizione: l'utente\nrisponde sì alla richiesta di un dispositivo")
-    f.step("Ask with adaptive card", "cards", "topics", "Device selection, formula card: le scelte\nvengono da ForAll(Global.VarDevices.value)")
+    f.step("Ask with adaptive card", "cards", "topics", "Device selection, formula card: le scelte\nvengono da ForAll(Global.VarDevices.value)", detail="f05-card")
     f.step("Send device request email", "logo:power-automate", "tools",
-           "agent flow: DeviceSharePointId, User,\nAdditionalComments", pill="deviceSelectionId · commentsId")
+           "agent flow: DeviceSharePointId, User,\nAdditionalComments", pill="deviceSelectionId · commentsId", detail="f05-callflow")
     f.step("Message", "chat-text", "topics", "Thanks, User.DisplayName. Your selected\ndevice, ModelValue, has been submitted",
            pill="ModelValue")
     f.step("Redirect", "arrow-bend-up-right", "system", "Go to another topic: End of Conversation")
@@ -1265,7 +1651,7 @@ def lab05_request():
 if __name__ == "__main__":
     failed = []
     for build in (panoramica, architettura_standard, workflow_chat, workflow_email_standard,
-                  workflow_dossier, workflow_revisione,
+                  workflow_dossier, workflow_revisione, workflow_csat,
                   lab01_percorso, lab02_fonti, lab03_agente, lab03_supporto, lab03_ticket,
                   lab04_agente, lab04_topic, lab05_agente, lab05_sequenza, lab05_available, lab05_request):
         try:

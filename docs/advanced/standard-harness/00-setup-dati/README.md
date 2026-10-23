@@ -110,7 +110,7 @@ Lo stesso dipendente può presentare più proposte nel corso dell'anno. Una tabe
 
 ### Proposal
 
-La proposta è la tabella su cui lavorano tutti: intake, valutazione, dossier, pianificazione. Contiene i dati estratti dal business case, i dati sul canale di arrivo (chat o email) e lo stato del processo. Due scelte meritano attenzione: lo **Proposal Status** è una colonna propria, distinta dallo stato di sistema, e il documento si conserva sul record nella colonna File **Business Case Document**.
+La proposta è la tabella su cui lavorano tutti: intake, valutazione, dossier. Contiene i dati estratti dal business case, i dati sul canale di arrivo (chat o email) e lo stato del processo. Due scelte meritano attenzione: lo **Proposal Status** è una colonna propria, distinta dallo stato di sistema, e il documento si conserva sul record nella colonna File **Business Case Document**.
 
 | Colonna | Nome logico | Tipo e regole |
 | --- | --- | --- |

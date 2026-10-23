@@ -23,7 +23,7 @@ In questo lab verrà aggiunto all'Agente Demand IT un **trigger su evento**: qua
 > [!NOTE]
 > **Partecipanti al corso**
 >
-> Per i partecipanti al corso il team `Zava PMO` con il canale `Proposte` è già creato nel loro Teams: verificare solo di vederlo e passare alla prima sezione.
+> La card arriva nella chat con **Flow bot** del proprio account: non serve creare team o canali. Per i partecipanti al corso il team `Zava PMO` con il canale `Proposte` è già creato nel loro Teams e si può usare, se si preferisce, per pubblicare la card nel canale (variante facoltativa della sezione *Agent flow "Notifica PMO in Teams"*).
 
 ::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
 - **Trigger dell'agente invece di un flow separato.** Il trigger nasce dall'agente e invia all'agente un messaggio da elaborare: l'agente usa gli stessi strumenti della chat (analisi del documento) senza duplicare la logica.
@@ -35,9 +35,9 @@ In questo lab verrà aggiunto all'Agente Demand IT un **trigger su evento**: qua
 
 ## Che cosa si costruisce
 
-Lo schema mostra il flow del trigger costruito in questo lab: l'agente viene chiamato solo dopo la classificazione con il prompt **Classifica email PMO** e la registrazione di ogni PDF in Dataverse, e non crea valutazioni. Le email incerte producono un avviso per la verifica manuale; risposte automatiche e messaggi non pertinenti terminano senza azioni.
+Lo schema mostra il flow del trigger costruito in questo lab: l'agente viene chiamato solo dopo la classificazione con il prompt **Classifica email PMO** e la registrazione di ogni PDF in Dataverse, e non crea valutazioni. Analisi del documento e notifica in Teams le svolge l'agente, con gli strumenti di **Intake Proposte**. Gli allegati che non sono PDF vengono ignorati; le email incerte producono un avviso per la verifica manuale; risposte automatiche e messaggi non pertinenti terminano senza azioni.
 
-![Flow del trigger email: classificazione, registrazione dei PDF e chiamata all'agente](../../images/workflow-email-standard.svg)
+![Flow del trigger email: classificazione, registrazione dei PDF, chiamata all'agente e notifica del PMO in Teams](../../images/workflow-email-standard.svg)
 
 ## Prerequisiti
 
@@ -47,7 +47,7 @@ Per svolgere questo lab occorre avere:
 - una casella di posta del tenant di laboratorio (la propria) e accesso a Microsoft Teams;
 - l'indirizzo dell'app **PMO Demand Hub** annotato nel Lab 00;
 - le email di prova in [`resources/advanced/email`](../../../resources/advanced/email/);
-- un team in Microsoft Teams per il PMO, ad esempio `Zava PMO`, con un canale `Proposte` in cui il flow pubblicherà le notifiche. Per crearli: in Teams selezionare **Teams**, **+** (**Join or create a team**), **Create team**, nome `Zava PMO`; poi, nel team, **...**, **Add channel**, nome `Proposte`.
+- facoltativo: un team in Microsoft Teams per il PMO, ad esempio `Zava PMO`, con un canale `Proposte`, solo se si vuole pubblicare la card nel canale invece che nella chat con Flow bot. Per crearli: in Teams selezionare **Teams**, **+** (**Join or create a team**), **Create team**, nome `Zava PMO`; poi, nel team, **...**, **Add channel**, nome `Proposte`.
 
 ## Prompt "Classifica email PMO"
 
@@ -279,8 +279,8 @@ Una proposta arrivata di notte deve comparire davanti a un analista la mattina d
 | Property  | Value                                                                   |
 | --------- | ----------------------------------------------------------------------- |
 | Post as   | **Flow bot**                                                            |
-| Post in   | **Chat with Flow bot** (oppure **Channel**, se si ha un team del PMO)   |
-| Recipient | il proprio account, selezionato dall'elenco                             |
+| Post in   | **Chat with Flow bot** (oppure **Channel**, se si usa il canale `Proposte` del team `Zava PMO`) |
+| Recipient | il proprio account, selezionato dall'elenco (con **Channel**: team `Zava PMO` e canale `Proposte`) |
 
 4. Nel campo **Adaptive Card** incollare il JSON seguente:
 
@@ -372,7 +372,7 @@ Le email di prova coprono i casi reali della casella del PMO: una proposta corre
 
 ![](./images/passo6-extra-31.png)
 
-4. In Teams aprire la chat con **Workflows** (Flow bot): la card riporta codice, titolo, proponente e programma. Il pulsante apre l'elenco delle proposte.
+4. In Teams aprire la chat con **Workflows** (Flow bot), oppure il canale `Proposte` se si è scelto **Channel**: la card riporta codice, titolo, proponente e programma. Il pulsante apre l'elenco delle proposte.
 
 ![](./images/passo6-extra-32.png)
 

@@ -247,6 +247,8 @@
 .diagram .dg-rule { stroke: var(--dg-rule); }
 .diagram .dg-badge circle { fill: var(--dg-badge); }
 .diagram .dg-badge text { fill: var(--dg-badge-ink); }
+/* testi dei messaggi delle sequenze: alone nel colore della pagina, le linee verticali non li tagliano (HALO) */
+.diagram .dg-msg { paint-order: stroke; stroke: var(--dg-bg); stroke-width: 4px; stroke-linejoin: round; }
 
 /* schemi interattivi (markdown.ts, theme/diagram-details.ts): i riquadri con dettaglio sono
    pulsanti, con un pallino "i" nell'angolo; passandoci sopra, con il fuoco o aperti il bordo

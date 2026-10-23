@@ -28,13 +28,13 @@ In questo laboratorio viene creato un **child agent** per l'intake, con un **age
 
 ## Che cosa si costruisce
 
-Lo schema mostra l'architettura completa della standard harness alla fine del percorso. In questo lab nascono le due deleghe principali dell'**Agente Demand IT**: l'intake al child agent **Intake Proposte**, che per ora ha il solo agent flow **Carica business case**, e la preparazione della revisione all'**Agente Comitato**. Gli altri agent flow, il topic del dossier e il trigger email si aggiungono in S03-S06.
+Lo schema mostra l'architettura completa della standard harness alla fine del percorso. In questo lab nascono le due deleghe principali dell'**Agente Demand IT**: l'intake al child agent **Intake Proposte**, che per ora ha il solo agent flow **Carica business case**, e la preparazione della revisione all'**Agente Comitato**. Gli altri agent flow, il topic del dossier e il trigger email si aggiungono in S03-S06, il topic di approfondimento CSAT in S08.
 
 ![Architettura multi-agente della Standard Harness](../../images/architettura-standard.svg)
 
 ## Prerequisiti
 
-Per svolgere questo lab occorre avere terminato il laboratorio S01 ed avere creato l'**Agente Demand IT**. Servono inoltre i business case [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e [`BC-05_Nuova_intranet_e_hub_dipendenti.docx`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.docx).
+Per svolgere questo lab occorre avere terminato il laboratorio S01 ed avere creato l'**Agente Demand IT**. Servono inoltre i business case [`BC-01_Portale_fornitori_self-service.pdf`](../../../resources/advanced/business-case/BC-01_Portale_fornitori_self-service.pdf) e [`BC-05_Nuova_intranet_e_hub_dipendenti.docx`](../../../resources/advanced/business-case/BC-05_Nuova_intranet_e_hub_dipendenti.docx), e l'icona dell'Agente Comitato [`committee-agent-192.png`](../../../resources/advanced/agent-icon/committee-agent-192.png).
 
 ## Intake Proposte
 
@@ -100,12 +100,12 @@ Per registrare una proposta servono operazioni che il modello da solo non può f
 
 | Colonna                      | Come impostarla      | Valore                                                                          |
 | ---------------------------- | -------------------- | ------------------------------------------------------------------------------- |
-| Titolo                       | Contenuto dinamico   | **BusinessCase name** dal trigger (titolo provvisorio, verrà sostituito in S03) |
-| Messaggio di accompagnamento | Espressione (**fx**) | vedere sotto                                                                    |
-| Email di origine             | Contenuto dinamico   | **EmailMittente**                                                               |
-| Canale                       | Elenco               | **Chat**                                                                        |
-| Stato proposta               | Elenco               | **Received**                                                                    |
-| Data di presentazione        | Espressione          | `formatDateTime(utcNow(), 'yyyy-MM-dd')`                                        |
+| Title                        | Contenuto dinamico   | **BusinessCase name** dal trigger (titolo provvisorio, verrà sostituito in S03) |
+| Cover Message                | Espressione (**fx**) | vedere sotto                                                                    |
+| Source Email                 | Contenuto dinamico   | **EmailMittente**                                                               |
+| Channel                      | Elenco               | **Chat**                                                                        |
+| Proposal Status              | Elenco               | **Received**                                                                    |
+| Submission Date              | Espressione          | `formatDateTime(utcNow(), 'yyyy-MM-dd')`                                        |
 
 ![](./images/passo2-06.png)
 
@@ -113,7 +113,7 @@ Per registrare una proposta servono operazioni che il modello da solo non può f
 
 ![](./images/passo2-08.png)
 
-7. Per **Messaggio di accompagnamento** inserire la seguente espressione, che tronca il testo a 4.000 caratteri:
+7. Per **Cover Message** inserire la seguente espressione, che tronca il testo a 4.000 caratteri:
 
 ```text
 if(greater(length(coalesce(triggerBody()?['text'], '')), 4000), substring(triggerBody()?['text'], 0, 4000), coalesce(triggerBody()?['text'], ''))
@@ -271,7 +271,8 @@ La preparazione della revisione ha un pubblico diverso (sponsor e architetti) e 
 
 ![](./images/passo5-extra-16.png)
 
-3. Come **Descrizione** inserire:
+3. Selezionare l'icona dell'agente nella barra in alto, poi **Change icon**, caricare [`committee-agent-192.png`](../../../resources/advanced/agent-icon/committee-agent-192.png) e selezionare **Save**: come per l'Agente Demand IT in S01, l'icona distingue lo specialista dagli altri agenti.
+4. Come **Descrizione** inserire:
 
 ```text
 Prepara sponsor e architetti alla sessione di revisione delle proposte di progetto IT con briefing e domande basati sui dati del PMO Demand Hub.
@@ -279,7 +280,7 @@ Prepara sponsor e architetti alla sessione di revisione delle proposte di proget
 
 ![](./images/passo5-extra-17.png)
 
-4. Nella sezione **Instructions** inserire:
+5. Nella sezione **Instructions** inserire:
 
 ```text
 Sei l'Agente Comitato di Zava S.p.A. Aiuti sponsor interni, architetti di riferimento e analisti del PMO a prepararsi alla sessione di revisione di una proposta di progetto IT. Non contatti mai i proponenti.
@@ -301,14 +302,14 @@ Come lavori:
 
 ![](./images/passo5-extra-18.png)
 
-5. Nella scheda **Overview**, sezione **Model**, scegliere **Claude Sonnet 4.6**, come per l'Agente Demand IT.
+6. Nella scheda **Overview**, sezione **Model**, scegliere **Claude Sonnet 4.6**, come per l'Agente Demand IT.
 
 > [!NOTE]
 > **Modello dell'agente connesso**
 >
 > L'Agente Comitato è un agente autonomo: non eredita il modello dell'orchestratore, va impostato anche qui.
 
-6. Selezionare **Save**.
+7. Selezionare **Save**.
 
 ### Configurare Dataverse come conoscenza
 

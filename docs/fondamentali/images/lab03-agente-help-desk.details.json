@@ -1,0 +1,152 @@
+{
+ "diagram": "lab03-agente-help-desk",
+ "details": {
+  "f03-supporto": {
+   "title": "First Topic - Supporto Tecnico",
+   "icon": "chats-circle",
+   "fam": "topics",
+   "lab": "Lab 03",
+   "role": "Topic con risposte standard: chiede il tipo di problema e risponde con i passaggi di troubleshooting dell'Help Desk.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Trigger",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "descrizione: problematiche tecniche con strumenti, applicazioni o servizi aziendali"
+    },
+    {
+     "label": "Question",
+     "icon": "question",
+     "fam": "topics",
+     "sub": "Multiple choice options, variabile Issue"
+    },
+    {
+     "label": "Condition",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "un ramo per opzione, creato in automatico",
+     "branches": [
+      {
+       "label": "Hardware Issues",
+       "fam": "topics",
+       "steps": [
+        {
+         "label": "Message",
+         "icon": "chat-text",
+         "fam": "topics",
+         "sub": "7 passaggi di troubleshooting"
+        }
+       ]
+      },
+      {
+       "label": "Software Issues",
+       "fam": "topics",
+       "steps": [
+        {
+         "label": "Message",
+         "icon": "chat-text",
+         "fam": "topics",
+         "sub": "8 passaggi di troubleshooting"
+        }
+       ]
+      },
+      {
+       "label": "Network Issues",
+       "fam": "topics",
+       "steps": [
+        {
+         "label": "Message",
+         "icon": "chat-text",
+         "fam": "topics",
+         "sub": "8 passaggi di troubleshooting"
+        }
+       ]
+      },
+      {
+       "label": "All other conditions",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Redirect",
+         "icon": "arrow-bend-up-right",
+         "fam": "system",
+         "sub": "Go to another topic: Escalate"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "End current topic",
+     "icon": "stop-circle",
+     "fam": "system",
+     "sub": "Topic Management"
+    }
+   ]
+  },
+  "f03-escalate": {
+   "title": "Escalate",
+   "icon": "headset",
+   "fam": "system",
+   "lab": "Lab 03",
+   "role": "Topic di sistema dell'agente: ci arriva First Topic - Supporto Tecnico quando la risposta non è una delle tre opzioni.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Question",
+     "icon": "question",
+     "fam": "topics",
+     "sub": "variabile Issue: Hardware, Software o Network Issues"
+    },
+    {
+     "label": "All other conditions",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "ramo creato in automatico per ogni altra risposta"
+    },
+    {
+     "label": "Redirect",
+     "icon": "arrow-bend-up-right",
+     "fam": "system",
+     "sub": "Topic Management › Go to another topic › Escalate"
+    },
+    {
+     "label": "Escalate",
+     "icon": "headset",
+     "fam": "system",
+     "sub": "topic di sistema già presente nell'agente: non si crea nel lab"
+    }
+   ]
+  },
+  "f03-ticket": {
+   "title": "Ticket Card",
+   "icon": "chats-circle",
+   "fam": "topics",
+   "lab": "Lab 03",
+   "role": "Topic che raccoglie i dati del ticket in una adaptive card e ne mostra il riepilogo in chat.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Trigger",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "descrizione: creazione di un ticket di supporto per il reparto IT"
+    },
+    {
+     "label": "Ask with adaptive card",
+     "icon": "cards",
+     "fam": "topics",
+     "sub": "Richiesta Ticket IT: nome, cognome, email, tipologia, descrizione"
+    },
+    {
+     "label": "Message",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "Il seguente Ticket è stato inviato al Reparto IT, con la formula card",
+     "pill": "Topic.nome … Topic.descrizione"
+    }
+   ]
+  }
+ }
+}

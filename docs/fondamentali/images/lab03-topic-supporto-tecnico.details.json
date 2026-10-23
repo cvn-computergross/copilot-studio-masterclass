@@ -1,0 +1,45 @@
+{
+ "diagram": "lab03-topic-supporto-tecnico",
+ "details": {
+  "f03-question": {
+   "title": "Question",
+   "icon": "question",
+   "fam": "topics",
+   "lab": "Lab 03",
+   "role": "Nodo Ask a question: chiede il tipo di problema con opzioni fisse e salva la scelta nella variabile Issue.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Ask a question",
+     "icon": "question",
+     "fam": "topics",
+     "sub": "Salve User.DisplayName, potresti identificare la tipologia di problema?"
+    },
+    {
+     "label": "User.DisplayName",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "variabile inserita con il simbolo {x}"
+    },
+    {
+     "label": "Identify: Multiple choice options",
+     "icon": "list-bullets",
+     "fam": "topics",
+     "sub": "Hardware Issues, Software Issues, Network Issues"
+    },
+    {
+     "label": "Variabile Issue",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "nome cambiato nelle Variable Properties"
+    },
+    {
+     "label": "Condition",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "creata in automatico: un ramo per opzione e All other conditions"
+    }
+   ]
+  }
+ }
+}

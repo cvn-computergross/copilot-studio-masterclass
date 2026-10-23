@@ -1,0 +1,298 @@
+{
+ "diagram": "lab05-agente-device-booker",
+ "details": {
+  "f05-available": {
+   "title": "Topic Available devices",
+   "icon": "chats-circle",
+   "fam": "topics",
+   "lab": "Lab 05",
+   "role": "Legge dalla lista Devices i dispositivi disponibili del tipo richiesto e li restituisce all'agente.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Trigger",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "descrizione: dispositivi disponibili nella lista SharePoint Devices"
+    },
+    {
+     "label": "Get items",
+     "icon": "logo:sharepoint",
+     "fam": "tools",
+     "sub": "Status 'Available' e AssetType = VarDeviceType",
+     "pill": "VarDeviceType",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Set variable value",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "VarAvailableDevices (Table) = Global.VarDevices.value",
+     "pill": "Global.VarDevices"
+    }
+   ]
+  },
+  "f05-request": {
+   "title": "Topic Request device",
+   "icon": "chats-circle",
+   "fam": "topics",
+   "lab": "Lab 05",
+   "role": "Propone i dispositivi disponibili in una adaptive card e passa la scelta all'agent flow, che scrive al manager.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Trigger",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "l'utente risponde sì alla richiesta di un dispositivo"
+    },
+    {
+     "label": "Ask with adaptive card",
+     "icon": "cards",
+     "fam": "topics",
+     "sub": "Device selection: scelte da Global.VarDevices.value e commenti"
+    },
+    {
+     "label": "Send device request email",
+     "icon": "logo:power-automate",
+     "fam": "tools",
+     "sub": "agent flow",
+     "pill": "deviceSelectionId · commentsId",
+     "file": "power-automate.svg"
+    },
+    {
+     "label": "Message",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "Thanks, User.DisplayName…",
+     "pill": "ModelValue"
+    },
+    {
+     "label": "Redirect",
+     "icon": "arrow-bend-up-right",
+     "fam": "system",
+     "sub": "Go to another topic: End of Conversation"
+    }
+   ]
+  },
+  "f05-istruzioni": {
+   "title": "Istruzioni",
+   "icon": "clipboard-text",
+   "fam": "instructions",
+   "lab": "Lab 05",
+   "role": "Le istruzioni di Device Booker: i due topic si collegano con / al posto dei nomi tra parentesi quadre.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "# Context",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "vedere i dispositivi disponibili e richiederli dalla SharePoint Device Inventory List"
+    },
+    {
+     "group": "# Action",
+     "icon": "list-numbers",
+     "fam": "instructions",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "/Available devices",
+       "icon": "chats-circle",
+       "fam": "topics",
+       "sub": "i dispositivi con stato Available, prima della richiesta"
+      },
+      {
+       "label": "/Request device",
+       "icon": "chats-circle",
+       "fam": "topics",
+       "sub": "la richiesta di un dispositivo disponibile"
+      }
+     ]
+    },
+    {
+     "label": "# Rules",
+     "icon": "list-checks",
+     "fam": "instructions",
+     "sub": "solo lettura e richieste: niente approvazioni, modifiche all'inventario, manutenzione o resi; tono professionale e conciso"
+    }
+   ]
+  },
+  "f05-devices": {
+   "title": "Lista Devices",
+   "icon": "logo:sharepoint",
+   "fam": "knowledge",
+   "lab": "Lab 05",
+   "role": "Lista presente di default nel sito Help Desk CSM del Lab 02, con le colonne del lab e sei dispositivi (Devices-CSM.csv).",
+   "layout": "list",
+   "steps": [
+    {
+     "group": "Colonne",
+     "icon": "table",
+     "fam": "knowledge",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Status",
+       "icon": "check-circle",
+       "fam": "knowledge",
+       "sub": "Available o In use: filtro di Get items"
+      },
+      {
+       "label": "Asset Type",
+       "icon": "list-bullets",
+       "fam": "knowledge",
+       "sub": "Laptop, Desktop o Smartphone: filtro AssetType"
+      },
+      {
+       "label": "Manufacturer · Model",
+       "icon": "file-text",
+       "fam": "knowledge",
+       "sub": "nell'email al manager; Model anche nell'adaptive card"
+      },
+      {
+       "label": "Title · Color · Serial Number",
+       "icon": "file-text",
+       "fam": "knowledge",
+       "sub": "dati del dispositivo"
+      },
+      {
+       "label": "Purchase Date · Purchase Price · Order #",
+       "icon": "coins",
+       "fam": "knowledge",
+       "sub": "dati di acquisto"
+      }
+     ]
+    },
+    {
+     "label": "Get items",
+     "icon": "logo:sharepoint",
+     "fam": "tools",
+     "sub": "topic Available devices: elenco filtrato",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Get item · Get Device",
+     "icon": "logo:sharepoint",
+     "fam": "tools",
+     "sub": "agent flow: un elemento per ID, con il Link to item",
+     "file": "sharepoint.png"
+    }
+   ],
+   "file": "sharepoint.png"
+  },
+  "f05-flow": {
+   "title": "Send device request email",
+   "icon": "logo:power-automate",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Agent flow chiamato dal topic Request device: recupera il dispositivo, scrive al manager e restituisce il modello. Save draft, poi Publish.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "When an agent calls the flow",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "input Text: DeviceSharePointId, User, AdditionalComments (facoltativo)"
+    },
+    {
+     "label": "Get Device",
+     "icon": "logo:sharepoint",
+     "fam": "tools",
+     "sub": "Get item della lista Devices, Id = DeviceSharePointId",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Send an email to manager",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Send an email (V2): Request type: new device",
+     "file": "outlook.png"
+    },
+    {
+     "label": "Respond to the agent",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "output Text ModelValue = Model"
+    }
+   ],
+   "file": "power-automate.svg"
+  },
+  "f05-getdevice": {
+   "title": "Get Device",
+   "icon": "logo:sharepoint",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Azione Get item di SharePoint, rinominata: legge dalla lista Devices il dispositivo scelto nell'adaptive card.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Site Address e List Name",
+     "icon": "logo:sharepoint",
+     "fam": "knowledge",
+     "sub": "sito Help Desk CSM, lista Devices",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Id",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "fx: DeviceSharePointId, input del trigger"
+    },
+    {
+     "label": "Limit Columns by View",
+     "icon": "sliders-horizontal",
+     "fam": "tools",
+     "sub": "Advanced parameters › Show All: All items"
+    },
+    {
+     "label": "Usati dopo",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "Manufacturer, Model, Link to item"
+    }
+   ],
+   "file": "sharepoint.png"
+  },
+  "f05-email": {
+   "title": "Send an email to manager",
+   "icon": "logo:outlook",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Azione Send an email (V2) di Office 365 Outlook, rinominata: la richiesta arriva al manager già completa.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "To",
+     "icon": "user-circle",
+     "fam": "tools",
+     "sub": "il proprio account"
+    },
+    {
+     "label": "Subject",
+     "icon": "note-pencil",
+     "fam": "tools",
+     "sub": "Request type: new device"
+    },
+    {
+     "label": "Body",
+     "icon": "envelope-simple",
+     "fam": "tools",
+     "sub": "New device requested from User; Manufacturer e Model del Get Device"
+    },
+    {
+     "label": "Link to item in SharePoint",
+     "icon": "link",
+     "fam": "tools",
+     "sub": "editor HTML </>: <a href=\"Link to item\">…</a>"
+    },
+    {
+     "label": "Additional comments",
+     "icon": "function",
+     "fam": "tools",
+     "sub": "if(empty(AdditionalComments), 'None', AdditionalComments)"
+    }
+   ],
+   "file": "outlook.png"
+  }
+ }
+}

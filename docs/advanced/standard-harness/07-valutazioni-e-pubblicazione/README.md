@@ -30,7 +30,7 @@ In questo lab verranno creati due set di test (comportamento di base e sicurezza
 - **Test set come test di regressione.** Un test set è un gruppo di domande con le risposte attese. Si esegue dopo ogni modifica: se un caso che passava inizia a fallire, si sa subito che cosa si è rotto. La regola d'oro è che tutti i casi passino, così un fallimento significa sempre un problema.
 - **Meaning match invece di Exact match.** Le risposte di un agente generativo cambiano formulazione. **Meaning match** valuta se il significato coincide con quello atteso; la soglia di 70 (invece del valore predefinito 50) rende il test più severo senza pretendere le stesse parole.
 - **Tool use per il percorso.** Per alcune richieste non conta solo la risposta ma **quale** componente è stato usato: il metodo **Tool use** verifica che sia stato attivato il topic o lo strumento atteso.
-- **Casi senza effetti collaterali.** I test vengono rieseguiti molte volte: si evitano casi che creano proposte, valutazioni o eventi. Le scritture si provano a mano, in modo controllato.
+- **Casi senza effetti collaterali.** I test vengono rieseguiti molte volte: si evitano casi che creano proposte, valutazioni o dossier. Le scritture si provano a mano, in modo controllato.
 - **Pubblicare non vuol dire distribuire.** **Publish** rende attiva la versione corrente dell'agente; il canale **Teams and Microsoft 365 Copilot** la rende apribile in Microsoft 365 Copilot. Finché l'agente non viene condiviso e distribuito nell'organizzazione, lo vede solo il suo autore: è il modo giusto di provarlo in un ambiente di corso.
 :::
 

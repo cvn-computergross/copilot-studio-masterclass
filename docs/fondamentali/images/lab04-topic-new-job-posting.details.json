@@ -1,0 +1,88 @@
+{
+ "diagram": "lab04-topic-new-job-posting",
+ "details": {
+  "f04-inputs": {
+   "title": "Variabili di input",
+   "icon": "brackets-curly",
+   "fam": "topics",
+   "lab": "Lab 04",
+   "role": "Create in Details › Input › Create a new variable: l'agente le ricava dalla conversazione, guidato dalla descrizione di ognuna.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "RoleTitle",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "solo il nome della posizione, normalizzato in un titolo standard; ignora seniority e sede"
+    },
+    {
+     "label": "Seniority",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "Junior | Mid | Senior: entry/graduate → Junior, intermediate → Mid, senior/lead/principal/staff/head → Senior"
+    },
+    {
+     "label": "PrimaryLocation",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "Città, Paese oppure Remote o Hybrid (con la città, se disponibile)"
+    },
+    {
+     "label": "Identify as User's entire response",
+     "icon": "sliders-horizontal",
+     "fam": "topics",
+     "sub": "per tutte e tre le variabili"
+    }
+   ]
+  },
+  "f04-node-prompt": {
+   "title": "Job Posting - Zava",
+   "icon": "logo:ai-builder",
+   "fam": "tools",
+   "lab": "Lab 04",
+   "role": "Nodo del prompt sotto il trigger (Add node › Add a tool › New Prompt): gli input del prompt prendono le variabili del topic.",
+   "layout": "list",
+   "steps": [
+    {
+     "group": "Input del prompt · con …",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "role_title",
+       "icon": "textbox",
+       "fam": "tools",
+       "sub": "RoleTitle"
+      },
+      {
+       "label": "seniority",
+       "icon": "textbox",
+       "fam": "tools",
+       "sub": "Seniority"
+      },
+      {
+       "label": "primary_location",
+       "icon": "textbox",
+       "fam": "tools",
+       "sub": "PrimaryLocation"
+      }
+     ]
+    },
+    {
+     "label": "Outputs",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "Select a variable › Create a new variable: OutputAnnuncio"
+    },
+    {
+     "label": "Message",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "Send a message con la formula Topic.OutputAnnuncio.text"
+    }
+   ],
+   "file": "ai-builder.svg"
+  }
+ }
+}

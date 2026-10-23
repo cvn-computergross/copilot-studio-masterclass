@@ -1,0 +1,274 @@
+{
+ "diagram": "lab04-agente-annunci",
+ "details": {
+  "f04-topic": {
+   "title": "Topic New Job Posting",
+   "icon": "chats-circle",
+   "fam": "topics",
+   "lab": "Lab 04",
+   "role": "Guida la creazione dell'annuncio: l'agente ricava ruolo, seniority e sede dalla conversazione, il prompt compila il template.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Trigger",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "nuovo annuncio di lavoro (job posting), pubblica una nuova posizione, crea un annuncio di lavoro…"
+    },
+    {
+     "group": "Variabili di input · Details",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "RoleTitle",
+       "icon": "brackets-curly",
+       "fam": "topics",
+       "sub": "titolo standard del ruolo, es. Software Engineer"
+      },
+      {
+       "label": "Seniority",
+       "icon": "brackets-curly",
+       "fam": "topics",
+       "sub": "Junior, Mid o Senior"
+      },
+      {
+       "label": "PrimaryLocation",
+       "icon": "brackets-curly",
+       "fam": "topics",
+       "sub": "Città, Paese oppure Remote o Hybrid"
+      }
+     ]
+    },
+    {
+     "label": "Job Posting - Zava",
+     "icon": "logo:ai-builder",
+     "fam": "tools",
+     "sub": "prompt action, output OutputAnnuncio",
+     "file": "ai-builder.svg"
+    },
+    {
+     "label": "Message",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "Topic.OutputAnnuncio.text",
+     "pill": "OutputAnnuncio"
+    }
+   ]
+  },
+  "f04-prompt": {
+   "title": "Job Posting - Zava",
+   "icon": "logo:ai-builder",
+   "fam": "tools",
+   "lab": "Lab 04",
+   "role": "Prompt con il template aziendale: dai tre input deduce il resto dell'annuncio e lo restituisce in Markdown.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "RUOLO",
+     "icon": "user-circle",
+     "fam": "instructions",
+     "sub": "specialista di carriera che aiuta i team HR di Zava S.p.A."
+    },
+    {
+     "label": "OBIETTIVI",
+     "icon": "target",
+     "fam": "instructions",
+     "sub": "input [role_title], [seniority], [primary_location]; il resto si deduce; output in Markdown"
+    },
+    {
+     "label": "REGOLE DI INFERENZA",
+     "icon": "lightbulb",
+     "fam": "instructions",
+     "sub": "retribuzione CCNL Commercio e mercato milanese, (suggerito) se incerta; 6-8 responsabilità, 5-7 requisiti obbligatori, 3-5 preferenziali; tono per seniority"
+    },
+    {
+     "label": "CONTENUTI AZIENDALI FISSI",
+     "icon": "buildings",
+     "fam": "instructions",
+     "sub": "COMPANY_OVERVIEW, POLICIES (Hybrid, Remote o in sede), BENEFITS, APPLICATION: sempre verbatim"
+    },
+    {
+     "label": "TEMPLATE DI OUTPUT",
+     "icon": "article",
+     "fam": "instructions",
+     "sub": "sede, retribuzione, profilo aziendale, riepilogo, responsabilità, requisiti, benefit, candidatura"
+    },
+    {
+     "label": "Regole e best practice",
+     "icon": "list-checks",
+     "fam": "instructions",
+     "sub": "testi fissi mai riscritti, ordine e titoli del template rispettati"
+    },
+    {
+     "label": "Input e output",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "tre input Text (add content › Text); output OutputAnnuncio"
+    }
+   ],
+   "file": "ai-builder.svg"
+  },
+  "f04-istruzioni": {
+   "title": "Istruzioni",
+   "icon": "clipboard-text",
+   "fam": "instructions",
+   "lab": "Lab 04",
+   "role": "Le istruzioni dell'agente, inserite dopo i tool: l'ordine dei tre passi e le regole; i nomi degli strumenti si collegano con /.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "# Contesto",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "Agente Redazione Annunci: redige con il template, genera l'output e lo invia via email"
+    },
+    {
+     "group": "# Flusso di Lavoro",
+     "icon": "list-numbers",
+     "fam": "instructions",
+     "layout": "flow",
+     "steps": [
+      {
+       "label": "New Job Posting",
+       "icon": "chats-circle",
+       "fam": "topics",
+       "sub": "crea l'annuncio di lavoro"
+      },
+      {
+       "label": "Testo in HTML",
+       "icon": "logo:ai-builder",
+       "fam": "tools",
+       "sub": "converte l'annuncio in chat in HTML per la mail",
+       "file": "ai-builder.svg"
+      },
+      {
+       "label": "Annuncio Mail",
+       "icon": "logo:outlook",
+       "fam": "tools",
+       "sub": "invia la mail all'utente",
+       "file": "outlook.png"
+      }
+     ]
+    },
+    {
+     "label": "# Regole",
+     "icon": "list-checks",
+     "fam": "instructions",
+     "sub": "niente contenuti nuovi, solo italiano, HTML solo con lo strumento, annuncio invariato; output finale: l'invio dell'email"
+    }
+   ]
+  },
+  "f04-html": {
+   "title": "Testo in HTML",
+   "icon": "logo:ai-builder",
+   "fam": "tools",
+   "lab": "Lab 04",
+   "role": "Prompt aggiunto come tool (Tools › Add a tool › Create new › Prompt): converte l'annuncio in un frammento HTML per l'email.",
+   "layout": "list",
+   "steps": [
+    {
+     "group": "Input",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Username",
+       "icon": "user-circle",
+       "fam": "tools",
+       "sub": "Custom value: User.DisplayName (System)"
+      },
+      {
+       "label": "Content",
+       "icon": "sparkle",
+       "fam": "tools",
+       "sub": "Dynamically fill with AI: la risposta finale più rilevante dell'assistente, senza cambiarla"
+      }
+     ]
+    },
+    {
+     "label": "Regole critiche",
+     "icon": "warning",
+     "fam": "risk",
+     "sub": "solo HTML grezzo: niente Markdown, escape dei caratteri o blocchi ```"
+    },
+    {
+     "label": "Inizio fisso",
+     "icon": "chat-text",
+     "fam": "tools",
+     "sub": "<p>Ciao [USERNAME],</p> e Ecco il job posting che hai richiesto"
+    },
+    {
+     "label": "Mappatura Markdown → HTML",
+     "icon": "code",
+     "fam": "tools",
+     "sub": "h1, h2 con emoji, p, ul e li, b, a, hr; CSS inline su ogni elemento"
+    },
+    {
+     "label": "Bottone CTA",
+     "icon": "envelope-simple",
+     "fam": "tools",
+     "sub": "mailto:careers@zava.it, Invia la tua candidatura"
+    },
+    {
+     "label": "Output",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "solo il frammento HTML finale, senza html, head, body o style"
+    }
+   ],
+   "file": "ai-builder.svg"
+  },
+  "f04-mail": {
+   "title": "Annuncio Mail",
+   "icon": "logo:outlook",
+   "fam": "tools",
+   "lab": "Lab 04",
+   "role": "Azione Send an email (V2) del connettore Office 365 Outlook, aggiunta come tool: invia l'annuncio in HTML all'utente.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Credential to use",
+     "icon": "key",
+     "fam": "platform",
+     "sub": "Additional details: Maker-provided credentials"
+    },
+    {
+     "group": "Input",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "To",
+       "icon": "user-circle",
+       "fam": "tools",
+       "sub": "Custom value: User.Email (System)"
+      },
+      {
+       "label": "Subject",
+       "icon": "sparkle",
+       "fam": "tools",
+       "sub": "Dynamically fill with AI: frase molto breve (max ~8 parole), senza HTML"
+      },
+      {
+       "label": "Body",
+       "icon": "sparkle",
+       "fam": "tools",
+       "sub": "Dynamically fill with AI: l'intero frammento HTML di Testo in HTML"
+      }
+     ]
+    },
+    {
+     "label": "Completion",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "After running: Send specific response, La mail da lei richiesta è stata inviata."
+    }
+   ],
+   "file": "outlook.png"
+  }
+ }
+}

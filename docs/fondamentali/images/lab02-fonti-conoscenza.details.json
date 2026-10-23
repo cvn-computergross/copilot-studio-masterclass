@@ -1,0 +1,167 @@
+{
+ "diagram": "lab02-fonti-conoscenza",
+ "details": {
+  "f02-upload": {
+   "title": "Documento caricato",
+   "icon": "upload-simple",
+   "fam": "knowledge",
+   "lab": "Lab 02",
+   "role": "Un singolo file caricato come fonte di conoscenza dell'agente IT Support, per le domande sul reset della password.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "+ Add knowledge › Upload",
+     "icon": "upload-simple",
+     "fam": "knowledge",
+     "sub": "Knowledge, nel menu in alto accanto al nome dell'agente"
+    },
+    {
+     "label": "Zava_KB_Reset_M365_Password.docx",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "file fino a 512 MB; serve la Dataverse search nell'environment"
+    },
+    {
+     "label": "Description",
+     "icon": "note-pencil",
+     "fam": "knowledge",
+     "sub": "Usa questa Knowledge quando un Utente vuole resettare la Password."
+    },
+    {
+     "label": "Test",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "Come posso resettare la Password? Il documento compare nelle references"
+    }
+   ]
+  },
+  "f02-vpn": {
+   "title": "Files group VPN Guide",
+   "icon": "folders",
+   "fam": "knowledge",
+   "lab": "Lab 02",
+   "role": "Le tre versioni della guida alla VPN ZavaSecure caricate come un solo gruppo, con istruzioni per scegliere la versione giusta.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Upload as a group",
+     "icon": "folders",
+     "fam": "knowledge",
+     "sub": "Zava_Guida_VPN_v1, v2 e v3.docx, al posto di Add to agent"
+    },
+    {
+     "label": "Name e Description",
+     "icon": "note-pencil",
+     "fam": "knowledge",
+     "sub": "VPN Guide; usa la versione più aggiornata (v3), a meno che non sia richiesta una versione diversa"
+    },
+    {
+     "label": "Ready",
+     "icon": "check-circle",
+     "fam": "knowledge",
+     "sub": "si apre il file group per modificarne i dettagli"
+    },
+    {
+     "label": "Instructions",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "nomi Zava_Guida_\"topic\"_vX: sempre la versione più recente, le precedenti solo se l'utente lo chiede esplicitamente"
+    },
+    {
+     "label": "Test",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "Come configuro la VPN secondo la guida del 2022?"
+    }
+   ]
+  },
+  "f02-sharepoint": {
+   "title": "SharePoint Help Desk CSM",
+   "icon": "logo:sharepoint",
+   "fam": "knowledge",
+   "lab": "Lab 02",
+   "role": "La raccolta Documents del sito Help Desk CSM: l'agente risponde solo con i documenti che l'utente è autorizzato a vedere.",
+   "layout": "flow",
+   "steps": [
+    {
+     "group": "Sito SharePoint · Prerequisiti",
+     "icon": "logo:sharepoint",
+     "fam": "knowledge",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Team Site › Standard Team",
+       "icon": "buildings",
+       "fam": "knowledge",
+       "sub": "Help Desk CSM-Vostro Nome, indirizzo HelpDeskCSM"
+      },
+      {
+       "label": "Documents › + Upload",
+       "icon": "files",
+       "fam": "knowledge",
+       "sub": "Zava_Help_Desk_Playbook, Zava_Incident_Report_Template_Example, Zava_Help_Desk_SLA"
+      }
+     ],
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "+ Add knowledge › SharePoint",
+     "icon": "logo:sharepoint",
+     "fam": "knowledge",
+     "sub": "Browse Item, sito Help Desk CSM, Documents, Confirm Selection",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Description",
+     "icon": "note-pencil",
+     "fam": "knowledge",
+     "sub": "Documentazione essenziale e risorse per supportare la gestione dei servizi IT e l'assistenza agli utenti finali."
+    },
+    {
+     "label": "Autenticazione dell'utente",
+     "icon": "shield-check",
+     "fam": "platform",
+     "sub": "nelle risposte solo i dati che l'utente può visualizzare"
+    },
+    {
+     "label": "Test",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "Quali sono gli orari standard rispetto alla disponibilità del supporto di emergenza?"
+    }
+   ],
+   "file": "sharepoint.png"
+  },
+  "f02-web": {
+   "title": "Public website",
+   "icon": "globe",
+   "fam": "knowledge",
+   "lab": "Lab 01",
+   "role": "Il sito pubblico aggiunto alla creazione dell'agente: con la ricerca sul web disattivata resta una delle sue fonti.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Add knowledge › Public website",
+     "icon": "globe",
+     "fam": "knowledge",
+     "sub": "https://support.microsoft.com",
+     "lab": "Lab 01"
+    },
+    {
+     "label": "Limite",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "al massimo 4 URL di siti pubblici",
+     "lab": "Lab 02"
+    },
+    {
+     "label": "Use information from the Web: off",
+     "icon": "sliders-horizontal",
+     "fam": "system",
+     "sub": "Settings › Generative AI: niente risposte dal resto del web",
+     "lab": "Lab 02"
+    }
+   ]
+  }
+ }
+}
