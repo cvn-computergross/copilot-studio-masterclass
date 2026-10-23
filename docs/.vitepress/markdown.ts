@@ -9,7 +9,8 @@
 //   - un'immagine da sola in un paragrafo che punta a docs/advanced/images/*.svg o a
 //     docs/fondamentali/images/*.svg (schemi di tools/diagrams.py) diventa lo schema inserito
 //     nella pagina: <figure class="diagram"> con l'SVG, senza il suo <style>; colori e tema
-//     scuro vengono da theme/style.css.
+//     scuro vengono da theme/style.css. Se accanto c'è <nome>.details.json, i riquadri con
+//     dettaglio diventano pulsanti e i dettagli HTML nascosti (aperti da theme/diagram-details.ts).
 // I callout "> [!NOTE]" e le liste li gestisce già VitePress, con la stessa sintassi di GitHub:
 // qui se ne traduce il titolo e gli si mette davanti il glifo dell'Icon Pack.
 import fs from 'node:fs'
@@ -94,8 +95,8 @@ function logo(name: string, classes: string[], file: string): string {
     Il testo alternativo diventa il nome accessibile dello schema. La larghezza dello schema va
     in --dg-w: sugli schermi stretti uno schema non scende sotto 640px, né sotto la sua
     larghezza se è più stretto (style.css). */
-function diagram(svgFile: string, alt: string, esc: (s: string) => string): string {
-  const svg = fs.readFileSync(svgFile, 'utf8')
+function diagram(svgFile: string, alt: string, esc: (s: string) => string, file: string): string {
+  let svg = fs.readFileSync(svgFile, 'utf8')
     .replace(/<\?xml[^>]*\?>\s*/, '')
     .replace(/<style[\s\S]*?<\/style>/g, '')
     .trim()
@@ -103,7 +104,81 @@ function diagram(svgFile: string, alt: string, esc: (s: string) => string): stri
     .replace(/^(<svg[^>]*>)/, `$1<title>${esc(alt)}</title>`)
   const width = Number(/^<svg[^>]*\swidth="(\d+(?:\.\d+)?)"/.exec(svg)?.[1])
   const style = width > 0 ? ` style="--dg-w: ${width}px"` : ''
-  return `<figure class="diagram"${style} v-pre>${svg}</figure>`
+  // schema interattivo: accanto all'SVG c'è <nome>.details.json (tools/diagrams.py)
+  const sidecar = svgFile.replace(/\.svg$/, '.details.json')
+  if (!fs.existsSync(sidecar)) return `<figure class="diagram"${style} v-pre>${svg}</figure>`
+  const data = JSON.parse(fs.readFileSync(sidecar, 'utf8')) as { details: Record<string, Detail> }
+  const name = path.basename(svgFile, '.svg')
+  // i riquadri con dettaglio diventano pulsanti; la descrizione accessibile è il dettaglio stesso
+  // (nascosto, sotto lo schema). Con riquadri attivi lo schema è un gruppo, non un'immagine.
+  svg = svg
+    .replace(/^<svg role="img"/, '<svg role="group"')
+    .replace(/<g ([^>]*?) data-detail="([^"]+)">/g, (_, attrs: string, id: string) => {
+      if (!data.details[id]) throw new Error(`${file}: dettaglio '${id}' mancante in ${path.basename(sidecar)}`)
+      return `<g ${attrs} data-detail="${id}" tabindex="0" role="button" aria-expanded="false" aria-describedby="dg-${name}-${id}">`
+    })
+  const details = Object.entries(data.details)
+    .map(([id, d]) => detailHtml(`dg-${name}-${id}`, id, d, esc, file)).join('')
+  return `<figure class="diagram diagram--interactive"${style} v-pre>${svg}`
+    + `<figcaption class="diagram-hint">Passa il mouse su un riquadro o selezionalo per vederne il dettaglio.</figcaption>`
+    + `<div class="dg-details" hidden>${details}</div></figure>`
+}
+
+// --- dettagli degli schemi interattivi (tools/diagrams.py, DETAILS) -------------------------
+// Ogni dettaglio diventa HTML nascosto sotto lo schema: theme/diagram-details.ts lo copia nel
+// riquadro che si apre (passando il mouse o selezionando il riquadro dello schema). Glifi come le
+// altre icone; loghi e icone degli agenti come segnaposto (span.dgp-img) che il browser riempie
+// con l'immagine già presente nello schema o con il file di docs/public/logos.
+interface Step {
+  label?: string; icon: string; fam: string; sub?: string; pill?: string; lab?: string; file?: string
+  group?: string; layout?: string; steps?: Step[]
+  branches?: { label: string; fam: string; steps: Step[] }[]
+}
+interface Detail { title: string; icon: string; fam: string; lab: string; role: string; layout: string; steps: Step[]; file?: string }
+
+const famClass = (fam: string) => (fam === 'neutral' ? 'dg-neutral' : `f-${fam}`)
+
+function detailIcon(s: { icon: string; file?: string }, esc: (s: string) => string, file: string): string {
+  if (/^(logo|agent):/.test(s.icon)) {
+    const f = s.file ? ` data-file="${esc(s.file)}"` : ''
+    return `<span class="dgp-icon dgp-img" data-icon="${esc(s.icon)}"${f} aria-hidden="true"></span>`
+  }
+  return phosphor(s.icon, ['dgp-icon'], file)
+}
+
+function detailSteps(steps: Step[], layout: string, esc: (s: string) => string, file: string, first = false): string {
+  const flow = layout !== 'list'
+  const items = steps.map((s, i) => {
+    // freccia che arriva al passo (nei flow), con l'eventuale etichetta; il primo passo di un ramo
+    // ha la freccia con il nome del ramo
+    const link = flow && (i > 0 || first)
+      ? `<span class="dgp-link${s.pill ? ' dgp-link--pill' : ''}" aria-hidden="true">${s.pill ? `<span class="dgp-pill">${esc(s.pill)}</span>` : ''}</span>`
+      : ''
+    let body: string
+    if (s.group) {
+      body = `<div class="dgp-group ${famClass(s.fam)}"><p class="dgp-grouphead">${detailIcon(s, esc, file)}<span>${esc(s.group)}</span></p>`
+        + detailSteps(s.steps ?? [], s.layout ?? 'flow', esc, file) + '</div>'
+    } else {
+      const sub = s.sub ? `<span class="dgp-sub">${esc(s.sub)}</span>` : ''
+      const tag = s.lab ? `<span class="dgp-tag">${esc(s.lab)}</span>` : ''
+      body = `<div class="dgp-node ${famClass(s.fam)}">${detailIcon(s, esc, file)}`
+        + `<span class="dgp-text"><span class="dgp-label">${esc(s.label ?? '')}</span>${sub}</span>${tag}</div>`
+    }
+    const branches = s.branches?.length
+      ? `<div class="dgp-branches">${s.branches.map((b) => `<div class="dgp-branch ${famClass(b.fam)}">`
+        + detailSteps(b.steps.map((x, k) => (k === 0 ? { ...x, pill: b.label } : x)), 'flow', esc, file, true) + '</div>').join('')}</div>`
+      : ''
+    return `<li class="dgp-item${branches ? ' dgp-item--fork' : ''}">${link}${body}${branches}</li>`
+  })
+  return `<ol class="dgp-steps dgp-steps--${flow ? 'flow' : 'list'}">${items.join('')}</ol>`
+}
+
+function detailHtml(id: string, key: string, d: Detail, esc: (s: string) => string, file: string): string {
+  return `<div class="dgp ${famClass(d.fam)}" id="${id}" data-detail-id="${esc(key)}">`
+    + `<div class="dgp-head">${detailIcon(d, esc, file)}`
+    + `<div class="dgp-headtext"><p class="dgp-title">${esc(d.title)}</p><p class="dgp-role">${esc(d.role)}</p></div>`
+    + `<span class="dgp-lab" title="Lab in cui si costruisce">${esc(d.lab)}</span></div>`
+    + detailSteps(d.steps, d.layout, esc, file) + '</div>'
 }
 
 export function masterclass(md: MarkdownIt) {
@@ -174,7 +249,7 @@ export function masterclass(md: MarkdownIt) {
       if (!DIAGRAMS.includes(path.dirname(svgFile))) continue
       if (!fs.existsSync(svgFile)) throw new Error(`${file}: schema non trovato, ${path.relative(DOCS, svgFile)}`)
       const block = new state.Token('html_block', '', 0)
-      block.content = diagram(svgFile, parts[0].content, md.utils.escapeHtml) + '\n'
+      block.content = diagram(svgFile, parts[0].content, md.utils.escapeHtml, file) + '\n'
       block.map = tokens[i].map
       tokens.splice(i, 3, block)
     }
@@ -183,7 +258,8 @@ export function masterclass(md: MarkdownIt) {
   // link relativi: ".../README.md" punta alla pagina del lab, che nel sito è ".../index.md";
   // un file da scaricare (docs/resources/) resta un file, con l'attributo download
   // un file da scaricare si distingue dal testo da copiare e dai link normali: davanti al
-  // nome il glifo download-simple, e il link è una "pillola" (a.download in style.css)
+  // nome il glifo download-simple, e il link è un riquadro arrotondato (a.download in style.css);
+  // il nome sta in <span class="download-name">, così se va a capo resta accanto al glifo
   md.core.ruler.push('masterclass-links', (state) => {
     const file = state.env?.relativePath ?? ''
     for (const block of state.tokens) {
@@ -203,7 +279,12 @@ export function masterclass(md: MarkdownIt) {
             token.attrSet('download', '')
             token.attrJoin('class', 'download')
             const icon = new state.Token('html_inline', '', 0)
-            icon.content = phosphor('download-simple', ['download-icon', 'f-instructions'], file)
+            icon.content = phosphor('download-simple', ['download-icon', 'f-instructions'], file) + '<span class="download-name">'
+            const close = children.findIndex((t, k) => k > i && t.type === 'link_close')
+            const end = new state.Token('html_inline', '', 0)
+            end.content = '</span>'
+            if (close > i) children.splice(close, 0, end)
+            else children.push(end)
             children.splice(i + 1, 0, icon)
           }
         } else token.attrSet('href', href.replace(/(^|\/)README\.md(?=#|$)/, '$1index.md'))

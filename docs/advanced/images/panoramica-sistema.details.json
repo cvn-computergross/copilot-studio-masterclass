@@ -1,0 +1,598 @@
+{
+ "diagram": "panoramica-sistema",
+ "details": {
+  "users": {
+   "title": "Proponenti e analisti",
+   "icon": "users-three",
+   "fam": "agents",
+   "lab": "S01-S08",
+   "role": "Chi usa l'Agente Demand IT: i proponenti allegano il business case, gli analisti del PMO confermano.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Pannello Test",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "le prove dei lab in Copilot Studio",
+     "lab": "S01-S06"
+    },
+    {
+     "label": "Conferme dell'analista",
+     "icon": "user-check",
+     "fam": "agents",
+     "sub": "programma e registrazione della valutazione",
+     "lab": "S04"
+    },
+    {
+     "label": "Teams and Microsoft 365 Copilot",
+     "icon": "logo:teams",
+     "fam": "lifecycle",
+     "sub": "canale dopo la pubblicazione",
+     "lab": "S07",
+     "file": "teams.png"
+    },
+    {
+     "label": "Reazioni e CSAT",
+     "icon": "thumbs-up",
+     "fam": "lifecycle",
+     "sub": "feedback degli utenti in Teams",
+     "lab": "S08"
+    }
+   ]
+  },
+  "pmo-knowledge": {
+   "title": "PMO Knowledge",
+   "icon": "logo:sharepoint",
+   "fam": "knowledge",
+   "lab": "S01",
+   "role": "Cartella SharePoint con le regole del PMO: è la fonte Conoscenza PMO dell'Agente Demand IT.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Zava_PMO_Linee_Guida_Business_Case.docx",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "formati, struttura, soglie, regola di budget",
+     "lab": "Lab 00"
+    },
+    {
+     "label": "Zava_Piano_Strategico_IT_2026-2028.pdf",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "obiettivi OS1-OS5 con i KPI",
+     "lab": "Lab 00"
+    },
+    {
+     "label": "Conoscenza PMO",
+     "icon": "logo:sharepoint",
+     "fam": "knowledge",
+     "sub": "risponde con i permessi di chi chatta",
+     "lab": "S01",
+     "file": "sharepoint.png"
+    }
+   ],
+   "file": "sharepoint.png"
+  },
+  "mailbox": {
+   "title": "Casella del PMO",
+   "icon": "logo:outlook",
+   "fam": "tools",
+   "lab": "S05",
+   "role": "Il secondo canale di ingresso: le proposte inviate per email alla casella del PMO.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Email del proponente",
+     "icon": "envelope-simple",
+     "fam": "tools",
+     "sub": "oggetto Proposta progetto, PDF allegato"
+    },
+    {
+     "label": "Nuova proposta via email",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "Subject Filter, Only with Attachments"
+    },
+    {
+     "label": "Flow del trigger",
+     "icon": "logo:power-automate",
+     "fam": "triggers",
+     "sub": "classifica l'email e registra le proposte",
+     "file": "power-automate.svg"
+    }
+   ],
+   "file": "outlook.png"
+  },
+  "demand-it": {
+   "title": "Agente Demand IT",
+   "icon": "agent:demand-it-agent-192.png",
+   "fam": "ai-engine",
+   "lab": "S01",
+   "role": "Orchestratore e punto di ingresso unico: risponde sulle regole del PMO e delega agli altri componenti.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Istruzioni",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "ruolo, ambito, responsabilità, identificatori, delega",
+     "lab": "S01"
+    },
+    {
+     "label": "Conoscenza PMO",
+     "icon": "logo:sharepoint",
+     "fam": "knowledge",
+     "sub": "cartella SharePoint PMO Knowledge",
+     "lab": "S01",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Impostazioni generative",
+     "icon": "sliders-horizontal",
+     "fam": "platform",
+     "sub": "niente web, File uploads attivo, Claude Sonnet 4.6",
+     "lab": "S01"
+    },
+    {
+     "label": "Intake Proposte",
+     "icon": "robot",
+     "fam": "agents",
+     "sub": "child agent",
+     "lab": "S02"
+    },
+    {
+     "label": "Agente Comitato",
+     "icon": "agent:committee-agent-192.png",
+     "fam": "agents",
+     "sub": "agente connesso",
+     "lab": "S02"
+    },
+    {
+     "label": "Nuova proposta via email",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "trigger When a new email arrives (V3)",
+     "lab": "S05"
+    },
+    {
+     "label": "Genera dossier di revisione",
+     "icon": "chats-circle",
+     "fam": "topics",
+     "sub": "topic con l'agent flow Genera dossier",
+     "lab": "S06"
+    },
+    {
+     "label": "Teams and Microsoft 365 Copilot",
+     "icon": "rocket-launch",
+     "fam": "lifecycle",
+     "sub": "canale dopo la pubblicazione",
+     "lab": "S07"
+    }
+   ]
+  },
+  "flow-trigger": {
+   "title": "Flow del trigger",
+   "icon": "logo:power-automate",
+   "fam": "triggers",
+   "lab": "S05",
+   "role": "Flow del trigger Nuova proposta via email: classifica l'email, registra ogni PDF e chiama l'agente.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "When a new email arrives (V3)",
+     "icon": "logo:outlook",
+     "fam": "triggers",
+     "sub": "Split On: una esecuzione per email",
+     "file": "outlook.png"
+    },
+    {
+     "label": "Html to text",
+     "icon": "file-text",
+     "fam": "tools",
+     "sub": "testo del Body"
+    },
+    {
+     "label": "Classifica",
+     "icon": "logo:ai-builder",
+     "fam": "tools",
+     "sub": "prompt Classifica email PMO",
+     "file": "ai-builder.svg"
+    },
+    {
+     "label": "Proposta rilevata",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "Classifica contiene Proposta?",
+     "branches": [
+      {
+       "label": "No",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Da verificare",
+         "icon": "git-branch",
+         "fam": "system",
+         "sub": "Classifica contiene Incerta?",
+         "branches": [
+          {
+           "label": "Sì",
+           "fam": "platform",
+           "steps": [
+            {
+             "label": "Avvisa verifica manuale",
+             "icon": "logo:outlook",
+             "fam": "tools",
+             "sub": "Send an email (V2)",
+             "file": "outlook.png"
+            }
+           ]
+          },
+          {
+           "label": "No",
+           "fam": "neutral",
+           "steps": [
+            {
+             "label": "Fine senza azioni",
+             "icon": "x-circle",
+             "fam": "system",
+             "sub": "RispostaAutomatica o NonPertinente"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Per ogni allegato",
+     "icon": "arrows-clockwise",
+     "fam": "tools",
+     "sub": "condizione Allegato PDF",
+     "pill": "Sì"
+    },
+    {
+     "label": "Registra proposta email",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "riga in Proposals, canale Email",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Carica documento email",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "PDF in Business Case Document",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Sends a prompt to the specified copilot",
+     "icon": "agent:demand-it-agent-192.png",
+     "fam": "ai-engine",
+     "sub": "Agente Demand IT"
+    },
+    {
+     "label": "Analizza business case",
+     "icon": "robot",
+     "fam": "agents",
+     "sub": "strumento di Intake Proposte"
+    },
+    {
+     "label": "Notifica PMO in Teams",
+     "icon": "logo:teams",
+     "fam": "tools",
+     "sub": "adaptive card",
+     "file": "teams.png"
+    }
+   ],
+   "file": "power-automate.svg"
+  },
+  "intake": {
+   "title": "Intake Proposte",
+   "icon": "robot",
+   "fam": "agents",
+   "lab": "S02-S05",
+   "role": "Child agent dell'Agente Demand IT: registra e analizza i business case e, dopo una conferma, crea la valutazione.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Istruzioni",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "un solo PDF per volta, codici mai inventati",
+     "lab": "S02"
+    },
+    {
+     "group": "Tools · agent flow",
+     "icon": "wrench",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Carica business case",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "crea la proposta e carica il PDF",
+       "lab": "S02",
+       "file": "power-automate.svg"
+      },
+      {
+       "label": "Analizza business case",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "prompt Estrai dati business case",
+       "lab": "S03",
+       "file": "power-automate.svg"
+      },
+      {
+       "label": "Crea valutazione",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "prompt Valuta proposta, conferma dell'utente",
+       "lab": "S04",
+       "file": "power-automate.svg"
+      },
+      {
+       "label": "Notifica PMO in Teams",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "adaptive card per le proposte via email",
+       "lab": "S05",
+       "file": "power-automate.svg"
+      }
+     ]
+    }
+   ]
+  },
+  "comitato": {
+   "title": "Agente Comitato",
+   "icon": "agent:committee-agent-192.png",
+   "fam": "agents",
+   "lab": "S02",
+   "role": "Agente connesso, pubblicato a sé: prepara briefing e domande per la sessione di revisione, in sola lettura.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Istruzioni",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "briefing e domande, non contatta i proponenti"
+    },
+    {
+     "group": "Conoscenza Dataverse",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Program",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Program Code PG-###, Available Budget"
+      },
+      {
+       "label": "Evaluation Criterion",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Weight, lookup a Program"
+      },
+      {
+       "label": "Requester",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "RQ-####, Email per la deduplica"
+      },
+      {
+       "label": "Proposal",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "PP-####, Business Case Document"
+      },
+      {
+       "label": "Assessment",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "AS-####, Score, Recommendation"
+      }
+     ],
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Impostazioni generative",
+     "icon": "sliders-horizontal",
+     "fam": "platform",
+     "sub": "niente web, File uploads disattivato, Claude Sonnet 4.6"
+    },
+    {
+     "label": "Let other agents connect",
+     "icon": "plugs-connected",
+     "fam": "agents",
+     "sub": "pubblicato e collegato all'Agente Demand IT"
+    }
+   ]
+  },
+  "genera-dossier": {
+   "title": "Genera dossier",
+   "icon": "logo:power-automate",
+   "fam": "tools",
+   "lab": "S06",
+   "role": "Topic Genera dossier di revisione con l'agent flow Genera dossier: dal codice AS-#### al documento Word.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Genera dossier di revisione",
+     "icon": "chats-circle",
+     "fam": "topics",
+     "sub": "topic: chiede il codice se manca"
+    },
+    {
+     "group": "Agent flow · Genera dossier",
+     "icon": "logo:power-automate",
+     "fam": "tools",
+     "layout": "flow",
+     "steps": [
+      {
+       "label": "Run a prompt",
+       "icon": "logo:ai-builder",
+       "fam": "tools",
+       "sub": "prompt Dossier di revisione, output Document",
+       "file": "ai-builder.svg"
+      },
+      {
+       "label": "Create file",
+       "icon": "logo:onedrive",
+       "fam": "tools",
+       "sub": "/Documents/Dossier_AS-####.docx",
+       "file": "onedrive.png"
+      },
+      {
+       "label": "Create share link",
+       "icon": "logo:onedrive",
+       "fam": "tools",
+       "sub": "View, Organization",
+       "file": "onedrive.png"
+      }
+     ],
+     "pill": "CodiceValutazione",
+     "file": "power-automate.svg"
+    },
+    {
+     "label": "Adaptive card",
+     "icon": "cards",
+     "fam": "topics",
+     "sub": "pulsante Apri il dossier",
+     "pill": "DossierURL"
+    }
+   ],
+   "file": "power-automate.svg"
+  },
+  "teams-channel": {
+   "title": "Canale del PMO",
+   "icon": "logo:teams",
+   "fam": "tools",
+   "lab": "S05",
+   "role": "Dove il PMO vede arrivare le proposte ricevute per email, già registrate e analizzate.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Notifica PMO in Teams",
+     "icon": "logo:power-automate",
+     "fam": "tools",
+     "sub": "agent flow di Intake Proposte",
+     "file": "power-automate.svg"
+    },
+    {
+     "label": "Post card in a chat or channel",
+     "icon": "logo:teams",
+     "fam": "tools",
+     "sub": "Post as Flow bot",
+     "file": "teams.png"
+    },
+    {
+     "label": "Adaptive card",
+     "icon": "cards",
+     "fam": "tools",
+     "sub": "proposta, titolo, proponente, programma, avvisi"
+    },
+    {
+     "label": "Apri le proposte nel PMO Demand Hub",
+     "icon": "logo:power-apps",
+     "fam": "lifecycle",
+     "sub": "Action.OpenUrl",
+     "file": "power-apps.svg"
+    }
+   ],
+   "file": "teams.png"
+  },
+  "pmo-hub": {
+   "title": "PMO Demand Hub",
+   "icon": "logo:dataverse",
+   "fam": "knowledge",
+   "lab": "Lab 00",
+   "role": "Soluzione PMO Demand IT importata nel Lab 00: cinque tabelle con prefisso csm_ e l'app model-driven.",
+   "layout": "list",
+   "steps": [
+    {
+     "group": "Tabelle Dataverse",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Program",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Program Code PG-###, Available Budget"
+      },
+      {
+       "label": "Evaluation Criterion",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Weight, lookup a Program"
+      },
+      {
+       "label": "Requester",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "RQ-####, Email per la deduplica"
+      },
+      {
+       "label": "Proposal",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "PP-####, Business Case Document"
+      },
+      {
+       "label": "Assessment",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "AS-####, Score, Recommendation"
+      }
+     ],
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "App PMO Demand Hub",
+     "icon": "logo:power-apps",
+     "fam": "lifecycle",
+     "sub": "Home, Proposal Board, moduli e viste",
+     "file": "power-apps.svg"
+    }
+   ],
+   "file": "dataverse.svg"
+  },
+  "onedrive": {
+   "title": "OneDrive",
+   "icon": "logo:onedrive",
+   "fam": "tools",
+   "lab": "S06",
+   "role": "OneDrive for Business dell'autore: qui l'agent flow Genera dossier salva il dossier di revisione.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Create file",
+     "icon": "logo:onedrive",
+     "fam": "tools",
+     "sub": "/Documents/Dossier_AS-####.docx",
+     "file": "onedrive.png"
+    },
+    {
+     "label": "Create share link",
+     "icon": "logo:onedrive",
+     "fam": "tools",
+     "sub": "View, Organization: Web URL",
+     "file": "onedrive.png"
+    },
+    {
+     "label": "Apri il dossier",
+     "icon": "cards",
+     "fam": "topics",
+     "sub": "pulsante dell'adaptive card nel topic",
+     "pill": "DossierURL"
+    }
+   ],
+   "file": "onedrive.png"
+  }
+ }
+}

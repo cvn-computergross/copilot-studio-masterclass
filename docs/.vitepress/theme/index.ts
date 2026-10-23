@@ -4,8 +4,8 @@
 //   sopra testo selettore del percorso nella panoramica delle harness   (ExperienceSwitch)
 //               barra di avanzamento sugli schermi senza colonna destra (DocProgress)
 //   fondo       copyright e loghi EDUlabs/CVN e Computer Gross          (SiteFooter)
-// Caselle dei passi (checklist.ts) e animazioni anime.js (animations.ts) si preparano
-// a ogni cambio di pagina.
+// Caselle dei passi (checklist.ts), animazioni anime.js (animations.ts) e dettagli degli schemi
+// interattivi (diagram-details.ts) si preparano a ogni cambio di pagina.
 import { h, nextTick, onMounted, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
@@ -17,6 +17,7 @@ import ExperienceSwitch from './components/ExperienceSwitch.vue'
 import SiteFooter from './components/SiteFooter.vue'
 import { setupChecklist } from './checklist'
 import { setupAnimations } from './animations'
+import { setupDiagramDetails } from './diagram-details'
 import './style.css'
 
 export default {
@@ -35,6 +36,7 @@ export default {
       nextTick(() => {
         setupChecklist(route.path, page.value.relativePath)
         setupAnimations()
+        setupDiagramDetails()
       })
     onMounted(() => {
       enhance()

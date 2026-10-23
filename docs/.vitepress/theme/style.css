@@ -193,19 +193,23 @@
 .vp-doc :is(h2, h3) > :is(.icon, .logo):first-child { margin-right: .4em; }
 .vp-doc td > :is(.icon, .logo):first-child { margin-right: .35em; }
 
-/* file da scaricare (docs/resources/, markdown.ts): una pillola con il glifo download-simple,
-   diversa dai link normali e dal testo da copiare (blocchi di codice). Se non sta nella riga
-   passa intera alla successiva (glifo e nome insieme); solo un nome più lungo della riga va a capo */
+/* file da scaricare (docs/resources/, markdown.ts): un riquadro arrotondato con il glifo
+   download-simple, diverso dai link normali e dal testo da copiare (blocchi di codice).
+   Glifo e nome restano sempre sulla stessa riga: se il riquadro non sta nella riga passa intero
+   alla successiva; solo un nome più largo dell'intera colonna va a capo, accanto al glifo.
+   La linea di base del riquadro è quella del nome (align-self: baseline), così resta allineato
+   al testo intorno */
 .vp-doc a.download {
-  display: inline-block; max-width: 100%; line-height: 1.5;
-  padding: 1px 9px 1px 7px; border-radius: 999px;
+  display: inline-flex; align-items: flex-start; gap: .3em; max-width: 100%; line-height: 1.5;
+  padding: 1px 9px 1px 7px; border-radius: 8px;
   background-color: var(--instructions-tint); border: 1px solid color-mix(in srgb, var(--instructions) 28%, transparent);
   color: var(--instructions); font-weight: 600; text-decoration: none;
-  overflow-wrap: anywhere; transition: background-color .2s, border-color .2s;
+  transition: background-color .2s, border-color .2s;
 }
 .vp-doc a.download:hover { background-color: color-mix(in srgb, var(--instructions) 18%, transparent); border-color: var(--instructions); color: var(--instructions); }
-.vp-doc a.download .download-icon { margin-right: .3em; vertical-align: -.2em; }
+.vp-doc a.download .download-icon { flex: none; margin-top: .2em; }
 .vp-doc a.download .download-icon svg { width: 1.1em; height: 1.1em; }
+.vp-doc a.download .download-name { align-self: baseline; min-width: 0; overflow-wrap: anywhere; }
 .vp-doc a.download code { background: transparent; padding: 0; color: inherit; font-weight: 600; }
 .vp-doc .custom-block a.download { color: var(--instructions); text-decoration: none; }
 
@@ -214,13 +218,13 @@
    Riquadri, corsie e note usano le classi di argomento f-…; le regole dg-… sono le stesse di
    RULES in tools/diagrams.py. Sfondo trasparente; sugli schermi stretti lo schema non scende
    sotto 640px (o sotto la sua larghezza, --dg-w, se è più stretto) e si scorre in orizzontale */
-.vp-doc .diagram {
+.vp-doc .diagram, .dg-pop {
   --dg-body: #363b42; --dg-muted: #6b7480; --dg-rule: #e2e5e9; --dg-neutral: #b4bac2;
   --dg-bg: var(--vp-c-bg); --dg-card: var(--vp-c-bg); --dg-outline: var(--icon-outline);
   --dg-badge: var(--ai-engine); --dg-badge-ink: #fff;
-  margin: 24px 0; overflow-x: auto; scrollbar-width: thin;
 }
-.dark .vp-doc .diagram {
+.vp-doc .diagram { margin: 24px 0; overflow-x: auto; scrollbar-width: thin; }
+.dark .vp-doc .diagram, .dark .dg-pop {
   --dg-body: var(--vp-c-text-1); --dg-muted: var(--vp-c-text-2); --dg-rule: var(--vp-c-divider);
   --dg-neutral: #7d858f; --dg-badge-ink: var(--vp-c-bg);
 }
@@ -243,6 +247,106 @@
 .diagram .dg-rule { stroke: var(--dg-rule); }
 .diagram .dg-badge circle { fill: var(--dg-badge); }
 .diagram .dg-badge text { fill: var(--dg-badge-ink); }
+
+/* schemi interattivi (markdown.ts, theme/diagram-details.ts): i riquadri con dettaglio sono
+   pulsanti, con un pallino "i" nell'angolo; passandoci sopra, con il fuoco o aperti il bordo
+   prende il colore dell'argomento (con il fuoco da tastiera, il blu del sito) */
+.diagram [data-detail] { cursor: pointer; outline: none; }
+.diagram [data-detail]:is(:hover, [aria-expanded="true"]) > rect:first-of-type {
+  stroke: var(--f); stroke-width: 1.5; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .12));
+}
+.diagram [data-detail]:focus-visible > rect:first-of-type { stroke: var(--vp-c-brand-1); stroke-width: 2.5; }
+.diagram .dg-hint-bg { fill: var(--f); }
+.diagram .dg-hint-i { fill: var(--dg-bg); }
+.vp-doc .diagram-hint { margin: 8px 0 0; text-align: center; font-size: 13px; line-height: 1.5; color: var(--vp-c-text-2); }
+
+/* riquadro del dettaglio: sopra la pagina (figlio di <body>), posizionato da diagram-details.ts.
+   Stessi colori degli schemi: nodi tinti nel colore dell'argomento, frecce sottili, etichette
+   dei rami come le etichette sulle frecce; i gruppi (un agent flow, i tool) sono corsie con
+   schede bianche. --dgp-axis: asse delle frecce, al centro delle icone dei nodi */
+.dg-pop {
+  --dg-bg: var(--vp-c-bg-elv); --dg-card: var(--vp-c-bg-elv);
+  position: absolute; z-index: 25; box-sizing: border-box; width: min(372px, calc(100vw - 16px));
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  padding: 12px 12px 14px; border: 1px solid var(--vp-c-divider); border-radius: 12px;
+  background: var(--vp-c-bg-elv); box-shadow: var(--vp-shadow-3);
+  font-family: var(--vp-font-family-base); font-size: 13px; line-height: 1.4; color: var(--vp-c-text-1);
+}
+.dg-pop p { margin: 0; }
+.dg-pop .dg-neutral { --f: var(--dg-neutral); }
+.dgp-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+.dgp-head > .dgp-icon { width: 28px; height: 28px; }
+.dgp-headtext { flex: 1; min-width: 0; }
+.dgp-title { font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--vp-c-text-1); overflow-wrap: anywhere; }
+.dgp-role { margin-top: 2px !important; font-size: 12.5px; line-height: 1.45; color: var(--vp-c-text-2); }
+.dgp-lab {
+  flex: none; padding: 0 7px; border-radius: 6px; background: var(--f-tint); color: var(--f);
+  font-size: 11.5px; font-weight: 600; line-height: 20px; white-space: nowrap;
+}
+.dgp-icon { flex: none; display: inline-flex; width: 22px; height: 22px; }
+.dgp-icon svg { width: 100%; height: 100%; fill: var(--icon-outline); }
+.dgp-icon svg [opacity] { opacity: 1; fill: var(--f-fill, var(--instructions-fill)); }
+.dgp-img { background: center / contain no-repeat; }
+.dgp-steps { --dgp-arrow: var(--f); --dgp-axis: 21px; list-style: none; margin: 0; padding: 0; }
+.dgp-steps--list { display: grid; gap: 6px; }
+.dgp-item { position: relative; margin: 0; }
+.dgp-node {
+  display: flex; align-items: center; gap: 9px; box-sizing: border-box; min-height: 38px;
+  padding: 7px 10px; border-radius: 8px; background: var(--f-tint);
+}
+.dgp-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.dgp-label { color: var(--f); font-size: 13px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.dgp-sub { color: var(--dg-muted); font-size: 12px; line-height: 1.35; overflow-wrap: anywhere; }
+.dgp-tag {
+  flex: none; align-self: flex-start; padding: 0 5px; border: 1px solid var(--dg-rule); border-radius: 5px;
+  background: var(--dg-bg); color: var(--dg-muted); font-size: 11px; font-weight: 600; line-height: 16px; white-space: nowrap;
+}
+/* freccia verso il passo, con l'eventuale etichetta accanto */
+.dgp-link { display: block; position: relative; height: 18px; }
+.dgp-link--pill { height: 28px; }
+.dgp-link::before {
+  content: ""; position: absolute; left: calc(var(--dgp-axis) - .8px); top: 0; bottom: 5px;
+  border-left: 1.6px solid var(--dgp-arrow);
+}
+.dgp-link::after {
+  content: ""; position: absolute; left: calc(var(--dgp-axis) - 4.5px); bottom: 0;
+  border: 4.5px solid transparent; border-bottom: 0; border-top: 6px solid var(--dgp-arrow);
+}
+.dgp-pill {
+  position: absolute; left: calc(var(--dgp-axis) + 9px); top: 50%; transform: translateY(-55%);
+  padding: 0 8px; border: 1px solid var(--dg-rule); border-radius: 9px; background: var(--dg-bg);
+  color: var(--dgp-arrow); font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap;
+}
+.dgp-branch.dg-neutral > .dgp-steps > .dgp-item > .dgp-link .dgp-pill { color: var(--dg-muted); }
+/* rami secondari di una condizione: l'asse principale prosegue a sinistra, ogni ramo parte con
+   un tratteggio nel suo colore (grigio per i rami "No") */
+.dgp-branches { position: relative; padding: 6px 0 2px calc(var(--dgp-axis) + 14px); }
+.dgp-branches::before {
+  content: ""; position: absolute; left: calc(var(--dgp-axis) - .8px); top: 0; height: 6px;
+  border-left: 1.6px solid var(--dgp-arrow);
+}
+.dgp-item:last-child > .dgp-branches::before { border-left-style: dashed; border-left-color: var(--dg-neutral); }
+.dgp-branch { position: relative; }
+.dgp-branch + .dgp-branch { margin-top: 6px; }
+.dgp-branch::before {
+  content: ""; position: absolute; left: -14px; top: 0; width: calc(14px + var(--dgp-axis));
+  border-top: 1.5px dashed var(--f);
+}
+.dgp-branch:not(:last-child)::after,
+.dgp-item:not(:last-child) > .dgp-branches > .dgp-branch:last-child::after {
+  content: ""; position: absolute; left: calc(-14px - .8px); top: 0; bottom: -6px;
+  border-left: 1.6px solid var(--dgp-arrow);
+}
+.dgp-item:last-child > .dgp-branches > .dgp-branch:not(:last-child)::after { border-left: 1.5px dashed var(--dg-neutral); }
+.dgp-item:not(:last-child) > .dgp-branches > .dgp-branch:last-child::after { bottom: -2px; }
+/* gruppo: una corsia con il titolo in maiuscoletto e schede bianche */
+.dgp-group { padding: 8px; border: 1px solid var(--f-fill); border-radius: 10px; background: var(--f-tint); }
+.dgp-grouphead {
+  display: flex; align-items: center; gap: 7px; margin: 0 0 8px 2px !important;
+  color: var(--f); font-size: 11px; font-weight: 600; letter-spacing: .04em; line-height: 1.3; text-transform: uppercase;
+}
+.dgp-grouphead .dgp-icon { width: 18px; height: 18px; }
+.dgp-group .dgp-node { background: var(--dg-card); box-shadow: inset 0 0 0 1px var(--dg-rule); }
 
 /* 7. Blocchi della home ----------------------------------------------------- */
 .vp-doc .hero { display: flex; align-items: center; gap: 24px; margin: 8px 0 20px; }

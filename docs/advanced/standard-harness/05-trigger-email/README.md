@@ -4,8 +4,6 @@
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~75 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
 
-Parti di questo laboratorio sono adattate da Microsoft Agent Academy (https://github.com/microsoft/agent-academy), Copyright (c) Microsoft Corporation, licenza MIT.
-
 ## Scenario
 
 Con S04 il ciclo in chat è completo: un business case allegato viene registrato, analizzato e valutato dopo la conferma di un analista. Il processo del PMO però nasce dalla casella email condivisa, dove le proposte arrivano in formati diversi e spesso senza tutte le informazioni richieste.

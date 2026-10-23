@@ -38,6 +38,7 @@ sulla sua freccia o copre un riquadro, se una freccia attraversa un riquadro o s
 si sovrappongono. Il disegno si adatta al contenuto con margini uguali.
 """
 import base64
+import json
 import math
 import os
 import re
@@ -115,14 +116,16 @@ MARGIN = 6    # margine fra il contenuto e il bordo del disegno, uguale sui quat
 GAP = 4       # distanza minima fra un'etichetta di freccia e un riquadro
 PILL_H = 18   # altezza delle etichette sulle frecce
 SAFETY = 1.04  # i testi si misurano il 4% più larghi di Inter: resta margine fra browser e sistemi
+HINT_R = 5.5   # raggio del pallino "i" dei riquadri con dettaglio interattivo
 
 
 class LayoutError(Exception):
     """Uno schema non rispetta i controlli di impaginazione."""
 
 
-def style_block():
-    """<style> del file SVG da solo: colori chiari e, con il sistema in tema scuro, quelli scuri."""
+def style_block(hint=False):
+    """<style> del file SVG da solo: colori chiari e, con il sistema in tema scuro, quelli scuri.
+    hint=True: lo schema ha riquadri con dettaglio, il cui pallino "i" nel file da solo si nasconde."""
     def rgba(hexcolor, a):
         r, g, b = (int(hexcolor[i:i + 2], 16) for i in (1, 3, 5))
         return f"rgba({r},{g},{b},{a})"
@@ -130,7 +133,10 @@ def style_block():
     light += "".join(f".f-{k}{{--f:{s};--f-tint:{t};--f-fill:{f}}}" for k, (s, t, f) in FAM.items())
     dark = "svg{" + ";".join(f"{k}:{v[1]}" for k, v in COMMON.items()) + "}"
     dark += "".join(f".f-{k}{{--f:{f};--f-tint:{rgba(f, .16)}}}" for k, (s, t, f) in FAM.items())
-    return f"<style>{light}{RULES.replace(chr(10), '')}@media (prefers-color-scheme: dark){{{dark}}}</style>"
+    # il pallino "i" dei riquadri con dettaglio serve solo nel sito (dove il dettaglio si apre):
+    # nel file SVG da solo resta nascosto
+    hide = ".dg-hint{display:none}" if hint else ""
+    return f"<style>{light}{RULES.replace(chr(10), '')}{hide}@media (prefers-color-scheme: dark){{{dark}}}</style>"
 
 
 # --- misura dei testi -------------------------------------------------------------------
@@ -219,8 +225,13 @@ def icon_svg(spec, x, y, size):
         else:
             file = next(f for f in (LOGOS / f"{name}.svg", LOGOS / f"{name}.png") if f.exists())
         mime = "image/svg+xml" if file.suffix == ".svg" else "image/png"
-        data = base64.b64encode(file.read_bytes()).decode()
-        return f'<image x="{x}" y="{y}" width="{size}" height="{size}" href="data:{mime};base64,{data}" preserveAspectRatio="xMidYMid meet"/>'
+        raw = file.read_bytes()
+        if file.suffix == ".svg":  # stesso risultato con qualunque fine riga del checkout (core.autocrlf)
+            raw = raw.replace(b"\r\n", b"\n")
+        data = base64.b64encode(raw).decode()
+        # data-icon: nel sito il dettaglio interattivo riusa la stessa immagine (diagram-details.ts)
+        return (f'<image data-icon="{spec}" x="{x}" y="{y}" width="{size}" height="{size}"'
+                f' href="data:{mime};base64,{data}" preserveAspectRatio="xMidYMid meet"/>')
     src = (GLYPHS / f"{spec}.svg").read_text(encoding="utf-8")
     out = []
     for p in re.findall(r"<path[^>]*/>", src):
@@ -242,7 +253,7 @@ class Diagram:
         self.name, self.out = name, out
         self.parts, self.markers = [], {}
         self.nodes, self.lanes, self.pills, self.free, self.arrows, self.extent = [], [], [], [], [], []
-        self.errors = []
+        self.errors, self.details, self.hints = [], [], []
 
     @staticmethod
     def _t(x, y, s, size, cls, weight=400, anchor="start"):
@@ -261,8 +272,32 @@ class Diagram:
         self.free.append((s, box))
         return box
 
-    def node(self, x, y, w, label, icon, fam, sub=None, white=False, h=None):
-        """Riquadro con icona ed etichetta; white=True dentro un'area tinta."""
+    def _hot(self, detail, where, texts, cx, cy):
+        """Riquadro o corsia con dettaglio interattivo (DETAILS): attributo data-detail, <title> per chi
+        non ha JavaScript e pallino "i" nell'angolo in alto a destra (solo nel sito). Il pallino non
+        deve toccare i testi del riquadro. Restituisce (attributi del gruppo, parti da aggiungere)."""
+        if not detail:
+            return "", [], []
+        if detail not in DETAILS:
+            self.errors.append(f"{where}: dettaglio '{detail}' non definito in DETAILS")
+            return "", [], []
+        self.details.append(detail)
+        d = DETAILS[detail]
+        r = HINT_R
+        dot = (cx - r, cy - r, cx + r, cy + r)
+        for s, b in texts:
+            if overlaps(dot, b, 1):
+                self.errors.append(f"{where}: il pallino del dettaglio tocca il testo '{s}'")
+        self.hints.append((where, dot))
+        hint = (f'<g class="dg-hint" aria-hidden="true"><circle class="dg-hint-bg" cx="{cx:g}" cy="{cy:g}" r="{r}"/>'
+                f'<circle class="dg-hint-i" cx="{cx:g}" cy="{cy - 2.4:g}" r="0.95"/>'
+                f'<rect class="dg-hint-i" x="{cx - 0.8:g}" y="{cy - 0.7:g}" width="1.6" height="3.9" rx="0.8"/></g>')
+        title = f'<title>{escape(d["title"])}: {escape(d["role"])} ({escape(d["lab"])})</title>'
+        return f' data-detail="{detail}"', [title], [hint]
+
+    def node(self, x, y, w, label, icon, fam, sub=None, white=False, h=None, detail=None):
+        """Riquadro con icona ed etichetta; white=True dentro un'area tinta. detail: id in DETAILS,
+        nel sito il riquadro apre il dettaglio (diagram-details.ts)."""
         lines = sub.split("\n") if sub else []
         h = h or (44 + 16 * len(lines) if lines else 48)
         g = [f'<rect class="{"dg-card" if white else "dg-box"}" x="{x}" y="{y}" width="{w}" height="{h}" rx="8"/>',
@@ -272,7 +307,8 @@ class Diagram:
         boxes = [(label, self._text(x + 48, ty, label, 13.5, "dg-label", 600, out=g))]
         for i, line in enumerate(lines):
             boxes.append((line, self._text(x + 48, ty + 17 + 16 * i, line, 12, "dg-sub", out=g)))
-        self.parts.append(f'<g class="dg-node f-{fam}">' + "".join(g) + "</g>")
+        attrs, head, tail = self._hot(detail, f"riquadro '{label}'", boxes, x + w - HINT_R - 3, y + HINT_R + 3)
+        self.parts.append(f'<g class="dg-node f-{fam}"{attrs}>' + "".join(head + g + tail) + "</g>")
         for s, b in boxes:
             if b[2] > x + w - PAD:
                 need = math.ceil(b[2] - x + PAD)
@@ -283,11 +319,12 @@ class Diagram:
         self.nodes.append((label, rect))
         return {"x": x, "y": y, "w": w, "h": h, "cx": x + w / 2, "cy": y + h / 2, "r": x + w, "b": y + h}
 
-    def lane(self, x, y, w, h, title, icon, fam):
+    def lane(self, x, y, w, h, title, icon, fam, detail=None):
         g = [f'<rect class="dg-lane" x="{x}" y="{y}" width="{w}" height="{h}" rx="12"/>',
              icon_svg(icon, x + 14, y + 12, 22)]
         tb = self._text(x + 44, y + 28, title.upper(), 11.5, "dg-label", 600, out=g)
-        self.parts.append(f'<g class="dg-lanegroup f-{fam}">' + "".join(g) + "</g>")
+        attrs, head, tail = self._hot(detail, f"corsia '{title}'", [(title, tb)], x + w - HINT_R - 7, y + HINT_R + 7)
+        self.parts.append(f'<g class="dg-lanegroup f-{fam}"{attrs}>' + "".join(head + g + tail) + "</g>")
         rect, ib = (x, y, x + w, y + h), (x + 14, y + 12, x + 36, y + 34)
         if not contains(rect, ib, 8):
             self.errors.append(f"corsia '{title}': l'icona non sta dentro la corsia")
@@ -387,6 +424,10 @@ class Diagram:
             for n, hb in headers:
                 if overlaps(fb, hb, 2):
                     errs.append(f"il testo '{s}' tocca l'{n}")
+        for where, dot in self.hints:  # il pallino di una corsia non deve finire sotto un riquadro
+            for n, rn in nodes:
+                if overlaps(dot, rn, 2) and not contains(rn, dot):
+                    errs.append(f"{where}: il pallino del dettaglio tocca il riquadro '{n}'")
         for lab, pts in self.arrows:
             for a, b in zip(pts, pts[1:]):
                 for n, rn in nodes:
@@ -407,7 +448,7 @@ class Diagram:
 
     def save(self):
         name = self.name
-        errs = self.check()
+        errs = self.check() + detail_errors(self)
         if errs:
             raise LayoutError(f"schema {name}: problemi di impaginazione\n  - " + "\n  - ".join(errs))
         x0, y0, x1, y1 = self.bounds()
@@ -416,11 +457,16 @@ class Diagram:
         dx, dy = MARGIN - x0, MARGIN - y0
         self.out.mkdir(parents=True, exist_ok=True)
         defs = "<defs>" + "".join(self.markers.values()) + "</defs>" if self.markers else ""
+        body = "".join(self.parts)
+        if not self.details:  # data-icon serve solo ai dettagli interattivi
+            body = re.sub(r'<image data-icon="[^"]*" ', "<image ", body)
         svg = (f'<svg xmlns="http://www.w3.org/2000/svg" class="dg" viewBox="0 0 {w} {h}" width="{w}" height="{h}"'
-               f' font-family="{FONT}">{style_block()}{defs}'
-               f'<g transform="translate({dx} {dy})">' + "".join(self.parts) + "</g></svg>\n")
+               f' font-family="{FONT}">{style_block(bool(self.details))}{defs}'
+               f'<g transform="translate({dx} {dy})">' + body + "</g></svg>\n")
         (self.out / f"{name}.svg").write_text(svg, encoding="utf-8")
-        print(f"schema {self.out.parent.name}/{name} ({w}x{h})")
+        save_details(self, body)
+        n = len(set(self.details))
+        print(f"schema {self.out.parent.name}/{name} ({w}x{h})" + (f", {n} riquadri con dettaglio" if n else ""))
 
 
 def _splits(text):
@@ -592,6 +638,262 @@ DA = "agent:demand-it-agent-192.png"     # icona caricata in S01
 COM = "agent:committee-agent-192.png"    # icona dell'Agente Comitato
 
 
+# --- dettagli interattivi -----------------------------------------------------------------
+# Nel sito un riquadro (o una corsia) con detail="id" si può esplorare: passandoci sopra con il
+# mouse, o selezionandolo (clic, tocco, Invio), si apre un riquadro con il componente in dettaglio,
+# disegnato come un piccolo flow verticale nello stesso stile (diagram-details.ts). Il contenuto
+# sta qui sotto e riporta i nomi esatti dei lab; save() lo scrive accanto allo schema, in
+# <nome>.details.json, che markdown.ts trasforma in HTML. Il file SVG da solo non cambia aspetto.
+#   D(titolo, icona, argomento, lab, ruolo in una riga, passi, layout)
+#     layout "flow": passi uniti da frecce; "list": elenco senza frecce (le parti di un agente)
+#   N(etichetta, icona, argomento, sottotitolo, pill=etichetta sulla freccia che arriva al passo,
+#     lab=lab del passo, branches=[B(etichetta del ramo, passi), ...] rami secondari di una condizione)
+#   G(titolo, icona, argomento, passi, layout): gruppo di passi in una corsia (un agent flow, i tool)
+def N(label, icon, fam, sub=None, pill=None, lab=None, branches=None):
+    return {k: v for k, v in dict(label=label, icon=icon, fam=fam, sub=sub, pill=pill, lab=lab,
+                                  branches=branches).items() if v is not None}
+
+
+def B(label, steps, fam=NEUTRAL):
+    return {"label": label, "fam": fam, "steps": steps}
+
+
+def G(title, icon, fam, steps, layout="flow", pill=None):
+    g = {"group": title, "icon": icon, "fam": fam, "layout": layout, "steps": steps}
+    if pill:
+        g["pill"] = pill
+    return g
+
+
+def D(title, icon, fam, lab, role, steps, layout="flow"):
+    return {"title": title, "icon": icon, "fam": fam, "lab": lab, "role": role, "layout": layout, "steps": steps}
+
+
+TRIGGER_FLOW = "When an agent calls the flow"
+RESPOND = "Respond to the agent"
+TABLES = [N("Program", "database", "knowledge", "Program Code PG-###, Available Budget"),
+          N("Evaluation Criterion", "database", "knowledge", "Weight, lookup a Program"),
+          N("Requester", "database", "knowledge", "RQ-####, Email per la deduplica"),
+          N("Proposal", "database", "knowledge", "PP-####, Business Case Document"),
+          N("Assessment", "database", "knowledge", "AS-####, Score, Recommendation")]
+
+DETAILS = {
+    "demand-it": D(
+        "Agente Demand IT", DA, "ai-engine", "S01",
+        "Orchestratore e punto di ingresso unico: risponde sulle regole del PMO e delega agli altri componenti.",
+        [N("Istruzioni", "clipboard-text", "instructions", "ruolo, ambito, responsabilità, identificatori, delega", lab="S01"),
+         N("Conoscenza PMO", "logo:sharepoint", "knowledge", "cartella SharePoint PMO Knowledge", lab="S01"),
+         N("Impostazioni generative", "sliders-horizontal", "platform", "niente web, File uploads attivo, Claude Sonnet 4.6", lab="S01"),
+         N("Intake Proposte", "robot", "agents", "child agent", lab="S02"),
+         N("Agente Comitato", COM, "agents", "agente connesso", lab="S02"),
+         N("Nuova proposta via email", "lightning", "triggers", "trigger When a new email arrives (V3)", lab="S05"),
+         N("Genera dossier di revisione", "chats-circle", "topics", "topic con l'agent flow Genera dossier", lab="S06"),
+         N("Teams and Microsoft 365 Copilot", "rocket-launch", "lifecycle", "canale dopo la pubblicazione", lab="S07")],
+        layout="list"),
+    "intake": D(
+        "Intake Proposte", "robot", "agents", "S02-S05",
+        "Child agent dell'Agente Demand IT: registra e analizza i business case e, dopo una conferma, crea la valutazione.",
+        [N("Istruzioni", "clipboard-text", "instructions", "un solo PDF per volta, codici mai inventati", lab="S02"),
+         G("Tools · agent flow", "wrench", "tools", [
+             N("Carica business case", "logo:power-automate", "tools", "crea la proposta e carica il PDF", lab="S02"),
+             N("Analizza business case", "logo:power-automate", "tools", "prompt Estrai dati business case", lab="S03"),
+             N("Crea valutazione", "logo:power-automate", "tools", "prompt Valuta proposta, conferma dell'utente", lab="S04"),
+             N("Notifica PMO in Teams", "logo:power-automate", "tools", "adaptive card per le proposte via email", lab="S05")],
+           layout="list")],
+        layout="list"),
+    "comitato": D(
+        "Agente Comitato", COM, "agents", "S02",
+        "Agente connesso, pubblicato a sé: prepara briefing e domande per la sessione di revisione, in sola lettura.",
+        [N("Istruzioni", "clipboard-text", "instructions", "briefing e domande, non contatta i proponenti"),
+         G("Conoscenza Dataverse", "logo:dataverse", "knowledge", TABLES, layout="list"),
+         N("Impostazioni generative", "sliders-horizontal", "platform", "niente web, File uploads disattivato, Claude Sonnet 4.6"),
+         N("Let other agents connect", "plugs-connected", "agents", "pubblicato e collegato all'Agente Demand IT")],
+        layout="list"),
+    "comitato-kb": D(
+        "Conoscenza Dataverse", "logo:dataverse", "knowledge", "S02",
+        "Conoscenza dell'Agente Comitato: le cinque tabelle del PMO Demand Hub, in sola lettura e con i permessi dell'utente.",
+        TABLES, layout="list"),
+    "pmo-hub": D(
+        "PMO Demand Hub", "logo:dataverse", "knowledge", "Lab 00",
+        "Soluzione PMO Demand IT importata nel Lab 00: cinque tabelle con prefisso csm_ e l'app model-driven.",
+        [G("Tabelle Dataverse", "logo:dataverse", "knowledge", TABLES, layout="list"),
+         N("App PMO Demand Hub", "logo:power-apps", "lifecycle", "Home, Proposal Board, moduli e viste")],
+        layout="list"),
+    "pmo-knowledge": D(
+        "PMO Knowledge", "logo:sharepoint", "knowledge", "S01",
+        "Cartella SharePoint con le regole del PMO: è la fonte Conoscenza PMO dell'Agente Demand IT.",
+        [N("Zava_PMO_Linee_Guida_Business_Case.docx", "file-text", "knowledge", "formati, struttura, soglie, regola di budget", lab="Lab 00"),
+         N("Zava_Piano_Strategico_IT_2026-2028.pdf", "file-text", "knowledge", "obiettivi OS1-OS5 con i KPI", lab="Lab 00"),
+         N("Conoscenza PMO", "logo:sharepoint", "knowledge", "risponde con i permessi di chi chatta", lab="S01")],
+        layout="list"),
+    "users": D(
+        "Proponenti e analisti", "users-three", "agents", "S01-S08",
+        "Chi usa l'Agente Demand IT: i proponenti allegano il business case, gli analisti del PMO confermano.",
+        [N("Pannello Test", "flask", "instructions", "le prove dei lab in Copilot Studio", lab="S01-S06"),
+         N("Conferme dell'analista", "user-check", "agents", "programma e registrazione della valutazione", lab="S04"),
+         N("Teams and Microsoft 365 Copilot", "logo:teams", "lifecycle", "canale dopo la pubblicazione", lab="S07"),
+         N("Reazioni e CSAT", "thumbs-up", "lifecycle", "feedback degli utenti in Teams", lab="S08")],
+        layout="list"),
+    "mailbox": D(
+        "Casella del PMO", "logo:outlook", "tools", "S05",
+        "Il secondo canale di ingresso: le proposte inviate per email alla casella del PMO.",
+        [N("Email del proponente", "envelope-simple", "tools", "oggetto Proposta progetto, PDF allegato"),
+         N("Nuova proposta via email", "lightning", "triggers", "Subject Filter, Only with Attachments"),
+         N("Flow del trigger", "logo:power-automate", "triggers", "classifica l'email e registra le proposte")]),
+    "flow-trigger": D(
+        "Flow del trigger", "logo:power-automate", "triggers", "S05",
+        "Flow del trigger Nuova proposta via email: classifica l'email, registra ogni PDF e chiama l'agente.",
+        [N("When a new email arrives (V3)", "logo:outlook", "triggers", "Split On: una esecuzione per email"),
+         N("Html to text", "file-text", "tools", "testo del Body"),
+         N("Classifica", "logo:ai-builder", "tools", "prompt Classifica email PMO"),
+         N("Proposta rilevata", "git-branch", "system", "Classifica contiene Proposta?", branches=[
+             B("No", [N("Da verificare", "git-branch", "system", "Classifica contiene Incerta?", branches=[
+                 B("Sì", [N("Avvisa verifica manuale", "logo:outlook", "tools", "Send an email (V2)")], fam="platform"),
+                 B("No", [N("Fine senza azioni", "x-circle", "system", "RispostaAutomatica o NonPertinente")])])])]),
+         N("Per ogni allegato", "arrows-clockwise", "tools", "condizione Allegato PDF", pill="Sì"),
+         N("Registra proposta email", "logo:dataverse", "knowledge", "riga in Proposals, canale Email"),
+         N("Carica documento email", "logo:dataverse", "knowledge", "PDF in Business Case Document"),
+         N("Sends a prompt to the specified copilot", DA, "ai-engine", "Agente Demand IT"),
+         N("Analizza business case", "robot", "agents", "strumento di Intake Proposte"),
+         N("Notifica PMO in Teams", "logo:teams", "tools", "adaptive card")]),
+    "trigger-email": D(
+        "Nuova proposta via email", "lightning", "triggers", "S05",
+        "Trigger dell'Agente Demand IT: il flow che genera si completa in Power Automate.",
+        [N("When a new email arrives (V3)", "logo:outlook", "triggers", "Add trigger nella pagina Overview"),
+         N("Parametri", "sliders-horizontal", "platform", "Include Attachments, Subject Filter, Only with Attachments"),
+         N("Flow del trigger", "logo:power-automate", "triggers", "Edit in Power Automate"),
+         N("Agente Demand IT", DA, "ai-engine", "riceve il messaggio da elaborare", pill="Sends a prompt")]),
+    "genera-dossier": D(
+        "Genera dossier", "logo:power-automate", "tools", "S06",
+        "Topic Genera dossier di revisione con l'agent flow Genera dossier: dal codice AS-#### al documento Word.",
+        [N("Genera dossier di revisione", "chats-circle", "topics", "topic: chiede il codice se manca"),
+         G("Agent flow · Genera dossier", "logo:power-automate", "tools", [
+             N("Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione, output Document"),
+             N("Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx"),
+             N("Create share link", "logo:onedrive", "tools", "View, Organization")], pill="CodiceValutazione"),
+         N("Adaptive card", "cards", "topics", "pulsante Apri il dossier", pill="DossierURL")]),
+    "topic-dossier": D(
+        "Genera dossier di revisione", "chats-circle", "topics", "S06",
+        "Topic dell'Agente Demand IT: raccoglie il codice della valutazione e consegna il link al dossier.",
+        [N("Trigger", "lightning", "triggers", "The agent chooses: dossier di una valutazione AS-####"),
+         N("VarCodiceValutazione", "brackets-curly", "topics", "input del topic, chiesto se manca"),
+         N("Genera dossier", "logo:power-automate", "tools", "agent flow, restituisce DossierURL"),
+         N("Send a message", "cards", "topics", "adaptive card con Apri il dossier"),
+         N("End current topic", "stop-circle", "system", "Topic management")]),
+    "flow-dossier": D(
+        "Agent flow Genera dossier", "logo:power-automate", "tools", "S06",
+        "Genera il dossier Word con il prompt, lo salva in OneDrive e restituisce un link di sola lettura.",
+        [N(TRIGGER_FLOW, "lightning", "triggers", "input CodiceValutazione"),
+         N("Run a prompt", "logo:ai-builder", "tools", "prompt Dossier di revisione, output Document"),
+         N("Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx"),
+         N("Create share link", "logo:onedrive", "tools", "Link type View, scope Organization"),
+         N(RESPOND, "flow-arrow", "tools", "output DossierURL")]),
+    "onedrive": D(
+        "OneDrive", "logo:onedrive", "tools", "S06",
+        "OneDrive for Business dell'autore: qui l'agent flow Genera dossier salva il dossier di revisione.",
+        [N("Create file", "logo:onedrive", "tools", "/Documents/Dossier_AS-####.docx"),
+         N("Create share link", "logo:onedrive", "tools", "View, Organization: Web URL"),
+         N("Apri il dossier", "cards", "topics", "pulsante dell'adaptive card nel topic", pill="DossierURL")]),
+    "teams-channel": D(
+        "Canale del PMO", "logo:teams", "tools", "S05",
+        "Dove il PMO vede arrivare le proposte ricevute per email, già registrate e analizzate.",
+        [N("Notifica PMO in Teams", "logo:power-automate", "tools", "agent flow di Intake Proposte"),
+         N("Post card in a chat or channel", "logo:teams", "tools", "Post as Flow bot"),
+         N("Adaptive card", "cards", "tools", "proposta, titolo, proponente, programma, avvisi"),
+         N("Apri le proposte nel PMO Demand Hub", "logo:power-apps", "lifecycle", "Action.OpenUrl")]),
+    "carica-bc": D(
+        "Carica business case", "logo:power-automate", "tools", "S02",
+        "Agent flow di Intake Proposte: registra nel PMO Demand Hub la proposta con il PDF allegato in chat.",
+        [N(TRIGGER_FLOW, "lightning", "triggers", "BusinessCase, Messaggio, EmailMittente"),
+         N("Crea proposta", "logo:dataverse", "knowledge", "Add a new row in Proposals, canale Chat"),
+         N("Carica documento", "logo:dataverse", "knowledge", "PDF in Business Case Document"),
+         N(RESPOND, "flow-arrow", "tools", "CodiceProposta PP-####")]),
+    "analizza-bc": D(
+        "Analizza business case", "logo:power-automate", "tools", "S03",
+        "Agent flow di Intake Proposte: estrae i dati dal PDF, crea o riusa il proponente e collega il programma.",
+        [N(TRIGGER_FLOW, "lightning", "triggers", "input CodiceProposta"),
+         N("Leggi proposta", "logo:dataverse", "knowledge", "List rows in Proposals"),
+         N("Scarica documento", "logo:dataverse", "knowledge", "Business Case Document"),
+         N("Estrai dati", "logo:ai-builder", "tools", "prompt Estrai dati business case"),
+         N("Cerca proponente", "logo:dataverse", "knowledge", "List rows in Requesters per email"),
+         N("Proponente nuovo", "git-branch", "system", "nessun proponente con quella email?", branches=[
+             B("Sì", [N("Crea proponente", "logo:dataverse", "knowledge", "Add a new row in Requesters")], fam="knowledge")]),
+         N("Aggiorna proposta", "logo:dataverse", "knowledge", "titolo, sintesi, budget, proponente"),
+         N("Programma indicato", "git-branch", "system", "un solo programma valido nel documento?", branches=[
+             B("Sì", [N("Cerca programma", "logo:dataverse", "knowledge", "List rows in Programs"),
+                      N("Collega programma", "logo:dataverse", "knowledge", "Update a row: Program")], fam="knowledge")]),
+         N(RESPOND, "flow-arrow", "tools", "codici, programma, avvisi")]),
+    "crea-val": D(
+        "Crea valutazione", "logo:power-automate", "tools", "S04",
+        "Agent flow di Intake Proposte: valuta, calcola il punteggio con regole fisse e registra la valutazione dopo la conferma.",
+        [N(TRIGGER_FLOW, "lightning", "triggers", "CodiceProposta, CodiceProgramma"),
+         N("Leggi Proposta e Leggi Programma", "logo:dataverse", "knowledge", "List rows in Proposals e Programs"),
+         N("Scarica documento", "logo:dataverse", "knowledge", "Business Case Document"),
+         N("Valuta", "logo:ai-builder", "tools", "prompt Valuta proposta: livelli ed evidenze"),
+         N("Per ogni criterio", "arrows-clockwise", "tools", "Punti, Punteggio e Dettaglio"),
+         N("Raccomandazione", "function", "tools", "soglie 75 e 55, regola di budget"),
+         N("Registra valutazione", "logo:dataverse", "knowledge", "Add a new row in Assessments, AS-####"),
+         N("Aggiorna proposta", "logo:dataverse", "knowledge", "Proposal Status Assessed"),
+         N(RESPOND, "flow-arrow", "tools", "codice, punteggio, indicazione")]),
+    "notifica-teams": D(
+        "Notifica PMO in Teams", "logo:power-automate", "tools", "S05",
+        "Agent flow di Intake Proposte: avvisa il PMO in Teams di una proposta ricevuta per email.",
+        [N(TRIGGER_FLOW, "lightning", "triggers", "CodiceProposta, Title, Requester, Program, Avvisi"),
+         N("Post card in a chat or channel", "logo:teams", "tools", "Flow bot, adaptive card con FactSet"),
+         N(RESPOND, "flow-arrow", "tools", "Esito: Notifica inviata")]),
+}
+
+
+def _walk(steps):
+    """Tutti i passi di un dettaglio, anche dentro gruppi e rami."""
+    for s in steps:
+        yield s
+        yield from _walk(s.get("steps", []))
+        for b in s.get("branches", []):
+            yield from _walk(b["steps"])
+
+
+def detail_errors(d):
+    """Controlli sui dettagli usati da uno schema: icone esistenti e, per le icone degli agenti
+    (immagini incorporate), presenti anche nello schema, da cui il sito le riprende."""
+    errs, body = [], "".join(d.parts)
+    for key in dict.fromkeys(d.details):
+        det = DETAILS[key]
+        for s in [det] + list(_walk(det["steps"])):
+            icon = s["icon"]
+            kind, _, name = icon.partition(":") if ":" in icon else ("glyph", "", icon)
+            if kind == "glyph" and not (GLYPHS / f"{name}.svg").exists():
+                errs.append(f"dettaglio '{key}': glifo non trovato, theme/icons/{name}.svg")
+            elif kind == "logo" and not any((LOGOS / f"{name}.{e}").exists() for e in ("svg", "png")):
+                errs.append(f"dettaglio '{key}': logo non trovato, docs/public/logos/{name}")
+            elif kind == "agent" and f'data-icon="{icon}"' not in body:
+                errs.append(f"dettaglio '{key}': l'icona {icon} deve comparire anche nello schema")
+    return errs
+
+
+def save_details(d, body):
+    """Scrive <nome>.details.json accanto allo schema (solo se ha riquadri con dettaglio).
+    Per i loghi il sito usa i file di docs/public/logos (estensione risolta qui)."""
+    file = d.out / f"{d.name}.details.json"
+    if not d.details:
+        if file.exists():
+            file.unlink()
+        return
+    def logo_file(icon):
+        if icon.startswith("logo:"):
+            name = icon[5:]
+            return next(f"{name}.{e}" for e in ("svg", "png") if (LOGOS / f"{name}.{e}").exists())
+        return None
+    out = {}
+    for key in dict.fromkeys(d.details):
+        det = json.loads(json.dumps(DETAILS[key]))
+        for s in [det] + list(_walk(det["steps"])):
+            if logo_file(s["icon"]):
+                s["file"] = logo_file(s["icon"])
+        out[key] = det
+    file.write_text(json.dumps({"diagram": d.name, "details": out}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+
 def panoramica():
     """S01-S07: chi parla con chi."""
     d = Diagram("panoramica-sistema")
@@ -600,17 +902,17 @@ def panoramica():
     B = A + WA + 55
     C = B + WB + 55
     D = C + WC + 55
-    u = d.node(A, 40, WA, "Proponenti e analisti", "users-three", "agents", "Teams e M365 Copilot (S07)")
-    kn = d.node(A, 140, WA, "PMO Knowledge", "logo:sharepoint", "knowledge", "conoscenza SharePoint")
-    mail = d.node(A, 250, WA, "Casella del PMO", "logo:outlook", "tools", "oggetto Proposta progetto")
-    da = d.node(B, 40, WB, "Agente Demand IT", DA, "ai-engine", "orchestratore (S01)")
-    trg = d.node(B, 250, WB, "Flow del trigger", "logo:power-automate", "triggers", "When a new email arrives (S05)")
-    intk = d.node(C, 10, WC, "Intake Proposte", "robot", "agents", "child agent (S02-S05)")
-    com = d.node(C, 100, WC, "Agente Comitato", COM, "agents", "agente connesso (S02)")
-    dos = d.node(C, 190, WC, "Genera dossier", "logo:power-automate", "tools", "topic e agent flow (S06)")
-    teams = d.node(D, 10, WD, "Canale del PMO", "logo:teams", "tools", "Notifica PMO in Teams")
-    dv = d.node(D, 100, WD, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse (Lab 00)")
-    od = d.node(D, 190, WD, "OneDrive", "logo:onedrive", "tools", "dossier Word e link")
+    u = d.node(A, 40, WA, "Proponenti e analisti", "users-three", "agents", "Teams e M365 Copilot (S07)", detail="users")
+    kn = d.node(A, 140, WA, "PMO Knowledge", "logo:sharepoint", "knowledge", "conoscenza SharePoint", detail="pmo-knowledge")
+    mail = d.node(A, 250, WA, "Casella del PMO", "logo:outlook", "tools", "oggetto Proposta progetto", detail="mailbox")
+    da = d.node(B, 40, WB, "Agente Demand IT", DA, "ai-engine", "orchestratore (S01)", detail="demand-it")
+    trg = d.node(B, 250, WB, "Flow del trigger", "logo:power-automate", "triggers", "When a new email arrives (S05)", detail="flow-trigger")
+    intk = d.node(C, 10, WC, "Intake Proposte", "robot", "agents", "child agent (S02-S05)", detail="intake")
+    com = d.node(C, 100, WC, "Agente Comitato", COM, "agents", "agente connesso (S02)", detail="comitato")
+    dos = d.node(C, 190, WC, "Genera dossier", "logo:power-automate", "tools", "topic e agent flow (S06)", detail="genera-dossier")
+    teams = d.node(D, 10, WD, "Canale del PMO", "logo:teams", "tools", "Notifica PMO in Teams", detail="teams-channel")
+    dv = d.node(D, 100, WD, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse (Lab 00)", detail="pmo-hub")
+    od = d.node(D, 190, WD, "OneDrive", "logo:onedrive", "tools", "dossier Word e link", detail="onedrive")
     d.arrow([(u["r"], u["cy"]), (B, u["cy"])], "ai-engine")
     d.arrow([(kn["r"], kn["cy"]), (B + 40, kn["cy"]), (B + 40, da["b"])], "knowledge", dashed=True)
     d.arrow([(mail["r"], mail["cy"]), (B, mail["cy"])], "triggers")
@@ -632,24 +934,24 @@ def panoramica():
 def architettura_standard():
     """S01-S06: i componenti dell'Agente Demand IT e dello specialista."""
     d = Diagram("architettura-standard")
-    d.lane(20, 20, 620, 382, "Agente Demand IT · csm_agentedemand_std", DA, "ai-engine")
-    top = d.node(342, 62, 280, "Topic", "chats-circle", "topics", "Genera dossier di revisione", white=True)
-    trg = d.node(342, 140, 280, "Trigger", "lightning", "triggers", "When a new email arrives (V3)", white=True)
-    d.node(342, 218, 280, "Conoscenza PMO Knowledge", "logo:sharepoint", "knowledge", "Linee guida PMO, Piano Strategico IT", white=True)
-    intake = d.lane(40, 62, 284, 325, "Intake Proposte · child agent", "robot", "agents")
-    tools = [("Carica business case", "crea proposta e carica il PDF"),
-             ("Analizza business case", "prompt Estrai dati business case"),
-             ("Crea valutazione", "prompt Valuta proposta,\nconferma dell'utente"),
-             ("Notifica PMO in Teams", "adaptive card nel canale")]
+    d.lane(20, 20, 620, 382, "Agente Demand IT · csm_agentedemand_std", DA, "ai-engine", detail="demand-it")
+    top = d.node(342, 62, 280, "Topic", "chats-circle", "topics", "Genera dossier di revisione", white=True, detail="topic-dossier")
+    trg = d.node(342, 140, 280, "Trigger", "lightning", "triggers", "When a new email arrives (V3)", white=True, detail="trigger-email")
+    d.node(342, 218, 280, "Conoscenza PMO Knowledge", "logo:sharepoint", "knowledge", "Linee guida PMO, Piano Strategico IT", white=True, detail="pmo-knowledge")
+    intake = d.lane(40, 62, 284, 325, "Intake Proposte · child agent", "robot", "agents", detail="intake")
+    tools = [("Carica business case", "crea proposta e carica il PDF", "carica-bc"),
+             ("Analizza business case", "prompt Estrai dati business case", "analizza-bc"),
+             ("Crea valutazione", "prompt Valuta proposta,\nconferma dell'utente", "crea-val"),
+             ("Notifica PMO in Teams", "adaptive card nel canale", "notifica-teams")]
     ys = [102, 167, 232, 313]
-    for (label, sub), y in zip(tools, ys):
-        d.node(55, y, 254, label, "logo:power-automate", "tools", sub, white=True, h=74 if "\n" in sub else 58)
-    d.lane(680, 20, 310, 150, "Agente Comitato · connesso", COM, "agents")
-    k2 = d.node(695, 62, 280, "Conoscenza Dataverse", "logo:dataverse", "knowledge", "Program, Evaluation Criterion,\nRequester, Proposal, Assessment", white=True)
-    fd = d.node(680, 200, 310, "Agent flow Genera dossier", "logo:power-automate", "tools", "prompt Dossier di revisione")
-    od = d.node(680, 285, 310, "OneDrive", "logo:onedrive", "tools", "Dossier_AS-####.docx, link")
-    pa = d.node(680, 370, 310, "Flow del trigger", "logo:power-automate", "triggers", "prompt Classifica email PMO,\nRegistra proposta email")
-    dv = d.node(340, 490, 300, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse, soluzione PMO Demand IT")
+    for (label, sub, det), y in zip(tools, ys):
+        d.node(55, y, 254, label, "logo:power-automate", "tools", sub, white=True, h=74 if "\n" in sub else 58, detail=det)
+    d.lane(680, 20, 310, 150, "Agente Comitato · connesso", COM, "agents", detail="comitato")
+    k2 = d.node(695, 62, 280, "Conoscenza Dataverse", "logo:dataverse", "knowledge", "Program, Evaluation Criterion,\nRequester, Proposal, Assessment", white=True, detail="comitato-kb")
+    fd = d.node(680, 200, 310, "Agent flow Genera dossier", "logo:power-automate", "tools", "prompt Dossier di revisione", detail="flow-dossier")
+    od = d.node(680, 285, 310, "OneDrive", "logo:onedrive", "tools", "Dossier_AS-####.docx, link", detail="onedrive")
+    pa = d.node(680, 370, 310, "Flow del trigger", "logo:power-automate", "triggers", "prompt Classifica email PMO,\nRegistra proposta email", detail="flow-trigger")
+    dv = d.node(340, 490, 300, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse, soluzione PMO Demand IT", detail="pmo-hub")
     d.arrow([(640, 45), (680, 45)], "agents")
     d.arrow([(top["r"], top["cy"]), (665, top["cy"]), (665, fd["cy"]), (680, fd["cy"])], "topics")
     d.arrow([(fd["cx"], fd["b"]), (od["cx"], od["y"])], "tools")

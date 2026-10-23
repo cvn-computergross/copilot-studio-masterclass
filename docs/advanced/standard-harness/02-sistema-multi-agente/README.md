@@ -4,8 +4,6 @@
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~90 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
 
-Parti di questo laboratorio sono adattate da Microsoft Agent Academy (https://github.com/microsoft/agent-academy), Copyright (c) Microsoft Corporation, licenza MIT.
-
 ## Scenario
 
 In S01 l'Agente Demand IT ha imparato a rispondere sulle regole del processo. Un proponente però vuole consegnare il suo business case, e oggi lo fa per email: un analista apre il documento, lo registra nel foglio Excel e, più avanti, organizza la revisione con sponsor e architetto. Questo lab porta in chat due passaggi del processo: la registrazione della proposta nel PMO Demand Hub e la preparazione della revisione.
