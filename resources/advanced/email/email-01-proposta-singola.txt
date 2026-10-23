@@ -1,0 +1,14 @@
+Scopo del test (non copiare questa riga): Caso felice: una proposta, un PDF, oggetto corretto. Atteso: Proposta registrata e classificata come proposta.
+
+Oggetto: Proposta progetto - Portale fornitori self-service
+Allegati: BC-01_Portale_fornitori_self-service.pdf
+
+Corpo:
+Buongiorno,
+
+invio il business case per il portale fornitori self-service dell'Ufficio Acquisti, da valutare nel programma PG-100 Trasformazione Digitale dei Processi.
+Lo sponsor interno è Roberto Conti, Direttore Amministrazione, Finanza e Controllo.
+
+Grazie,
+Giulia Ferrari
+Responsabile Ufficio Acquisti
