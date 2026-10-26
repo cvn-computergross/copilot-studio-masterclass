@@ -28,7 +28,7 @@ In questo laboratorio viene creato un **child agent** per l'intake, con un **age
 
 ## Che cosa si costruisce
 
-Lo schema mostra l'architettura completa della standard harness alla fine del percorso. In questo lab nascono le due deleghe principali dell'**Agente Demand IT**: l'intake al child agent **Intake Proposte**, che per ora ha il solo agent flow **Carica business case**, e la preparazione della revisione all'**Agente Comitato**. Gli altri agent flow, il topic del dossier e il trigger email si aggiungono in S03-S06, il topic di approfondimento CSAT in S08.
+Lo schema mostra l'architettura completa della standard harness alla fine del percorso. In questo lab nascono **Intake Proposte**, per ora con il solo agent flow **Carica business case**, e l'**Agente Comitato**; gli altri agent flow, il topic del dossier e il trigger email si aggiungono in S03-S06, il topic di approfondimento CSAT in S08.
 
 ![Architettura multi-agente della Standard Harness](../../images/architettura-standard.svg)
 
@@ -445,7 +445,7 @@ Nella mappa delle attività deve comparire **Intake Proposte** che chiama **Cari
 
 ### Delega all'Agente Comitato
 
-Lo schema mostra il percorso della richiesta: l'orchestratore delega all'Agente Comitato, che legge i dati della proposta in Dataverse e prepara briefing e domande sui criteri più pesati. La risposta dello specialista arriva direttamente all'utente; l'orchestratore aggiunge al massimo una frase.
+Lo schema mostra il percorso della richiesta di revisione: è ciò che deve comparire nella mappa delle attività durante la prova.
 
 ![Preparazione della revisione con l'agente connesso](../../images/workflow-revisione.svg)
 

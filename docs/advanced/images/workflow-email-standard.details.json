@@ -1,0 +1,776 @@
+{
+ "diagram": "workflow-email-standard",
+ "details": {
+  "s05-trigger": {
+   "title": "When a new email arrives (V3)",
+   "icon": "logo:outlook",
+   "fam": "triggers",
+   "lab": "S05",
+   "role": "Trigger Nuova proposta via email dell'Agente Demand IT: parte per ogni email con l'oggetto giusto e un allegato.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Add trigger",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "Agente Demand IT, pagina Overview, sezione Triggers"
+    },
+    {
+     "label": "Trigger name",
+     "icon": "note-pencil",
+     "fam": "triggers",
+     "sub": "Nuova proposta via email"
+    },
+    {
+     "group": "Parametri · primo livello di filtro",
+     "icon": "sliders-horizontal",
+     "fam": "platform",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Include Attachments",
+       "icon": "check-circle",
+       "fam": "platform",
+       "sub": "Yes"
+      },
+      {
+       "label": "Subject Filter",
+       "icon": "funnel",
+       "fam": "platform",
+       "sub": "Proposta progetto"
+      },
+      {
+       "label": "Only with Attachments",
+       "icon": "check-circle",
+       "fam": "platform",
+       "sub": "Yes"
+      }
+     ]
+    },
+    {
+     "label": "Settings · Split On",
+     "icon": "arrows-split",
+     "fam": "triggers",
+     "sub": "@triggerOutputs()?['body/value']: un'esecuzione per email"
+    },
+    {
+     "label": "Flow del trigger",
+     "icon": "logo:power-automate",
+     "fam": "triggers",
+     "sub": "Edit in Power Automate; Save, Publish e Plan Copilot Studio",
+     "file": "power-automate.svg"
+    }
+   ],
+   "file": "outlook.png"
+  },
+  "s05-html": {
+   "title": "Html to text",
+   "icon": "file-text",
+   "fam": "tools",
+   "lab": "S05",
+   "role": "Azione del connettore Content Conversion: il corpo HTML dell'email diventa testo per il prompt, la proposta e l'avviso.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Content",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "contenuto dinamico Body del trigger"
+    },
+    {
+     "group": "Output usato da",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Classifica",
+       "icon": "logo:ai-builder",
+       "fam": "tools",
+       "sub": "input Testo del prompt",
+       "file": "ai-builder.svg"
+      },
+      {
+       "label": "Registra proposta email",
+       "icon": "logo:dataverse",
+       "fam": "knowledge",
+       "sub": "Cover Message: body('Html_to_text'), al massimo 4000 caratteri",
+       "file": "dataverse.svg"
+      },
+      {
+       "label": "Avvisa verifica manuale",
+       "icon": "logo:outlook",
+       "fam": "tools",
+       "sub": "segnaposto [TESTO] del Body",
+       "file": "outlook.png"
+      }
+     ]
+    }
+   ]
+  },
+  "s05-classifica": {
+   "title": "Classifica",
+   "icon": "logo:ai-builder",
+   "fam": "tools",
+   "lab": "S05",
+   "role": "Azione Run a prompt rinominata: il prompt Classifica email PMO legge oggetto e testo e risponde con una sola parola.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Prompt",
+     "icon": "logo:ai-builder",
+     "fam": "tools",
+     "sub": "Classifica email PMO (Tools › New tool › Prompt), output Text",
+     "file": "ai-builder.svg"
+    },
+    {
+     "group": "Input",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Oggetto",
+       "icon": "textbox",
+       "fam": "tools",
+       "sub": "Subject del trigger"
+      },
+      {
+       "label": "Testo",
+       "icon": "textbox",
+       "fam": "tools",
+       "sub": "output di Html to text"
+      }
+     ]
+    },
+    {
+     "group": "Categorie · una sola parola",
+     "icon": "list-bullets",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Proposta",
+       "icon": "check-circle",
+       "fam": "knowledge",
+       "sub": "presenta una o più proposte e allega il business case"
+      },
+      {
+       "label": "Incerta",
+       "icon": "question",
+       "fam": "platform",
+       "sub": "es. una domanda sul processo con un documento in bozza"
+      },
+      {
+       "label": "RispostaAutomatica",
+       "icon": "x-circle",
+       "fam": "system",
+       "sub": "fuori ufficio, mancato recapito, conferme automatiche"
+      },
+      {
+       "label": "NonPertinente",
+       "icon": "x-circle",
+       "fam": "system",
+       "sub": "newsletter, promozioni, spam"
+      }
+     ]
+    },
+    {
+     "label": "Test",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "email 01-04: Proposta, RispostaAutomatica, NonPertinente, Incerta"
+    }
+   ],
+   "file": "ai-builder.svg"
+  },
+  "s05-proposta": {
+   "title": "Proposta rilevata",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "S05",
+   "role": "Condition sull'output di Classifica: contains invece di is equal to tollera spazi o un a capo nella risposta del modello.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Condition",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "Text di Classifica contains Proposta",
+     "branches": [
+      {
+       "label": "False",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Da verificare",
+         "icon": "git-branch",
+         "fam": "system",
+         "sub": "Text di Classifica contains Incerta"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Per ogni allegato",
+     "icon": "arrows-clockwise",
+     "fam": "tools",
+     "sub": "For each sugli allegati, con la condizione Allegato PDF",
+     "pill": "True"
+    }
+   ]
+  },
+  "s05-pdf": {
+   "title": "Allegato PDF",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "S05",
+   "role": "Condition nel ramo True di Proposta rilevata: lascia passare solo i PDF, gli altri allegati vengono ignorati.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Valore",
+     "icon": "brackets-curly",
+     "fam": "system",
+     "sub": "contenuto dinamico Attachments Content-Type"
+    },
+    {
+     "label": "For each",
+     "icon": "arrows-clockwise",
+     "fam": "tools",
+     "sub": "creato in automatico sugli allegati, rinominato Per ogni allegato"
+    },
+    {
+     "label": "Operatore e valore",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "is equal to application/pdf"
+    },
+    {
+     "label": "Ramo False",
+     "icon": "x-circle",
+     "fam": "system",
+     "sub": "il file Word viene ignorato: in un processo reale si avvisa il mittente"
+    }
+   ]
+  },
+  "s05-registra": {
+   "title": "Registra proposta email",
+   "icon": "logo:dataverse",
+   "fam": "knowledge",
+   "lab": "S05",
+   "role": "Azione Add a new row sulla tabella Proposals: una riga per ogni PDF allegato.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Title",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "item()?['name']: il nome del file"
+    },
+    {
+     "label": "Cover Message",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "if(greater(length(…), 4000), substring(…, 0, 4000), …) su body('Html_to_text')"
+    },
+    {
+     "label": "Source Email",
+     "icon": "at",
+     "fam": "knowledge",
+     "sub": "From"
+    },
+    {
+     "label": "Channel",
+     "icon": "list-bullets",
+     "fam": "knowledge",
+     "sub": "Email"
+    },
+    {
+     "label": "Proposal Status",
+     "icon": "list-bullets",
+     "fam": "knowledge",
+     "sub": "Received"
+    },
+    {
+     "label": "Submission Date",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "formatDateTime(utcNow(), 'yyyy-MM-dd')"
+    },
+    {
+     "label": "Proposal Code",
+     "icon": "key",
+     "fam": "knowledge",
+     "sub": "output PP-####: va nel messaggio all'agente"
+    }
+   ],
+   "file": "dataverse.svg"
+  },
+  "s05-carica": {
+   "title": "Carica documento email",
+   "icon": "logo:dataverse",
+   "fam": "knowledge",
+   "lab": "S05",
+   "role": "Azione Upload a file or an image: carica il PDF nella colonna file della proposta appena creata.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Content name",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "item()?['name']"
+    },
+    {
+     "label": "Table name",
+     "icon": "table",
+     "fam": "knowledge",
+     "sub": "Proposals"
+    },
+    {
+     "label": "Row ID",
+     "icon": "key",
+     "fam": "knowledge",
+     "sub": "Proposal di Registra proposta email"
+    },
+    {
+     "label": "Column Name",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "Business Case Document"
+    },
+    {
+     "label": "Content",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "item()?['contentBytes']"
+    }
+   ],
+   "file": "dataverse.svg"
+  },
+  "s05-prompt": {
+   "title": "Sends a prompt to the specified copilot for processing",
+   "icon": "agent:demand-it-agent-192.png",
+   "fam": "ai-engine",
+   "lab": "S05",
+   "role": "Azione generata con il trigger e trascinata sotto Carica documento email, nel ramo True: chiede all'Agente Demand IT di completare il lavoro.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Body/message",
+     "icon": "chat-text",
+     "fam": "ai-engine",
+     "sub": "Analizza la proposta CODICE PROPOSTA ricevuta via email da MITTENTE con oggetto OGGETTO e poi notifica il PMO in Teams con lo strumento Notifica PMO in Teams."
+    },
+    {
+     "group": "Contenuto dinamico",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "CODICE PROPOSTA",
+       "icon": "key",
+       "fam": "knowledge",
+       "sub": "Proposal Code di Registra proposta email"
+      },
+      {
+       "label": "MITTENTE",
+       "icon": "at",
+       "fam": "tools",
+       "sub": "From"
+      },
+      {
+       "label": "OGGETTO",
+       "icon": "textbox",
+       "fam": "tools",
+       "sub": "Subject"
+      }
+     ]
+    },
+    {
+     "label": "Agente Demand IT",
+     "icon": "agent:demand-it-agent-192.png",
+     "fam": "ai-engine",
+     "sub": "riceve il messaggio nella versione pubblicata"
+    }
+   ]
+  },
+  "s05-loop": {
+   "title": "Per ogni allegato",
+   "icon": "arrows-clockwise",
+   "fam": "tools",
+   "lab": "S05",
+   "role": "Ciclo For each creato da Power Automate scegliendo Attachments Content-Type: ogni PDF dell'email diventa una proposta distinta.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Allegato PDF",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "Attachments Content-Type is equal to application/pdf",
+     "branches": [
+      {
+       "label": "False",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Allegato ignorato",
+         "icon": "x-circle",
+         "fam": "system",
+         "sub": "es. il file Word di email-05-due-proposte"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Registra proposta email",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "Add a new row in Proposals, canale Email",
+     "pill": "True",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Carica documento email",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "Upload a file or an image: Business Case Document",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Sends a prompt to the specified copilot",
+     "icon": "agent:demand-it-agent-192.png",
+     "fam": "ai-engine",
+     "sub": "messaggio con Proposal Code, From e Subject"
+    }
+   ]
+  },
+  "analizza-bc": {
+   "title": "Analizza business case",
+   "icon": "logo:power-automate",
+   "fam": "tools",
+   "lab": "S03",
+   "role": "Agent flow di Intake Proposte: estrae i dati dal PDF, crea o riusa il proponente e collega il programma.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "When an agent calls the flow",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "input CodiceProposta"
+    },
+    {
+     "label": "Leggi proposta",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "List rows in Proposals",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Scarica documento",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "Business Case Document",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Estrai dati",
+     "icon": "logo:ai-builder",
+     "fam": "tools",
+     "sub": "prompt Estrai dati business case",
+     "file": "ai-builder.svg"
+    },
+    {
+     "label": "Cerca proponente",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "List rows in Requesters per email",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Proponente nuovo",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "nessun proponente con quella email?",
+     "branches": [
+      {
+       "label": "Sì",
+       "fam": "knowledge",
+       "steps": [
+        {
+         "label": "Crea proponente",
+         "icon": "logo:dataverse",
+         "fam": "knowledge",
+         "sub": "Add a new row in Requesters",
+         "file": "dataverse.svg"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Aggiorna proposta",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "titolo, sintesi, budget, durata, proponente",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Programma indicato",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "un solo programma valido nel documento?",
+     "branches": [
+      {
+       "label": "Sì",
+       "fam": "knowledge",
+       "steps": [
+        {
+         "label": "Cerca programma",
+         "icon": "logo:dataverse",
+         "fam": "knowledge",
+         "sub": "List rows in Programs",
+         "file": "dataverse.svg"
+        },
+        {
+         "label": "Collega programma",
+         "icon": "logo:dataverse",
+         "fam": "knowledge",
+         "sub": "Update a row: Program",
+         "file": "dataverse.svg"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Respond to the agent",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "codici, programma, avvisi"
+    }
+   ],
+   "file": "power-automate.svg"
+  },
+  "s05-notifica": {
+   "title": "Notifica PMO in Teams",
+   "icon": "logo:power-automate",
+   "fam": "tools",
+   "lab": "S05",
+   "role": "Agent flow di Intake Proposte (Tools › New tool › Agent flow): pubblica in Teams una adaptive card per la proposta ricevuta via email.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "When an agent calls the flow",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "input Text: CodiceProposta, Title, Requester, Program, Avvisi"
+    },
+    {
+     "group": "Post card in a chat or channel",
+     "icon": "logo:teams",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Post as",
+       "icon": "user-circle",
+       "fam": "tools",
+       "sub": "Flow bot"
+      },
+      {
+       "label": "Post in",
+       "icon": "chats-circle",
+       "fam": "tools",
+       "sub": "Chat with Flow bot, oppure Channel: team Zava PMO, canale Proposte"
+      },
+      {
+       "label": "Recipient",
+       "icon": "user-check",
+       "fam": "tools",
+       "sub": "il proprio account"
+      },
+      {
+       "label": "Adaptive Card 1.4",
+       "icon": "cards",
+       "fam": "tools",
+       "sub": "Nuova proposta ricevuta via email; FactSet Proposta, Titolo, Proponente, Programma, Avvisi"
+      },
+      {
+       "label": "Action.OpenUrl",
+       "icon": "link",
+       "fam": "tools",
+       "sub": "Apri le proposte nel PMO Demand Hub: INDIRIZZO-APP&pagetype=entitylist&etn=csm_proposal"
+      }
+     ],
+     "file": "teams.png"
+    },
+    {
+     "label": "Respond to the agent",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "output Esito: Notifica inviata"
+    },
+    {
+     "label": "Strumento di Intake Proposte",
+     "icon": "wrench",
+     "fam": "tools",
+     "sub": "Add and configure: solo da topic o agenti, input Dynamically fill with AI"
+    }
+   ],
+   "file": "power-automate.svg"
+  },
+  "s05-intake": {
+   "title": "Agente Demand IT · Intake Proposte",
+   "icon": "agent:demand-it-agent-192.png",
+   "fam": "ai-engine",
+   "lab": "S05",
+   "role": "Il messaggio del flow arriva all'agente senza un utente in conversazione: le istruzioni di Intake Proposte dicono che cosa fare.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Messaggio dal flow",
+     "icon": "agent:demand-it-agent-192.png",
+     "fam": "ai-engine",
+     "sub": "Sends a prompt: proposta PP-####, mittente, oggetto"
+    },
+    {
+     "group": "Istruzioni · Processo per le proposte ricevute via email",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "layout": "flow",
+     "steps": [
+      {
+       "label": "1. /Analizza business case",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "con il codice PP-####",
+       "file": "power-automate.svg"
+      },
+      {
+       "label": "2. /Notifica PMO in Teams",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "Proponente Nome (RQ-####); Programma o Da confermare: …; Avvisi; niente virgolette doppie",
+       "file": "power-automate.svg"
+      },
+      {
+       "label": "3. Nessuna valutazione",
+       "icon": "prohibit",
+       "fam": "risk",
+       "sub": "niente valutazioni né conferme: le decide un analista del PMO in chat"
+      }
+     ]
+    },
+    {
+     "label": "Publish",
+     "icon": "rocket-launch",
+     "fam": "lifecycle",
+     "sub": "Agente Demand IT: il trigger lavora con la versione pubblicata"
+    }
+   ]
+  },
+  "s05-verifica": {
+   "title": "Da verificare",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "S05",
+   "role": "Condition nel ramo False di Proposta rilevata: le email incerte le verifica una persona, le altre terminano senza azioni.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Condition",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "Text di Classifica contains Incerta",
+     "branches": [
+      {
+       "label": "False",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Fine senza azioni",
+         "icon": "x-circle",
+         "fam": "system",
+         "sub": "RispostaAutomatica o NonPertinente: nessun record"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Avvisa verifica manuale",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Send an email (V2): Email PMO da verificare manualmente",
+     "pill": "True",
+     "file": "outlook.png"
+    }
+   ]
+  },
+  "s05-avvisa": {
+   "title": "Avvisa verifica manuale",
+   "icon": "logo:outlook",
+   "fam": "tools",
+   "lab": "S05",
+   "role": "Azione Send an email (V2) nel ramo True di Da verificare: avvisa una persona, senza creare record.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "To",
+     "icon": "user-circle",
+     "fam": "tools",
+     "sub": "il proprio indirizzo"
+    },
+    {
+     "label": "Subject",
+     "icon": "note-pencil",
+     "fam": "tools",
+     "sub": "Email PMO da verificare manualmente"
+    },
+    {
+     "label": "Body · Code view </>",
+     "icon": "code",
+     "fam": "tools",
+     "sub": "scheda HTML con stili in linea: PMO Demand Hub · Da verificare"
+    },
+    {
+     "group": "Segnaposto",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "[MITTENTE]",
+       "icon": "at",
+       "fam": "tools",
+       "sub": "From"
+      },
+      {
+       "label": "[OGGETTO]",
+       "icon": "textbox",
+       "fam": "tools",
+       "sub": "Subject"
+      },
+      {
+       "label": "[TESTO]",
+       "icon": "file-text",
+       "fam": "tools",
+       "sub": "output di Html to text"
+      }
+     ]
+    },
+    {
+     "label": "Nota finale",
+     "icon": "chat-text",
+     "fam": "tools",
+     "sub": "La classificazione non è sicura che sia una proposta: nessun record è stato creato."
+    }
+   ],
+   "file": "outlook.png"
+  }
+ }
+}

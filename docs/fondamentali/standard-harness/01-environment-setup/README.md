@@ -12,7 +12,7 @@ In questo lab si prepara l'ambiente di lavoro (tenant, trial, developer environm
 
 ## Che cosa si costruisce
 
-A sinistra i sei passi del lab, nell'ordine; a destra dove si trova ciò che ogni passo crea, con lo stesso numero. Account, licenza di prova e gruppo **AgentCreators** appartengono al tenant Microsoft 365; il **developer environment** contiene la solution **CSMFirstAgent**, con il publisher **CSM Solutions**, e dentro la solution nasce l'agente **IT Support**.
+A sinistra i sei passi del lab, nell'ordine; a destra, con lo stesso numero, dove si trova ciò che ogni passo crea: è l'ambiente in cui si lavorerà in tutti i lab successivi.
 
 ![Percorso del Lab 01: dall'account Microsoft 365 al primo agente IT Support, e dove si trovano account, trial, gruppo AgentCreators, developer environment, solution CSMFirstAgent e agente](../../images/lab01-percorso-setup.svg)
 

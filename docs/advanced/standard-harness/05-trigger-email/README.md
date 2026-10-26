@@ -35,7 +35,7 @@ In questo lab verrà aggiunto all'Agente Demand IT un **trigger su evento**: qua
 
 ## Che cosa si costruisce
 
-Lo schema mostra il flow del trigger costruito in questo lab: l'agente viene chiamato solo dopo la classificazione con il prompt **Classifica email PMO** e la registrazione di ogni PDF in Dataverse, e non crea valutazioni. Analisi del documento e notifica in Teams le svolge l'agente, con gli strumenti di **Intake Proposte**. Gli allegati che non sono PDF vengono ignorati; le email incerte producono un avviso per la verifica manuale; risposte automatiche e messaggi non pertinenti terminano senza azioni.
+Lo schema mostra il flow del trigger costruito in questo lab, con un ramo per ogni esito della classificazione e degli allegati. L'agente entra in gioco solo quando il PDF è già registrato in Dataverse e, senza un utente che confermi, non crea valutazioni.
 
 ![Flow del trigger email: classificazione, registrazione dei PDF, chiamata all'agente e notifica del PMO in Teams](../../images/workflow-email-standard.svg)
 

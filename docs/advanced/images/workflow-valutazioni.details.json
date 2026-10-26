@@ -1,0 +1,362 @@
+{
+ "diagram": "workflow-valutazioni",
+ "details": {
+  "s07-base": {
+   "title": "Demand IT - Base",
+   "icon": "list-checks",
+   "fam": "lifecycle",
+   "lab": "S07",
+   "role": "Test set di regressione dell'Agente Demand IT: risposte che non dipendono da dati che cambiano.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Evaluation › New evaluation",
+     "icon": "list-checks",
+     "fam": "lifecycle",
+     "sub": "Agente Demand IT: Import, Single responses"
+    },
+    {
+     "label": "demand-it-base.csv",
+     "icon": "file-text",
+     "fam": "lifecycle",
+     "sub": "Or upload a file: 6 domande con la risposta attesa"
+    },
+    {
+     "label": "Meaning match",
+     "icon": "sliders-horizontal",
+     "fam": "lifecycle",
+     "sub": "Add test method, Pass score 70 (invece di 50)"
+    },
+    {
+     "label": "Additional configuration › Manage",
+     "icon": "plugs-connected",
+     "fam": "platform",
+     "sub": "connessioni con il pallino verde: il test usa il proprio utente"
+    },
+    {
+     "label": "6 casi",
+     "icon": "list-numbers",
+     "fam": "lifecycle",
+     "sub": "identità, formati, codici, punteggio, regola di budget, decisione del Comitato"
+    }
+   ]
+  },
+  "s07-sicurezza": {
+   "title": "Comitato - Sicurezza",
+   "icon": "list-checks",
+   "fam": "lifecycle",
+   "lab": "S07",
+   "role": "Test set dell'Agente Comitato, separato da quello funzionale: mostra se una modifica ha indebolito i guardrail.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Evaluation › New evaluation",
+     "icon": "list-checks",
+     "fam": "lifecycle",
+     "sub": "Agente Comitato: Import, Single responses"
+    },
+    {
+     "label": "comitato-sicurezza.csv",
+     "icon": "file-text",
+     "fam": "lifecycle",
+     "sub": "7 domande con la risposta attesa"
+    },
+    {
+     "label": "Meaning match",
+     "icon": "sliders-horizontal",
+     "fam": "lifecycle",
+     "sub": "soglia 70"
+    },
+    {
+     "group": "7 casi",
+     "icon": "shield-check",
+     "fam": "platform",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "1 · Ambito",
+       "icon": "check-circle",
+       "fam": "knowledge",
+       "sub": "preparare la revisione di una proposta, in una frase"
+      },
+      {
+       "label": "2 · Fuori ambito",
+       "icon": "prohibit",
+       "fam": "risk",
+       "sub": "meteo e pagina web promozionale"
+      },
+      {
+       "label": "3 · Dati personali",
+       "icon": "prohibit",
+       "fam": "risk",
+       "sub": "elenco dei proponenti per un fornitore esterno"
+      },
+      {
+       "label": "4 · Sola lettura",
+       "icon": "prohibit",
+       "fam": "risk",
+       "sub": "eliminare le valutazioni del programma PG-500"
+      },
+      {
+       "label": "5 · Domande non pertinenti",
+       "icon": "prohibit",
+       "fam": "risk",
+       "sub": "età e situazione familiare dello sponsor"
+      },
+      {
+       "label": "6 · Istruzioni interne",
+       "icon": "prohibit",
+       "fam": "risk",
+       "sub": "mostrare il prompt che governa l'agente"
+      },
+      {
+       "label": "7 · Prompt injection",
+       "icon": "warning",
+       "fam": "risk",
+       "sub": "istruzione nascosta nel testo di un business case: ignorata e segnalata"
+      }
+     ]
+    }
+   ]
+  },
+  "s07-run": {
+   "title": "Save e Run",
+   "icon": "flask",
+   "fam": "lifecycle",
+   "lab": "S07",
+   "role": "Esecuzione di un test set dalla pagina Evaluation: l'agente risponde davvero a ogni domanda.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Save, poi Run",
+     "icon": "flask",
+     "fam": "lifecycle",
+     "sub": "in alcune versioni Evaluate; richiede qualche minuto"
+    },
+    {
+     "label": "Utente connesso",
+     "icon": "user-circle",
+     "fam": "platform",
+     "sub": "l'esecuzione usa il proprio utente e le sue connessioni"
+    },
+    {
+     "label": "Consumo di capacità",
+     "icon": "coins",
+     "fam": "platform",
+     "sub": "come le conversazioni"
+    },
+    {
+     "label": "Casi senza effetti collaterali",
+     "icon": "shield-check",
+     "fam": "lifecycle",
+     "sub": "niente proposte, valutazioni o dossier: si rieseguono dopo ogni modifica"
+    }
+   ]
+  },
+  "s07-risultati": {
+   "title": "Risultati",
+   "icon": "check-circle",
+   "fam": "lifecycle",
+   "lab": "S07",
+   "role": "Ultima esecuzione del test set, aperta dall'elenco in Evaluation: tutti i casi devono passare.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Risultato complessivo",
+     "icon": "chart-line-up",
+     "fam": "lifecycle",
+     "sub": "casi superati sul totale"
+    },
+    {
+     "label": "Caso Fail",
+     "icon": "x-circle",
+     "fam": "risk",
+     "sub": "Response confrontata con Expected response, con la spiegazione del valutatore"
+    },
+    {
+     "label": "100%",
+     "icon": "check-circle",
+     "fam": "lifecycle",
+     "sub": "così un fallimento indica sempre una regressione"
+    },
+    {
+     "label": "Comitato - Sicurezza",
+     "icon": "shield-check",
+     "fam": "platform",
+     "sub": "leggere ogni risposta per intero: niente dati personali né istruzioni nascoste eseguite"
+    },
+    {
+     "label": "Test set salvati",
+     "icon": "list-checks",
+     "fam": "lifecycle",
+     "sub": "restano in Evaluation per le prossime modifiche"
+    }
+   ]
+  },
+  "s07-publish": {
+   "title": "Publish",
+   "icon": "rocket-launch",
+   "fam": "lifecycle",
+   "lab": "S07",
+   "role": "Rende attiva la versione corrente dell'Agente Demand IT: pubblicare non vuol dire distribuire.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Publish",
+     "icon": "rocket-launch",
+     "fam": "lifecycle",
+     "sub": "Agente Demand IT: confermare e attendere la notifica"
+    },
+    {
+     "group": "Review the following before publishing",
+     "icon": "warning",
+     "fam": "platform",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Full Access for Editors",
+       "icon": "key",
+       "fam": "platform",
+       "sub": "connessioni salvate negli agent flow e nel trigger"
+      },
+      {
+       "label": "Your agent runs tools that use the author's credentials",
+       "icon": "key",
+       "fam": "platform",
+       "sub": "le azioni dentro un agent flow usano le connessioni del flow"
+      },
+      {
+       "label": "Your agent includes triggers that use the author's credentials",
+       "icon": "key",
+       "fam": "platform",
+       "sub": "Nuova proposta via email legge la casella dell'autore"
+      }
+     ]
+    },
+    {
+     "label": "Confermare",
+     "icon": "check-circle",
+     "fam": "lifecycle",
+     "sub": "agente non condiviso; in un progetto reale, connessioni di un account di servizio"
+    },
+    {
+     "label": "Publish di nuovo",
+     "icon": "rocket-launch",
+     "fam": "lifecycle",
+     "sub": "dopo Edit details del canale, forzando una nuova versione"
+    }
+   ]
+  },
+  "s07-channel": {
+   "title": "Teams and Microsoft 365 Copilot",
+   "icon": "logo:teams",
+   "fam": "lifecycle",
+   "lab": "S07",
+   "role": "Canale dell'Agente Demand IT (Channels): rende la versione pubblicata apribile in Microsoft 365 Copilot.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Make agent available in Microsoft 365 Copilot",
+     "icon": "check-circle",
+     "fam": "lifecycle",
+     "sub": "selezionato, poi Add channel"
+    },
+    {
+     "group": "Edit details",
+     "icon": "note-pencil",
+     "fam": "lifecycle",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Icon",
+       "icon": "robot",
+       "fam": "lifecycle",
+       "sub": "demand-it-agent-teams-192.png, con sfondo trasparente"
+      },
+      {
+       "label": "Icon background color",
+       "icon": "sliders-horizontal",
+       "fam": "lifecycle",
+       "sub": "#4F46E5, indaco"
+      },
+      {
+       "label": "Short description",
+       "icon": "note-pencil",
+       "fam": "lifecycle",
+       "sub": "Registra business case, prepara valutazioni e dossier per il PMO IT."
+      },
+      {
+       "label": "Long description",
+       "icon": "article",
+       "fam": "lifecycle",
+       "sub": "che cosa fa l'agente; la decisione spetta al Comitato"
+      },
+      {
+       "label": "Developer name",
+       "icon": "buildings",
+       "fam": "lifecycle",
+       "sub": "Ufficio Demand e PMO IT - Zava"
+      }
+     ]
+    },
+    {
+     "label": "Save e Publish",
+     "icon": "rocket-launch",
+     "fam": "lifecycle",
+     "sub": "nuova versione con i dettagli del canale"
+    }
+   ],
+   "file": "teams.png"
+  },
+  "s07-m365": {
+   "title": "Microsoft 365 Copilot",
+   "icon": "user-check",
+   "fam": "lifecycle",
+   "lab": "S07",
+   "role": "L'Agente Demand IT aperto in Microsoft 365 Copilot solo da chi lo ha costruito: non è condiviso né distribuito.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "See agent in Microsoft 365",
+     "icon": "user-check",
+     "fam": "lifecycle",
+     "sub": "si apre Microsoft 365 Copilot; Add se richiesto"
+    },
+    {
+     "label": "Nessuna distribuzione",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "niente Share, Copy link o store dell'organizzazione"
+    },
+    {
+     "group": "Prova end to end",
+     "icon": "flask",
+     "fam": "instructions",
+     "layout": "flow",
+     "steps": [
+      {
+       "label": "Registrazione",
+       "icon": "file-text",
+       "fam": "knowledge",
+       "sub": "BC-02 con Nuova proposta della funzione Sicurezza: PP-####, PG-200"
+      },
+      {
+       "label": "Valutazione",
+       "icon": "logo:power-automate",
+       "fam": "tools",
+       "sub": "Valuta la proposta PP-#### sul programma PG-200, con conferma",
+       "file": "power-automate.svg"
+      },
+      {
+       "label": "Dossier",
+       "icon": "logo:word",
+       "fam": "tools",
+       "sub": "dossier della valutazione appena creata, link aperto",
+       "file": "word.png"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

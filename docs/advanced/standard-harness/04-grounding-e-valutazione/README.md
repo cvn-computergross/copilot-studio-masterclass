@@ -26,7 +26,7 @@ Il cuore del lavoro del PMO è la valutazione: per ogni criterio del programma, 
 
 ## Che cosa si costruisce
 
-Lo schema riassume il percorso in chat costruito tra S02 e questo lab. La registrazione della proposta è automatica (passi 1-7: delega a **Intake Proposte**, rifiuto dei DOCX, **Carica business case** e **Analizza business case**). La scelta del programma, se manca, e la registrazione della valutazione richiedono sempre una conferma (passi 8-13): **Crea valutazione** parte solo dopo il consenso dell'utente e restituisce la tabella dei criteri, punteggio, indicazione e codice AS-####.
+Lo schema riassume il percorso in chat costruito tra S02 e questo lab: la registrazione della proposta (passi 1-7) è automatica, mentre la scelta del programma, se manca, e la registrazione della valutazione (passi 8-13) richiedono sempre una conferma dell'utente.
 
 ![Sequenza di intake e valutazione in chat](../../images/workflow-chat.svg)
 

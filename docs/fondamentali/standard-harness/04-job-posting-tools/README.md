@@ -12,7 +12,7 @@ In questo lab si crea l'**Agente Redazione Annunci**, che raccoglie ruolo, senio
 
 ## Che cosa si costruisce
 
-Lo schema mostra i componenti dell'agente e i dati che passano dall'uno all'altro. Il topic **New Job Posting** raccoglie le tre variabili e chiama il prompt **Job Posting - Zava**, che restituisce l'annuncio in **OutputAnnuncio** e lo mostra in chat. Le istruzioni indicano l'ordine dei passi successivi: il prompt **Testo in HTML** converte l'annuncio e lo strumento **Annuncio Mail** lo invia alla casella dell'utente.
+Lo schema mostra i componenti dell'agente e i dati che passano dall'uno all'altro. Solo la creazione dell'annuncio passa da un topic: conversione in HTML e invio dell'email sono tool che l'agente richiama da sé, nell'ordine indicato dalle istruzioni.
 
 ![Agente Redazione Annunci: topic New Job Posting, prompt Job Posting - Zava, messaggio in chat, prompt Testo in HTML, strumento Annuncio Mail e casella dell'utente](../../images/lab04-agente-annunci.svg)
 
@@ -55,7 +55,7 @@ Agente incaricato di redigere annunci di lavoro tramite template aziendale e gen
 
 Lo scopo è guidare la conversazione durante la creazione dell'annuncio, raccogliendo alcuni dati di input, per garantire un output migliore e conforme al template.
 
-Il topic completo, alla fine di questa sezione e della successiva: le tre variabili di input le ricava l'agente dalla conversazione, il prompt **Job Posting - Zava** le usa per compilare il template e il messaggio mostra il risultato.
+Il topic completo, alla fine di questa sezione e della successiva, in cui si crea il prompt **Job Posting - Zava**.
 
 ![Topic New Job Posting: trigger con le variabili di input RoleTitle, Seniority e PrimaryLocation, prompt Job Posting - Zava, messaggio con Topic.OutputAnnuncio.text](../../images/lab04-topic-new-job-posting.svg)
 

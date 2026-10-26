@@ -12,7 +12,7 @@ In questo lab l'agente impara a rispondere con i documenti di Zava, usando tre t
 
 ## Che cosa si costruisce
 
-Lo schema mostra le fonti di conoscenza dell'agente **IT Support** alla fine del lab, con i documenti di ciascuna: le tre aggiunte in questo lab e il sito pubblico del Lab 01. La descrizione di ogni fonte aiuta l'agente a scegliere quella giusta; con **Use general knowledge** e **Use information from the Web** disattivati l'agente risponde solo con queste fonti e le cita nelle references.
+Lo schema mostra le fonti di conoscenza dell'agente **IT Support** alla fine del lab. La descrizione di ogni fonte aiuta l'agente a scegliere quella giusta e, con le due impostazioni dell'AI generativa disattivate, l'agente risponde solo con queste fonti.
 
 ![Fonti di conoscenza dell'agente IT Support: documento caricato, files group VPN Guide, sito SharePoint Help Desk CSM e sito pubblico, con le impostazioni dell'AI generativa](../../images/lab02-fonti-conoscenza.svg)
 

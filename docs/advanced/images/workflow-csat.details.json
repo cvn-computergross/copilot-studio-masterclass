@@ -1,0 +1,220 @@
+{
+ "diagram": "workflow-csat",
+ "details": {
+  "s08-chiusura": {
+   "title": "Domande di chiusura",
+   "icon": "question",
+   "fam": "system",
+   "lab": "S08",
+   "role": "Nodi già presenti nel topic di sistema End of Conversation (Topics, filtro System): non si modificano.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "fine conversazione",
+     "icon": "chat-text",
+     "fam": "instructions",
+     "sub": "nel pannello di test avvia End of Conversation"
+    },
+    {
+     "label": "Conferma della chiusura",
+     "icon": "question",
+     "fam": "system",
+     "sub": "nel test: Yes"
+    },
+    {
+     "label": "Richiesta soddisfatta",
+     "icon": "question",
+     "fam": "system",
+     "sub": "nel test: Yes"
+    },
+    {
+     "label": "Domanda CSAT",
+     "icon": "question",
+     "fam": "topics",
+     "sub": "il nodo con le stelle: sopra si aggiunge Set variable value"
+    }
+   ]
+  },
+  "s08-setvar": {
+   "title": "Set variable value",
+   "icon": "brackets-curly",
+   "fam": "topics",
+   "lab": "S08",
+   "role": "Nodo aggiunto sopra la domanda CSAT (+ › Variable management › Set a variable value): crea la variabile del voto.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Set variable",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "Create a new variable"
+    },
+    {
+     "label": "Variable properties",
+     "icon": "note-pencil",
+     "fam": "topics",
+     "sub": "nome VarCSATRating"
+    },
+    {
+     "label": "To value",
+     "icon": "function",
+     "fam": "topics",
+     "sub": "0: variabile numerica che conterrà il voto"
+    }
+   ]
+  },
+  "s08-csat": {
+   "title": "Domanda CSAT",
+   "icon": "question",
+   "fam": "topics",
+   "lab": "S08",
+   "role": "Il nodo con le stelle di End of Conversation: la risposta va nella variabile creata sopra.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Scala",
+     "icon": "list-numbers",
+     "fam": "topics",
+     "sub": "da 1 a 5 stelle"
+    },
+    {
+     "label": "… › Properties",
+     "icon": "sliders-horizontal",
+     "fam": "topics",
+     "sub": "variabile della risposta: Topic.VarCSATRating"
+    },
+    {
+     "label": "Condition",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "sotto il nodo, con + › Add a condition"
+    }
+   ]
+  },
+  "s08-cond": {
+   "title": "Condition",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "S08",
+   "role": "Condizione sotto il nodo CSAT: con 1 o 2 stelle la conversazione passa al topic di approfondimento.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Condition",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "VarCSATRating is greater than or equal to 3",
+     "branches": [
+      {
+       "label": "All other conditions",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Go to another topic",
+         "icon": "arrow-bend-up-right",
+         "fam": "system",
+         "sub": "1 o 2 stelle: Approfondimento CSAT negativo"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Prosegue come prima",
+     "icon": "check-circle",
+     "fam": "system",
+     "sub": "nessun approfondimento",
+     "pill": "3, 4 o 5 stelle"
+    }
+   ]
+  },
+  "s08-goto": {
+   "title": "Go to another topic",
+   "icon": "arrow-bend-up-right",
+   "fam": "system",
+   "lab": "S08",
+   "role": "Nel ramo All other conditions (+ › Topic management › Go to another topic): richiama il topic che chiede il motivo del voto.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Go to another topic",
+     "icon": "arrow-bend-up-right",
+     "fam": "system",
+     "sub": "Approfondimento CSAT negativo"
+    },
+    {
+     "group": "Topic Approfondimento CSAT negativo",
+     "icon": "chats-circle",
+     "fam": "topics",
+     "layout": "flow",
+     "steps": [
+      {
+       "label": "Trigger",
+       "icon": "lightning",
+       "fam": "triggers",
+       "sub": "Change trigger: It's redirected to, parte solo da Go to another topic"
+      },
+      {
+       "label": "Ask with adaptive card",
+       "icon": "cards",
+       "fam": "topics",
+       "sub": "Ci aiuti a migliorare?, output motivoId e noteId"
+      },
+      {
+       "label": "Send a message",
+       "icon": "chat-text",
+       "fam": "topics",
+       "sub": "Grazie, il tuo commento aiuta l'azienda a migliorare l'agente."
+      }
+     ]
+    },
+    {
+     "label": "End of Conversation",
+     "icon": "gear-six",
+     "fam": "system",
+     "sub": "riprende con la domanda finale"
+    }
+   ]
+  },
+  "s08-card": {
+   "title": "Ask with adaptive card",
+   "icon": "cards",
+   "fam": "topics",
+   "lab": "S08",
+   "role": "Nodo del topic Approfondimento CSAT negativo (Edit adaptive card, Card payload editor): chiede il motivo del voto basso.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Ci aiuti a migliorare?",
+     "icon": "cards",
+     "fam": "topics",
+     "sub": "version 1.5; Che cosa non ha funzionato in questa conversazione?"
+    },
+    {
+     "label": "motivoId",
+     "icon": "list-bullets",
+     "fam": "topics",
+     "sub": "Input.ChoiceSet expanded, obbligatorio: Valutazione, Dati, Documento, Processo, Tecnico, Altro"
+    },
+    {
+     "label": "noteId",
+     "icon": "textbox",
+     "fam": "topics",
+     "sub": "Input.Text multiriga, Commento facoltativo, al massimo 1000 caratteri"
+    },
+    {
+     "label": "Invia",
+     "icon": "paper-plane-tilt",
+     "fam": "topics",
+     "sub": "Action.Submit"
+    },
+    {
+     "label": "Variabili di output",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "motivoId e noteId, in fondo al nodo nel canvas"
+    }
+   ]
+  }
+ }
+}

@@ -12,7 +12,7 @@ In questo lab si crea un nuovo agente, **Help Desk**, che lavora con i **topic**
 
 ## Che cosa si costruisce
 
-L'agente **Help Desk** sceglie il topic in base alla descrizione del suo trigger: "Ho un problema tecnico" avvia **First Topic - Supporto Tecnico**, "Voglio aprire un ticket" avvia **Ticket Card**. Se la risposta alla domanda del primo topic non corrisponde a nessuna opzione, il ramo **All other conditions** passa al topic di sistema **Escalate**. Lo schema di ogni topic, nodo per nodo, si trova all'inizio della sezione che lo crea.
+Lo schema mostra i topic dell'agente **Help Desk** e le richieste che li avviano: l'agente sceglie il topic in base alla descrizione del suo trigger. Lo schema di ogni topic, nodo per nodo, si trova all'inizio della sezione che lo crea.
 
 ![Agente Help Desk: l'utente avvia First Topic - Supporto Tecnico o Ticket Card; dal primo topic il ramo All other conditions porta al topic di sistema Escalate](../../images/lab03-agente-help-desk.svg)
 
@@ -67,7 +67,7 @@ L’Help Desk Agent fornisce supporto tecnico di primo livello utilizzando esclu
 
 ## Creazione del Primo Topic
 
-Il topic da costruire, come apparirà nel canvas: il trigger, la domanda a scelta multipla salvata nella variabile **Issue**, un ramo della condizione per ogni opzione con il suo messaggio, il ramo **All other conditions** che passa a **Escalate** e la chiusura con **End current topic**.
+Il topic da costruire, come apparirà nel canvas alla fine della sezione: le risposte sono messaggi scritti nel topic, sempre uguali, non generati dall'agente.
 
 ![Topic First Topic - Supporto Tecnico: trigger, Question con variabile Issue, rami Hardware, Software e Network Issues con un messaggio ciascuno, ramo All other conditions verso Escalate, End current topic](../../images/lab03-topic-supporto-tecnico.svg)
 
@@ -224,7 +224,7 @@ Ho un problema tecnico
 
 ## Creazione del Topic con Adaptive Card
 
-Il secondo topic: dopo il trigger, il nodo **Ask with adaptive card** mostra la scheda Richiesta Ticket IT e salva i campi compilati in cinque variabili; il messaggio finale le riprende in una formula card di riepilogo.
+Il secondo topic, come apparirà nel canvas alla fine della sezione: una sola scheda raccoglie tutti i dati del ticket, invece di una domanda per ogni campo.
 
 ![Topic Ticket Card: trigger, Ask with adaptive card con le variabili di output nome, cognome, email, tipologia e descrizione, messaggio con la formula card Riepilogo dati inseriti](../../images/lab03-topic-ticket-card.svg)
 

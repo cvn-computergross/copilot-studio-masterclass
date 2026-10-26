@@ -10,13 +10,13 @@ Con S06 il sistema della standard harness è completo: due canali di ingresso, i
 
 La seconda domanda riguarda anche i documenti. Un business case è un dato, non un'istruzione: BC-06 (Dashboard vendite in tempo reale) contiene di proposito un testo di prompt injection, e l'agente deve ignorarlo e segnalarlo. Il test set di sicurezza di questo lab riprende lo stesso tipo di testo. Vale anche un altro principio del progetto, **solo persone interne**: nessun contatto automatico con soggetti esterni.
 
-Infine l'agente deve arrivare dove lavorano proponenti e analisti, cioè in Teams e in Microsoft 365 Copilot. In questo lab viene pubblicato e aperto in Microsoft 365 Copilot, per ora solo da chi lo ha costruito.
+Infine l'agente deve arrivare dove lavorano proponenti e analisti, cioè in Teams e in Microsoft 365 Copilot.
 
 Finora gli agenti sono stati provati a mano, nel pannello di test. Funziona per capire un comportamento, ma non dice se una modifica ha rotto qualcosa che prima funzionava: nei laboratori precedenti istruzioni, prompt e flow sono stati cambiati più volte, e domani qualcuno cambierà un peso o una descrizione. Prima di mettere l'Agente Demand IT nelle mani del PMO servono **test ripetibili** e un rilascio controllato.
 
 In questo lab verranno creati due set di test (comportamento di base e sicurezza) ed eseguiti; poi l'agente verrà pubblicato e aperto in **Microsoft 365 Copilot** solo per sé, per provarlo da lì. In particolare verranno svolte le seguenti attività:
 
-- Creare ed eseguire un test set di base con **Meaning match** e **Tool use**.
+- Creare ed eseguire un test set di base con il metodo **Meaning match**.
 - Creare ed eseguire un test set di sicurezza sull'Agente Comitato.
 - Pubblicare l'agente e aprirlo in Microsoft 365 Copilot solo per sé, senza distribuirlo.
 - Provare il processo end to end da Microsoft 365 Copilot.
@@ -29,10 +29,16 @@ In questo lab verranno creati due set di test (comportamento di base e sicurezza
 ::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
 - **Test set come test di regressione.** Un test set è un gruppo di domande con le risposte attese. Si esegue dopo ogni modifica: se un caso che passava inizia a fallire, si sa subito che cosa si è rotto. La regola d'oro è che tutti i casi passino, così un fallimento significa sempre un problema.
 - **Meaning match invece di Exact match.** Le risposte di un agente generativo cambiano formulazione. **Meaning match** valuta se il significato coincide con quello atteso; la soglia di 70 (invece del valore predefinito 50) rende il test più severo senza pretendere le stesse parole.
-- **Tool use per il percorso.** Per alcune richieste non conta solo la risposta ma **quale** componente è stato usato: il metodo **Tool use** verifica che sia stato attivato il topic o lo strumento atteso.
+- **Il percorso, se serve.** Questi casi verificano solo le risposte; quando conta anche **quale** topic o strumento è stato attivato, si può aggiungere il metodo **Tool use**.
 - **Casi senza effetti collaterali.** I test vengono rieseguiti molte volte: si evitano casi che creano proposte, valutazioni o dossier. Le scritture si provano a mano, in modo controllato.
 - **Pubblicare non vuol dire distribuire.** **Publish** rende attiva la versione corrente dell'agente; il canale **Teams and Microsoft 365 Copilot** la rende apribile in Microsoft 365 Copilot. Finché l'agente non viene condiviso e distribuito nell'organizzazione, lo vede solo il suo autore: è il modo giusto di provarlo in un ambiente di corso.
 :::
+
+## Che cosa si costruisce
+
+Lo schema mostra il percorso di questo lab, dai due test set alla prova in Microsoft 365 Copilot. Si pubblica solo quando tutti i casi di entrambi i set passano.
+
+![Valutazioni e pubblicazione: i test set Demand IT - Base e Comitato - Sicurezza eseguiti in Evaluation, poi Publish, canale Teams and Microsoft 365 Copilot e Microsoft 365 Copilot solo per sé](../../images/workflow-valutazioni.svg)
 
 ## Prerequisiti
 
@@ -134,7 +140,7 @@ Il file contiene questi casi:
 
 ## Pubblicazione in Microsoft 365 Copilot
 
-Per provare l'agente fuori da Copilot Studio non serve renderlo disponibile a tutti. Si pubblica la versione corrente, si attiva il canale e lo si apre in Microsoft 365 Copilot per sé: nessun altro utente lo vede finché non viene condiviso.
+Per provare l'agente fuori da Copilot Studio non serve renderlo disponibile a tutti: nessun altro utente lo vede finché non viene condiviso.
 
 ### Pubblicare l'agente
 
@@ -207,7 +213,7 @@ L'Agente Demand IT aiuta l'Ufficio Demand e PMO IT di Zava a gestire le proposte
 
 ## Testare l'agente da Microsoft 365 Copilot
 
-La prova finale ripercorre l'intero processo da Microsoft 365 Copilot, il canale che useranno gli utenti, con un business case non ancora usato: registrazione, valutazione con conferma, dossier e preparazione della revisione.
+La prova finale ripercorre l'intero processo da Microsoft 365 Copilot, il canale che useranno gli utenti, con un business case non ancora usato: registrazione, valutazione con conferma e dossier.
 
 1. In Microsoft 365 Copilot aprire l'Agente Demand IT e allegare [`BC-02_Segmentazione_rete_e_accessi_privilegiati.pdf`](../../../resources/advanced/business-case/BC-02_Segmentazione_rete_e_accessi_privilegiati.pdf) con il messaggio seguente. Verificare codice PP-####, proponente e programma PG-200.
 
@@ -238,6 +244,6 @@ Valuta la proposta PP-#### sul programma PG-200
 >
 > L'Agente Demand IT ha ora due test set di regressione ed è pubblicato e provato in Microsoft 365 Copilot, senza essere distribuito. In questo lab si è visto:
 >
-> - come creare e leggere test set con **Meaning match** e **Tool use**;
+> - come creare e leggere test set con **Meaning match**;
 > - perché i test ripetibili devono evitare effetti collaterali;
 > - come pubblicare un agente e provarlo in Microsoft 365 Copilot senza distribuirlo.

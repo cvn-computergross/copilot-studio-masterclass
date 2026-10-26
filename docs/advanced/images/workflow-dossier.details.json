@@ -1,0 +1,271 @@
+{
+ "diagram": "workflow-dossier",
+ "details": {
+  "s06-flow": {
+   "title": "Agent flow Genera dossier",
+   "icon": "logo:power-automate",
+   "fam": "tools",
+   "lab": "S06",
+   "role": "Creato dal topic con + › Add a tool › New Agent flow: genera il dossier, lo salva in OneDrive e restituisce un link di sola lettura.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "When an agent calls the flow",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "input Text CodiceValutazione"
+    },
+    {
+     "label": "Run a prompt",
+     "icon": "logo:ai-builder",
+     "fam": "tools",
+     "sub": "prompt Dossier di revisione",
+     "file": "ai-builder.svg"
+    },
+    {
+     "label": "Create file",
+     "icon": "logo:onedrive",
+     "fam": "tools",
+     "sub": "/Documents, Dossier_AS-####.docx",
+     "file": "onedrive.png"
+    },
+    {
+     "label": "Create share link",
+     "icon": "logo:onedrive",
+     "fam": "tools",
+     "sub": "View, Organization",
+     "file": "onedrive.png"
+    },
+    {
+     "label": "Respond to the agent",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "output DossierURL"
+    },
+    {
+     "label": "Save draft e Publish",
+     "icon": "rocket-launch",
+     "fam": "lifecycle",
+     "sub": "Flow name Genera dossier, con la descrizione del lab"
+    }
+   ],
+   "file": "power-automate.svg"
+  },
+  "s06-topic": {
+   "title": "Genera dossier di revisione",
+   "icon": "chats-circle",
+   "fam": "topics",
+   "lab": "S06",
+   "role": "Topic dell'Agente Demand IT (Add a topic › From blank); le istruzioni, sezione Delega, dicono di usarlo e di non delegare il dossier ad altri agenti.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Trigger",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "Genera il dossier di revisione in Word per una valutazione di proposta già registrata (codice AS-####)…"
+    },
+    {
+     "label": "Input VarCodiceValutazione",
+     "icon": "brackets-curly",
+     "fam": "topics",
+     "sub": "Identify as User's entire response; AS, un trattino e 4 cifre (es. AS-1003): chiesto se manca"
+    },
+    {
+     "label": "Genera dossier",
+     "icon": "logo:power-automate",
+     "fam": "tools",
+     "sub": "agent flow, input CodiceValutazione = Topic.VarCodiceValutazione",
+     "file": "power-automate.svg"
+    },
+    {
+     "label": "Send a message",
+     "icon": "cards",
+     "fam": "topics",
+     "sub": "adaptive card con il pulsante Apri il dossier",
+     "pill": "DossierURL"
+    },
+    {
+     "label": "End current topic",
+     "icon": "stop-circle",
+     "fam": "system",
+     "sub": "Topic management, poi Save"
+    }
+   ]
+  },
+  "s06-prompt": {
+   "title": "Run a prompt",
+   "icon": "logo:ai-builder",
+   "fam": "tools",
+   "lab": "S06",
+   "role": "Prompt Dossier di revisione con output Word: compila i 24 segnaposto del template con la valutazione registrata, letta da Dataverse.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Prompt",
+     "icon": "logo:ai-builder",
+     "fam": "tools",
+     "sub": "Dossier di revisione; input Text CodiceValutazione dal trigger",
+     "file": "ai-builder.svg"
+    },
+    {
+     "group": "Conoscenza Dataverse · Assessment Code = CodiceValutazione",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "/Valutazione",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Assessment: Assessment Code, Title, Score, Criteria Detail, Rationale, Recommendation"
+      },
+      {
+       "label": "/Proposta",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Assessment › Proposal: Proposal Code, Title, Summary, Requested Budget (EUR), Duration (Months)"
+      },
+      {
+       "label": "/Proponente",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Assessment › Proposal › Requester: Name, Role, Department, Email"
+      },
+      {
+       "label": "/Programma",
+       "icon": "database",
+       "fam": "knowledge",
+       "sub": "Assessment › Program: Program Code, Name, Available Budget (EUR)"
+      }
+     ],
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Output Document (preview)",
+     "icon": "logo:word",
+     "fam": "tools",
+     "sub": "Document settings: Zava_Dossier_Revisione_Template.docx",
+     "file": "word.png"
+    },
+    {
+     "label": "Template perso dopo Save",
+     "icon": "warning",
+     "fam": "risk",
+     "sub": "riaprire Document settings, ricaricare il template e salvare di nuovo"
+    }
+   ],
+   "file": "ai-builder.svg"
+  },
+  "s06-file": {
+   "title": "Create file",
+   "icon": "logo:onedrive",
+   "fam": "tools",
+   "lab": "S06",
+   "role": "Azione OneDrive for Business: salva il dossier in I miei file, cartella Documents.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Folder Path",
+     "icon": "folders",
+     "fam": "tools",
+     "sub": "/Documents"
+    },
+    {
+     "label": "File Name",
+     "icon": "function",
+     "fam": "tools",
+     "sub": "concat('Dossier_', triggerBody()?['text'], '.docx')"
+    },
+    {
+     "label": "File Content",
+     "icon": "file-text",
+     "fam": "tools",
+     "sub": "Document Output Content Bytes di Run a prompt"
+    },
+    {
+     "label": "Id",
+     "icon": "key",
+     "fam": "tools",
+     "sub": "output usato da Create share link"
+    }
+   ],
+   "file": "onedrive.png"
+  },
+  "s06-link": {
+   "title": "Create share link",
+   "icon": "logo:onedrive",
+   "fam": "tools",
+   "lab": "S06",
+   "role": "Azione OneDrive for Business: crea un link di sola lettura valido per l'organizzazione e lo restituisce al topic.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "File",
+     "icon": "file-text",
+     "fam": "tools",
+     "sub": "Id di Create file"
+    },
+    {
+     "label": "Link type",
+     "icon": "link",
+     "fam": "tools",
+     "sub": "View"
+    },
+    {
+     "label": "Link scope",
+     "icon": "users-three",
+     "fam": "tools",
+     "sub": "Organization"
+    },
+    {
+     "label": "Respond to the agent",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "output Text DossierURL = Web URL di Create share link"
+    }
+   ],
+   "file": "onedrive.png"
+  },
+  "s06-card": {
+   "title": "Adaptive card",
+   "icon": "cards",
+   "fam": "topics",
+   "lab": "S06",
+   "role": "Nodo Send a message con una adaptive card (+ Add › Adaptive card, Edit JSON › Formula): consegna il link con un pulsante.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Formula card",
+     "icon": "function",
+     "fam": "topics",
+     "sub": "version 1.5; TextBlock Dossier di revisione pronto"
+    },
+    {
+     "label": "Codice",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "\"Valutazione \" & Topic.VarCodiceValutazione"
+    },
+    {
+     "label": "Avvertenza",
+     "icon": "chat-text",
+     "fam": "topics",
+     "sub": "Verifica i contenuti prima di inviarlo: livelli e punteggi sono una proposta per il Comitato."
+    },
+    {
+     "label": "Action.OpenUrl",
+     "icon": "link",
+     "fam": "topics",
+     "sub": "Apri il dossier, url: Topic.DossierURL"
+    },
+    {
+     "label": "Perché un pulsante",
+     "icon": "lightbulb",
+     "fam": "instructions",
+     "sub": "un link Markdown si interrompe con i caratteri speciali dell'indirizzo di OneDrive"
+    }
+   ]
+  }
+ }
+}

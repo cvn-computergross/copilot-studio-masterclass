@@ -33,7 +33,7 @@ In questo lab il dossier verrà generato come **documento Word** a partire da un
 
 ## Che cosa si costruisce
 
-Lo schema mostra i componenti di questo lab. Il topic chiede il codice della valutazione se manca e chiama l'agent flow **Genera dossier**, che genera il documento con il prompt a output Word, lo salva in OneDrive e crea un link di condivisione. Il topic consegna il link in chat con una adaptive card.
+Lo schema mostra i componenti di questo lab, nell'ordine in cui li attraversa una richiesta: il topic dialoga con l'utente, l'agent flow genera e salva il documento.
 
 ![Generazione del dossier di revisione](../../images/workflow-dossier.svg)
 

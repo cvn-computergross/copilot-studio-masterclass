@@ -12,11 +12,11 @@ In questo lab si crea l'agente **Device Booker**: un topic legge dalla lista Sha
 
 ## Che cosa si costruisce
 
-Il primo schema mostra i componenti: i due topic dell'agente **Device Booker**, la lista **Devices** del sito Help Desk CSM e l'agent flow **Send device request email**, chiamato dal topic **Request device** e che risponde con **ModelValue**. Le istruzioni collegano i due topic con `/`.
+Il primo schema mostra i componenti dell'agente **Device Booker** alla fine del lab: i topic gestiscono la conversazione con l'utente, l'agent flow esegue in Power Automate i passi che non la richiedono.
 
 ![Agente Device Booker: topic Available devices e Request device, istruzioni, lista SharePoint Devices e agent flow Send device request email con trigger, Get Device, Send an email to manager e Respond to the agent](../../images/lab05-agente-device-booker.svg)
 
-Il secondo schema segue una richiesta dall'inizio alla fine: l'agente elenca i laptop disponibili, l'utente sceglie il dispositivo nell'adaptive card e l'agent flow legge l'elemento dalla lista, scrive al manager e restituisce il modello per il messaggio di conferma.
+Il secondo schema segue una richiesta dall'inizio alla fine: è la stessa conversazione da provare nella sezione *Testing*.
 
 ![Sequenza di una richiesta: l'utente chiede un laptop, Available devices legge la lista Devices, Request device mostra l'adaptive card, l'agent flow recupera il dispositivo, invia l'email al manager e restituisce ModelValue](../../images/lab05-sequenza-richiesta.svg)
 
@@ -89,7 +89,7 @@ Automatically manages device reservations, availability, and assignments across 
 
 ## Creazione Topic - Available Devices
 
-Il topic completo: la variabile di input **VarDeviceType** la ricava l'agente dalla richiesta, **Get items** legge dalla lista i dispositivi disponibili di quel tipo e il risultato, salvato in **Global.VarDevices**, diventa la variabile di output **VarAvailableDevices**.
+Il topic completo, come apparirà nel canvas alla fine della sezione: legge la lista **Devices** e restituisce all'agente i dispositivi disponibili del tipo richiesto.
 
 ![Topic Available devices: trigger con input VarDeviceType e output VarAvailableDevices, Get items sulla lista Devices filtrato per stato e tipo, Set variable value con Global.VarDevices.value](../../images/lab05-topic-available-devices.svg)
 
@@ -234,7 +234,7 @@ Global.VarDevices.value
 
 Creare un nuovo Topic che guiderà l'utente nella prenotazione di un dispositivo.
 
-Il topic completo, alla fine di questa sezione e delle due successive (l'agent flow si crea e si aggiunge dopo l'adaptive card): la scelta e i commenti dell'utente passano all'agent flow, che restituisce **ModelValue** per il messaggio di conferma; poi la conversazione termina.
+Il topic completo, alla fine di questa sezione e delle due successive: l'agent flow si crea e si aggiunge dopo l'adaptive card.
 
 ![Topic Request device: trigger, Ask with adaptive card Device selection con le scelte da Global.VarDevices.value, agent flow Send device request email con deviceSelectionId e commentsId, messaggio con ModelValue, Redirect a End of Conversation](../../images/lab05-topic-request-device.svg)
 

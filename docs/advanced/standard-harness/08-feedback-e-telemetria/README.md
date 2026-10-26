@@ -23,7 +23,7 @@ In questo lab verranno raccolti due tipi di segnale: le **reazioni** (pollice su
 
 ## Che cosa si costruisce
 
-Lo schema mostra il topic di sistema **End of Conversation** come sarà alla fine di questo lab. Il voto CSAT viene salvato in `Topic.VarCSATRating`; con 1 o 2 stelle la conversazione passa al topic **Approfondimento CSAT negativo**, che chiede il motivo con una adaptive card e ringrazia, poi **End of Conversation** riprende. Le reazioni degli utenti non compaiono nello schema: si raccolgono in Teams e si leggono nella pagina **Monitor**.
+Lo schema mostra il topic di sistema **End of Conversation** come sarà alla fine di questo lab. Le reazioni degli utenti non compaiono nello schema: si raccolgono in Teams e si leggono nella pagina **Monitor**.
 
 ![Topic End of Conversation: voto CSAT in VarCSATRating e, con 1 o 2 stelle, il topic Approfondimento CSAT negativo con l'adaptive card](../../images/workflow-csat.svg)
 

@@ -35,7 +35,7 @@ In questo laboratorio viene creato l'agente nella soluzione del PMO, vengono scr
 
 ## Che cosa si costruisce
 
-Lo schema mostra dove si arriverà alla fine della standard harness. Due canali di ingresso (chat e casella email del PMO), un orchestratore con un child agent e un agente connesso, un unico archivio dati in Dataverse. Le persone del PMO restano il punto di decisione: confermano programma e valutazione. Accanto a ogni componente è indicato il laboratorio in cui viene creato; nei codici degli schemi, `####` sta per le cifre generate da Dataverse (ad esempio PP-1003).
+Lo schema mostra dove si arriverà alla fine della standard harness, con accanto a ogni componente il laboratorio in cui viene creato: ogni lab ne aggiunge un pezzo. Nei codici degli schemi, `####` sta per le cifre generate da Dataverse (ad esempio PP-1003).
 
 ![Panoramica del sistema: canali di ingresso, Agente Demand IT, Intake Proposte, Agente Comitato, dossier e PMO Demand Hub](../../images/panoramica-sistema.svg)
 
