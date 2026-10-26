@@ -180,43 +180,6 @@
    ],
    "file": "sharepoint.png"
   },
-  "f05-flow": {
-   "title": "Send device request email",
-   "icon": "logo:power-automate",
-   "fam": "tools",
-   "lab": "Lab 05",
-   "role": "Agent flow chiamato dal topic Request device: recupera il dispositivo, scrive al manager e restituisce il modello. Save draft, poi Publish.",
-   "layout": "flow",
-   "steps": [
-    {
-     "label": "When an agent calls the flow",
-     "icon": "lightning",
-     "fam": "triggers",
-     "sub": "input Text: DeviceSharePointId, User, AdditionalComments (facoltativo)"
-    },
-    {
-     "label": "Get Device",
-     "icon": "logo:sharepoint",
-     "fam": "tools",
-     "sub": "Get item della lista Devices, Id = DeviceSharePointId",
-     "file": "sharepoint.png"
-    },
-    {
-     "label": "Send an email to manager",
-     "icon": "logo:outlook",
-     "fam": "tools",
-     "sub": "Send an email (V2): Request type: new device",
-     "file": "outlook.png"
-    },
-    {
-     "label": "Respond to the agent",
-     "icon": "flow-arrow",
-     "fam": "tools",
-     "sub": "output Text ModelValue = Model"
-    }
-   ],
-   "file": "power-automate.svg"
-  },
   "f05-getdevice": {
    "title": "Get Device",
    "icon": "logo:sharepoint",

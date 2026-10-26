@@ -34,12 +34,6 @@ In questo lab verranno creati due set di test (comportamento di base e sicurezza
 - **Pubblicare non vuol dire distribuire.** **Publish** rende attiva la versione corrente dell'agente; il canale **Teams and Microsoft 365 Copilot** la rende apribile in Microsoft 365 Copilot. Finché l'agente non viene condiviso e distribuito nell'organizzazione, lo vede solo il suo autore: è il modo giusto di provarlo in un ambiente di corso.
 :::
 
-## Che cosa si costruisce
-
-Lo schema mostra il percorso di questo lab, dai due test set alla prova in Microsoft 365 Copilot. Si pubblica solo quando tutti i casi di entrambi i set passano.
-
-![Valutazioni e pubblicazione: i test set Demand IT - Base e Comitato - Sicurezza eseguiti in Evaluation, poi Publish, canale Teams and Microsoft 365 Copilot e Microsoft 365 Copilot solo per sé](../../images/workflow-valutazioni.svg)
-
 ## Prerequisiti
 
 Per svolgere questo lab occorre avere:

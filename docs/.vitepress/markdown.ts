@@ -113,6 +113,9 @@ function diagram(svgFile: string, alt: string, esc: (s: string) => string, file:
   // (nascosto, sotto lo schema). Con riquadri attivi lo schema è un gruppo, non un'immagine.
   svg = svg
     .replace(/^<svg role="img"/, '<svg role="group"')
+    // niente <title>: il browser lo mostrerebbe come suggerimento sopra il riquadro del dettaglio
+    // (il nome resta in aria-label, la descrizione dei riquadri in aria-describedby)
+    .replace(/<title>[\s\S]*?<\/title>/g, '')
     .replace(/<g ([^>]*?) data-detail="([^"]+)">/g, (_, attrs: string, id: string) => {
       if (!data.details[id]) throw new Error(`${file}: dettaglio '${id}' mancante in ${path.basename(sidecar)}`)
       return `<g ${attrs} data-detail="${id}" tabindex="0" role="button" aria-expanded="false" aria-describedby="dg-${name}-${id}">`

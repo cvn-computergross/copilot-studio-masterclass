@@ -1596,12 +1596,12 @@ def panoramica():
 def architettura_standard():
     """S01-S08: i componenti dell'Agente Demand IT e dello specialista."""
     d = Diagram("architettura-standard")
-    d.lane(20, 20, 620, 382, "Agente Demand IT · csm_agentedemand_std", DA, "ai-engine", detail="demand-it")
+    d.lane(20, 20, 620, 382, "Agente Demand IT · csm_agentedemand_std", DA, "ai-engine")
     top = d.node(342, 62, 280, "Topic", "chats-circle", "topics", "Genera dossier di revisione", white=True, detail="topic-dossier")
     trg = d.node(342, 140, 280, "Trigger", "lightning", "triggers", "Nuova proposta via email", white=True, detail="trigger-email")
     d.node(342, 218, 280, "Conoscenza PMO", "logo:sharepoint", "knowledge", "cartella SharePoint PMO Knowledge", white=True, detail="pmo-knowledge")
     d.node(342, 296, 280, "Topic", "chats-circle", "topics", "Approfondimento CSAT negativo\nda End of Conversation (S08)", white=True, detail="topic-csat")
-    intake = d.lane(40, 62, 284, 325, "Intake Proposte · child agent", "robot", "agents", detail="intake")
+    intake = d.lane(40, 62, 284, 325, "Intake Proposte · child agent", "robot", "agents")
     tools = [("Carica business case", "crea proposta e carica il PDF", "carica-bc"),
              ("Analizza business case", "prompt Estrai dati business case", "analizza-bc"),
              ("Crea valutazione", "prompt Valuta proposta,\nconferma dell'utente", "crea-val"),
@@ -1609,7 +1609,7 @@ def architettura_standard():
     ys = [102, 167, 232, 313]
     for (label, sub, det), y in zip(tools, ys):
         d.node(55, y, 254, label, "logo:power-automate", "tools", sub, white=True, h=74 if "\n" in sub else 58, detail=det)
-    d.lane(680, 20, 310, 150, "Agente Comitato · connesso", COM, "agents", detail="comitato")
+    d.lane(680, 20, 310, 150, "Agente Comitato · connesso", COM, "agents")
     k2 = d.node(695, 62, 280, "Conoscenza Dataverse", "logo:dataverse", "knowledge", "Program, Evaluation Criterion,\nRequester, Proposal, Assessment", white=True, detail="comitato-kb")
     fd = d.node(680, 200, 310, "Agent flow Genera dossier", "logo:power-automate", "tools", "prompt Dossier di revisione", detail="flow-dossier")
     od = d.node(680, 285, 310, "OneDrive", "logo:onedrive", "tools", "Dossier_AS-####.docx, link", detail="onedrive")
@@ -1660,14 +1660,14 @@ def workflow_email_standard():
     cd = d.node(x, r["b"] + 30, w, "Carica documento email", "logo:dataverse", "knowledge", "PDF in Business Case Document", white=True, detail="s05-carica")
     ag = d.node(x, cd["b"] + 30, w, "Sends a prompt to the specified copilot", DA, "ai-engine",
                 "Agente Demand IT, con il codice PP-####", white=True, detail="s05-prompt")
-    d.lane(LX, ly, LW, ag["b"] + 16 - ly, "Per ogni allegato", "arrows-clockwise", "tools", detail="s05-loop")
+    d.lane(LX, ly, LW, ag["b"] + 16 - ly, "Per ogni allegato", "arrows-clockwise", "tools")
     d.parts.insert(0, d.parts.pop())   # la corsia sotto i riquadri
     # l'agente analizza e notifica con gli strumenti di Intake Proposte: riquadri a destra del titolo
     ay = ag["b"] + 16 + 44
     ax = LX + LW - 20 - w
     an = d.node(ax, ay + 42, w, "Analizza business case", "logo:power-automate", "tools", "agent flow di Intake Proposte", white=True, detail="analizza-bc")
     nt = d.node(ax, an["b"] + 30, w, "Notifica PMO in Teams", "logo:power-automate", "tools", "adaptive card in Teams (Flow bot)", white=True, detail="s05-notifica")
-    d.lane(LX, ay, LW, nt["b"] + 16 - ay, "Agente Demand IT · Intake Proposte", DA, "ai-engine", detail="s05-intake")
+    d.lane(LX, ay, LW, nt["b"] + 16 - ay, "Agente Demand IT · Intake Proposte", DA, "ai-engine")
     d.parts.insert(0, d.parts.pop())
     dv = d.node(R, dec["y"], RW, "Da verificare", "git-branch", "system", "Classifica contiene Incerta?", detail="s05-verifica")
     man = d.node(R, dv["b"] + 36, RW, "Avvisa verifica manuale", "logo:outlook", "tools", "Send an email (V2)", detail="s05-avvisa")
@@ -1696,7 +1696,7 @@ def workflow_dossier():
     p_h, f_h, sl_h = 92, 58, 58            # altezze di Run a prompt, Create file, Create share link
     f_y = row + p_h + 28                   # spazio per vedere le frecce fra i passi del flow
     sl_y = f_y + f_h + 28
-    d.lane(lane_x, lane_y, 370, sl_y + sl_h + 15 - lane_y, "Agent flow · Genera dossier", "logo:power-automate", "tools", detail="s06-flow")
+    d.lane(lane_x, lane_y, 370, sl_y + sl_h + 15 - lane_y, "Agent flow · Genera dossier", "logo:power-automate", "tools")
     u = d.node(20, row, 190, "Utente", "user-circle", "agents", "Mi prepari il dossier\ndi AS-####?")
     top = d.node(250, row, 230, "Topic", "chats-circle", "topics", "Genera dossier di revisione,\nchiede il codice se manca", detail="s06-topic")
     p = d.node(lane_x + 15, row, 340, "Run a prompt", "logo:ai-builder", "tools",
@@ -1939,7 +1939,7 @@ def lab05_agente():
            "Action: /Available devices e\n/Request device; solo richieste", white=True, detail="f05-istruzioni")
     sp = d.node(390, 20, 340, "Lista Devices", "logo:sharepoint", "knowledge",
                 "sito Help Desk CSM: Status, Asset Type,\nManufacturer, Model, Serial Number", detail="f05-devices")
-    d.lane(390, 130, 340, 355, "Agent flow · Send device request email", "logo:power-automate", "tools", detail="f05-flow")
+    d.lane(390, 130, 340, 355, "Agent flow · Send device request email", "logo:power-automate", "tools")
     tr = d.node(405, 172, 310, "When an agent calls the flow", "lightning", "triggers",
                 "input DeviceSharePointId, User,\nAdditionalComments (facoltativo)", white=True)
     gd = d.node(405, 262, 310, "Get Device", "logo:sharepoint", "tools", "Get item della lista Devices per ID", white=True, detail="f05-getdevice")
@@ -2002,7 +2002,7 @@ def lab05_request():
 if __name__ == "__main__":
     failed = []
     for build in (panoramica, architettura_standard, workflow_chat, workflow_email_standard,
-                  workflow_dossier, workflow_valutazioni, workflow_revisione, workflow_csat,
+                  workflow_dossier, workflow_revisione, workflow_csat,
                   lab01_percorso, lab02_fonti, lab03_agente, lab03_supporto, lab03_ticket,
                   lab04_agente, lab04_topic, lab05_agente, lab05_sequenza, lab05_available, lab05_request):
         try:

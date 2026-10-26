@@ -1,56 +1,6 @@
 {
  "diagram": "workflow-dossier",
  "details": {
-  "s06-flow": {
-   "title": "Agent flow Genera dossier",
-   "icon": "logo:power-automate",
-   "fam": "tools",
-   "lab": "S06",
-   "role": "Creato dal topic con + › Add a tool › New Agent flow: genera il dossier, lo salva in OneDrive e restituisce un link di sola lettura.",
-   "layout": "flow",
-   "steps": [
-    {
-     "label": "When an agent calls the flow",
-     "icon": "lightning",
-     "fam": "triggers",
-     "sub": "input Text CodiceValutazione"
-    },
-    {
-     "label": "Run a prompt",
-     "icon": "logo:ai-builder",
-     "fam": "tools",
-     "sub": "prompt Dossier di revisione",
-     "file": "ai-builder.svg"
-    },
-    {
-     "label": "Create file",
-     "icon": "logo:onedrive",
-     "fam": "tools",
-     "sub": "/Documents, Dossier_AS-####.docx",
-     "file": "onedrive.png"
-    },
-    {
-     "label": "Create share link",
-     "icon": "logo:onedrive",
-     "fam": "tools",
-     "sub": "View, Organization",
-     "file": "onedrive.png"
-    },
-    {
-     "label": "Respond to the agent",
-     "icon": "flow-arrow",
-     "fam": "tools",
-     "sub": "output DossierURL"
-    },
-    {
-     "label": "Save draft e Publish",
-     "icon": "rocket-launch",
-     "fam": "lifecycle",
-     "sub": "Flow name Genera dossier, con la descrizione del lab"
-    }
-   ],
-   "file": "power-automate.svg"
-  },
   "s06-topic": {
    "title": "Genera dossier di revisione",
    "icon": "chats-circle",

@@ -397,57 +397,6 @@
     }
    ]
   },
-  "s05-loop": {
-   "title": "Per ogni allegato",
-   "icon": "arrows-clockwise",
-   "fam": "tools",
-   "lab": "S05",
-   "role": "Ciclo For each creato da Power Automate scegliendo Attachments Content-Type: ogni PDF dell'email diventa una proposta distinta.",
-   "layout": "flow",
-   "steps": [
-    {
-     "label": "Allegato PDF",
-     "icon": "git-branch",
-     "fam": "system",
-     "sub": "Attachments Content-Type is equal to application/pdf",
-     "branches": [
-      {
-       "label": "False",
-       "fam": "neutral",
-       "steps": [
-        {
-         "label": "Allegato ignorato",
-         "icon": "x-circle",
-         "fam": "system",
-         "sub": "es. il file Word di email-05-due-proposte"
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "label": "Registra proposta email",
-     "icon": "logo:dataverse",
-     "fam": "knowledge",
-     "sub": "Add a new row in Proposals, canale Email",
-     "pill": "True",
-     "file": "dataverse.svg"
-    },
-    {
-     "label": "Carica documento email",
-     "icon": "logo:dataverse",
-     "fam": "knowledge",
-     "sub": "Upload a file or an image: Business Case Document",
-     "file": "dataverse.svg"
-    },
-    {
-     "label": "Sends a prompt to the specified copilot",
-     "icon": "agent:demand-it-agent-192.png",
-     "fam": "ai-engine",
-     "sub": "messaggio con Proposal Code, From e Subject"
-    }
-   ]
-  },
   "analizza-bc": {
    "title": "Analizza business case",
    "icon": "logo:power-automate",
@@ -622,56 +571,6 @@
     }
    ],
    "file": "power-automate.svg"
-  },
-  "s05-intake": {
-   "title": "Agente Demand IT · Intake Proposte",
-   "icon": "agent:demand-it-agent-192.png",
-   "fam": "ai-engine",
-   "lab": "S05",
-   "role": "Il messaggio del flow arriva all'agente senza un utente in conversazione: le istruzioni di Intake Proposte dicono che cosa fare.",
-   "layout": "flow",
-   "steps": [
-    {
-     "label": "Messaggio dal flow",
-     "icon": "agent:demand-it-agent-192.png",
-     "fam": "ai-engine",
-     "sub": "Sends a prompt: proposta PP-####, mittente, oggetto"
-    },
-    {
-     "group": "Istruzioni · Processo per le proposte ricevute via email",
-     "icon": "clipboard-text",
-     "fam": "instructions",
-     "layout": "flow",
-     "steps": [
-      {
-       "label": "1. /Analizza business case",
-       "icon": "logo:power-automate",
-       "fam": "tools",
-       "sub": "con il codice PP-####",
-       "file": "power-automate.svg"
-      },
-      {
-       "label": "2. /Notifica PMO in Teams",
-       "icon": "logo:power-automate",
-       "fam": "tools",
-       "sub": "Proponente Nome (RQ-####); Programma o Da confermare: …; Avvisi; niente virgolette doppie",
-       "file": "power-automate.svg"
-      },
-      {
-       "label": "3. Nessuna valutazione",
-       "icon": "prohibit",
-       "fam": "risk",
-       "sub": "niente valutazioni né conferme: le decide un analista del PMO in chat"
-      }
-     ]
-    },
-    {
-     "label": "Publish",
-     "icon": "rocket-launch",
-     "fam": "lifecycle",
-     "sub": "Agente Demand IT: il trigger lavora con la versione pubblicata"
-    }
-   ]
   },
   "s05-verifica": {
    "title": "Da verificare",
