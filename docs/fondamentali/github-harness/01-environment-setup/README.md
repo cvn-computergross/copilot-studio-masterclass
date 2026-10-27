@@ -18,21 +18,7 @@ Prima di costruire serve un posto in cui lavorare. In questo lab si prepara tutt
 
 Persone, indirizzi, dispositivi e documenti di Zava sono fittizi, inventati per il corso.
 
-> [!TIP]
-> **Chi ha già svolto la Standard Harness**
->
-> Se si segue il corso in aula, l'istruttore fornisce account e ambiente con i crediti già assegnati: partire dalla sezione *Verificare nuova esperienza e ambiente*. Chi ha completato il [Lab 01 della Standard Harness](../../standard-harness/01-environment-setup/README.md) può riusare account, trial e gruppo **AgentCreators**, ma deve leggere comunque la sezione sull'ambiente: il Developer Plan non è più una scelta adatta.
-
-::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
-- **Un ambiente dedicato, con Dataverse e crediti.** Nella GitHub Copilot harness anche le prove in **Preview** consumano Copilot Credits, che vengono addebitati all'ambiente: un ambiente del corso separato da quello predefinito tiene sotto controllo costi e componenti.
-- **La solution prima dell'agente.** Nella GitHub Copilot harness la solution dell'agente si sceglie una volta sola, prima del primo salvataggio, e poi non si cambia più: publisher e solution vanno creati adesso, prima di aprire la scheda **Build**.
-- **Power Apps, nello stesso ambiente di Copilot Studio.** Solution e publisher appartengono a un ambiente, non a un'applicazione. Power Apps e Copilot Studio hanno ciascuno il proprio selettore di ambiente: il controllo prima di creare è ciò che rende la solution visibile al primo salvataggio dell'agente.
-- **Mai nella solution Default.** La solution Default non si può esportare, il suo publisher non si può cambiare e mescola i componenti di tutti i maker. Una solution propria si esporta, si versiona e si importa in altri ambienti.
-- **Un publisher dedicato alla GitHub Copilot harness.** Il prefisso `csg` compare nei nomi tecnici (ad esempio lo schema name `csg_assistentezavagh`) e distingue questi componenti da quelli della Standard Harness, che usa il publisher **CSM Solutions** con prefisso `csm`. Lo stesso publisher sarà riusato dal caso pratico della [sezione Advanced](../../../advanced/github-harness/index.md), con valori delle scelte che partono da `770000000`.
-- **Documenti e dati dove il team li mantiene.** Playbook, SLA e lista dei dispositivi vivono in SharePoint, dove il team IT li aggiorna: l'agente li leggerà sempre nella versione corrente, nel rispetto dei permessi di chi chiede.
-:::
-
-## Che cosa si costruisce
+## Percorso di setup
 
 Lo schema mostra i passi del lab, nell'ordine, e dove si trova ciò che ognuno crea: è l'ambiente in cui si lavorerà in tutti i lab successivi.
 
@@ -178,11 +164,6 @@ In Copilot Studio convivono più harness: è la nuova esperienza a mostrare nell
 
 La documentazione che il team IT aggiorna spesso resta dove il team la mantiene: un sito SharePoint. Nel Lab 02 il sito diventa una fonte di conoscenza dell'agente; nello stesso sito vive la lista dei dispositivi che il workflow del Lab 05 consulterà.
 
-> [!NOTE]
-> **Screenshot**
->
-> Alcuni screenshot di questa sezione vengono da una versione precedente del corso e mostrano nomi e dati diversi (sito, cartella, lista e colonne): i comandi sono gli stessi, usare sempre i valori indicati nel testo.
-
 ### Creare il sito
 
 1. Aprire [Microsoft 365](https://m365.cloud.microsoft/), selezionare **Apps** e poi **SharePoint**.
@@ -281,18 +262,13 @@ https://make.powerapps.com
 2. Prima di qualsiasi altra operazione controllare il selettore di ambiente in alto a destra: deve indicare l'ambiente del corso annotato in Copilot Studio. Se indica un altro ambiente, selezionare quello del corso.
 3. Confrontare l'ID: nell'indirizzo di Power Apps (`https://make.powerapps.com/environments/<ID-ambiente>/...`) deve essere identico a quello annotato in Copilot Studio. In alternativa, selezionare l'icona **Settings** (ingranaggio) e poi **Session details**, dove compare l'**Environment ID**.
 
-> [!WARNING]
-> **Ambienti con nomi simili**
->
-> Due ambienti possono avere nomi simili: il confronto affidabile è sull'ID. Se publisher e solution nascono nell'ambiente sbagliato, la solution **Help Desk Zava (GitHub)** non compare nel campo **Solution** quando si salva l'agente nel Lab 02, e l'agente finisce in una solution di sistema che non si può più cambiare.
-
 4. Nel riquadro di navigazione a sinistra selezionare **Solutions** (se non è visibile, cercarlo sotto **More**).
 5. Premere **+ New solution**.
 
 ![](./images/solution-publisher-02.png)
 
-> [!NOTE]
-> **Scorciatoia da Copilot Studio**
+> [!TIP]
+> **Scorciatoia in Copilot Studio**
 >
 > In Copilot Studio il menu con i tre puntini (**…**) in fondo alla barra laterale, **Solutions**, apre **Solution Explorer** già nell'ambiente selezionato. Le operazioni sono le stesse; in questo corso si usa Power Apps come riferimento, e con la scorciatoia l'ambiente va controllato comunque.
 >
@@ -317,11 +293,6 @@ Il prefisso del publisher viene aggiunto ai nomi tecnici di tutto ciò che si cr
 | Choice value prefix | `77000` |
 
 ![](./images/solution-publisher-04.png)
-
-> [!NOTE]
-> **Nomi nello screenshot**
->
-> Lo screenshot mostra i valori della Standard Harness (**CSM Solutions**, prefisso `csm`): usare quelli della tabella.
 
 3. Premere **Save**. Il pannello **New solution** si riapre con il publisher appena creato selezionato.
 
@@ -350,11 +321,6 @@ HelpDeskZavaGitHub
 4. Selezionare la casella **Set as your preferred solution**.
 5. Lasciare vuoti i campi di **More options** e premere **Create**.
 6. Selezionare la freccia indietro per tornare all'elenco **Solutions**: la **Current preferred solution** è **Help Desk Zava (GitHub)**.
-
-> [!NOTE]
-> **Nome visualizzato e nome univoco**
->
-> Lo screenshot mostra i nomi di una versione precedente del corso: usare **Help Desk Zava (GitHub)** e `HelpDeskZavaGitHub`. Il campo **Name** accetta solo lettere, numeri e trattini bassi e non si può più cambiare dopo il salvataggio: per questo il nome visualizzato contiene le parentesi, il nome univoco no. La solution preferita è un'impostazione per utente: ogni maker che lavora sullo stesso agente deve impostare la stessa.
 
 ## Verificare l'ambiente
 
