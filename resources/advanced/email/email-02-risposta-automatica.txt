@@ -1,0 +1,8 @@
+Scopo del test (non copiare questa riga): Risposta automatica che contiene l'oggetto originale. Atteso: classificata come RispostaAutomatica e ignorata.
+
+Oggetto: Risposta automatica: Proposta progetto - Portale fornitori self-service
+Allegati: nessun business case (allega un file qualsiasi solo se il trigger richiede allegati, ad esempio BC-01 in PDF)
+
+Corpo:
+Sono fuori ufficio fino a lunedì 19 ottobre con accesso limitato alla posta.
+Per urgenze contattare l'Ufficio Acquisti al numero interno 2140.

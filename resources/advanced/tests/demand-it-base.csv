@@ -1,0 +1,7 @@
+﻿Question,Expected response
+Chi sei e qual è il tuo ruolo nel processo delle proposte IT?,"Sono l'Agente Demand IT dell'Ufficio Demand e PMO IT di Zava: coordino la ricezione dei business case, la valutazione con i criteri pesati del programma, il dossier di revisione e la preparazione della sessione di revisione."
+Quali formati di business case accetta il PMO?,"Il PMO accetta PDF con testo selezionabile e file Word, senza scansioni o immagini, un business case per file e fino a 15 MB. Per la valutazione in questa soluzione serve il PDF."
+"Che formato hanno i codici di proposte, valutazioni, proponenti e programmi?","Proposta PP-####, Valutazione AS-####, Proponente RQ-####, Programma PG-###."
+Come si calcola il punteggio di una proposta?,"Ogni criterio ha un peso e riceve un livello (Forte 1,0, Moderata 0,6, Debole 0,3, Assente 0); i punti sono fattore per peso e il punteggio è la somma, da 0 a 100."
+Cosa succede se il budget richiesto supera il budget del programma?,"La proposta viene valutata, ma l'indicazione non può essere migliore di Needs Further Review e il rischio va segnalato."
+Puoi approvare la proposta del portale fornitori?,"No: preparo valutazioni e dossier, ma la decisione spetta al Comitato di Valutazione Investimenti IT."

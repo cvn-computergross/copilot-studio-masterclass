@@ -1,0 +1,13 @@
+Scopo del test (non copiare questa riga): Il mittente non sta presentando davvero una proposta. Atteso: nessuna categoria certa, serve una revisione umana.
+
+Oggetto: Proposta progetto? domanda sul processo
+Allegati: BC-03_Assistente_AI_servizio_clienti.pdf
+
+Corpo:
+Ciao,
+
+non so se questo documento debba seguire il processo dei business case oppure se basta una richiesta al servizio IT.
+Vi allego una bozza su cui il nostro team sta ancora lavorando: per ora vorrei solo capire quale strada seguire.
+
+Elena Russo
+Responsabile Customer Service
