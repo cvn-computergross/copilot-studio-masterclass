@@ -349,24 +349,6 @@ Nella traccia compare il caricamento di **guida-passo-passo** e, solo a questo p
 
 ![](./images/testing-13.png)
 
-## Skill e topic a confronto
-
-Ripensando al [Lab 03](../../standard-harness/03-ticket-agent-topics/README.md) della standard harness (topic **First Topic - Supporto Tecnico** e **Ticket Card** con adaptive card) e al [Lab 04](../../standard-harness/04-job-posting-tools/README.md) (prompt con testi fissi), se sono stati svolti:
-
-| Domanda | Standard harness | GitHub Copilot harness |
-| --- | --- | --- |
-| Che cosa decide quando parte? | La descrizione del trigger del topic | La descrizione della skill |
-| Come è scritta la procedura? | Nodi su una tela: domanda a scelta multipla, condizioni, messaggi, adaptive card | Testo Markdown: passaggi, regole, criteri di completamento |
-| La checklist è identica a ogni esecuzione? | Sì, è in un nodo messaggio | Quasi sempre: l'elenco è nella skill ("senza aggiungere passi"), ma lo presenta il modello |
-| Come si raccolgono i cinque campi del ticket? | Una adaptive card con campi obbligatori | La skill chiede in un unico messaggio solo i campi che mancano |
-| Il formato dell'email è controllato con certezza? | Sì, dalla regola di validazione del campo della card | No: è una regola che il modello applica; per un controllo rigido serve un workflow |
-| L'utente può dare i dati in ordine sparso, o averli già detti? | Solo se il topic lo prevede | Sì: la skill riusa i dati già presenti, ad esempio il riepilogo di supporto-tecnico |
-| Dove stanno i testi fissi della guida? | Nel prompt, insieme alle regole | In un file di riferimento, letto solo quando serve |
-| Come si riusa la procedura in un altro agente? | Copiando il topic o il prompt, o spostandoli con una soluzione | Scaricando e caricando la skill |
-| Che cosa usare quando il percorso deve essere sempre identico? | Il topic stesso | Un [workflow](../05-automating-with-workflows/README.md) (Lab 05) |
-
-La Customer Conversation harness, un'altra harness di Copilot Studio, offre anche skill di tipo **Topic**, deterministiche come i topic. Nella GitHub Copilot harness le skill sono solo istruzioni in Markdown e non esiste un prompt tool separato: il comportamento strutturato e riutilizzabile si impacchetta in una skill ([Skills overview](https://learn.microsoft.com/microsoft-copilot-studio/agents-experience/skills-overview)).
-
 > [!IMPORTANT]
 > **Lab Completato**
 >
