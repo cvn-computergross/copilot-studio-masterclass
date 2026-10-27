@@ -23,7 +23,7 @@ title: Home
 
 ## Il percorso
 
-Il corso ha due livelli. Nei **Fundamentals** impari le basi di Copilot Studio con una delle due harness; negli **Advanced** costruisci un sistema di agenti completo su un caso reale. Per ogni livello puoi scegliere la **Standard Harness**, creando agenti nel portale di Copilot Studio, o la **GitHub Harness**, con un approccio code-first.
+Il corso ha due livelli. Nei **Fundamentals** impari le basi di Copilot Studio con una delle due harness; negli **Advanced** costruisci un sistema di agenti completo su un caso reale. Per ogni livello puoi scegliere la **Standard Harness**, creando agenti nel portale di Copilot Studio, o la **GitHub Harness**, con un approccio più moderno.
 
 ### Fundamentals
 
