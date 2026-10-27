@@ -243,13 +243,6 @@ Prima di salvare controllare che le istruzioni contengano:
 
 6. Confrontare la propria skill con la soluzione di riferimento [`apertura-ticket/SKILL.md`](../../../resources/fondamentali/github-harness/04-adding-skills/apertura-ticket/SKILL.md). Se alla propria versione manca qualcosa, aggiornarla dal pannello della skill e selezionare **Save**. Con poco tempo, si possono copiare descrizione e istruzioni dal file (tutto il testo dopo l'intestazione YAML, dalla riga `# Apertura di un ticket IT` in poi).
 
-> [!TIP]
-> **Criteri di completamento e Generate with AI**
->
-> La soluzione di riferimento non ha una sezione **Criteri di completamento**: la fine della procedura è implicita nel passaggio 5. Aggiungerla ("la procedura è completa quando l'utente conferma o annulla il ticket") è un buon esercizio. In un agente reale un workflow o un connettore verso il sistema di ticketing registrerebbe il ticket, e la regola sul limite cambierebbe di conseguenza.
->
-> **Generate with AI** crea una bozza di skill a partire da una descrizione e da alcune domande di chiarimento: è il modo più rapido per partire con le proprie procedure, ma la creazione in linguaggio naturale consuma Copilot Credits. Rileggere sempre la bozza, a partire dalla descrizione.
-
 ## Skill - guida-passo-passo
 
 La guida ha parti variabili (attività, categoria, dispositivo, livello, procedura, verifica, problemi comuni) e parti fisse (intestazione del Service Desk, avviso di sicurezza, contatti, chiusura). Nella skill le parti fisse stanno in due file di riferimento dentro lo zip: la procedura li apre solo quando compila la guida, e l'Help Desk può aggiornarli senza toccare i passaggi.
@@ -280,16 +273,11 @@ Per aggiornare un testo fisso, ad esempio l'orario del Service Desk, modificare 
 > [!NOTE]
 > **Contatti dimostrativi**
 >
-> Prima di usare la skill in un tenant reale, sostituire in `contenuti-aziendali.md` i contatti dimostrativi (dominio zava-demo.example, interno 4357, orari, portale) con quelli del proprio Service Desk.
+> Questa skill serve solo per il laboratorio: i contatti che contiene sono fittizi. In un agente reale vanno sostituiti in `contenuti-aziendali.md` con quelli del proprio Service Desk.
 
 ## Testing
 
 Prima si verifica che le skill siano disponibili, poi che si comportino come previsto con richieste realistiche. Nella traccia si vede quale skill è stata scelta e quando vengono letti i file di riferimento: se parte una skill sbagliata, il problema è quasi sempre nella descrizione. Per ogni prova selezionare **New chat** e tenere **End user preview** disattivato.
-
-> [!TIP]
-> **Stima dei crediti**
->
-> Alla fine di ogni prova annotare la stima dei Copilot Credits mostrata da **Preview**, come nel [Lab 02](../02-knowledge-sources/README.md). Confrontare in particolare la sola verifica della skill, le due skill nella stessa conversazione e la skill con file di riferimento, profilo e invio dell'email.
 
 ### Skill disponibile
 

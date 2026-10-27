@@ -50,11 +50,6 @@ Per svolgere questo lab occorre avere:
 - la skill [`richiesta-dispositivo/SKILL.md`](../../../resources/fondamentali/github-harness/05-automating-with-workflows/richiesta-dispositivo/SKILL.md), che nel Lab 04 non è stata caricata;
 - una casella Outlook del tenant di laboratorio: il workflow invierà email reali al proprio indirizzo.
 
-> [!WARNING]
-> **Managed Environment**
->
-> Se si usa un ambiente esistente della propria organizzazione, verificare che non sia un **Managed Environment** con restrizioni: aggiungere workflow come strumenti potrebbe essere bloccato.
-
 ## Lista Dispositivi - nomi interni
 
 Il workflow cercherà il dispositivo per ID e ne leggerà stato, produttore e modello. La lista è stata creata nel Lab 01 da un CSV che contiene anche lo schema, quindi i nomi interni dovrebbero essere già quelli giusti; prima di scrivere filtri ed espressioni conviene comunque controllarli, perché SharePoint assegna il nome interno alla creazione della colonna e non lo cambia più, anche se si rinomina la colonna.
@@ -92,10 +87,9 @@ Il contratto viene prima della logica: gli input dicono all'agente che cosa deve
 
 1. Nella barra laterale di Copilot Studio selezionare **Workflows**, poi **New workflow**. Il designer si apre con un nodo **Start** con trigger **Manual**.
 
-> [!NOTE]
-> **Il designer dei workflow**
->
-> Il designer ha a sinistra il nome e lo stato del workflow e la tavolozza dei nodi; al centro le schede **Build**, **Activity** e **Monitor** e la tela; a destra i comandi (annulla, ripristina, cronologia delle versioni, salva, prova, problemi, pubblica) e il pannello di configurazione del nodo selezionato.
+::: details <!-- icon: info f-instructions --> Il designer dei workflow
+Il designer ha a sinistra il nome e lo stato del workflow e la tavolozza dei nodi; al centro le schede **Build**, **Activity** e **Monitor** e la tela; a destra i comandi (annulla, ripristina, cronologia delle versioni, salva, prova, problemi, pubblica) e il pannello di configurazione del nodo selezionato.
+:::
 
 2. Rinominare il workflow:
 
@@ -160,11 +154,6 @@ Una lista vuota non è un errore: è uno dei tre percorsi previsti, e la decisio
 
 ![](./images/dispositivo-in-inventario-01.png)
 
-> [!NOTE]
-> **Nome del nodo condizione**
->
-> Learn indica che il designer offre strumenti predefiniti per cicli e ramificazioni, ma non documenta l'etichetta esatta del nodo condizione né quella degli operatori. Se il nodo ha un nome diverso, cercarlo nel riquadro **Add**.
-
 2. Selezionare il ramo **If** e, in **Property**, inserire l'espressione:
 
 ```text
@@ -210,36 +199,26 @@ Se il dispositivo esiste, resta da guardare lo stato. Solo nel percorso "disponi
 
 - **To**: il proprio indirizzo (in produzione sarebbe la casella del responsabile di chi richiede);
 - **Subject**: `Richiesta nuovo dispositivo da ` seguito dal contenuto dinamico `requestorName`;
-- **Body**:
+- **Body**: lasciare vuoto per ora, si compila nei passaggi seguenti.
 
-```text
-Ciao,
+3. Nel campo **Body** selezionare l'icona `</>` per passare alla vista del codice HTML e incollare il seguente testo. Le espressioni `@{...}` leggono i valori dal trigger e dal nodo **Cerca dispositivo**: non serve inserirle a mano.
 
-nuova richiesta di dispositivo.
-
-Richiesta inviata da:
-Produttore:
-Modello:
-Collegamento all'elemento:
-Requisiti aggiuntivi:
-
-Email automatica inviata dal workflow Invia richiesta dispositivo.
+```html
+<p>Ciao,</p>
+<p>nuova richiesta di dispositivo.</p>
+<p>
+<strong>Richiesta inviata da:</strong> @{triggerBody()?['requestorName']}<br>
+<strong>Produttore:</strong> @{first(body('Cerca_dispositivo')?['value'])?['Manufacturer']?['Value']}<br>
+<strong>Modello:</strong> @{first(body('Cerca_dispositivo')?['value'])?['Model']}<br>
+<strong>Collegamento all'elemento:</strong> <a href="@{first(body('Cerca_dispositivo')?['value'])?['{Link}']}">Apri il dispositivo</a><br>
+<strong>Requisiti aggiuntivi:</strong> @{triggerBody()?['additionalComment']}
+</p>
+<p><em>Email automatica inviata dal workflow Invia richiesta dispositivo.</em></p>
 ```
 
-3. Completare il corpo posizionando il cursore dopo ogni etichetta e aggiungendo uno spazio:
+4. Selezionare di nuovo `</>` per tornare alla vista normale e verificare che le espressioni compaiano come valori dinamici. Le espressioni funzionano solo se il nodo di ricerca si chiama esattamente **Cerca dispositivo**.
 
-- dopo `Richiesta inviata da:` il contenuto dinamico `requestorName` del trigger;
-- dopo `Produttore:` l'espressione `first(body('Cerca_dispositivo')?['value'])?['Manufacturer']?['Value']`;
-- dopo `Modello:` l'espressione `first(body('Cerca_dispositivo')?['value'])?['Model']`;
-- dopo `Collegamento all'elemento:` l'espressione `first(body('Cerca_dispositivo')?['value'])?['{Link}']`;
-- dopo `Requisiti aggiuntivi:` il contenuto dinamico `additionalComment` del trigger.
-
-> [!NOTE]
-> **Collegamento in chiaro**
->
-> Il collegamento all'elemento compare nell'email come testo semplice. Nella standard harness il Lab 05 lo trasforma in un collegamento cliccabile con l'editor HTML del corpo; qui l'indirizzo in chiaro basta per il laboratorio.
-
-4. Dopo **Avvisa responsabile** aggiungere **Respond to the agent** con gli stessi due output:
+5. Dopo **Avvisa responsabile** aggiungere **Respond to the agent** con gli stessi due output:
 
 | Output | Valore |
 | --- | --- |
@@ -248,7 +227,7 @@ Email automatica inviata dal workflow Invia richiesta dispositivo.
 
 ![](./images/dispositivo-disponibile-02.png)
 
-5. Nel ramo **Else** di **Dispositivo disponibile** aggiungere **Respond to the agent**:
+6. Nel ramo **Else** di **Dispositivo disponibile** aggiungere **Respond to the agent**:
 
 | Output | Valore |
 | --- | --- |
@@ -330,16 +309,6 @@ Legge i dispositivi aziendali dalla lista SharePoint Dispositivi di Zava e li re
 
 9. Controllare che **Authentication** indichi **End user account** e selezionare **Done** e poi **Save**.
 
-> [!NOTE]
-> **Parametri dello strumento**
->
-> Come nel Lab 03, Learn non documenta le etichette dei singoli campi della finestra **Tool details**: questa guida usa quelle dell'interfaccia al momento della stesura. I parametri **Filter Query** e **Top Count** sono documentati nel [riferimento del connettore SharePoint](https://learn.microsoft.com/connectors/sharepointonline/). Se **Site Address** o **List Name** non accettano un valore fisso, lasciarli come **Fill with Intelligence** e scrivere indirizzo del sito e nome della lista nella descrizione.
-
-> [!TIP]
-> **Creare un workflow dall'agente**
->
-> Un workflow si può creare anche partendo dall'agente: nella finestra **Add a tool** selezionare **Add** accanto alla barra di ricerca e poi **Workflow**. Il workflow creato compare comunque nella pagina **Workflows** ed è disponibile per gli altri agenti.
-
 ## Skill - richiesta-dispositivo
 
 La skill `richiesta-dispositivo` descrive la conversazione: tipo di dispositivo, tabella delle opzioni, scelta, requisiti, riepilogo con conferma e invio. Dei tre esiti del workflow la skill conosce solo la conferma con `ModelValue`; spiegare gli altri due è compito delle istruzioni, perché valgono per ogni uso del workflow.
@@ -375,19 +344,9 @@ Non serve una nuova sezione: le tre righe del Lab 04 restano come sono, e la nuo
 
 6. Selezionare **Save**.
 
-> [!TIP]
-> **Il nome del richiedente**
->
-> Il nome del richiedente non è un'informazione da chiedere in chat: la skill lo recupera con **Get my profile (V2)**, e la regola sull'uso di quello strumento ("quando una skill indica esplicitamente di usarlo") è già nella sua descrizione. Le regole sull'invio di email del Lab 03 (**# Strumenti ed email**) riguardano lo strumento **Invia guida via email** dell'agente: l'email di questo workflow parte invece dal workflow, solo dopo la conferma della skill, e in laboratorio arriva al proprio indirizzo.
-
 ## Testing
 
 Ogni prova mette alla prova una parte diversa: il percorso `DISPONIBILE` dalla conversazione completa, la lettura dell'inventario che nasconde i dispositivi in uso, due comportamenti della skill (limite dell'inventario, annullamento) e i percorsi `ESAURITO` e `NON_IN_CATALOGO`, che una conversazione normale non raggiunge perché la skill mostra solo dispositivi disponibili. All'inizio di ogni prova selezionare **New chat** in **Preview**, con **End user preview** disattivato.
-
-> [!TIP]
-> **Stima dei crediti**
->
-> Come nei Lab 02-04, alla fine di ogni prova annotare la stima dei Copilot Credits mostrata da **Preview** nella tabella qui sotto. Confrontare la prova 1 (lettura dell'inventario, profilo, workflow ed email) con le prove 3 e 4, in cui il workflow non viene chiamato. Learn non specifica se la stima di **Preview** comprende anche le azioni eseguite dal workflow.
 
 | Prova | Scenario | Crediti stimati |
 | --- | --- | --- |
@@ -483,11 +442,6 @@ Ogni esecuzione del workflow lascia una traccia, nodo per nodo, con input e outp
 3. Aprire le esecuzioni delle prove 5 e 6: il percorso è diverso e il nodo **Avvisa responsabile** non è stato eseguito.
 
 4. Per riprodurre un caso, aprire il nodo **Cerca dispositivo**, selezionare **Test** e scegliere un'esecuzione in **Load values from previous run**: i dati di quell'esecuzione vengono caricati negli input del nodo.
-
-> [!NOTE]
-> **Consumo dei workflow**
->
-> Le azioni dei workflow consumano capacità di Copilot Studio. Gli amministratori vedono le azioni usate da ogni workflow nel [Power Platform admin center](https://admin.powerplatform.microsoft.com/), in **Licensing**, **Copilot Studio**. Quando la capacità prepagata dell'ambiente è esaurita, le nuove esecuzioni vengono bloccate.
 
 > [!IMPORTANT]
 > **Lab Completato**

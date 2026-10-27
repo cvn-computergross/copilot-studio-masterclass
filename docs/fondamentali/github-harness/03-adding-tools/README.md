@@ -76,16 +76,6 @@ Quando l'utente chiede una guida passo passo, o accetta di riceverne una dopo un
 
 La sezione **# Strumenti ed email** resterà nelle istruzioni anche nei lab successivi; la sezione **# Guide passo passo** verrà tolta nel Lab 04, quando la procedura passerà alla skill guida-passo-passo.
 
-> [!TIP]
-> **Scrivere le regole in positivo**
->
-> Il modello segue meglio un'indicazione su che cosa fare che un elenco di divieti: "un'email inviata non si ritira" diventa "mostra e chiedi conferma", e invece di vietare l'invio a un collega la regola dice che cosa proporre (l'inoltro dalla casella dell'utente). Il punto 5 applica lo stesso principio: invece di vietare di inventare, dice che cosa scrivere al posto del testo che manca.
-
-> [!NOTE]
-> **Lunghezza delle istruzioni**
->
-> Learn non documenta una lunghezza massima delle istruzioni per la GitHub Copilot harness (per la standard harness il limite è di 8.000 caratteri). Anche senza un limite, istruzioni lunghe si leggono a ogni turno e sono difficili da mantenere: è il motivo per cui nel Lab 04 la procedura della guida esce dalle istruzioni.
-
 ## Tool - Get my profile (V2)
 
 Per indirizzare e personalizzare l'email l'agente deve sapere chi sta scrivendo. **Get my profile (V2)** del connettore Office 365 Users legge il profilo Microsoft 365 dell'utente corrente e nient'altro: non cerca altre persone. Fissando i campi da leggere, lo strumento restituisce solo i dati che servono.
@@ -95,11 +85,6 @@ Per indirizzare e personalizzare l'email l'agente deve sapere chi sta scrivendo.
 2. Cercare `Get my profile` e scegliere l'azione **Get my profile (V2)** del connettore **Office 365 Users**. Creare o selezionare la connessione e selezionare **Add**.
 
 ![](./images/tool-get-my-profile-01.png)
-
-> [!NOTE]
-> **Strumenti per carico di lavoro**
->
-> Nel catalogo degli strumenti possono comparire anche strumenti separati per carico di lavoro, come **User** o **User profile**: fanno parte di un'esperienza precedente, mantenuta per compatibilità. In questo lab serve l'azione di connettore **Get my profile (V2)**.
 
 3. Aprire lo strumento nella sezione **Tools**. Nella finestra **Tool details** lasciare il nome **Get my profile (V2)** e, nel campo **Description for Intelligence**, sostituire la descrizione con:
 
@@ -118,11 +103,6 @@ Restituisce il profilo Microsoft 365 dell'utente che sta usando l'agente: nome v
 5. Controllare che **Authentication** indichi **End user account**: lo strumento legge il profilo di chi usa l'agente. Selezionare **Done** e poi **Save**.
 
 **Select fields** corrisponde al parametro `$select` di Microsoft Graph: indica quali proprietà del profilo restituire, separate da virgole. Senza, lo strumento restituirebbe anche ruolo, reparto, indirizzo dell'ufficio, telefoni e altri dati che all'agente non servono e che finirebbero nel contesto della conversazione e nei crediti. Se nel Lab 05 una procedura avrà bisogno di altri campi, si aggiungeranno allora.
-
-> [!NOTE]
-> **Etichette della finestra Tool details**
->
-> La pagina Learn [Manage and delete tools in an agent](https://learn.microsoft.com/microsoft-copilot-studio/agents-experience/tools-manage) documenta i pannelli **Details**, **Inputs** e **Outputs**, ma non le etichette dei singoli campi: questa guida usa quelle dell'interfaccia al momento della stesura (**Description for Intelligence**, **Fill with Intelligence**, **Custom**, **Authentication** con **End user account**). La standard harness usa invece **Description**, **Dynamically fill with AI** e **Custom value**. Se **Select fields** non compare tra i parametri facoltativi, lasciare lo strumento senza e proseguire.
 
 ## Tool - Invia guida via email
 
@@ -162,11 +142,6 @@ Il destinatario resta **Fill with Intelligence** perché cambia da un utente all
 ## Testing
 
 Il test segue un dipendente che deve configurare la VPN sul portatile: una richiesta completa in linguaggio naturale, l'invio per email, una richiesta incompleta, un tentativo di invio a un collega e un tentativo di inserire una credenziale. Ogni prova mostra nella traccia uno strumento diverso, o la sua assenza.
-
-> [!TIP]
-> **Stima dei crediti**
->
-> Come nel [Lab 02](../02-knowledge-sources/README.md), annotare la stima dei Copilot Credits che **Preview** mostra per la sessione. Qui il totale cresce messaggio dopo messaggio nella stessa chat: annotare il valore dopo il passo 1 (solo istruzioni e conoscenza) e dopo il passo 3 (lettura del profilo e invio), così si vede quanto aggiungono gli strumenti.
 
 1. Aprire la scheda **Preview**, selezionare **New chat** e, con **End user preview** disattivato, scrivere:
 
@@ -217,11 +192,6 @@ Aggiungi nella guida anche la mia password Zava2026! così non la dimentico
 ```
 
 L'agente rifiuta di riportare la password nella guida e nell'email, ricordando che la guida indica solo dove inserirla. Annotare la stima dei crediti di questa nuova chat.
-
-> [!NOTE]
-> **Perché l'indirizzo arriva dal profilo**
->
-> Leggere l'indirizzo dal profilo invece di chiederlo protegge in due modi: l'utente non può far inviare la guida a un indirizzo diverso spacciandolo per il proprio, perché "il mio indirizzo" è quello del suo account Microsoft 365; e un indirizzo scritto in un documento, in un messaggio o in una pagina web non diventa mai un destinatario ammesso. L'indirizzo @zava.example del test è fittizio: anche per questo le prove inviano solo al proprio indirizzo.
 
 > [!IMPORTANT]
 > **Lab Completato**
