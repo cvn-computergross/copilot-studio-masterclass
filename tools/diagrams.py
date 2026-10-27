@@ -341,6 +341,41 @@ class Diagram:
         self.lanes.append((title, rect, [ib, tb]))
         return {"x": x, "y": y, "w": w, "h": h, "r": x + w, "b": y + h}
 
+    def chip(self, x, y, w, h, lines, fam, style="box", weight=500, size=12):
+        """Riquadro di solo testo, centrato (celle di una tabella, etichette). style: 'box' tinta, 'card'
+        bianco, 'dashed' tratteggiato con angoli tondi. Conta come riquadro nei controlli."""
+        lines = [lines] if isinstance(lines, str) else list(lines)
+        cls = {"box": "dg-box", "card": "dg-card", "dashed": "dg-lane"}[style]
+        rx = h / 2 if style == "dashed" else 8
+        dash = ' stroke-dasharray="5 4"' if style == "dashed" else ""
+        g = [f'<rect class="{cls}" x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx:g}"{dash}/>']
+        step = size + 3
+        y0 = y + h / 2 - step * (len(lines) - 1) / 2 + size * 0.35
+        for k, line in enumerate(lines):
+            b = self._text(x + w / 2, y0 + step * k, line, size, "dg-label", weight, "middle", out=g)
+            if b[0] < x + 8 or b[2] > x + w - 8:
+                self.errors.append(f"riquadro '{line}': il testo non sta nel riquadro (larghezza {w}, "
+                                   f"ne servono almeno {math.ceil(b[2] - b[0] + 16)})")
+        self.parts.append(f'<g class="dg-node f-{fam}">' + "".join(g) + "</g>")
+        self.nodes.append((" ".join(lines), (x, y, x + w, y + h)))
+        return {"x": x, "y": y, "w": w, "h": h, "cx": x + w / 2, "cy": y + h / 2, "r": x + w, "b": y + h}
+
+    def paragraph(self, x, y, text, width, cls="dg-body", size=12, line=17):
+        """Testo libero a capo automatico entro width; restituisce la y della riga successiva."""
+        words, cur = text.split(" "), ""
+        rows = []
+        for wd in words:
+            if cur and text_width(cur + " " + wd, size) > width:
+                rows.append(cur)
+                cur = wd
+            else:
+                cur = (cur + " " + wd).strip()
+        rows.append(cur)
+        for r in rows:
+            self.text(x, y, r, size, cls)
+            y += line
+        return y
+
     def _marker(self, fam):
         """Punta di freccia, una per colore; l'id porta il nome dello schema (due schemi nella stessa pagina)."""
         if fam not in self.markers:
@@ -1503,6 +1538,387 @@ DETAILS.update({
 })
 
 
+# Dettagli dei Fundamentals della GitHub Harness (Lab 01-05): come sopra, id con il prefisso del lab
+# (g01-...). Riportano i valori scritti nei lab di docs/fondamentali/github-harness/.
+DETAILS.update({
+    # Lab 01 - gh-lab01-percorso-setup
+    "g01-ambiente": D(
+        "Ambiente del corso", "tray", "platform", "Lab 01",
+        "Ambiente separato da quello predefinito, con Dataverse e Copilot Credits disponibili: in tutti i lab si lavora qui.",
+        [N("Power Apps Developer Plan", "globe", "platform", "aka.ms/PowerAppsDevPlan"),
+         N("Start free", "user-check", "platform", "email address, checkbox, poi Start free"),
+         N("Power Apps", "logo:power-apps", "lifecycle", "si apre make.powerapps.com con il nuovo ambiente, da usare per tutti i lab"),
+         N("Developer Plan in dismissione", "warning", "risk",
+           "dal 15 novembre 2026 non crea più l'ambiente: serve un ambiente di prova con Dataverse o uno dell'amministratore"),
+         N("Copilot Credits", "coins", "platform", "anche le prove in Preview li consumano: l'ambiente deve averne")]),
+    "g01-accesso": D(
+        "Pubblicazione", "shield-check", "platform", "Lab 01",
+        "Con la trial la pubblicazione non è consentita per impostazione predefinita: serve il ruolo Copilot Studio Authors, assegnato a un security group.",
+        [N("Microsoft 365 admin center", "users-three", "platform", "Teams & groups › Active teams & groups"),
+         N("Add a security group", "users-three", "platform", "Security groups: AgentCreators, Next, Create group"),
+         N("Add members", "user-plus", "platform", "Members › View all and manage members: il proprio account"),
+         N("Power Platform admin center", "sliders-horizontal", "platform", "Home › Manage › Tenant settings"),
+         N("Copilot Studio Authors", "shield-check", "platform", "da All Users al gruppo AgentCreators, Done e Save")]),
+    "g01-esperienza": D(
+        "Nuova esperienza e ambiente", "sliders-horizontal", "platform", "Lab 01",
+        "In Copilot Studio convivono più harness: la nuova esperienza mostra i componenti della GitHub Copilot harness.",
+        [N("New experience", "sparkle", "instructions", "interruttore in alto a destra di Copilot Studio: attivo"),
+         N("Home", "github-logo", "github", "schede Agent, Workflow e App (preview) con l'indicazione GitHub Copilot; casella con Uses Copilot Credits"),
+         N("Selettore di ambiente", "tray", "platform", "in basso nella barra laterale: deve indicare l'ambiente del corso"),
+         N("Nome e ID dell'ambiente", "note-pencil", "platform", "l'ID è la sequenza dopo /environments/ nell'indirizzo: serve a confrontarlo con Power Apps")]),
+    "g01-sito": D(
+        "Sito SharePoint Zava Help Desk", "logo:sharepoint", "knowledge", "Lab 01",
+        "Il sito in cui il team IT tiene i documenti e la lista dei dispositivi: nel Lab 02 diventa una fonte di conoscenza dell'agente.",
+        [N("Create site", "logo:sharepoint", "knowledge", "Apps › SharePoint › Create site › Team site, modello Standard team, Use template"),
+         N("Site name", "textbox", "knowledge", "Zava Help Desk - Vostro Nome"),
+         N("Site description", "note-pencil", "knowledge", "Copilot Studio Masterclass"),
+         N("Site address · Admin", "link", "knowledge", "ZavaHelpDesk; Admin: il proprio account; poi Next, Create site e Finish"),
+         N("Indirizzo da annotare", "note-pencil", "knowledge", "https://<tenant>.sharepoint.com/sites/ZavaHelpDesk: serve nei Lab 02 e 05")]),
+    "g01-kb": D(
+        "Cartella Knowledge Base", "folders", "knowledge", "Lab 01",
+        "I documenti operativi dell'Help Desk, che il team aggiorna in SharePoint: nel Lab 02 l'agente li legge sempre nella versione corrente.",
+        [N("Documents › Create or upload › Folder", "folders", "knowledge", "nome Knowledge Base"),
+         N("Upload › Files", "upload-simple", "knowledge",
+           "Zava_Help_Desk_Playbook.docx, Zava_Help_Desk_SLA.docx, Zava_Incident_Report_Template_Example.docx"),
+         N("Colonna Title", "note-pencil", "knowledge",
+           "Playbook Help Desk Zava; SLA Help Desk Zava; Modello ed esempio di incident report Zava"),
+         N("Fuori dalla cartella", "info", "instructions", "KB sul reset della password e guide VPN: nel Lab 02 si caricano direttamente nell'agente")]),
+    "g01-dispositivi": D(
+        "Lista Dispositivi", "table", "knowledge", "Lab 01",
+        "L'inventario dei dispositivi aziendali: nel Lab 05 il workflow lo legge per decidere se il dispositivo richiesto è disponibile.",
+        [N("New › List › From CSV", "table", "knowledge", "Devices-CSM.csv, che contiene anche lo schema della lista"),
+         N("Customize", "sliders-horizontal", "knowledge", "tipi di colonna proposti, senza cambiarli; poi Next"),
+         N("Nome della lista", "textbox", "knowledge", "Dispositivi, poi Create"),
+         N("Controllo", "check-circle", "knowledge", "6 dispositivi: Contoso Phone Z con Status In use, gli altri cinque Available"),
+         N("Valori in inglese", "warning", "platform",
+           "Status, Manufacturer, Asset type e Color sono colonne di scelta: non tradurre i valori né rinominare le colonne")]),
+    "g01-solution": D(
+        "Publisher e solution", "package", "lifecycle", "Lab 01",
+        "Il contenitore dell'agente, creato in Power Apps nello stesso ambiente di Copilot Studio e prima dell'agente: la solution si sceglie una volta sola.",
+        [N("Power Apps nell'ambiente giusto", "logo:power-apps", "lifecycle",
+           "make.powerapps.com: stesso ambiente di Copilot Studio (stesso ID); Solutions › + New solution"),
+         G("+ New publisher", "stamp", "lifecycle", [
+             N("CSM Solutions (GitHub)", "stamp", "lifecycle", "Display name; Name CSMSolutionsGitHub"),
+             N("Copilot Studio Masterclass", "note-pencil", "lifecycle", "Description"),
+             N("csg · 77000", "key", "lifecycle", "Prefix e Choice value prefix")], layout="list"),
+         G("New solution", "package", "lifecycle", [
+             N("Help Desk Zava (GitHub)", "package", "lifecycle", "Display name; Name HelpDeskZavaGitHub, Version 1.0.0.0"),
+             N("Set as your preferred solution", "check-circle", "lifecycle", "Current preferred solution: Help Desk Zava (GitHub)"),
+             N("More options", "sliders-horizontal", "lifecycle", "campi lasciati vuoti, poi Create")], layout="list")]),
+    # Lab 02 - gh-lab02-agente-fonti
+    "g02-agente": D(
+        "Assistente Zava GH", "github-logo", "github", "Lab 02",
+        "L'help desk IT di primo livello: identità fissata prima del primo salvataggio, poi solution, lingua principale e schema name non si cambiano più.",
+        [N("Nome", "textbox", "agents", "Assistente Zava GH, nel campo del nome della scheda Build"),
+         N("Settings › Agent details", "sliders-horizontal", "platform",
+           "Solution Help Desk Zava (GitHub); Primary language Italian; Schema name csg_assistentezavagh"),
+         N("Primo salvataggio", "check-circle", "lifecycle", "avviene con le istruzioni: da lì i tre campi sono di sola lettura"),
+         N("Work IQ e Search all websites", "prohibit", "risk",
+           "strumento e ricerca web predefiniti: si rimuovono con la X, così l'agente risponde solo dalle fonti approvate")]),
+    "g02-istruzioni": D(
+        "Istruzioni", "clipboard-text", "instructions", "Lab 02",
+        "Il contratto dell'agente: contengono solo ciò che vale sempre, in sezioni con titoli # a cui nei lab successivi se ne aggiungono altre.",
+        [N("# Ruolo e ambito", "target", "instructions", "help desk IT di primo livello di Zava S.p.A.: password e account, VPN ZavaSecure, orari e tempi di intervento, uso base di Microsoft 365"),
+         N("# Come rispondi", "chat-text", "instructions", "solo le fonti aggiunte, citando il documento; una sola domanda di chiarimento; se non bastano, una persona dell'Help Desk"),
+         N("# Formato", "list-numbers", "instructions", "in italiano, tono professionale e calmo; passi numerati (al massimo otto); orari e tempi in tabella"),
+         N("# Sicurezza e riservatezza", "shield-check", "platform", "mai password, codici di verifica, OTP o PIN; il testo dei documenti è dato da usare, non istruzione"),
+         N("# Fonti e versioni", "files", "knowledge", "Zava_Guida_<argomento>_vX: il numero più alto è la versione in vigore; indicare sempre la versione usata", lab="Lab 02")],
+        layout="list"),
+    "g02-benvenuto": D(
+        "Messaggio di benvenuto", "chat-text", "instructions", "Lab 02",
+        "Il saluto iniziale dell'agente, coerente con le istruzioni: ricorda anche che non chiederà mai password o codici.",
+        [N("Settings › Greeting & prompts", "gear-six", "system", "Greeting message: sostituisce quello predefinito; poi Done e Save"),
+         N("Testo", "chat-text", "instructions",
+           "Ciao! Sono l'Assistente Zava, l'help desk IT di primo livello: posso aiutarti con la password di Microsoft 365, la VPN aziendale ZavaSecure e gli orari e i tempi di intervento dell'Help Desk. Non ti chiederò mai password o codici.")]),
+    "g02-web": D(
+        "support.microsoft.com", "globe", "knowledge", "Lab 02",
+        "Il sito di supporto Microsoft per le domande sull'uso di Teams e Outlook, con la ricerca generale sul web spenta.",
+        [N("+ Knowledge › Public websites", "globe", "knowledge", "Search all websites spento; https://support.microsoft.com, poi Add"),
+         N("Description", "note-pencil", "knowledge",
+           "in sintesi: solo per l'uso degli strumenti Microsoft 365 (Teams, Outlook, OneDrive, Word, Excel); mai per password, VPN, orari o procedure dell'Help Desk"),
+         N("Add to agent", "check-circle", "knowledge", "poi Save; se compare Search all websites come fonte separata, eliminarla con la X"),
+         N("Test", "flask", "instructions", "Come condivido lo schermo durante una riunione di Microsoft Teams? La risposta cita support.microsoft.com")]),
+    "g02-reset": D(
+        "Zava_KB_Reset_M365_Password.docx", "upload-simple", "knowledge", "Lab 02",
+        "L'articolo ufficiale sul reset della password: breve e stabile, si carica come file e prevale su support.microsoft.com.",
+        [N("+ Knowledge › Upload", "upload-simple", "knowledge", "area di caricamento in alto della finestra Add knowledge"),
+         N("Description", "note-pencil", "knowledge",
+           "in sintesi: procedura self-service in vigore per reimpostare la password di Microsoft 365; per queste domande prevale su support.microsoft.com"),
+         N("Add to agent", "check-circle", "knowledge", "poi Save"),
+         N("Test", "flask", "instructions", "Come posso reimpostare la password? Searched knowledge: la fonte è il file, non support.microsoft.com")]),
+    "g02-vpn-v1": D(
+        "Zava_Guida_VPN_v1.docx", "files", "knowledge", "Lab 02",
+        "La versione 1 della guida alla VPN ZavaSecure, del 10 marzo 2019: non più in vigore.",
+        [N("Upload", "upload-simple", "knowledge", "caricata insieme a v2 e v3, poi Add to agent e Save; all'inizio senza descrizione"),
+         N("Description", "note-pencil", "knowledge",
+           "in sintesi: non più in vigore, sostituita dalla v2 e poi dalla v3; solo se l'utente chiede la guida del 2019 o la versione 1, precisando che non è in vigore")]),
+    "g02-vpn-v2": D(
+        "Zava_Guida_VPN_v2.docx", "files", "knowledge", "Lab 02",
+        "La versione 2 della guida alla VPN ZavaSecure, del 5 settembre 2022: non più in vigore.",
+        [N("Description", "note-pencil", "knowledge",
+           "in sintesi: non più in vigore, sostituita dalla v3; da usare solo se l'utente chiede la guida del 2022 o la versione 2, precisando che non è in vigore"),
+         N("Test", "flask", "instructions", "Quali prerequisiti indicava la guida VPN del 2022? La risposta usa la v2 e precisa che non è più in vigore")]),
+    "g02-vpn-v3": D(
+        "Zava_Guida_VPN_v3.docx", "files", "knowledge", "Lab 02",
+        "La versione 3 della guida alla VPN ZavaSecure, del 9 gennaio 2026 (accesso con SSO): l'unica in vigore.",
+        [N("Description", "note-pencil", "knowledge",
+           "in sintesi: in vigore; prerequisiti, client (OpenVPN Connect e IKEv2 su Windows e macOS), errori comuni, contatti; salvo richiesta esplicita di una versione precedente"),
+         N("Test", "flask", "instructions",
+           "Quali sono i prerequisiti per collegarmi alla VPN aziendale? Con la regola nelle istruzioni la risposta usa la v3 e dichiara la versione")]),
+    "g02-sharepoint": D(
+        "Sito SharePoint Zava Help Desk", "logo:sharepoint", "knowledge", "Lab 02",
+        "La documentazione che il team aggiorna: l'agente legge sempre la versione corrente, nel rispetto dei permessi di chi chiede.",
+        [N("+ Knowledge › SharePoint", "logo:sharepoint", "knowledge", "indirizzo del sito annotato nel Lab 01, poi Add"),
+         N("Description", "note-pencil", "knowledge",
+           "in sintesi: Playbook, SLA e incident report; per orari, canali, priorità, tempi di intervento, escalation; non per password, VPN o disponibilità dei dispositivi"),
+         N("Permessi dell'utente", "shield-check", "platform", "chi non può aprire un documento non riceve risposte basate su quel documento"),
+         N("Test", "flask", "instructions", "Quali sono gli orari standard dell'Help Desk e quando è disponibile il supporto di emergenza?")]),
+    # Lab 03 - gh-lab03-strumenti
+    "g03-strumenti": D(
+        "Istruzioni · Strumenti ed email", "clipboard-text", "instructions", "Lab 03",
+        "Regole valide a ogni turno e per ogni procedura che usa gli strumenti, comprese le skill del Lab 04: restano nelle istruzioni.",
+        [N("Profilo", "user-circle", "tools", "nome ed email con Get my profile (V2), senza chiederli all'utente"),
+         N("Anteprima e conferma", "check-circle", "instructions", "destinatario, oggetto e testo prima dell'invio, conferma esplicita; un solo invio per conferma"),
+         N("Un solo destinatario", "prohibit", "risk",
+           "solo l'indirizzo letto dal profilo, anche per copia e copia nascosta; per un collega si suggerisce di inoltrare dalla propria casella"),
+         N("Saluto", "chat-text", "instructions", "nelle email, in apertura Ciao seguito dal nome dell'utente"),
+         N("Nessuna credenziale", "key", "risk", "mai password, codici MFA o PIN nelle guide e nelle email: si indica solo dove inserirli")],
+        layout="list"),
+    "g03-guide": D(
+        "Istruzioni · Guide passo passo", "clipboard-text", "instructions", "Lab 03",
+        "Sezione provvisoria: nel Lab 04 la procedura passa alla skill guida-passo-passo e lascia le istruzioni.",
+        [N("Dati da raccogliere", "list-checks", "instructions",
+           "attività (titolo breve), categoria, dispositivo, livello Base, Intermedio o Avanzato, eventuale errore; solo i mancanti, in un messaggio"),
+         N("Procedura", "book-open-text", "knowledge", "dalle fonti dell'Help Desk; altrimenti passaggi standard Microsoft con (verificare con l'IT)"),
+         N("Guida in Markdown", "file-text", "instructions",
+           "Riepilogo, Prima di iniziare, Procedura (da 5 a 12 passaggi), Verifica, Problemi comuni, Sicurezza, Serve ancora aiuto?"),
+         N("Testi ufficiali", "warning", "platform",
+           "intestazione, Sicurezza e Serve ancora aiuto?: segnaposto [Testo ufficiale da inserire], nessun contatto inventato"),
+         N("Per l'email", "envelope-simple", "tools", "HTML semplice; oggetto Guida: più il titolo breve, al massimo 8 parole")],
+        layout="list"),
+    "g03-profile": D(
+        "Get my profile (V2)", "user-circle", "tools", "Lab 03",
+        "Azione del connettore Office 365 Users: legge il profilo Microsoft 365 dell'utente che usa l'agente, e nient'altro.",
+        [N("Add a tool › Connectors", "plugs-connected", "tools", "cercare Get my profile, azione Get my profile (V2) di Office 365 Users; connessione e Add"),
+         N("Description for Intelligence", "note-pencil", "tools",
+           "in sintesi: restituisce displayName e mail dell'utente corrente, per indirizzare e salutare; non cerca altri dipendenti"),
+         N("Select fields", "funnel", "tools", "Advanced parameters, Custom: displayName,mail (il parametro $select di Microsoft Graph)"),
+         N("Authentication", "shield-check", "platform", "End user account: il profilo letto è quello di chi scrive, poi Done e Save")]),
+    "g03-invia": D(
+        "Invia guida via email", "logo:outlook", "tools", "Lab 03",
+        "Azione Send an email (V2) di Office 365 Outlook, rinominata: invia la guida all'utente stesso, dopo la sua conferma.",
+        [N("Send an email (V2)", "logo:outlook", "tools", "Office 365 Outlook; matita accanto al nome per rinominarla Invia guida via email"),
+         N("Description for Intelligence", "note-pencil", "tools",
+           "in sintesi: solo dopo la conferma; destinatario solo l'indirizzo di Get my profile (V2); oggetto Guida: più titolo breve; corpo in HTML con saluto; mai credenziali"),
+         N("To · Subject · Body", "brackets-curly", "tools", "Fill with Intelligence; CC, BCC e Reply To lasciati vuoti"),
+         N("Importance", "sliders-horizontal", "tools", "Custom: Normal"),
+         N("Authentication", "shield-check", "platform", "End user account: l'email parte dalla casella di chi usa l'agente")]),
+    # Lab 04 - gh-lab04-skill
+    "g04-procedure": D(
+        "Istruzioni · Procedure", "clipboard-text", "instructions", "Lab 04",
+        "Sostituiscono la sezione Guide passo passo: una riga per skill, il dettaglio resta nelle skill.",
+        [N("supporto-tecnico", "puzzle-piece", "topics", "problema tecnico con un dispositivo, un'applicazione o la rete"),
+         N("apertura-ticket", "puzzle-piece", "topics", "aprire un ticket di assistenza per il reparto IT"),
+         N("guida-passo-passo", "puzzle-piece", "topics", "preparare una guida passo passo e inviarla per email all'utente"),
+         N("# Strumenti ed email", "clipboard-text", "instructions", "resta nelle istruzioni: le sue regole valgono anche quando l'invio parte da una skill", lab="Lab 03")],
+        layout="list"),
+    "g04-supporto": D(
+        "supporto-tecnico", "puzzle-piece", "topics", "Lab 04",
+        "Checklist approvata di primo livello per hardware, software o rete e, se il problema resta, riepilogo per l'escalation.",
+        [N("Upload a skill", "upload-simple", "topics", "file SKILL.md: Skills › Upload a skill, poi rileggere le istruzioni e Save"),
+         N("Capisci e classifica", "git-branch", "system", "Hardware, Software o Rete; se non è chiaro, chiede di scegliere fra le tre categorie"),
+         N("Checklist", "list-numbers", "topics", "tabella con le colonne Passo e Azione, senza aggiungere passi non presenti nell'elenco; poi chiede se il problema è risolto"),
+         N("Escalation", "arrow-bend-up-right", "system",
+           "se il problema persiste dopo due tentativi consiglia un ticket e prepara il riepilogo: categoria, applicazione, sintomi, errori, passi, esito"),
+         N("Esclusioni", "prohibit", "risk", "non per reset di password, sblocco di account o richieste di nuovi dispositivi")]),
+    "g04-ticket": D(
+        "apertura-ticket", "puzzle-piece", "topics", "Lab 04",
+        "Skill scritta da zero (Create from blank): raccoglie cinque campi validati e mostra il riepilogo da confermare.",
+        [N("Create from blank", "note-pencil", "topics", "Name apertura-ticket; Description e Instructions, poi Create e Save"),
+         N("Dati da raccogliere", "table", "topics",
+           "Nome, Cognome, Email (nome@dominio), Tipologia (Hardware, Software, Rete, Altro), Descrizione (massimo 2.000 caratteri)"),
+         N("Riuso e validazione", "check-circle", "topics",
+           "non richiede ciò che è già detto; campi mancanti in un solo messaggio; se email o tipologia non sono valide, corregge solo quel campo"),
+         N("Riepilogo e conferma", "table", "topics",
+           "tabella Campo e Valore e Confermi l'invio del ticket al reparto IT?; se l'utente annulla, nessun dato conservato"),
+         N("Limite onesto", "warning", "platform", "prepara il ticket ma non dichiara mai che è stato registrato in un sistema")]),
+    "g04-guida": D(
+        "guida-passo-passo", "puzzle-piece", "topics", "Lab 04",
+        "Guida con template e testi fissi del Service Desk, letti da due file di riferimento; su richiesta la invia all'utente.",
+        [N("Upload a skill", "upload-simple", "topics", "guida-passo-passo.zip: SKILL.md alla radice e cartella riferimenti; SKILL.md in UTF-8 senza BOM"),
+         N("Descrizione", "note-pencil", "topics", "quando chiede una guida passo passo; esclusioni: non per diagnosticare un guasto né per aprire un ticket"),
+         N("riferimenti/template-guida.md", "file-text", "knowledge", "input, ordine delle sezioni e tono per livello, come nel Lab 03"),
+         N("riferimenti/contenuti-aziendali.md", "file-text", "knowledge", "testi ufficiali del Service Desk, copiati parola per parola al posto del segnaposto"),
+         N("Strumenti", "wrench", "tools", "Get my profile (V2) per l'indirizzo, Invia guida via email per l'invio; anteprima e conferma restano nelle istruzioni")]),
+    "g04-contenuti": D(
+        "contenuti-aziendali.md", "file-text", "knowledge", "Lab 04",
+        "I testi fissi del Service Desk, in un file che l'Help Desk può aggiornare senza toccare i passaggi della skill.",
+        [N("Intestazione", "stamp", "knowledge", "Service Desk IT - Zava S.p.A."),
+         N("Avviso di sicurezza", "shield-check", "platform", "il Service Desk non chiede mai password o codici di verifica"),
+         N("Contatti del Service Desk", "headset", "knowledge", "email, interno 4357, orari e portale (dominio dimostrativo zava-demo.example)"),
+         N("Frase di chiusura", "chat-text", "instructions", "da copiare parola per parola"),
+         N("Aggiornare un testo", "arrows-clockwise", "lifecycle", "modificare il file, ricreare lo zip e, nel pannello della skill, … › Replace")],
+        layout="list"),
+    # Lab 05 - gh-lab05-workflow
+    "g05-trigger": D(
+        "When an agent calls the workflow", "lightning", "triggers", "Lab 05",
+        "Il contratto in ingresso: tre input di testo, con le descrizioni che la skill richiesta-dispositivo usa al passaggio di invio.",
+        [N("Start › Trigger type", "lightning", "triggers", "da Manual a When an agent calls the workflow (sulla tela può comparire When an agent calls the flow)"),
+         N("sharepointItemId", "brackets-curly", "triggers", "ID numerico dell'elemento della lista Dispositivi corrispondente al dispositivo scelto"),
+         N("additionalComment", "brackets-curly", "triggers", "requisiti aggiuntivi dell'utente; se non ce ne sono, Nessun requisito aggiuntivo"),
+         N("requestorName", "brackets-curly", "triggers", "nome visualizzato di chi richiede, come restituito da Get my profile (V2)")],
+        layout="list"),
+    "g05-cerca": D(
+        "Cerca dispositivo", "logo:sharepoint", "tools", "Lab 05",
+        "Una sola lettura della lista, filtrata sull'ID e limitata a un elemento: se non torna nulla l'ID non corrisponde a nessun dispositivo.",
+        [N("Get items", "logo:sharepoint", "tools", "azione Get items di SharePoint, rinominata Cerca dispositivo"),
+         N("Site Address · List Name", "link", "tools", "sito Zava Help Desk - Vostro Nome, lista Dispositivi"),
+         N("Filter Query", "funnel", "tools", "ID eq seguito dal contenuto dinamico sharepointItemId, senza apici perché ID è un numero"),
+         N("Top Count", "list-numbers", "tools", "1"),
+         N("Test del nodo", "flask", "instructions", "con l'ID di Contoso Phone Z: Model CP-Z2022, Status con Value In use")]),
+    "g05-inventario": D(
+        "Dispositivo in inventario", "git-branch", "system", "Lab 05",
+        "Primo bivio: una lista vuota non è un errore ma uno dei tre percorsi previsti, e si decide nel workflow.",
+        [N("Condizione If / Else", "git-branch", "system", "rinominata Dispositivo in inventario, dopo Cerca dispositivo"),
+         N("Property", "function", "system", "length(body('Cerca_dispositivo')?['value'])"),
+         N("Operator · Value", "sliders-horizontal", "system", "Greater, 0"),
+         N("Branch name", "note-pencil", "system", "il ramo If si chiama In Catalogo"),
+         N("Ramo Else", "arrow-bend-up-right", "system", "Respond to the agent con esito NON_IN_CATALOGO")],
+        layout="list"),
+    "g05-disponibile": D(
+        "Dispositivo disponibile", "git-branch", "system", "Lab 05",
+        "Secondo bivio, nel ramo In Catalogo: solo se lo stato è Available il workflow invia la richiesta al responsabile.",
+        [N("Condizione If / Else", "git-branch", "system", "nel ramo In Catalogo, con il nome Dispositivo disponibile"),
+         N("Branch name", "note-pencil", "system", "il ramo If si chiama Disponibile"),
+         N("Property", "function", "system", "first(body('Cerca_dispositivo')?['value'])?['Status']?['Value']"),
+         N("Operator · Value", "sliders-horizontal", "system", "Equals, Available"),
+         N("Ramo Else", "arrow-bend-up-right", "system", "Respond to the agent con esito ESAURITO, senza inviare nulla")],
+        layout="list"),
+    "g05-avvisa": D(
+        "Avvisa responsabile", "logo:outlook", "tools", "Lab 05",
+        "Azione Send an email di Office 365 Outlook, solo nel percorso del dispositivo disponibile.",
+        [N("Send an email", "logo:outlook", "tools", "Office 365 Outlook, rinominata Avvisa responsabile"),
+         N("To", "at", "tools", "il proprio indirizzo (in produzione, la casella del responsabile di chi richiede)"),
+         N("Subject", "textbox", "tools", "Richiesta nuovo dispositivo da, seguito dal contenuto dinamico requestorName"),
+         N("Body", "file-text", "tools",
+           "Richiesta inviata da, Produttore, Modello, Collegamento all'elemento, Requisiti aggiuntivi: ogni etichetta seguita dal suo valore"),
+         N("Espressioni", "function", "system",
+           "first(body('Cerca_dispositivo')?['value'])?['Manufacturer']?['Value'], ?['Model'] e ?['{Link}']; additionalComment dal trigger")]),
+    "g05-risp-disponibile": D(
+        "Respond to the agent · DISPONIBILE", "flow-arrow", "tools", "Lab 05",
+        "Risposta del percorso in cui il dispositivo è disponibile: la richiesta è già stata inviata al responsabile.",
+        [N("esito", "brackets-curly", "tools", "DISPONIBILE"),
+         N("ModelValue", "brackets-curly", "tools", "first(body('Cerca_dispositivo')?['value'])?['Model']"),
+         N("Lo stesso contratto", "check-circle", "platform", "i tre nodi Respond to the agent hanno gli stessi output, con gli stessi nomi e tipi"),
+         N("Asynchronous response", "sliders-horizontal", "system", "disattivata, nella sezione Networking di ogni nodo: l'agente aspetta l'esito")],
+        layout="list"),
+    "g05-risp-esaurito": D(
+        "Respond to the agent · ESAURITO", "flow-arrow", "tools", "Lab 05",
+        "Risposta del percorso in cui il dispositivo esiste ma non è più disponibile: nessuna richiesta inviata.",
+        [N("esito", "brackets-curly", "tools", "ESAURITO"),
+         N("ModelValue", "brackets-curly", "tools", "first(body('Cerca_dispositivo')?['value'])?['Model']"),
+         N("Lo stesso contratto", "check-circle", "platform", "output uguali agli altri due percorsi; Asynchronous response disattivata")],
+        layout="list"),
+    "g05-risp-catalogo": D(
+        "Respond to the agent · NON_IN_CATALOGO", "flow-arrow", "tools", "Lab 05",
+        "Risposta del percorso in cui nessun dispositivo ha quell'ID: nessuna richiesta inviata.",
+        [N("esito", "brackets-curly", "tools", "NON_IN_CATALOGO"),
+         N("ModelValue", "brackets-curly", "tools", "Nessun dispositivo"),
+         N("Lo stesso contratto", "check-circle", "platform", "output uguali agli altri due percorsi; Asynchronous response disattivata")],
+        layout="list"),
+})
+
+# Concetti chiave della GitHub Harness (docs/fondamentali/github-harness/index.md): schemi gh-concetti-*,
+# ids con prefisso gc-. Riportano le voci delle slide del corso; il "lab" è quello in cui il componente si
+# costruisce, "Concetto" per ciò che non ha un lab.
+DETAILS.update({
+    "gc-istruzioni": D(
+        "Instructions", "clipboard-text", "instructions", "Lab 02",
+        "Ciò che vale in ogni conversazione, non solo in alcune.",
+        [N("Tutto ciò che è generale", "target", "instructions", "ruolo, ambito, tono, regole di sicurezza"),
+         N("Indicazioni sempre attive", "check-circle", "instructions")],
+        layout="list"),
+    "gc-knowledge": D(
+        "Knowledge", "books", "knowledge", "Lab 02",
+        "I fatti da cercare e citare.",
+        [N("Fatti cercabili, semantici", "magnifying-glass", "knowledge"),
+         N("Documenti, siti, file", "files", "knowledge"),
+         N("Fondano le risposte", "chat-text", "knowledge")],
+        layout="list"),
+    "gc-tools": D(
+        "Tools", "wrench", "tools", "Lab 03",
+        "Azioni e dati in tempo reale.",
+        [N("Ricerche live e API", "globe", "tools"),
+         N("Operazioni CRUD", "database", "tools"),
+         N("Azioni su sistemi esterni", "plugs-connected", "tools")],
+        layout="list"),
+    "gc-memory": D(
+        "Memory", "stack", "system", "Lab 03",
+        "Il contesto che resta tra una sessione e l'altra.",
+        [N("Contesto persistente", "stack", "system"),
+         N("Storico delle preferenze per utente", "user-circle", "system")],
+        layout="list"),
+    "gc-sandbox": D(
+        "Agent Sandbox", "terminal-window", "ai-engine", "Concetto",
+        "L'esecuzione di codice dentro il ciclo, quando il ragionamento non basta.",
+        [N("Analisi ad hoc", "chart-bar", "ai-engine"),
+         N("Esecuzione di codice e strumenti shell", "terminal-window", "ai-engine"),
+         N("Manipolazione dei dati", "table", "ai-engine")],
+        layout="list"),
+    "gc-skillmd": D(
+        "SKILL.md", "file-text", "topics", "Lab 04",
+        "Il file della skill: il testo che l'orchestratore legge quando la richiama.",
+        [N("Procedura o contesto", "file-text", "topics", "testuale, utile per un argomento o un compito specifico"),
+         N("Decisioni future", "target", "topics", "può influenzare le decisioni di pianificazione che seguono"),
+         N("Suggerisce, non impone", "git-branch", "topics", "può suggerire un flow, ma non farlo rispettare")],
+        layout="list"),
+    "gc-skillfile": D(
+        "File di supporto della skill", "file-code", "topics", "Lab 04",
+        "Codice e file accanto a SKILL.md, eseguiti in una sandbox.",
+        [N("Python o file di aiuto", "file-code", "topics", "girano in una sandbox; possono usare un set di librerie; nessun accesso in uscita"),
+         N("Logica locale complessa", "function", "topics", "o elaborazione di dati"),
+         N("Solo se la skill viene letta", "eye", "topics", "si usano solo se l'orchestratore legge la skill")],
+        layout="list"),
+    "gc-agenti": D(
+        "Agenti connessi", "users-three", "agents", "Concetto",
+        "Un altro agente a cui delegare un ambito specializzato.",
+        [N("Delega solo se serve", "users-three", "agents", "ambito specializzato"),
+         N("Risorse proprie", "toolbox", "agents", "istruzioni, tool, skill e knowledge"),
+         N("Per grandi sotto-domini", "stack", "agents", "che richiedono un'orchestrazione diversa di skill e tool"),
+         N("Non per piccoli compiti", "warning", "platform",
+           "fuori dai grandi scenari, dividere compiti piccoli in agenti connessi non aumenta l'accuratezza")],
+        layout="list"),
+    "gc-ricerca": D(
+        "Ricerca", "magnifying-glass", "knowledge", "Lab 02",
+        "L'orchestratore cerca solo la conoscenza che gli serve, nelle fonti SharePoint.",
+        [N("Ricerche semantiche", "magnifying-glass", "knowledge", "su tutte le fonti di conoscenza SharePoint"),
+         N("Snippet corrispondenti", "file-text", "knowledge", "restituiti all'orchestratore")]),
+    "gc-classifica": D(
+        "Classifica", "chart-bar", "knowledge", "Lab 02",
+        "Dagli snippet ai documenti che contano davvero.",
+        [N("Classifica gli snippet", "chart-bar", "knowledge"),
+         N("Decide quali documenti sono pertinenti", "target", "knowledge", "davvero rilevanti per il compito")]),
+    "gc-recupero": D(
+        "Recupero", "file-arrow-down", "github", "Lab 02",
+        "I file completi, non solo gli snippet, entrano nella sandbox.",
+        [N("Scarica i file completi", "file-arrow-down", "github", "nel contenitore della sandbox dell'agente"),
+         N("Elaborazione abilitata", "gear-six", "github", "per usarli nella conversazione")]),
+    "gc-elaborazione": D(
+        "Elaborazione", "package", "github", "Lab 02",
+        "I file sono pre-elaborati e tenuti nel contenitore dell'agente.",
+        [N("Pre-elaborazione", "gear-six", "github", "con struttura e metadati"),
+         N("In cache nel contenitore dell'agente", "database", "github", "per sostenere risposte rapide durante la conversazione")]),
+    "gc-librerie": D(
+        "Librerie preinstallate", "package", "github", "Concetto",
+        "Alcune delle librerie già presenti nella sandbox, per gruppo.",
+        [N("Dati e grafici", "chart-bar", "github", "pandas, numpy, matplotlib, plotly"),
+         N("File", "files", "github", "openpyxl, pptx/docx, pypdf"),
+         N("Parsing e OCR", "magnifying-glass", "github", "BeautifulSoup, lxml, pdfplumber, Pillow, OpenCV"),
+         N("Matematica e logica", "function", "github", "sympy, PyYAML, Jinja2, reportlab")],
+        layout="list"),
+})
+
+
 def _walk(steps):
     """Tutti i passi di un dettaglio, anche dentro gruppi e rami."""
     for s in steps:
@@ -1999,12 +2415,418 @@ def lab05_request():
     f.save()
 
 
+# --- schemi dei Fundamentals della GitHub Harness ---------------------------------------------
+# Lab 01-05 della GitHub Harness (docs/fondamentali/github-harness/): nomi esatti di solution,
+# agente, istruzioni, fonti, strumenti, skill e nodi del workflow creati nei lab. Se un lab cambia
+# un nome, va cambiato anche qui. I file vanno in docs/fondamentali/images/ con il prefisso gh-labNN-.
+# L'agente (e il suo contenitore) è disegnato con il glifo github-logo nell'argomento "github".
+GHA = "github-logo"
+
+
+def gh_lab01_percorso():
+    """GitHub Lab 01: i passi della preparazione (a sinistra) e dove si trova ciò che creano (a destra)."""
+    d = Diagram("gh-lab01-percorso-setup", F)
+    steps = [("Account Microsoft 365", "user-circle", "platform", "Business Basic, Try for free", None),
+             ("Copilot Studio Trial", "logo:copilot-studio", "instructions", "aka.ms/TryCopilotStudio", None),
+             ("Ambiente del corso", "tray", "platform", "con Dataverse e Copilot Credits", "g01-ambiente"),
+             ("Pubblicazione", "shield-check", "platform", "ruolo Copilot Studio Authors", "g01-accesso"),
+             ("Nuova esperienza", "sparkle", "instructions", "New experience, selettore di ambiente", "g01-esperienza"),
+             ("Sito SharePoint", "logo:sharepoint", "knowledge", "Zava Help Desk", "g01-sito"),
+             ("Publisher e solution", "package", "lifecycle",
+              "publisher CSM Solutions (GitHub)\nsolution Help Desk Zava (GitHub)", "g01-solution")]
+    x, w, y0, pitch = 40, 290, 40, 90
+    prev = None
+    for i, (label, icon, fam, sub, det) in enumerate(steps):
+        n = d.node(x, y0 + i * pitch, w, label, icon, fam, sub, detail=det)
+        d.badge(22, n["cy"], i + 1)
+        if prev:
+            d.arrow([(prev["cx"], prev["b"]), (n["cx"], n["y"])], "instructions")
+        prev = n
+    # a destra: il tenant contiene account, licenza, gruppo, sito SharePoint e ambiente; l'ambiente publisher e solution
+    T = 370
+    y_sito, y_amb = 292, 440
+    d.lane(T, 20, 500, y_amb + 200 + 16 - 20, "Tenant Microsoft 365", "buildings", "platform")
+    c1 = d.node(T + 40, 62, 445, "Account di lavoro", "user-circle", "platform", "Microsoft 365 Business Basic", white=True)
+    c2 = d.node(T + 40, 132, 445, "Copilot Studio Trial", "logo:copilot-studio", "instructions",
+                "prova gratuita a incrementi di 30 giorni", white=True)
+    c3 = d.node(T + 40, 202, 445, "Gruppo AgentCreators", "users-three", "platform",
+                "security group con il ruolo\nCopilot Studio Authors", white=True)
+    sito = d.lane(T + 40, y_sito, 445, 134, "Sito SharePoint Zava Help Desk", "logo:sharepoint", "knowledge")
+    d.node(T + 55, y_sito + 42, 202, "Knowledge Base", "folders", "knowledge", "Playbook, SLA e\nincident report", white=True, detail="g01-kb")
+    d.node(T + 265, y_sito + 42, 202, "Lista Dispositivi", "table", "knowledge", "6 dispositivi,\n5 Available", white=True, detail="g01-dispositivi")
+    amb = d.lane(T + 40, y_amb, 445, 200, "Ambiente del corso", "tray", "platform")
+    pub = d.node(T + 70, y_amb + 42, 400, "Publisher CSM Solutions (GitHub)", "stamp", "lifecycle", "prefisso csg, valore 77000", white=True)
+    sol = d.node(T + 70, y_amb + 124, 400, "Solution Help Desk Zava (GitHub)", "package", "lifecycle", "solution preferita, ancora vuota", white=True)
+    d.arrow([(pub["cx"], pub["b"]), (sol["cx"], sol["y"])], "lifecycle")
+    for n, k in ((c1, 1), (c2, 2), (c3, 4)):
+        d.badge(T + 20, n["cy"], k)
+    d.badge(T + 20, y_sito + 23, 6)
+    d.badge(T + 20, y_amb + 23, 3)
+    d.badge(T + 55, pub["cy"], 7)
+    d.badge(T + 55, sol["cy"], 7)
+    d.save()
+
+
+def gh_lab02_fonti():
+    """GitHub Lab 02: l'Assistente Zava GH nella solution, con le istruzioni e le sei fonti di conoscenza."""
+    d = Diagram("gh-lab02-agente-fonti", F)
+    x, w = 20, 350
+    src = [("support.microsoft.com", "globe", "Public website, ricerca generale spenta", "g02-web"),
+           ("Zava_KB_Reset_M365_Password.docx", "upload-simple", "file caricato: reset della password", "g02-reset"),
+           ("Zava_Guida_VPN_v1.docx", "files", "file caricato: 2019, non più in vigore", "g02-vpn-v1"),
+           ("Zava_Guida_VPN_v2.docx", "files", "file caricato: 2022, non più in vigore", "g02-vpn-v2"),
+           ("Zava_Guida_VPN_v3.docx", "files", "file caricato: 2026, in vigore", "g02-vpn-v3"),
+           ("Sito SharePoint Zava Help Desk", "logo:sharepoint", "Playbook, SLA e incident report", "g02-sharepoint")]
+    nodes = [d.node(x, 20 + i * 72, w, label, icon, "knowledge", sub, detail=det)
+             for i, (label, icon, sub, det) in enumerate(src)]
+    cy = (nodes[0]["y"] + nodes[-1]["b"]) / 2
+    sy = cy - 132
+    d.lane(470, sy, 350, 264, "Solution Help Desk Zava (GitHub)", "package", "lifecycle")
+    ag = d.lane(485, sy + 42, 320, 206, "Assistente Zava GH", GHA, "github", detail="g02-agente")
+    d.node(500, sy + 84, 290, "Istruzioni", "clipboard-text", "instructions",
+           "ruolo, risposte dalle fonti,\nformato, sicurezza, versioni", white=True, detail="g02-istruzioni")
+    d.node(500, sy + 172, 290, "Messaggio di benvenuto", "chat-text", "instructions", "Greeting & prompts", white=True, detail="g02-benvenuto")
+    bus = 420
+    for n in nodes:
+        d.arrow([(n["r"], n["cy"]), (bus, n["cy"]), (bus, cy), (ag["x"], cy)], "knowledge", dashed=True)
+    d.save()
+
+
+def gh_lab03_strumenti():
+    """GitHub Lab 03: le istruzioni sugli strumenti e sulle guide, Get my profile (V2) e Invia guida via email."""
+    d = Diagram("gh-lab03-strumenti", F)
+    d.lane(20, 20, 380, 462, "Assistente Zava GH", GHA, "github")
+    nx, nw = 35, 350
+    r1 = d.node(nx, 62, nw, "Istruzioni · Strumenti ed email", "clipboard-text", "instructions",
+                "anteprima e conferma prima di inviare;\nsolo all'indirizzo letto dal profilo", white=True, detail="g03-strumenti")
+    r2 = d.node(nx, 166, nw, "Istruzioni · Guide passo passo", "clipboard-text", "instructions",
+                "dati da raccogliere, sezioni della guida,\nHTML per l'email", white=True, detail="g03-guide")
+    r3 = d.node(nx, 270, nw, "Get my profile (V2)", "user-circle", "tools",
+                "Office 365 Users: legge displayName\ne mail dal profilo", white=True, detail="g03-profile")
+    r4 = d.node(nx, 390, nw, "Invia guida via email", "logo:outlook", "tools",
+                "Send an email (V2) di Office 365 Outlook,\nrinominato", white=True, detail="g03-invia")
+    pr = d.node(545, r3["cy"] - 30, 250, "Profilo Microsoft 365", "user-check", "platform", "di chi sta usando l'agente")
+    mb = d.node(545, r4["cy"] - 30, 250, "Casella dell'utente", "logo:outlook", "tools", "la guida in HTML")
+    d.arrow([(pr["x"], pr["cy"]), (r3["r"], pr["cy"])], "knowledge", dashed=True,
+            label="nome ed email", at=((pr["x"] + r3["r"]) / 2, pr["cy"]))
+    d.arrow([(r3["cx"], r3["b"]), (r4["cx"], r4["y"])], "tools",
+            label="indirizzo dal profilo", at=(r3["cx"], (r3["b"] + r4["y"]) / 2))
+    d.arrow([(r4["r"], mb["cy"]), (mb["x"], mb["cy"])], "tools",
+            label="dopo la conferma", at=((r4["r"] + mb["x"]) / 2, mb["cy"]))
+    d.save()
+
+
+def gh_lab04_skill():
+    """GitHub Lab 04: le tre skill dell'Assistente Zava GH, i file di riferimento e gli strumenti del Lab 03."""
+    d = Diagram("gh-lab04-skill", F)
+    d.lane(20, 20, 370, 462, "Assistente Zava GH", GHA, "github")
+    nx, nw = 35, 340
+    d.node(nx, 62, nw, "Istruzioni · Procedure", "clipboard-text", "instructions",
+           "una riga per skill; tolta la sezione\nGuide passo passo", white=True, detail="g04-procedure")
+    s1 = d.node(nx, 166, nw, "supporto-tecnico", "puzzle-piece", "topics",
+                "checklist di primo livello:\nhardware, software o rete", white=True, detail="g04-supporto")
+    s2 = d.node(nx, 286, nw, "apertura-ticket", "puzzle-piece", "topics",
+                "cinque campi validati,\nriepilogo da confermare", white=True, detail="g04-ticket")
+    s3 = d.node(nx, 390, nw, "guida-passo-passo", "puzzle-piece", "topics",
+                "template con i testi fissi,\ninvio per email", white=True, detail="g04-guida")
+    d.arrow([(s1["cx"], s1["b"]), (s2["cx"], s2["y"])], "topics",
+            label="riepilogo escalation", at=(s1["cx"], (s1["b"] + s2["y"]) / 2))
+    gx, gw = 480, 330
+    refs = d.lane(gx, 20, gw, 190, "Riferimenti · guida-passo-passo", "folders", "knowledge")
+    d.node(gx + 15, 62, gw - 30, "template-guida.md", "file-text", "knowledge", "template della guida", white=True)
+    d.node(gx + 15, 134, gw - 30, "contenuti-aziendali.md", "file-text", "knowledge", "testi fissi del Service Desk", white=True, detail="g04-contenuti")
+    tools = d.lane(gx, 224, gw, 190, "Strumenti · Lab 03", "toolbox", "tools")
+    d.node(gx + 15, 266, gw - 30, "Get my profile (V2)", "user-circle", "tools", "nome ed email dell'utente", white=True)
+    d.node(gx + 15, 338, gw - 30, "Invia guida via email", "logo:outlook", "tools", "invia la guida all'utente", white=True)
+    d.arrow([(s3["r"], s3["cy"] - 8), (405, s3["cy"] - 8), (405, 115), (gx, 115)], "knowledge", dashed=True,
+            label="legge", at=(442, 115))
+    d.arrow([(s3["r"], s3["cy"] + 8), (428, s3["cy"] + 8), (428, 319), (gx, 319)], "tools",
+            label="usa", at=(454, 319))
+    d.save()
+
+
+def gh_lab05_workflow():
+    """GitHub Lab 05: il workflow Invia richiesta dispositivo, con le due condizioni e le tre risposte all'agente."""
+    f = Flow("gh-lab05-workflow", "Workflow · Invia richiesta dispositivo", w=340, fam="tools", icon="flow-arrow", out=F)
+    f.step("When an agent calls the workflow", "lightning", "triggers",
+           "sharepointItemId, additionalComment,\nrequestorName", afam="tools", detail="g05-trigger")
+    f.step("Cerca dispositivo", "logo:sharepoint", "tools",
+           "Get items sulla lista Dispositivi:\nID eq sharepointItemId, Top Count 1", afam="tools", detail="g05-cerca")
+    c1 = f.step("Dispositivo in inventario", "git-branch", "system",
+                "Cerca dispositivo ha trovato\nalmeno un elemento?", afam="tools", detail="g05-inventario")
+    colw, half = 250, 125
+    x2, xC = f.cx - 198, f.cx + 198       # ramo In Catalogo (seconda condizione) e ramo Else
+    ybus = c1["b"] + FLOW_FORK
+    top = ybus + FLOW_DROP
+    f.arrow([(c1["cx"], c1["b"]), (c1["cx"], ybus), (xC, ybus), (xC, top)], NEUTRAL, label="Else", at=(xC, (ybus + top) / 2))
+    f.arrow([(c1["cx"], c1["b"]), (c1["cx"], ybus), (x2, ybus), (x2, top)], "tools", label="In Catalogo", at=(x2, (ybus + top) / 2))
+    c2 = f._place("Dispositivo disponibile", "git-branch", "system", "Status uguale a Available?", x2 - 150, top, 300, detail="g05-disponibile")
+    f._place("Respond to the agent", "flow-arrow", "tools", "esito NON_IN_CATALOGO,\nModelValue Nessun dispositivo",
+             xC - half, top, colw, detail="g05-risp-catalogo")
+    ybus2 = c2["b"] + FLOW_FORK
+    top2 = ybus2 + FLOW_DROP
+    xA, xB = x2 - 132, x2 + 132
+    f.arrow([(c2["cx"], c2["b"]), (c2["cx"], ybus2), (xB, ybus2), (xB, top2)], NEUTRAL, label="Else", at=(xB, (ybus2 + top2) / 2))
+    f.arrow([(c2["cx"], c2["b"]), (c2["cx"], ybus2), (xA, ybus2), (xA, top2)], "tools", label="Disponibile", at=(xA, (ybus2 + top2) / 2))
+    av = f._place("Avvisa responsabile", "logo:outlook", "tools", "Send an email al responsabile", xA - half, top2, colw, detail="g05-avvisa")
+    ya = av["b"] + FLOW_GAP
+    f.arrow([(xA, av["b"]), (xA, ya)], "tools")
+    f._place("Respond to the agent", "flow-arrow", "tools", "esito DISPONIBILE,\nModelValue = modello", xA - half, ya, colw, detail="g05-risp-disponibile")
+    f._place("Respond to the agent", "flow-arrow", "tools", "esito ESAURITO,\nModelValue = modello", xB - half, top2, colw, detail="g05-risp-esaurito")
+    f.save()
+
+
+# --- schemi dei concetti chiave della GitHub Harness ------------------------------------------
+# Le slide esplicative del corso (orchestrazione, componenti, skill, conoscenza, sandbox, evoluzione
+# dei flow, agenti e workflow, crediti), ridisegnate come schemi: docs/fondamentali/images/gh-concetti-*.svg,
+# mostrati in "Concetti chiave" di docs/fondamentali/github-harness/index.md.
+# Standard harness nell'argomento "standard", GitHub Copilot harness in "github".
+
+def gh_concetti_orchestrazione():
+    """Standard harness: piano poi esecuzione; GitHub Copilot harness: ciclo continuo sullo stato più recente."""
+    d = Diagram("gh-concetti-orchestrazione", F)
+    top, bot = 20, 388
+    d.lane(20, top, 480, bot - top, "Standard harness · piano, poi esecuzione", "list-numbers", "standard")
+    ax, aw = 35, 195
+    n1 = d.node(ax, 62, aw, "1. Intento", "target", "standard", "capisce la richiesta", white=True)
+    n2 = d.node(ax, 156, aw, "2. Piano", "tree-structure", "standard", "sintetizza un workflow\na più passi", white=True)
+    n3 = d.node(ax, 266, aw, "3. Esecuzione", "play-circle", "standard", "esegue i passi scritti", white=True)
+    d.arrow([(n1["cx"], n1["b"]), (n2["cx"], n2["y"])], "standard")
+    d.arrow([(n2["cx"], n2["b"]), (n3["cx"], n3["y"])], "standard")
+    px, pw = 250, 215
+    plan = d.lane(px, 62, pw + 30, 264, "Oggetto piano esplicito", "clipboard-text", "standard")
+    d.node(px + 15, 106, pw, "Raccogli gli input", "textbox", "standard", white=True)
+    d.node(px + 15, 166, pw, "Esegui l'azione", "lightning", "standard", "connettore, topic,\nquery dati, …", white=True)
+    d.node(px + 15, 256, pw, "Risposta: riassumi", "chat-text", "standard", white=True)
+    d.arrow([(n2["r"], n2["cy"]), (px, n2["cy"])], "standard", dashed=True)
+    d.chip(35, 340, 450, 32, "Meno repianificazione dal vivo, più facile da ispezionare", "standard", "card")
+    rx = 525
+    d.lane(rx, top, 410, bot - top, "GitHub Copilot harness · ciclo continuo", GHA, "github")
+    c1, c2, w = rx + 15, rx + 15 + 170 + 40, 170
+    t = d.node(c1, 62, w, "Pensiero", "brain", "github", "ragiona sullo stato\npiù recente", white=True)
+    a = d.node(c2, 62, w, "Azione", "lightning", "github", "chiama un tool\no un topic", white=True)
+    o = d.node(c2, 250, w, "Osservazione", "eye", "github", "legge il risultato\ndel tool", white=True)
+    dd = d.node(c1, 250, w, "Decisione", "signpost", "github", "sceglie al volo\nil prossimo passo", white=True)
+    d.arrow([(t["r"], t["cy"]), (a["x"], a["cy"])], "github")
+    d.arrow([(a["cx"], a["b"]), (o["cx"], o["y"])], "github")
+    d.arrow([(o["x"], o["cy"]), (dd["r"], o["cy"])], "github")
+    d.arrow([(dd["cx"], dd["y"]), (t["cx"], t["b"])], "github")
+    d.chip((t["cx"] + a["cx"]) / 2 - 62, 179, 124, 30, "stato più recente", "github", "dashed")
+    d.chip(rx + 15, 340, 380, 32, "Continua a decidere dallo stato più recente", "github", "card")
+    d.save()
+
+
+def gh_concetti_componenti():
+    """Il modello a componenti di Copilot Studio: istruzioni, conoscenza, strumenti, memoria, sandbox, skill, agenti connessi."""
+    d = Diagram("gh-concetti-componenti", F)
+    w, g = 176, 8
+    comps = [("Instructions", "clipboard-text", "instructions", "sempre attive", "gc-istruzioni"),
+             ("Knowledge", "books", "knowledge", "fatti da cercare", "gc-knowledge"),
+             ("Tools", "wrench", "tools", "dati e azioni live", "gc-tools"),
+             ("Memory", "stack", "system", "contesto per utente", "gc-memory"),
+             ("Agent Sandbox", "terminal-window", "ai-engine", "esegue codice", "gc-sandbox")]
+    for i, (label, icon, fam, sub, det) in enumerate(comps):
+        d.node(20 + i * (w + g), 20, w, label, icon, fam, sub, white=True, detail=det)
+    y2 = 114
+    sk = d.lane(20, y2, 550, 132, "Skills", "puzzle-piece", "topics")
+    d.text(112, y2 + 28, "procedure riutilizzabili che il ciclo richiama se serve", 12, "dg-sub")
+    md = d.node(35, y2 + 42, 240, "SKILL.md", "file-text", "topics", "procedura o contesto per\nun argomento o un compito", white=True, detail="gc-skillmd")
+    sf = d.node(315, y2 + 42, 240, "File di supporto", "file-code", "topics", "Python o file di aiuto,\neseguiti in una sandbox", white=True, detail="gc-skillfile")
+    d.arrow([(md["r"], md["cy"]), (sf["x"], sf["cy"])], "topics", dashed=True)
+    d.node(585, y2, 335, "Agenti connessi", "users-three", "agents",
+           "delegano un ambito specializzato\nsolo se serve, con istruzioni, tool,\nskill e knowledge propri", h=132, detail="gc-agenti")
+    y3 = y2 + 132 + 16
+    cw = (900 - 20) / 3
+    for i, (label, icon) in enumerate([("Channels", "broadcast"), ("Evaluations", "list-checks"), ("Analytics", "chart-bar")]):
+        d.node(20 + i * (cw + 10), y3, cw, label, icon, "system")
+    d.node(20, y3 + 58, 900, "Enterprise Governance", "shield-check", "ai-engine")
+    d.save()
+
+
+def gh_concetti_skill():
+    """Anatomia di una skill: metadati sempre nel contesto, contenuto caricato solo quando serve; che cosa evitare."""
+    d = Diagram("gh-concetti-skill", F)
+    d.lane(20, 20, 400, 116, "Sempre nel contesto", "stack", "ai-engine")
+    d.node(35, 62, 370, "SKILL.md", "file-text", "ai-engine", "name + description = metadati\ndi instradamento", white=True, h=60)
+    d.lane(20, 176, 400, 234, "Caricato solo quando serve", "download-simple", "topics")
+    parts = [("Istruzioni", "clipboard-text", "il nucleo\ndella skill"),
+             ("Esempi", "chat-text", "mostrare,\nnon spiegare"),
+             ("Risorse", "folders", "file, template"),
+             ("Script", "code", "codice eseguibile")]
+    for i, (label, icon, sub) in enumerate(parts):
+        d.node(35 + (i % 2) * 190, 218 + (i // 2) * 102, 180, label, icon, "topics", sub, white=True, h=76)
+    d.arrow([(220, 136), (220, 176)], "topics", label="se lo scenario corrisponde", at=(220, 156))
+    d.lane(450, 20, 380, 390, "Da evitare", "warning-octagon", "risk")
+    avoid = [("Descrizioni vaghe", "question", "segnali di instradamento deboli: la skill\nscatta male o non scatta mai"),
+             ("Mega-skill", "stack", "uno scope che fa tutto confonde l'intento\ne si sovrappone alle altre"),
+             ("Elenchi di fatti", "database", "una skill guida, non sostituisce\nuna fonte Knowledge"),
+             ("Skill non riviste", "warning-octagon", "le skill da AI o community sono codice\nnon attendibile: rivederle prima")]
+    for i, (label, icon, sub) in enumerate(avoid):
+        d.node(465, 62 + i * 86, 350, label, icon, "risk", sub, white=True, h=76)
+    d.save()
+
+
+def gh_concetti_conoscenza():
+    """Come l'orchestratore recupera la conoscenza SharePoint: ricerca, classifica, recupero, elaborazione."""
+    d = Diagram("gh-concetti-conoscenza", F)
+    lw = 430
+    d.lane(20, 20, lw, 132, "In SharePoint", "logo:sharepoint", "knowledge")
+    d.lane(20 + lw + 30, 20, lw, 132, "Nell'Agent Sandbox", "terminal-window", "github")
+    nw = 180
+    xs = [35, 35 + nw + 40, 20 + lw + 45, 20 + lw + 45 + nw + 40]
+    steps = [("Ricerca", "magnifying-glass", "knowledge", "ricerca semantica\ne snippet", "gc-ricerca"),
+             ("Classifica", "chart-bar", "knowledge", "quali documenti\nservono davvero", "gc-classifica"),
+             ("Recupero", "file-arrow-down", "github", "scarica i file\ncompleti", "gc-recupero"),
+             ("Elaborazione", "package", "github", "struttura e metadati\nin cache", "gc-elaborazione")]
+    ns = [d.node(x, 62, nw, label, icon, fam, sub, white=True, h=76, detail=det)
+          for x, (label, icon, fam, sub, det) in zip(xs, steps)]
+    for a, b in zip(ns, ns[1:]):
+        d.arrow([(a["r"], a["cy"]), (b["x"], b["cy"])], "ai-engine")
+    end = d.node(20, 192, 2 * lw + 30, "Disponibile nell'Agent Sandbox", "terminal-window", "ai-engine",
+                 "I file SharePoint completi restano nel contenitore della sandbox dell'agente per il resto della conversazione,\n"
+                 "nel formato elaborato: le domande successive trovano risposta da ciò che è già stato recuperato\n"
+                 "e le ricerche non si ripetono, salvo che servano altre informazioni.")
+    cx = 20 + lw + 30 + lw / 2
+    d.arrow([(cx, 152), (cx, end["y"])], "ai-engine", dashed=True)
+    d.save()
+
+
+def gh_concetti_sandbox():
+    """Agent Sandbox: che cosa può fare l'agente nello spazio isolato Linux/Python, e che cosa non può fare."""
+    d = Diagram("gh-concetti-sandbox", F)
+    d.lane(20, 20, 650, 218, "Che cosa può fare l'agente nella sandbox", "terminal-window", "github")
+    cells = [("Eseguire comandi", "terminal-window", "utility Bash/Linux per file, tabelle\ne validazioni"),
+             ("Scrivere script", "code", "codice Python per logica ripetibile,\ntrasformazioni e calcoli"),
+             ("Generare artefatti", "file-code", "grafici, file PowerPoint, Word, Excel\ne PDF, dataset puliti, immagini"),
+             ("Usata in automatico quando", "lightning", "il compito richiede calcolo esatto,\nparsing, validazione o creazione di file")]
+    for i, (label, icon, sub) in enumerate(cells):
+        d.node(35 + (i % 2) * 315, 62 + (i // 2) * 86, 305, label, icon, "github", sub, white=True, h=76)
+    d.node(20, 264, 320, "Librerie preinstallate", "package", "github", "dati e grafici, file, parsing\ne OCR, matematica e logica",
+           h=76, detail="gc-librerie")
+    d.node(350, 264, 320, "Nessun Internet in uscita", "wifi-slash", "risk",
+           "le attività esterne passano da Tool e\nKnowledge, così valgono le policy DLP", h=76)
+    d.save()
+
+
+def gh_concetti_evoluzione():
+    """Dai cloud flow agli agent flow ai workflow: tre fatti per ciascuno."""
+    d = Diagram("gh-concetti-evoluzione", F)
+    lw, gap = 280, 30
+    cols = [("Cloud flows", "cloud", "system",
+             [("Flessibile", "sliders-horizontal", "automatizza processi tra\napp e servizi"),
+              ("Gira in Power Automate", "logo:power-automate", None),
+              ("Connettori", "plugs-connected", "standard e premium")]),
+            ("Agent flows", "arrow-bend-up-right", "standard",
+             [("Per gli agenti", "robot", "esperienza ottimizzata per le\nautomazioni degli agenti"),
+              ("Gira in Copilot Studio", "logo:copilot-studio", None),
+              ("Connettori per agenti", "plugs-connected", "ottimizzati per le azioni\ndegli agenti")]),
+            ("Workflows", "share-network", "github",
+             [("Tela migliorata", "sparkle", "per costruire automazioni\nagentiche in Copilot Studio"),
+              ("Gira in Copilot Studio", "logo:copilot-studio", None),
+              ("Nodi AI nativi", "brain", "e un agent designer inline")])]
+    lanes = []
+    for i, (title, icon, fam, facts) in enumerate(cols):
+        x = 20 + i * (lw + gap)
+        lanes.append(d.lane(x, 20, lw, 304, title, icon, fam))
+        for k, (label, nicon, sub) in enumerate(facts):
+            d.node(x + 15, 62 + k * 86, lw - 30, label, nicon, fam, sub, white=True, h=76)
+    yb = lanes[0]["b"] + 36
+    l1, l2, l3 = lanes
+    a1, b1 = l1["x"] + l1["w"] / 2, l2["x"] + l2["w"] * 0.25
+    a2, b2 = l2["x"] + l2["w"] * 0.65, l3["x"] + l3["w"] / 2
+    d.arrow([(a1, l1["b"]), (a1, yb), (b1, yb), (b1, l2["b"])], "ai-engine",
+            label="Ottimizzato per Copilot Studio", at=((a1 + b1) / 2, yb))
+    d.arrow([(a2, l2["b"]), (a2, yb), (b2, yb), (b2, l3["b"])], "ai-engine",
+            label="Ottimizzato per l'automazione agentica", at=((a2 + b2) / 2, yb))
+    d.save()
+
+
+def gh_concetti_agenti_workflow():
+    """Agente (percorso agile) e workflow (percorso prevedibile): come sono fatti e quando scegliere l'uno o l'altro."""
+    d = Diagram("gh-concetti-agenti-workflow", F)
+    bot = 556
+    lw1, lx2, lw2 = 460, 505, 442
+    d.lane(20, 20, lw1, bot - 20, "Agenti · percorso agile", "robot", "github")
+    o = d.node(35, 184, 170, "Orchestratore", "robot", "github", "ciclo di\nragionamento", white=True, h=76)
+    tx = 35 + 170 + 35
+    tools = [("Skill", "puzzle-piece", "topics"), ("Esecuzione di codice", "terminal-window", "ai-engine"),
+             ("Tool (workflow)", "tree-view", "tools")]
+    bus = o["r"] + 17
+    for i, (label, icon, fam) in enumerate(tools):
+        n = d.node(tx, 62 + i * 130, 225, label, icon, fam, white=True, h=60)
+        d.arrow([(o["r"], o["cy"]), (bus, o["cy"]), (bus, n["cy"]), (n["x"], n["cy"])], "github", dashed=True)
+    d.lane(lx2, 20, lw2, bot - 20, "Workflow · percorso prevedibile", "share-network", "tools")
+    cx = lx2 + lw2 / 2
+    tr = d.node(cx - 100, 62, 200, "Trigger", "lightning", "triggers", white=True)
+    ie = d.node(cx - 100, 140, 200, "If/Else", "git-branch", "system", "condizione", white=True)
+    d.arrow([(tr["cx"], tr["b"]), (ie["cx"], ie["y"])], "tools")
+    ybus, top = ie["b"] + 16, ie["b"] + 56
+    xa, xb = cx - 106, cx + 106
+    d.arrow([(ie["cx"], ie["b"]), (ie["cx"], ybus), (xa, ybus), (xa, top)], "tools")
+    d.arrow([(ie["cx"], ie["b"]), (ie["cx"], ybus), (xb, ybus), (xb, top)], "tools")
+    outs = [(xa, "Genera output", "brain", "ragiona e genera\n(Agente)", "agents"),
+            (xb, "Scrittura su sistema", "plugs-connected", "azione di scrittura\n(Connettore)", "tools")]
+    for x, label, icon, sub, fam in outs:
+        da = d.node(x - 100, top, 200, "Operazione sui dati", "database", "knowledge", white=True)
+        ob = d.node(x - 100, top + 78, 200, label, icon, fam, sub, white=True, h=76)
+        d.arrow([(x, da["b"]), (x, ob["y"])], "tools")
+    texts = [(35, lw1 - 30, ["Il percorso è agile, alcuni processi sono prevedibili.",
+                             "L'orchestratore chiama passi ben strutturati e ripetibili (flow e codice) per azioni di natura deterministica.",
+                             "Es. intake sanitario: l'esito consultivo nasce da un dialogo multi-turno con il paziente."]),
+             (lx2 + 15, lw2 - 30, ["Il percorso è prevedibile, alcuni processi sono agili.",
+                                   "Inizio e fine del flusso (uno o più) sono noti in anticipo, con capacità AI incorporate dove un passo richiede ragionamento o giudizio.",
+                                   "Es. approvazione spese: le nuove voci possono portare a un percorso rapido o a un controllo di policy."])]
+    for x, width, paras in texts:
+        rows = sum(len(_wrap(p, width)) for p in paras)
+        y = bot - 16 - 17 * rows - 8 * (len(paras) - 1) + 4
+        for k, p in enumerate(paras):
+            y = d.paragraph(x, y, p, width, "dg-body" if k < 2 else "dg-sub") + 8
+    d.save()
+
+
+def _wrap(text, width, size=12):
+    """Righe in cui paragraph() divide un testo (per calcolarne l'altezza)."""
+    rows, cur = [], ""
+    for wd in text.split(" "):
+        if cur and text_width(cur + " " + wd, size) > width:
+            rows.append(cur)
+            cur = wd
+        else:
+            cur = (cur + " " + wd).strip()
+    return rows + [cur]
+
+
+def gh_concetti_crediti():
+    """Copilot Credits lungo il ciclo di vita: la standard harness fattura dopo la pubblicazione, la GitHub Copilot harness sempre."""
+    d = Diagram("gh-concetti-crediti", F)
+    x1, x2, cw = 255, 515, 250
+    d.node(x1, 20, cw, "Standard harness", "robot", "standard")
+    d.node(x2, 20, cw, "GitHub Copilot harness", GHA, "github")
+    phases = [("Creazione", "plus-circle"), ("Build", "pencil-simple-line"), ("Preview e test", "play-circle"),
+              ("Valutazione", "list-checks"), ("Uso per gli utenti", "users-three")]
+    for i, (label, icon) in enumerate(phases):
+        y = 82 + i * 58
+        d.node(20, y, 215, label, icon, "system")
+        if i < 4:
+            d.chip(x1, y, cw, 48, "Non fatturato", "system")
+        else:
+            d.node(x1, y, cw, "Dopo la pubblicazione", "coins", "standard")
+        d.node(x2, y, cw, "Crediti", "coins", "github")
+    d.node(20, 82 + 5 * 58 + 8, 745, "Licenza Microsoft 365 Copilot", "shield-check", "platform",
+           "copre gli agenti della standard harness usati nei canali Microsoft 365, mai quelli della\n"
+           "GitHub Copilot harness: creazione ed esecuzione si fatturano qualunque sia la licenza dell'utente")
+    d.save()
+
+
 if __name__ == "__main__":
     failed = []
     for build in (panoramica, architettura_standard, workflow_chat, workflow_email_standard,
                   workflow_dossier, workflow_revisione, workflow_csat,
                   lab01_percorso, lab02_fonti, lab03_agente, lab03_supporto, lab03_ticket,
-                  lab04_agente, lab04_topic, lab05_agente, lab05_sequenza, lab05_available, lab05_request):
+                  lab04_agente, lab04_topic, lab05_agente, lab05_sequenza, lab05_available, lab05_request,
+                  gh_lab01_percorso, gh_lab02_fonti, gh_lab03_strumenti, gh_lab04_skill, gh_lab05_workflow,
+                  gh_concetti_orchestrazione, gh_concetti_componenti, gh_concetti_skill, gh_concetti_conoscenza,
+                  gh_concetti_sandbox, gh_concetti_evoluzione, gh_concetti_agenti_workflow, gh_concetti_crediti):
         try:
             build()
         except LayoutError as e:

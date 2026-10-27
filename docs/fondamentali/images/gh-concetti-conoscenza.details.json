@@ -1,0 +1,92 @@
+{
+ "diagram": "gh-concetti-conoscenza",
+ "details": {
+  "gc-ricerca": {
+   "title": "Ricerca",
+   "icon": "magnifying-glass",
+   "fam": "knowledge",
+   "lab": "Lab 02",
+   "role": "L'orchestratore cerca solo la conoscenza che gli serve, nelle fonti SharePoint.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Ricerche semantiche",
+     "icon": "magnifying-glass",
+     "fam": "knowledge",
+     "sub": "su tutte le fonti di conoscenza SharePoint"
+    },
+    {
+     "label": "Snippet corrispondenti",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "restituiti all'orchestratore"
+    }
+   ]
+  },
+  "gc-classifica": {
+   "title": "Classifica",
+   "icon": "chart-bar",
+   "fam": "knowledge",
+   "lab": "Lab 02",
+   "role": "Dagli snippet ai documenti che contano davvero.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Classifica gli snippet",
+     "icon": "chart-bar",
+     "fam": "knowledge"
+    },
+    {
+     "label": "Decide quali documenti sono pertinenti",
+     "icon": "target",
+     "fam": "knowledge",
+     "sub": "davvero rilevanti per il compito"
+    }
+   ]
+  },
+  "gc-recupero": {
+   "title": "Recupero",
+   "icon": "file-arrow-down",
+   "fam": "github",
+   "lab": "Lab 02",
+   "role": "I file completi, non solo gli snippet, entrano nella sandbox.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Scarica i file completi",
+     "icon": "file-arrow-down",
+     "fam": "github",
+     "sub": "nel contenitore della sandbox dell'agente"
+    },
+    {
+     "label": "Elaborazione abilitata",
+     "icon": "gear-six",
+     "fam": "github",
+     "sub": "per usarli nella conversazione"
+    }
+   ]
+  },
+  "gc-elaborazione": {
+   "title": "Elaborazione",
+   "icon": "package",
+   "fam": "github",
+   "lab": "Lab 02",
+   "role": "I file sono pre-elaborati e tenuti nel contenitore dell'agente.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Pre-elaborazione",
+     "icon": "gear-six",
+     "fam": "github",
+     "sub": "con struttura e metadati"
+    },
+    {
+     "label": "In cache nel contenitore dell'agente",
+     "icon": "database",
+     "fam": "github",
+     "sub": "per sostenere risposte rapide durante la conversazione"
+    }
+   ]
+  }
+ }
+}

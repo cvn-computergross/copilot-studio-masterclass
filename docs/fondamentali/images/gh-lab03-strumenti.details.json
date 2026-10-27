@@ -1,0 +1,161 @@
+{
+ "diagram": "gh-lab03-strumenti",
+ "details": {
+  "g03-strumenti": {
+   "title": "Istruzioni · Strumenti ed email",
+   "icon": "clipboard-text",
+   "fam": "instructions",
+   "lab": "Lab 03",
+   "role": "Regole valide a ogni turno e per ogni procedura che usa gli strumenti, comprese le skill del Lab 04: restano nelle istruzioni.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Profilo",
+     "icon": "user-circle",
+     "fam": "tools",
+     "sub": "nome ed email con Get my profile (V2), senza chiederli all'utente"
+    },
+    {
+     "label": "Anteprima e conferma",
+     "icon": "check-circle",
+     "fam": "instructions",
+     "sub": "destinatario, oggetto e testo prima dell'invio, conferma esplicita; un solo invio per conferma"
+    },
+    {
+     "label": "Un solo destinatario",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "solo l'indirizzo letto dal profilo, anche per copia e copia nascosta; per un collega si suggerisce di inoltrare dalla propria casella"
+    },
+    {
+     "label": "Saluto",
+     "icon": "chat-text",
+     "fam": "instructions",
+     "sub": "nelle email, in apertura Ciao seguito dal nome dell'utente"
+    },
+    {
+     "label": "Nessuna credenziale",
+     "icon": "key",
+     "fam": "risk",
+     "sub": "mai password, codici MFA o PIN nelle guide e nelle email: si indica solo dove inserirli"
+    }
+   ]
+  },
+  "g03-guide": {
+   "title": "Istruzioni · Guide passo passo",
+   "icon": "clipboard-text",
+   "fam": "instructions",
+   "lab": "Lab 03",
+   "role": "Sezione provvisoria: nel Lab 04 la procedura passa alla skill guida-passo-passo e lascia le istruzioni.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Dati da raccogliere",
+     "icon": "list-checks",
+     "fam": "instructions",
+     "sub": "attività (titolo breve), categoria, dispositivo, livello Base, Intermedio o Avanzato, eventuale errore; solo i mancanti, in un messaggio"
+    },
+    {
+     "label": "Procedura",
+     "icon": "book-open-text",
+     "fam": "knowledge",
+     "sub": "dalle fonti dell'Help Desk; altrimenti passaggi standard Microsoft con (verificare con l'IT)"
+    },
+    {
+     "label": "Guida in Markdown",
+     "icon": "file-text",
+     "fam": "instructions",
+     "sub": "Riepilogo, Prima di iniziare, Procedura (da 5 a 12 passaggi), Verifica, Problemi comuni, Sicurezza, Serve ancora aiuto?"
+    },
+    {
+     "label": "Testi ufficiali",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "intestazione, Sicurezza e Serve ancora aiuto?: segnaposto [Testo ufficiale da inserire], nessun contatto inventato"
+    },
+    {
+     "label": "Per l'email",
+     "icon": "envelope-simple",
+     "fam": "tools",
+     "sub": "HTML semplice; oggetto Guida: più il titolo breve, al massimo 8 parole"
+    }
+   ]
+  },
+  "g03-profile": {
+   "title": "Get my profile (V2)",
+   "icon": "user-circle",
+   "fam": "tools",
+   "lab": "Lab 03",
+   "role": "Azione del connettore Office 365 Users: legge il profilo Microsoft 365 dell'utente che usa l'agente, e nient'altro.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Add a tool › Connectors",
+     "icon": "plugs-connected",
+     "fam": "tools",
+     "sub": "cercare Get my profile, azione Get my profile (V2) di Office 365 Users; connessione e Add"
+    },
+    {
+     "label": "Description for Intelligence",
+     "icon": "note-pencil",
+     "fam": "tools",
+     "sub": "in sintesi: restituisce displayName e mail dell'utente corrente, per indirizzare e salutare; non cerca altri dipendenti"
+    },
+    {
+     "label": "Select fields",
+     "icon": "funnel",
+     "fam": "tools",
+     "sub": "Advanced parameters, Custom: displayName,mail (il parametro $select di Microsoft Graph)"
+    },
+    {
+     "label": "Authentication",
+     "icon": "shield-check",
+     "fam": "platform",
+     "sub": "End user account: il profilo letto è quello di chi scrive, poi Done e Save"
+    }
+   ]
+  },
+  "g03-invia": {
+   "title": "Invia guida via email",
+   "icon": "logo:outlook",
+   "fam": "tools",
+   "lab": "Lab 03",
+   "role": "Azione Send an email (V2) di Office 365 Outlook, rinominata: invia la guida all'utente stesso, dopo la sua conferma.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Send an email (V2)",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Office 365 Outlook; matita accanto al nome per rinominarla Invia guida via email",
+     "file": "outlook.png"
+    },
+    {
+     "label": "Description for Intelligence",
+     "icon": "note-pencil",
+     "fam": "tools",
+     "sub": "in sintesi: solo dopo la conferma; destinatario solo l'indirizzo di Get my profile (V2); oggetto Guida: più titolo breve; corpo in HTML con saluto; mai credenziali"
+    },
+    {
+     "label": "To · Subject · Body",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "Fill with Intelligence; CC, BCC e Reply To lasciati vuoti"
+    },
+    {
+     "label": "Importance",
+     "icon": "sliders-horizontal",
+     "fam": "tools",
+     "sub": "Custom: Normal"
+    },
+    {
+     "label": "Authentication",
+     "icon": "shield-check",
+     "fam": "platform",
+     "sub": "End user account: l'email parte dalla casella di chi usa l'agente"
+    }
+   ],
+   "file": "outlook.png"
+  }
+ }
+}

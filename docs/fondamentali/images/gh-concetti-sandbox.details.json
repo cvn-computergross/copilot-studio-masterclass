@@ -1,0 +1,39 @@
+{
+ "diagram": "gh-concetti-sandbox",
+ "details": {
+  "gc-librerie": {
+   "title": "Librerie preinstallate",
+   "icon": "package",
+   "fam": "github",
+   "lab": "Concetto",
+   "role": "Alcune delle librerie già presenti nella sandbox, per gruppo.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Dati e grafici",
+     "icon": "chart-bar",
+     "fam": "github",
+     "sub": "pandas, numpy, matplotlib, plotly"
+    },
+    {
+     "label": "File",
+     "icon": "files",
+     "fam": "github",
+     "sub": "openpyxl, pptx/docx, pypdf"
+    },
+    {
+     "label": "Parsing e OCR",
+     "icon": "magnifying-glass",
+     "fam": "github",
+     "sub": "BeautifulSoup, lxml, pdfplumber, Pillow, OpenCV"
+    },
+    {
+     "label": "Matematica e logica",
+     "icon": "function",
+     "fam": "github",
+     "sub": "sympy, PyYAML, Jinja2, reportlab"
+    }
+   ]
+  }
+ }
+}

@@ -11,7 +11,7 @@ Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdo
 | [Student info](./docs/info.md) | Accounts, sandbox and what happens at the end of the course |
 | **Fundamentals** | The basics of Copilot Studio |
 | [Standard Harness](./docs/fondamentali/standard-harness/index.md) | Labs 01-05 in the Copilot Studio portal |
-| [GitHub Harness](./docs/fondamentali/github-harness/index.md) | Work in progress |
+| [GitHub Harness](./docs/fondamentali/github-harness/index.md) | Labs 01-05 with the GitHub Copilot harness |
 | **Advanced** | The case study: the Demand IT agent of Zava's PMO, starting from [Lab 00](./docs/advanced/standard-harness/00-setup-dati/README.md) |
 | [Standard Harness](./docs/advanced/standard-harness/index.md) | Data setup and labs S01-S08 |
 | [GitHub Harness](./docs/advanced/github-harness/index.md) | Work in progress |

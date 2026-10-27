@@ -1,0 +1,211 @@
+{
+ "diagram": "gh-concetti-componenti",
+ "details": {
+  "gc-istruzioni": {
+   "title": "Instructions",
+   "icon": "clipboard-text",
+   "fam": "instructions",
+   "lab": "Lab 02",
+   "role": "Ciò che vale in ogni conversazione, non solo in alcune.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Tutto ciò che è generale",
+     "icon": "target",
+     "fam": "instructions",
+     "sub": "ruolo, ambito, tono, regole di sicurezza"
+    },
+    {
+     "label": "Indicazioni sempre attive",
+     "icon": "check-circle",
+     "fam": "instructions"
+    }
+   ]
+  },
+  "gc-knowledge": {
+   "title": "Knowledge",
+   "icon": "books",
+   "fam": "knowledge",
+   "lab": "Lab 02",
+   "role": "I fatti da cercare e citare.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Fatti cercabili, semantici",
+     "icon": "magnifying-glass",
+     "fam": "knowledge"
+    },
+    {
+     "label": "Documenti, siti, file",
+     "icon": "files",
+     "fam": "knowledge"
+    },
+    {
+     "label": "Fondano le risposte",
+     "icon": "chat-text",
+     "fam": "knowledge"
+    }
+   ]
+  },
+  "gc-tools": {
+   "title": "Tools",
+   "icon": "wrench",
+   "fam": "tools",
+   "lab": "Lab 03",
+   "role": "Azioni e dati in tempo reale.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Ricerche live e API",
+     "icon": "globe",
+     "fam": "tools"
+    },
+    {
+     "label": "Operazioni CRUD",
+     "icon": "database",
+     "fam": "tools"
+    },
+    {
+     "label": "Azioni su sistemi esterni",
+     "icon": "plugs-connected",
+     "fam": "tools"
+    }
+   ]
+  },
+  "gc-memory": {
+   "title": "Memory",
+   "icon": "stack",
+   "fam": "system",
+   "lab": "Lab 03",
+   "role": "Il contesto che resta tra una sessione e l'altra.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Contesto persistente",
+     "icon": "stack",
+     "fam": "system"
+    },
+    {
+     "label": "Storico delle preferenze per utente",
+     "icon": "user-circle",
+     "fam": "system"
+    }
+   ]
+  },
+  "gc-sandbox": {
+   "title": "Agent Sandbox",
+   "icon": "terminal-window",
+   "fam": "ai-engine",
+   "lab": "Concetto",
+   "role": "L'esecuzione di codice dentro il ciclo, quando il ragionamento non basta.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Analisi ad hoc",
+     "icon": "chart-bar",
+     "fam": "ai-engine"
+    },
+    {
+     "label": "Esecuzione di codice e strumenti shell",
+     "icon": "terminal-window",
+     "fam": "ai-engine"
+    },
+    {
+     "label": "Manipolazione dei dati",
+     "icon": "table",
+     "fam": "ai-engine"
+    }
+   ]
+  },
+  "gc-skillmd": {
+   "title": "SKILL.md",
+   "icon": "file-text",
+   "fam": "topics",
+   "lab": "Lab 04",
+   "role": "Il file della skill: il testo che l'orchestratore legge quando la richiama.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Procedura o contesto",
+     "icon": "file-text",
+     "fam": "topics",
+     "sub": "testuale, utile per un argomento o un compito specifico"
+    },
+    {
+     "label": "Decisioni future",
+     "icon": "target",
+     "fam": "topics",
+     "sub": "può influenzare le decisioni di pianificazione che seguono"
+    },
+    {
+     "label": "Suggerisce, non impone",
+     "icon": "git-branch",
+     "fam": "topics",
+     "sub": "può suggerire un flow, ma non farlo rispettare"
+    }
+   ]
+  },
+  "gc-skillfile": {
+   "title": "File di supporto della skill",
+   "icon": "file-code",
+   "fam": "topics",
+   "lab": "Lab 04",
+   "role": "Codice e file accanto a SKILL.md, eseguiti in una sandbox.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Python o file di aiuto",
+     "icon": "file-code",
+     "fam": "topics",
+     "sub": "girano in una sandbox; possono usare un set di librerie; nessun accesso in uscita"
+    },
+    {
+     "label": "Logica locale complessa",
+     "icon": "function",
+     "fam": "topics",
+     "sub": "o elaborazione di dati"
+    },
+    {
+     "label": "Solo se la skill viene letta",
+     "icon": "eye",
+     "fam": "topics",
+     "sub": "si usano solo se l'orchestratore legge la skill"
+    }
+   ]
+  },
+  "gc-agenti": {
+   "title": "Agenti connessi",
+   "icon": "users-three",
+   "fam": "agents",
+   "lab": "Concetto",
+   "role": "Un altro agente a cui delegare un ambito specializzato.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Delega solo se serve",
+     "icon": "users-three",
+     "fam": "agents",
+     "sub": "ambito specializzato"
+    },
+    {
+     "label": "Risorse proprie",
+     "icon": "toolbox",
+     "fam": "agents",
+     "sub": "istruzioni, tool, skill e knowledge"
+    },
+    {
+     "label": "Per grandi sotto-domini",
+     "icon": "stack",
+     "fam": "agents",
+     "sub": "che richiedono un'orchestrazione diversa di skill e tool"
+    },
+    {
+     "label": "Non per piccoli compiti",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "fuori dai grandi scenari, dividere compiti piccoli in agenti connessi non aumenta l'accuratezza"
+    }
+   ]
+  }
+ }
+}

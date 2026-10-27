@@ -1,0 +1,200 @@
+{
+ "diagram": "gh-lab04-skill",
+ "details": {
+  "g04-procedure": {
+   "title": "Istruzioni · Procedure",
+   "icon": "clipboard-text",
+   "fam": "instructions",
+   "lab": "Lab 04",
+   "role": "Sostituiscono la sezione Guide passo passo: una riga per skill, il dettaglio resta nelle skill.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "supporto-tecnico",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "problema tecnico con un dispositivo, un'applicazione o la rete"
+    },
+    {
+     "label": "apertura-ticket",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "aprire un ticket di assistenza per il reparto IT"
+    },
+    {
+     "label": "guida-passo-passo",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "preparare una guida passo passo e inviarla per email all'utente"
+    },
+    {
+     "label": "# Strumenti ed email",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "resta nelle istruzioni: le sue regole valgono anche quando l'invio parte da una skill",
+     "lab": "Lab 03"
+    }
+   ]
+  },
+  "g04-supporto": {
+   "title": "supporto-tecnico",
+   "icon": "puzzle-piece",
+   "fam": "topics",
+   "lab": "Lab 04",
+   "role": "Checklist approvata di primo livello per hardware, software o rete e, se il problema resta, riepilogo per l'escalation.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Upload a skill",
+     "icon": "upload-simple",
+     "fam": "topics",
+     "sub": "file SKILL.md: Skills › Upload a skill, poi rileggere le istruzioni e Save"
+    },
+    {
+     "label": "Capisci e classifica",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "Hardware, Software o Rete; se non è chiaro, chiede di scegliere fra le tre categorie"
+    },
+    {
+     "label": "Checklist",
+     "icon": "list-numbers",
+     "fam": "topics",
+     "sub": "tabella con le colonne Passo e Azione, senza aggiungere passi non presenti nell'elenco; poi chiede se il problema è risolto"
+    },
+    {
+     "label": "Escalation",
+     "icon": "arrow-bend-up-right",
+     "fam": "system",
+     "sub": "se il problema persiste dopo due tentativi consiglia un ticket e prepara il riepilogo: categoria, applicazione, sintomi, errori, passi, esito"
+    },
+    {
+     "label": "Esclusioni",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "non per reset di password, sblocco di account o richieste di nuovi dispositivi"
+    }
+   ]
+  },
+  "g04-ticket": {
+   "title": "apertura-ticket",
+   "icon": "puzzle-piece",
+   "fam": "topics",
+   "lab": "Lab 04",
+   "role": "Skill scritta da zero (Create from blank): raccoglie cinque campi validati e mostra il riepilogo da confermare.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Create from blank",
+     "icon": "note-pencil",
+     "fam": "topics",
+     "sub": "Name apertura-ticket; Description e Instructions, poi Create e Save"
+    },
+    {
+     "label": "Dati da raccogliere",
+     "icon": "table",
+     "fam": "topics",
+     "sub": "Nome, Cognome, Email (nome@dominio), Tipologia (Hardware, Software, Rete, Altro), Descrizione (massimo 2.000 caratteri)"
+    },
+    {
+     "label": "Riuso e validazione",
+     "icon": "check-circle",
+     "fam": "topics",
+     "sub": "non richiede ciò che è già detto; campi mancanti in un solo messaggio; se email o tipologia non sono valide, corregge solo quel campo"
+    },
+    {
+     "label": "Riepilogo e conferma",
+     "icon": "table",
+     "fam": "topics",
+     "sub": "tabella Campo e Valore e Confermi l'invio del ticket al reparto IT?; se l'utente annulla, nessun dato conservato"
+    },
+    {
+     "label": "Limite onesto",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "prepara il ticket ma non dichiara mai che è stato registrato in un sistema"
+    }
+   ]
+  },
+  "g04-guida": {
+   "title": "guida-passo-passo",
+   "icon": "puzzle-piece",
+   "fam": "topics",
+   "lab": "Lab 04",
+   "role": "Guida con template e testi fissi del Service Desk, letti da due file di riferimento; su richiesta la invia all'utente.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Upload a skill",
+     "icon": "upload-simple",
+     "fam": "topics",
+     "sub": "guida-passo-passo.zip: SKILL.md alla radice e cartella riferimenti; SKILL.md in UTF-8 senza BOM"
+    },
+    {
+     "label": "Descrizione",
+     "icon": "note-pencil",
+     "fam": "topics",
+     "sub": "quando chiede una guida passo passo; esclusioni: non per diagnosticare un guasto né per aprire un ticket"
+    },
+    {
+     "label": "riferimenti/template-guida.md",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "input, ordine delle sezioni e tono per livello, come nel Lab 03"
+    },
+    {
+     "label": "riferimenti/contenuti-aziendali.md",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "testi ufficiali del Service Desk, copiati parola per parola al posto del segnaposto"
+    },
+    {
+     "label": "Strumenti",
+     "icon": "wrench",
+     "fam": "tools",
+     "sub": "Get my profile (V2) per l'indirizzo, Invia guida via email per l'invio; anteprima e conferma restano nelle istruzioni"
+    }
+   ]
+  },
+  "g04-contenuti": {
+   "title": "contenuti-aziendali.md",
+   "icon": "file-text",
+   "fam": "knowledge",
+   "lab": "Lab 04",
+   "role": "I testi fissi del Service Desk, in un file che l'Help Desk può aggiornare senza toccare i passaggi della skill.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Intestazione",
+     "icon": "stamp",
+     "fam": "knowledge",
+     "sub": "Service Desk IT - Zava S.p.A."
+    },
+    {
+     "label": "Avviso di sicurezza",
+     "icon": "shield-check",
+     "fam": "platform",
+     "sub": "il Service Desk non chiede mai password o codici di verifica"
+    },
+    {
+     "label": "Contatti del Service Desk",
+     "icon": "headset",
+     "fam": "knowledge",
+     "sub": "email, interno 4357, orari e portale (dominio dimostrativo zava-demo.example)"
+    },
+    {
+     "label": "Frase di chiusura",
+     "icon": "chat-text",
+     "fam": "instructions",
+     "sub": "da copiare parola per parola"
+    },
+    {
+     "label": "Aggiornare un testo",
+     "icon": "arrows-clockwise",
+     "fam": "lifecycle",
+     "sub": "modificare il file, ricreare lo zip e, nel pannello della skill, … › Replace"
+    }
+   ]
+  }
+ }
+}

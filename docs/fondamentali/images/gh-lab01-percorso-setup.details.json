@@ -1,0 +1,305 @@
+{
+ "diagram": "gh-lab01-percorso-setup",
+ "details": {
+  "g01-ambiente": {
+   "title": "Ambiente del corso",
+   "icon": "tray",
+   "fam": "platform",
+   "lab": "Lab 01",
+   "role": "Ambiente separato da quello predefinito, con Dataverse e Copilot Credits disponibili: in tutti i lab si lavora qui.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Power Apps Developer Plan",
+     "icon": "globe",
+     "fam": "platform",
+     "sub": "aka.ms/PowerAppsDevPlan"
+    },
+    {
+     "label": "Start free",
+     "icon": "user-check",
+     "fam": "platform",
+     "sub": "email address, checkbox, poi Start free"
+    },
+    {
+     "label": "Power Apps",
+     "icon": "logo:power-apps",
+     "fam": "lifecycle",
+     "sub": "si apre make.powerapps.com con il nuovo ambiente, da usare per tutti i lab",
+     "file": "power-apps.svg"
+    },
+    {
+     "label": "Developer Plan in dismissione",
+     "icon": "warning",
+     "fam": "risk",
+     "sub": "dal 15 novembre 2026 non crea più l'ambiente: serve un ambiente di prova con Dataverse o uno dell'amministratore"
+    },
+    {
+     "label": "Copilot Credits",
+     "icon": "coins",
+     "fam": "platform",
+     "sub": "anche le prove in Preview li consumano: l'ambiente deve averne"
+    }
+   ]
+  },
+  "g01-accesso": {
+   "title": "Pubblicazione",
+   "icon": "shield-check",
+   "fam": "platform",
+   "lab": "Lab 01",
+   "role": "Con la trial la pubblicazione non è consentita per impostazione predefinita: serve il ruolo Copilot Studio Authors, assegnato a un security group.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Microsoft 365 admin center",
+     "icon": "users-three",
+     "fam": "platform",
+     "sub": "Teams & groups › Active teams & groups"
+    },
+    {
+     "label": "Add a security group",
+     "icon": "users-three",
+     "fam": "platform",
+     "sub": "Security groups: AgentCreators, Next, Create group"
+    },
+    {
+     "label": "Add members",
+     "icon": "user-plus",
+     "fam": "platform",
+     "sub": "Members › View all and manage members: il proprio account"
+    },
+    {
+     "label": "Power Platform admin center",
+     "icon": "sliders-horizontal",
+     "fam": "platform",
+     "sub": "Home › Manage › Tenant settings"
+    },
+    {
+     "label": "Copilot Studio Authors",
+     "icon": "shield-check",
+     "fam": "platform",
+     "sub": "da All Users al gruppo AgentCreators, Done e Save"
+    }
+   ]
+  },
+  "g01-esperienza": {
+   "title": "Nuova esperienza e ambiente",
+   "icon": "sliders-horizontal",
+   "fam": "platform",
+   "lab": "Lab 01",
+   "role": "In Copilot Studio convivono più harness: la nuova esperienza mostra i componenti della GitHub Copilot harness.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "New experience",
+     "icon": "sparkle",
+     "fam": "instructions",
+     "sub": "interruttore in alto a destra di Copilot Studio: attivo"
+    },
+    {
+     "label": "Home",
+     "icon": "github-logo",
+     "fam": "github",
+     "sub": "schede Agent, Workflow e App (preview) con l'indicazione GitHub Copilot; casella con Uses Copilot Credits"
+    },
+    {
+     "label": "Selettore di ambiente",
+     "icon": "tray",
+     "fam": "platform",
+     "sub": "in basso nella barra laterale: deve indicare l'ambiente del corso"
+    },
+    {
+     "label": "Nome e ID dell'ambiente",
+     "icon": "note-pencil",
+     "fam": "platform",
+     "sub": "l'ID è la sequenza dopo /environments/ nell'indirizzo: serve a confrontarlo con Power Apps"
+    }
+   ]
+  },
+  "g01-sito": {
+   "title": "Sito SharePoint Zava Help Desk",
+   "icon": "logo:sharepoint",
+   "fam": "knowledge",
+   "lab": "Lab 01",
+   "role": "Il sito in cui il team IT tiene i documenti e la lista dei dispositivi: nel Lab 02 diventa una fonte di conoscenza dell'agente.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Create site",
+     "icon": "logo:sharepoint",
+     "fam": "knowledge",
+     "sub": "Apps › SharePoint › Create site › Team site, modello Standard team, Use template",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Site name",
+     "icon": "textbox",
+     "fam": "knowledge",
+     "sub": "Zava Help Desk - Vostro Nome"
+    },
+    {
+     "label": "Site description",
+     "icon": "note-pencil",
+     "fam": "knowledge",
+     "sub": "Copilot Studio Masterclass"
+    },
+    {
+     "label": "Site address · Admin",
+     "icon": "link",
+     "fam": "knowledge",
+     "sub": "ZavaHelpDesk; Admin: il proprio account; poi Next, Create site e Finish"
+    },
+    {
+     "label": "Indirizzo da annotare",
+     "icon": "note-pencil",
+     "fam": "knowledge",
+     "sub": "https://<tenant>.sharepoint.com/sites/ZavaHelpDesk: serve nei Lab 02 e 05"
+    }
+   ],
+   "file": "sharepoint.png"
+  },
+  "g01-solution": {
+   "title": "Publisher e solution",
+   "icon": "package",
+   "fam": "lifecycle",
+   "lab": "Lab 01",
+   "role": "Il contenitore dell'agente, creato in Power Apps nello stesso ambiente di Copilot Studio e prima dell'agente: la solution si sceglie una volta sola.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Power Apps nell'ambiente giusto",
+     "icon": "logo:power-apps",
+     "fam": "lifecycle",
+     "sub": "make.powerapps.com: stesso ambiente di Copilot Studio (stesso ID); Solutions › + New solution",
+     "file": "power-apps.svg"
+    },
+    {
+     "group": "+ New publisher",
+     "icon": "stamp",
+     "fam": "lifecycle",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "CSM Solutions (GitHub)",
+       "icon": "stamp",
+       "fam": "lifecycle",
+       "sub": "Display name; Name CSMSolutionsGitHub"
+      },
+      {
+       "label": "Copilot Studio Masterclass",
+       "icon": "note-pencil",
+       "fam": "lifecycle",
+       "sub": "Description"
+      },
+      {
+       "label": "csg · 77000",
+       "icon": "key",
+       "fam": "lifecycle",
+       "sub": "Prefix e Choice value prefix"
+      }
+     ]
+    },
+    {
+     "group": "New solution",
+     "icon": "package",
+     "fam": "lifecycle",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Help Desk Zava (GitHub)",
+       "icon": "package",
+       "fam": "lifecycle",
+       "sub": "Display name; Name HelpDeskZavaGitHub, Version 1.0.0.0"
+      },
+      {
+       "label": "Set as your preferred solution",
+       "icon": "check-circle",
+       "fam": "lifecycle",
+       "sub": "Current preferred solution: Help Desk Zava (GitHub)"
+      },
+      {
+       "label": "More options",
+       "icon": "sliders-horizontal",
+       "fam": "lifecycle",
+       "sub": "campi lasciati vuoti, poi Create"
+      }
+     ]
+    }
+   ]
+  },
+  "g01-kb": {
+   "title": "Cartella Knowledge Base",
+   "icon": "folders",
+   "fam": "knowledge",
+   "lab": "Lab 01",
+   "role": "I documenti operativi dell'Help Desk, che il team aggiorna in SharePoint: nel Lab 02 l'agente li legge sempre nella versione corrente.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Documents › Create or upload › Folder",
+     "icon": "folders",
+     "fam": "knowledge",
+     "sub": "nome Knowledge Base"
+    },
+    {
+     "label": "Upload › Files",
+     "icon": "upload-simple",
+     "fam": "knowledge",
+     "sub": "Zava_Help_Desk_Playbook.docx, Zava_Help_Desk_SLA.docx, Zava_Incident_Report_Template_Example.docx"
+    },
+    {
+     "label": "Colonna Title",
+     "icon": "note-pencil",
+     "fam": "knowledge",
+     "sub": "Playbook Help Desk Zava; SLA Help Desk Zava; Modello ed esempio di incident report Zava"
+    },
+    {
+     "label": "Fuori dalla cartella",
+     "icon": "info",
+     "fam": "instructions",
+     "sub": "KB sul reset della password e guide VPN: nel Lab 02 si caricano direttamente nell'agente"
+    }
+   ]
+  },
+  "g01-dispositivi": {
+   "title": "Lista Dispositivi",
+   "icon": "table",
+   "fam": "knowledge",
+   "lab": "Lab 01",
+   "role": "L'inventario dei dispositivi aziendali: nel Lab 05 il workflow lo legge per decidere se il dispositivo richiesto è disponibile.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "New › List › From CSV",
+     "icon": "table",
+     "fam": "knowledge",
+     "sub": "Devices-CSM.csv, che contiene anche lo schema della lista"
+    },
+    {
+     "label": "Customize",
+     "icon": "sliders-horizontal",
+     "fam": "knowledge",
+     "sub": "tipi di colonna proposti, senza cambiarli; poi Next"
+    },
+    {
+     "label": "Nome della lista",
+     "icon": "textbox",
+     "fam": "knowledge",
+     "sub": "Dispositivi, poi Create"
+    },
+    {
+     "label": "Controllo",
+     "icon": "check-circle",
+     "fam": "knowledge",
+     "sub": "6 dispositivi: Contoso Phone Z con Status In use, gli altri cinque Available"
+    },
+    {
+     "label": "Valori in inglese",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "Status, Manufacturer, Asset type e Color sono colonne di scelta: non tradurre i valori né rinominare le colonne"
+    }
+   ]
+  }
+ }
+}

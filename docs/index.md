@@ -56,7 +56,7 @@ Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenz
 {.card-meta}
 
 </div>
-<div class="card card--link card--soon">
+<div class="card card--link">
 
 <!-- icon: logo-github --> [GitHub Harness](./fondamentali/github-harness/index.md){.card-title}
 {.card-head}

@@ -1,0 +1,293 @@
+{
+ "diagram": "gh-lab05-workflow",
+ "details": {
+  "g05-trigger": {
+   "title": "When an agent calls the workflow",
+   "icon": "lightning",
+   "fam": "triggers",
+   "lab": "Lab 05",
+   "role": "Il contratto in ingresso: tre input di testo, con le descrizioni che la skill richiesta-dispositivo usa al passaggio di invio.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Start › Trigger type",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "da Manual a When an agent calls the workflow (sulla tela può comparire When an agent calls the flow)"
+    },
+    {
+     "label": "sharepointItemId",
+     "icon": "brackets-curly",
+     "fam": "triggers",
+     "sub": "ID numerico dell'elemento della lista Dispositivi corrispondente al dispositivo scelto"
+    },
+    {
+     "label": "additionalComment",
+     "icon": "brackets-curly",
+     "fam": "triggers",
+     "sub": "requisiti aggiuntivi dell'utente; se non ce ne sono, Nessun requisito aggiuntivo"
+    },
+    {
+     "label": "requestorName",
+     "icon": "brackets-curly",
+     "fam": "triggers",
+     "sub": "nome visualizzato di chi richiede, come restituito da Get my profile (V2)"
+    }
+   ]
+  },
+  "g05-cerca": {
+   "title": "Cerca dispositivo",
+   "icon": "logo:sharepoint",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Una sola lettura della lista, filtrata sull'ID e limitata a un elemento: se non torna nulla l'ID non corrisponde a nessun dispositivo.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Get items",
+     "icon": "logo:sharepoint",
+     "fam": "tools",
+     "sub": "azione Get items di SharePoint, rinominata Cerca dispositivo",
+     "file": "sharepoint.png"
+    },
+    {
+     "label": "Site Address · List Name",
+     "icon": "link",
+     "fam": "tools",
+     "sub": "sito Zava Help Desk - Vostro Nome, lista Dispositivi"
+    },
+    {
+     "label": "Filter Query",
+     "icon": "funnel",
+     "fam": "tools",
+     "sub": "ID eq seguito dal contenuto dinamico sharepointItemId, senza apici perché ID è un numero"
+    },
+    {
+     "label": "Top Count",
+     "icon": "list-numbers",
+     "fam": "tools",
+     "sub": "1"
+    },
+    {
+     "label": "Test del nodo",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "con l'ID di Contoso Phone Z: Model CP-Z2022, Status con Value In use"
+    }
+   ],
+   "file": "sharepoint.png"
+  },
+  "g05-inventario": {
+   "title": "Dispositivo in inventario",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "Lab 05",
+   "role": "Primo bivio: una lista vuota non è un errore ma uno dei tre percorsi previsti, e si decide nel workflow.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Condizione If / Else",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "rinominata Dispositivo in inventario, dopo Cerca dispositivo"
+    },
+    {
+     "label": "Property",
+     "icon": "function",
+     "fam": "system",
+     "sub": "length(body('Cerca_dispositivo')?['value'])"
+    },
+    {
+     "label": "Operator · Value",
+     "icon": "sliders-horizontal",
+     "fam": "system",
+     "sub": "Greater, 0"
+    },
+    {
+     "label": "Branch name",
+     "icon": "note-pencil",
+     "fam": "system",
+     "sub": "il ramo If si chiama In Catalogo"
+    },
+    {
+     "label": "Ramo Else",
+     "icon": "arrow-bend-up-right",
+     "fam": "system",
+     "sub": "Respond to the agent con esito NON_IN_CATALOGO"
+    }
+   ]
+  },
+  "g05-disponibile": {
+   "title": "Dispositivo disponibile",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "Lab 05",
+   "role": "Secondo bivio, nel ramo In Catalogo: solo se lo stato è Available il workflow invia la richiesta al responsabile.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Condizione If / Else",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "nel ramo In Catalogo, con il nome Dispositivo disponibile"
+    },
+    {
+     "label": "Branch name",
+     "icon": "note-pencil",
+     "fam": "system",
+     "sub": "il ramo If si chiama Disponibile"
+    },
+    {
+     "label": "Property",
+     "icon": "function",
+     "fam": "system",
+     "sub": "first(body('Cerca_dispositivo')?['value'])?['Status']?['Value']"
+    },
+    {
+     "label": "Operator · Value",
+     "icon": "sliders-horizontal",
+     "fam": "system",
+     "sub": "Equals, Available"
+    },
+    {
+     "label": "Ramo Else",
+     "icon": "arrow-bend-up-right",
+     "fam": "system",
+     "sub": "Respond to the agent con esito ESAURITO, senza inviare nulla"
+    }
+   ]
+  },
+  "g05-risp-catalogo": {
+   "title": "Respond to the agent · NON_IN_CATALOGO",
+   "icon": "flow-arrow",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Risposta del percorso in cui nessun dispositivo ha quell'ID: nessuna richiesta inviata.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "esito",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "NON_IN_CATALOGO"
+    },
+    {
+     "label": "ModelValue",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "Nessun dispositivo"
+    },
+    {
+     "label": "Lo stesso contratto",
+     "icon": "check-circle",
+     "fam": "platform",
+     "sub": "output uguali agli altri due percorsi; Asynchronous response disattivata"
+    }
+   ]
+  },
+  "g05-avvisa": {
+   "title": "Avvisa responsabile",
+   "icon": "logo:outlook",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Azione Send an email di Office 365 Outlook, solo nel percorso del dispositivo disponibile.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Send an email",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Office 365 Outlook, rinominata Avvisa responsabile",
+     "file": "outlook.png"
+    },
+    {
+     "label": "To",
+     "icon": "at",
+     "fam": "tools",
+     "sub": "il proprio indirizzo (in produzione, la casella del responsabile di chi richiede)"
+    },
+    {
+     "label": "Subject",
+     "icon": "textbox",
+     "fam": "tools",
+     "sub": "Richiesta nuovo dispositivo da, seguito dal contenuto dinamico requestorName"
+    },
+    {
+     "label": "Body",
+     "icon": "file-text",
+     "fam": "tools",
+     "sub": "Richiesta inviata da, Produttore, Modello, Collegamento all'elemento, Requisiti aggiuntivi: ogni etichetta seguita dal suo valore"
+    },
+    {
+     "label": "Espressioni",
+     "icon": "function",
+     "fam": "system",
+     "sub": "first(body('Cerca_dispositivo')?['value'])?['Manufacturer']?['Value'], ?['Model'] e ?['{Link}']; additionalComment dal trigger"
+    }
+   ],
+   "file": "outlook.png"
+  },
+  "g05-risp-disponibile": {
+   "title": "Respond to the agent · DISPONIBILE",
+   "icon": "flow-arrow",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Risposta del percorso in cui il dispositivo è disponibile: la richiesta è già stata inviata al responsabile.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "esito",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "DISPONIBILE"
+    },
+    {
+     "label": "ModelValue",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "first(body('Cerca_dispositivo')?['value'])?['Model']"
+    },
+    {
+     "label": "Lo stesso contratto",
+     "icon": "check-circle",
+     "fam": "platform",
+     "sub": "i tre nodi Respond to the agent hanno gli stessi output, con gli stessi nomi e tipi"
+    },
+    {
+     "label": "Asynchronous response",
+     "icon": "sliders-horizontal",
+     "fam": "system",
+     "sub": "disattivata, nella sezione Networking di ogni nodo: l'agente aspetta l'esito"
+    }
+   ]
+  },
+  "g05-risp-esaurito": {
+   "title": "Respond to the agent · ESAURITO",
+   "icon": "flow-arrow",
+   "fam": "tools",
+   "lab": "Lab 05",
+   "role": "Risposta del percorso in cui il dispositivo esiste ma non è più disponibile: nessuna richiesta inviata.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "esito",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "ESAURITO"
+    },
+    {
+     "label": "ModelValue",
+     "icon": "brackets-curly",
+     "fam": "tools",
+     "sub": "first(body('Cerca_dispositivo')?['value'])?['Model']"
+    },
+    {
+     "label": "Lo stesso contratto",
+     "icon": "check-circle",
+     "fam": "platform",
+     "sub": "output uguali agli altri due percorsi; Asynchronous response disattivata"
+    }
+   ]
+  }
+ }
+}
