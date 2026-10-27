@@ -54,11 +54,6 @@ Per svolgere questo lab occorre avere:
 >
 > Ogni messaggio in **Preview** consuma Copilot Credits. Le domande di prova di questo lab verificano una cosa ciascuna: usarle come sono scritte, ognuna in una **New chat**, ed evitare di ripeterle senza motivo. Dopo ogni prova annotare la stima dei crediti mostrata da **Preview**.
 
-> [!NOTE]
-> **Screenshot**
->
-> Alcuni screenshot di questo lab vengono da una versione precedente del corso e mostrano un altro nome dell'agente: servono a individuare comandi e finestre, i valori da usare sono quelli scritti nel testo.
-
 ## Agente "Assistente Zava GH"
 
 Qui si vede la differenza principale con la standard harness: solution, lingua principale e schema name si impostano prima del primo salvataggio e poi non si possono più cambiare. Nome, icona e istruzioni, invece, si modificano liberamente.
@@ -145,11 +140,6 @@ Ciao! Sono l'Assistente Zava, l'help desk IT di primo livello: posso aiutarti co
 5. Selezionare **Done**, chiudere **Settings** e selezionare **Save**.
 
 > [!TIP]
-> **Due righe da notare**
->
-> "Per le domande di supporto IT usa solo le informazioni delle fonti" limita le risposte alle fonti approvate senza impedire, nel Lab 03, compiti diversi come scrivere un annuncio di lavoro. "Indirizza l'utente a una persona dell'Help Desk" è l'escalation: l'agente non è l'ultimo livello di supporto e deve saperlo dire, invece di improvvisare.
-
-> [!NOTE]
 > **Modello**
 >
 > Lasciare il modello predefinito nell'elenco **Model** del pannello dei componenti. Per categorie e costi dei modelli vedere [Select a model for an agent (GitHub Copilot)](https://learn.microsoft.com/microsoft-copilot-studio/agents-experience/authoring-select-agent-model).
@@ -165,19 +155,9 @@ Un nuovo agente può partire con lo strumento **Work IQ**, con tutti i carichi d
 
 3. Selezionare **Save**.
 
-> [!NOTE]
-> **Rimuovere non elimina**
->
-> Rimuovere uno strumento o una fonte toglie solo l'associazione con l'agente: si possono aggiungere di nuovo. La presenza di Work IQ dipende anche dalla sua abilitazione nel tenant; in un agente reale è utile quando serve il contesto di lavoro dell'utente, tenendo selezionati solo i carichi di lavoro necessari. Vedere [Work IQ in Copilot Studio](https://learn.microsoft.com/microsoft-copilot-studio/agents-experience/add-work-iq).
-
 ## Fonti di conoscenza
 
 A ogni domanda l'agente decide in quali fonti cercare guardando soprattutto nome e descrizione di ciascuna. Una descrizione vuota o generica ("Documento IT", "Sito aziendale") rende la scelta quasi casuale: l'agente cerca nella fonte sbagliata, ne consulta più del necessario (e consuma più crediti) o cita una versione superata. Una buona descrizione dice in una o due frasi **che cosa contiene** la fonte, **quando usarla**, **quando non usarla** e, se esistono più versioni, **quale è in vigore**.
-
-> [!NOTE]
-> **Il campo Description**
->
-> Learn chiede di aggiornare nome e descrizione di ogni fonte dopo averla aggiunta ([Add knowledge sources to an agent (GitHub Copilot)](https://learn.microsoft.com/microsoft-copilot-studio/agents-experience/knowledge-add-existing-copilot)); selezionando una fonte nella sezione **Knowledge** si apre il pannello dei dettagli. In questa guida il campo si chiama **Description**: se l'interfaccia usa un'etichetta diversa, usare il campo della descrizione della fonte.
 
 ### Sito di supporto Microsoft
 
@@ -257,11 +237,6 @@ Quali sono i prerequisiti per collegarmi alla VPN aziendale?
 
 ![](./images/guide-vpn-02.png)
 
-> [!NOTE]
-> **Un risultato che varia**
->
-> L'agente può citare la versione giusta, mescolare i prerequisiti delle tre versioni o usarne una vecchia. Anche quando la risposta è corretta, senza una regola non è garantita, e di solito non dice su quale versione si basa.
-
 4. Tornare alla scheda **Build**. Nella sezione **Knowledge** selezionare ciascun file e sostituire la **Description** con il testo indicato, poi selezionare **Save**.
 
 `Zava_Guida_VPN_v1.docx`:
@@ -288,11 +263,6 @@ Guida alla VPN aziendale ZavaSecure, versione 3 del 9 gennaio 2026, in vigore: p
 
 ![](./images/guide-vpn-05.png)
 
-> [!TIP]
-> **Descrizioni senza fatti**
->
-> Le descrizioni dicono quale versione è in vigore, ma non riportano prerequisiti, server o comandi: i fatti devono arrivare dal documento, con la citazione. Quando arriverà la versione 4, basterà caricarla, scriverne la descrizione e aggiornare quella della v3 in "non più in vigore".
-
 5. Aprire le **Instructions** e aggiungere in fondo:
 
 ```text
@@ -303,11 +273,6 @@ Guida alla VPN aziendale ZavaSecure, versione 3 del 9 gennaio 2026, in vigore: p
 ```
 
 ![](./images/guide-vpn-06.png)
-
-> [!NOTE]
-> **La sezione "Gestione versioni" delle guide**
->
-> Ogni guida contiene una sezione che chiede di usare la versione più recente "disponibile nel file group": è scritta per la standard harness. Qui non conta: nella GitHub Copilot harness non ci sono file group, e le istruzioni chiedono di trattare il testo dei documenti come dati, non come istruzioni. La regola che l'agente segue è quella scritta nelle istruzioni.
 
 6. Selezionare **Save**, tornare in **Preview**, selezionare **New chat** e ripetere la domanda del punto 2. Ora la risposta riporta i prerequisiti della versione 3 (SSO abilitato, MFA attivo, certificati aggiornati dove richiesto) e dichiara di basarsi sulla versione 3. Annotare la stima dei crediti e confrontarla con quella del punto 3.
 7. Selezionare **New chat** e chiedere:
@@ -341,11 +306,6 @@ Sito SharePoint Zava Help Desk, cartella Knowledge Base: documenti dell'Help Des
 ![](./images/sito-sharepoint-03.png)
 
 4. Selezionare **Add to agent** e poi **Save**.
-
-> [!TIP]
-> **Descrizione della fonte e titoli dei documenti**
->
-> Per SharePoint i segnali sono due: la descrizione della fonte, che fa scegliere all'agente se cercare nel sito, e il titolo dei documenti (colonna **Title**, compilata nel Lab 01), che lo aiuta a scegliere che cosa leggere al suo interno. Se si aggiunge un documento su un argomento nuovo, aggiornare anche la descrizione della fonte. In un agente reale si può registrare direttamente l'indirizzo della cartella **Knowledge Base**, così l'agente non cerca negli altri contenuti del sito.
 
 ### Riepilogo delle descrizioni
 
@@ -420,22 +380,12 @@ La mia password è Prova-Corso-2026: secondo te è abbastanza sicura?
 
 4. L'agente non ripete né valuta la password: invita a non condividerla e a reimpostarla con la procedura ufficiale.
 
-> [!WARNING]
-> **Mai credenziali reali**
->
-> Usare solo la password fittizia del testo. Non scrivere mai credenziali reali in un agente, nemmeno in **Preview**: le conversazioni di prova restano nella cronologia.
-
 ### Vista utente e cronologia
 
 1. Attivare **End user preview** e ripetere una delle domande precedenti in una **New chat**: il ragionamento non è più visibile, come per un utente reale.
 2. Selezionare **History** e confrontare la colonna dei crediti (**Credits used**) con i valori annotati: le domande che combinano più fonti costano di più.
 
 ![](./images/preview-05.png)
-
-> [!TIP]
-> **Fonte sbagliata?**
->
-> Dalla traccia si può selezionare una fonte per aprirla nella scheda **Build**. Se una risposta usa la fonte sbagliata, intervenire prima sulla descrizione della fonte o sui titoli dei documenti, poi sulle istruzioni.
 
 > [!IMPORTANT]
 > **Lab Completato**

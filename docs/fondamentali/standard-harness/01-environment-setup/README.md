@@ -10,7 +10,7 @@ Il reparto IT di Zava vuole sperimentare Copilot Studio per offrire ai colleghi 
 
 In questo lab si prepara l'ambiente di lavoro (tenant, trial, developer environment, permesso di pubblicazione, publisher e solution) e si crea il primo agente, **IT Support**, descritto in linguaggio naturale e basato sulle sue istruzioni e su un sito pubblico di supporto Microsoft.
 
-## Che cosa si costruisce
+## Percorso di setup
 
 A sinistra i sei passi del lab, nell'ordine; a destra, con lo stesso numero, dove si trova ciò che ogni passo crea: è l'ambiente in cui si lavorerà in tutti i lab successivi.
 
