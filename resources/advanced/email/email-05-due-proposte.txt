@@ -1,0 +1,13 @@
+Scopo del test (non copiare questa riga): Due business case in un solo messaggio, uno PDF e uno DOCX. Atteso: due proposte distinte, una per allegato.
+
+Oggetto: Proposta progetto - Sicurezza di rete e nuova intranet
+Allegati: BC-02_Segmentazione_rete_e_accessi_privilegiati.pdf, BC-05_Nuova_intranet_e_hub_dipendenti.docx
+
+Corpo:
+Buongiorno,
+
+inoltro per conto delle funzioni Sicurezza e Compliance e Risorse Umane due business case distinti da valutare nei rispettivi programmi.
+Il primo è stato preparato da Marco Bianchi, il secondo da Sara Greco: i dettagli sono nei documenti allegati.
+
+Cordiali saluti,
+Segreteria della Direzione Sistemi Informativi

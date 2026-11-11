@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proposal Board</title>
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="board.css" />
+</head>
+<body>
+  <main class="page board-page">
+    <header class="board-head">
+      <div>
+        <p class="eyebrow-dark">PMO Demand Hub &middot; Demand</p>
+        <h1 class="board-title">Proposal Board</h1>
+        <p class="section-sub">Drag a card to another column to change the proposal status, or use the status menu on the card. Select a title to open the proposal.</p>
+      </div>
+      <div class="board-tools">
+        <label class="sr-only" for="search">Search proposals</label>
+        <input id="search" class="input" type="search" placeholder="Search title, code or requester" />
+        <label class="sr-only" for="programFilter">Filter by program</label>
+        <select id="programFilter" class="select select-inline"><option value="">All programs</option></select>
+        <button class="btn btn-solid" data-action="new" type="button">New proposal</button>
+      </div>
+      <span class="badge-preview badge-preview-dark" id="previewBadge" hidden>Preview data</span>
+    </header>
+
+    <section class="board" id="board" aria-label="Proposals by status"></section>
+  </main>
+  <script src="anime.min.js"></script>
+  <script src="board.js"></script>
+</body>
+</html>

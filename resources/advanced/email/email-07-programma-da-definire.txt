@@ -1,0 +1,14 @@
+Scopo del test (non copiare questa riga): Proposta vera il cui business case non indica un programma univoco (PG-100 oppure PG-300). Atteso: classificata come proposta; l'agente del workflow chiede a una persona quale programma usare.
+
+Oggetto: Proposta progetto - Assistente AI per il servizio clienti
+Allegati: BC-03_Assistente_AI_servizio_clienti.pdf
+
+Corpo:
+Buongiorno,
+
+invio il business case dell'assistente AI per il Servizio Clienti, da valutare nel prossimo ciclo del Comitato.
+Lo sponsor interno è Andrea Moretti, Direttore Commerciale e Customer Experience.
+
+Grazie,
+Elena Russo
+Responsabile Customer Service

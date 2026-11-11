@@ -1,0 +1,1 @@
+import{_ as t,o,c as e,a4 as i}from"./chunks/framework.DzALyu-k.js";const h=JSON.parse('{"title":"Info studenti","description":"","frontmatter":{},"headers":[],"relativePath":"info.md","filePath":"info.md"}'),n={name:"info.md"};function r(l,a,s,c,u,p){return o(),e("div",null,[...a[0]||(a[0]=[i("",16)])])}const g=t(n,[["render",r]]);export{h as __pageData,g as default};
