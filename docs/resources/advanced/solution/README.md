@@ -1,22 +1,25 @@
 # PMO Demand IT solution
 
-This folder contains the unmanaged Dataverse solution of the **Copilot Studio Masterclass** case study: the Zava IT PMO and its Demand IT agent. One zip holds the tables, forms, views and the model-driven app shared by the standard and the GitHub Copilot harness tracks. You import the solution once, load two CSV files, and the environment is ready for the labs.
+This folder contains the unmanaged Dataverse solutions of the **Copilot Studio Masterclass** case study: the Zava IT PMO and its Demand IT agent. Two zips hold the same tables, forms, views and model-driven app, one per track: the standard track uses PMO Demand IT, the GitHub Copilot harness track uses PMO Demand IT (GitHub). The two solutions are independent: the standard one uses the publisher CSM Solutions (prefix `csm`, logical names `csm_*`), the GitHub one uses the publisher CSM Solutions (GitHub) (prefix `csg`, logical names `csg_*`), so they can be installed together in the same environment. In both, the app has the same display name, PMO Demand Hub. You import the zip of your track once, load two CSV files, and the environment is ready for the labs.
 
 | File | Content |
 | --- | --- |
-| `PMODemandIT_1_0_0_0.zip` | Unmanaged solution PMO Demand IT (`PMODemandIT`, version 1.0.0.0), publisher CSM Solutions (`CSMSolutions`, prefix `csm`, choice value prefix `77000`) |
+| `PMODemandIT_1_0_0_0.zip` | Standard track. Unmanaged solution PMO Demand IT (`PMODemandIT`, version 1.0.0.0), publisher CSM Solutions (`CSMSolutions`, prefix `csm`, choice value prefix `77000`) |
+| `PMODemandITGitHub_1_0_0_0.zip` | GitHub Copilot harness track. Unmanaged solution PMO Demand IT (GitHub) (`PMODemandITGitHub`, version 1.0.0.0), publisher CSM Solutions (GitHub) (`CSMSolutionsGitHub`, prefix `csg`, choice value prefix `77000`); same tables, columns and app, with `csg_` logical names |
 | `../data/programs.csv` | The 5 programs (PG-100 to PG-500) |
 | `../data/evaluation-criteria.csv` | The 25 weighted criteria, 5 per program, weights add up to 100 per program |
 
 ## What the solution contains
 
+Logical names below are those of the standard track. GitHub Copilot track: replace `csm_` with `csg_` (for example `csg_program`, `csg_proposalstatus`, `csg_requestedbudget`). Choice values are the same in both solutions.
+
 | Table | Logical name | Primary column | Main columns |
 | --- | --- | --- | --- |
-| Program | `csm_program` | Name (`csm_name`) | Program Code, Description, Available Budget (EUR) |
-| Evaluation Criterion | `csm_criterion` | Name (`csm_name`) | Description, Weight, Program (lookup) |
-| Requester | `csm_requester` | Name (`csm_name`) | Requester Code (RQ-1000), Email, Role, Department |
-| Proposal | `csm_proposal` | Title (`csm_title`) | Proposal Code (PP-1000), Summary, Cover Message, Source Email, Requested Budget (EUR), Duration (Months), Channel, Proposal Status, Submission Date, Requester (lookup), Program (lookup), Business Case Document (file); notes and attachments are turned on after import (see below) |
-| Assessment | `csm_assessment` | Title (`csm_title`) | Assessment Code (AS-1000), Proposal (lookup), Program (lookup), Score (0 to 100, 1 decimal), Criteria Detail, Rationale, Recommendation, Assessment Date, Review Dossier (file) |
+| Program | `csm_program` (GitHub: `csg_program`) | Name (`csm_name`) | Program Code, Description, Available Budget (EUR) |
+| Evaluation Criterion | `csm_criterion` (GitHub: `csg_criterion`) | Name (`csm_name`) | Description, Weight, Program (lookup) |
+| Requester | `csm_requester` (GitHub: `csg_requester`) | Name (`csm_name`) | Requester Code (RQ-1000), Email, Role, Department |
+| Proposal | `csm_proposal` (GitHub: `csg_proposal`) | Title (`csm_title`) | Proposal Code (PP-1000), Summary, Cover Message, Source Email, Requested Budget (EUR), Duration (Months), Channel, Proposal Status, Submission Date, Requester (lookup), Program (lookup), Business Case Document (file); notes and attachments are turned on after import (see below) |
+| Assessment | `csm_assessment` (GitHub: `csg_assessment`) | Title (`csm_title`) | Assessment Code (AS-1000), Proposal (lookup), Program (lookup), Score (0 to 100, 1 decimal), Criteria Detail, Rationale, Recommendation, Assessment Date, Review Dossier (file) |
 
 Choice values:
 
@@ -97,10 +100,10 @@ Repeat for the tables you want, typically Evaluation Criteria and Programs. User
 | Element | What you get |
 | --- | --- |
 | Home page | Below **Manage data**, the **Portfolio at a glance** section reads live data through the Dataverse Web API: key figures with animated counters, budget bars per program (requested against available, turning orange when a program is over budget), a recommendation donut, the latest proposals with status pills and a four step view of the process. Selecting a program or a proposal opens its record. |
-| Animations | [anime.js](https://animejs.com) 4.2.2 (MIT license), bundled in the solution as `csm_/pmo/anime.min.js`, so the page does not depend on an external CDN. Animations are skipped for users who turn on reduced motion in their operating system. |
+| Animations | [anime.js](https://animejs.com) 4.2.2 (MIT license), bundled in the solution as `csm_/pmo/anime.min.js` (`csg_/pmo/...` in the GitHub solution, same for the icons and logo below), so the page does not depend on an external CDN. Animations are skipped for users who turn on reduced motion in their operating system. |
 | Table icons and colors | Phosphor duotone icons (MIT license) for every table, used in the navigation and in the table definition, and one accent color per table: Program blue, Evaluation Criterion violet, Requester teal, Proposal amber, Assessment green. The icons use `currentColor`, as Microsoft recommends, so they follow the app theme. |
 | App icon and logo | An indigo app tile (`csm_/pmo/app-icon.svg`) and a header logo (`csm_/pmo/logo.svg`). |
-| Custom theme | An indigo modern theme with a dark indigo header (`csm_/pmo/theme.xml`). It needs one manual step, described below. |
+| Custom theme | An indigo modern theme with a dark indigo header (`csm_/pmo/theme.xml`, `csg_/pmo/theme.xml` in the GitHub solution). It needs one manual step, described below. |
 | Forms | The General tab uses two columns: details on the left, long text and the document on the right. Code and choice columns appear in the form header. |
 
 ## Why it is built this way
@@ -116,19 +119,19 @@ Repeat for the tables you want, typically Evaluation Criteria and Programs. User
 
 1. Go to [Power Apps](https://make.powerapps.com) and select your environment.
 2. Select **Solutions**, then **Import solution**.
-3. Select **Browse**, choose `PMODemandIT_1_0_0_0.zip`, then select **Next**.
+3. Select **Browse**, choose the zip of your track (`PMODemandIT_1_0_0_0.zip` for the standard track, `PMODemandITGitHub_1_0_0_0.zip` for the GitHub Copilot track), then select **Next**.
 4. Select **Import**. The import takes a few minutes. Wait for the success message.
-5. Open the **PMO Demand IT** solution and select **Publish all customizations**.
-6. Optional: in the solution list, open the **...** menu of PMO Demand IT and select **Set preferred solution**, so new components you create during the labs land in this solution.
+5. Open the solution you imported (**PMO Demand IT** or **PMO Demand IT (GitHub)**) and select **Publish all customizations**.
+6. Optional: in the solution list, open the **...** menu of that solution and select **Set preferred solution**, so new components you create during the labs land in this solution.
 
 > [!NOTE]
-> If the environment already contains the CSM Solutions publisher, the PMO Demand IT solution or a `csm_program` table with only the Name column (for example from an earlier manual attempt), the import updates them and adds the missing columns. You do not need to delete them first. If the import reports a conflict on an existing column with a different type, delete that column or table and import again.
+> If the environment already contains the publisher of your track (CSM Solutions or CSM Solutions (GitHub)), its solution (PMO Demand IT or PMO Demand IT (GitHub)) or a `csm_program` (or `csg_program`) table with only the Name column (for example from an earlier manual attempt), the import updates them and adds the missing columns. You do not need to delete them first. If the import reports a conflict on an existing column with a different type, delete that column or table and import again. You can import both zips in the same environment: they have different publishers and prefixes (`csm_` and `csg_` components), so they do not overlap, and each one adds its own app with the same display name, PMO Demand Hub. If you follow one track, import only its zip.
 
 ## Turn on notes for proposals (1 minute)
 
-Notes are a capability of the table (`HasNotes`) that Dataverse sets when the table is created or updated, not a component a solution file can create, so you switch them on after the import. The GitHub Copilot track needs them, because its workflow stores the business case as a note and reads it with the Dataverse MCP Server. Microsoft documents the capability in [Customize table definitions](https://learn.microsoft.com/power-apps/developer/data-platform/customize-entity-metadata#enable-table-capabilities).
+Notes are a capability of the table (`HasNotes`) that Dataverse sets when the table is created or updated, not a component a solution file can create, so you switch them on after the import. In the GitHub Copilot solution the relationship between **Proposal** and **Note** (`csg_proposal_Annotations`) is already included, so **Enable attachments (including notes and files)** is already on after the import: check it and turn it on by hand only if it is off. The GitHub Copilot track needs them, because its workflow stores the business case as a note and reads it with the Dataverse MCP Server. Microsoft documents the capability in [Customize table definitions](https://learn.microsoft.com/power-apps/developer/data-platform/customize-entity-metadata#enable-table-capabilities).
 
-1. In the **PMO Demand IT** solution, open the **Proposal** table and select **Properties**.
+1. In the **PMO Demand IT** (or **PMO Demand IT (GitHub)**) solution, open the **Proposal** table and select **Properties**.
 2. Expand **Advanced options** and select **Enable attachments (including notes and files)**.
 3. Select **Save**. The option cannot be turned off later, which is expected for this table.
 4. Optional, to see notes on the form: open the **Proposal** main form, add the **Timeline** component to the General tab, then select **Save and publish**.
@@ -137,10 +140,10 @@ Notes are a capability of the table (`HasNotes`) that Dataverse sets when the ta
 
 The theme is a setting value, and the solution file cannot set it safely without knowing your environment, so you switch it on by hand. The steps come from [Use modern themes in model-driven apps](https://learn.microsoft.com/power-apps/maker/model-driven-apps/modern-theme-overrides).
 
-1. Open the **PMO Demand IT** solution and select **Add existing**, **More**, **Setting**.
+1. Open the **PMO Demand IT** (or **PMO Demand IT (GitHub)**) solution and select **Add existing**, **More**, **Setting**.
 2. Search for *custom theme*, select **Custom theme definition**, select **Next**, then **Add**.
 3. Select **Custom theme definition** in the solution, then **Edit**.
-4. Under **Setting environment value**, select **New environment value** and enter `csm_/pmo/theme.xml`.
+4. Under **Setting environment value**, select **New environment value** and enter `csm_/pmo/theme.xml` (`csg_/pmo/theme.xml` in the GitHub solution).
 5. Select **Save**, then **Publish all customizations**.
 
 > [!NOTE]
@@ -154,7 +157,7 @@ To use the CSV files instead, select **Import CSV** on the home page, choose **P
 
 You can also use the standard import of Power Apps:
 
-1. In the PMO Demand IT solution, open the **Program** table.
+1. In the PMO Demand IT (or PMO Demand IT (GitHub)) solution, open the **Program** table.
 2. Select **Import**, then **Import data from Excel** (CSV files are accepted), and upload `programs.csv`.
 3. Check the mapping: Name to Name, Program Code to Program Code, Description to Description, Available Budget (EUR) to Available Budget (EUR). Select **Import** and wait until the 5 rows appear.
 4. Open the **Evaluation Criterion** table and repeat with `evaluation-criteria.csv`. Map **Program** to the Program lookup: the import resolves it by the program name.

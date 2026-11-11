@@ -236,6 +236,14 @@ Codice della valutazione citato nella conversazione: AS seguito da un trattino e
 }
 ```
 
+::: details <!-- icon: function f-topics --> Come si legge la formula
+Restituisce la scheda con il pulsante per aprire il dossier. La Formula card descrive la scheda con record tra graffe `{ ... }` ed elenchi tra quadre `[ ... ]`, e può leggere le variabili del topic.
+
+- `"Valutazione " & Topic.VarCodiceValutazione`: l'operatore `&` unisce il testo fisso e il valore della variabile, ad esempio `Valutazione AS-1004`.
+- `url: Topic.DossierURL`: l'indirizzo del pulsante è il valore della variabile di output del flow, senza testo intorno.
+- `'$schema'`: il nome sta tra apici singoli perché inizia con `$`.
+:::
+
 ![](./images/passo3-extra-17.png)
 
 4. Se l'output del flow nel proprio topic ha un nome diverso da `DossierURL`, sostituire `Topic.DossierURL` con la variabile corretta (si vede nel nodo del flow, sezione output).

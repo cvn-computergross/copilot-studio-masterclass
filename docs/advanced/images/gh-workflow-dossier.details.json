@@ -1,0 +1,162 @@
+{
+ "diagram": "gh-workflow-dossier",
+ "details": {
+  "ag06-skill": {
+   "title": "review-dossier-document",
+   "icon": "puzzle-piece",
+   "fam": "topics",
+   "lab": "G06",
+   "role": "Skill importata nell'Agente Demand IT - GH (Skills › Upload a skill) da review-dossier-document.zip, con SKILL.md alla radice.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "SKILL.md",
+     "icon": "file-text",
+     "fam": "topics",
+     "sub": "valutazione, dati, contenuti, JSON, script, file da restituire"
+    },
+    {
+     "label": "generate_dossier.py",
+     "icon": "file-code",
+     "fam": "topics",
+     "sub": "validazione e layout con python-docx"
+    },
+    {
+     "label": "dossier_input.sample.json",
+     "icon": "file-code",
+     "fam": "topics",
+     "sub": "esempio di input valido"
+    },
+    {
+     "label": "dossier_revisione.sample.docx",
+     "icon": "logo:word",
+     "fam": "tools",
+     "sub": "documento generato dall'esempio",
+     "file": "word.png"
+    }
+   ]
+  },
+  "ag06-json": {
+   "title": "dossier_input.json",
+   "icon": "file-code",
+   "fam": "github",
+   "lab": "G06",
+   "role": "Scritto dall'agente: i dati letti da Dataverse con il Dataverse MCP Server e i contenuti preparati dal modello.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Valutazione AS-####",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "punteggio e livelli registrati in csg_criteriadetail"
+    },
+    {
+     "label": "Proposta, Proponente, Programma",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "titolo, sintesi, budget, durata, contatti, budget disponibile"
+    },
+    {
+     "label": "Criteri",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "nomi e pesi del programma"
+    },
+    {
+     "label": "Domande e rischi",
+     "icon": "chat-text",
+     "fam": "github",
+     "sub": "8 domande per lo sponsor, rischi fondati sulla sintesi"
+    }
+   ]
+  },
+  "ag06-script": {
+   "title": "generate_dossier.py",
+   "icon": "file-code",
+   "fam": "github",
+   "lab": "G06",
+   "role": "Script della skill, eseguito nella sandbox dell'interprete: Python e librerie comuni, senza accesso a Internet.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "Valida",
+     "icon": "shield-check",
+     "fam": "github",
+     "sub": "livelli ammessi, pesi che sommano a 100, esattamente 8 domande"
+    },
+    {
+     "label": "Ricalcola",
+     "icon": "function",
+     "fam": "github",
+     "sub": "punti = fattore x peso e punteggio complessivo"
+    },
+    {
+     "label": "Regola di budget",
+     "icon": "coins",
+     "fam": "github",
+     "sub": "rischio aggiunto se il budget supera quello del programma"
+    },
+    {
+     "label": "Confronta",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "punteggio diverso da quello registrato: punto di attenzione"
+    },
+    {
+     "label": "Scrive",
+     "icon": "logo:word",
+     "fam": "tools",
+     "sub": "dossier_revisione.docx con python-docx",
+     "file": "word.png"
+    }
+   ]
+  },
+  "ag06-docx": {
+   "title": "dossier_revisione.docx",
+   "icon": "logo:word",
+   "fam": "tools",
+   "lab": "G06",
+   "role": "Il dossier allegato alla risposta: due esecuzioni hanno la stessa forma, cambiano solo le formulazioni di domande e rischi.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Intestazione",
+     "icon": "article",
+     "fam": "tools",
+     "sub": "titolo, proposta PP-####, valutazione AS-####, data"
+    },
+    {
+     "label": "Proponente, Programma, Sintesi",
+     "icon": "list-bullets",
+     "fam": "tools",
+     "sub": "dati letti da Dataverse"
+    },
+    {
+     "label": "Criteri di valutazione ed evidenze",
+     "icon": "table",
+     "fam": "tools",
+     "sub": "tabella Light Grid Accent 1, punteggio complessivo"
+    },
+    {
+     "label": "Domande per lo sponsor",
+     "icon": "chat-text",
+     "fam": "tools",
+     "sub": "8, raggruppate per criterio dal peso più alto"
+    },
+    {
+     "label": "Rischi e punti di attenzione",
+     "icon": "warning",
+     "fam": "tools",
+     "sub": "con il rischio di budget e l'eventuale differenza di punteggio"
+    },
+    {
+     "label": "Nota finale",
+     "icon": "sparkle",
+     "fam": "tools",
+     "sub": "documento preparato con l'IA: decide il Comitato di Valutazione"
+    }
+   ],
+   "file": "word.png"
+  }
+ }
+}

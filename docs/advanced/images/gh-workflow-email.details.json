@@ -1,0 +1,602 @@
+{
+ "diagram": "gh-workflow-email",
+ "details": {
+  "ag07-trigger": {
+   "title": "When a new email arrives",
+   "icon": "logo:outlook",
+   "fam": "triggers",
+   "lab": "G07",
+   "role": "Trigger Connector del nodo Start (Office 365 Outlook), con Show all per vedere tutti i parametri.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Folder",
+     "icon": "folders",
+     "fam": "triggers",
+     "sub": "Inbox (predefinito)"
+    },
+    {
+     "label": "Subject filter",
+     "icon": "funnel",
+     "fam": "triggers",
+     "sub": "Proposta progetto"
+    },
+    {
+     "label": "Include attachments",
+     "icon": "check-circle",
+     "fam": "triggers",
+     "sub": "true: senza, l'allegato non arriva al workflow"
+    },
+    {
+     "label": "Only with attachments",
+     "icon": "check-circle",
+     "fam": "triggers",
+     "sub": "true: un'email senza documento non avvia il workflow"
+    },
+    {
+     "label": "Connection",
+     "icon": "plugs-connected",
+     "fam": "triggers",
+     "sub": "il proprio account Office 365 Outlook, non una casella condivisa"
+    }
+   ],
+   "file": "outlook.png"
+  },
+  "ag07-variabile": {
+   "title": "Avvia elenco proposte",
+   "icon": "textbox",
+   "fam": "tools",
+   "lab": "G07",
+   "role": "Initialize Variable al livello principale, subito dopo il trigger: mai dentro un ciclo o un ramo.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Variable name",
+     "icon": "textbox",
+     "fam": "tools",
+     "sub": "ProposteRegistrate"
+    },
+    {
+     "label": "Type",
+     "icon": "textbox",
+     "fam": "tools",
+     "sub": "String"
+    },
+    {
+     "label": "Value",
+     "icon": "textbox",
+     "fam": "tools",
+     "sub": "vuoto: ogni giro del ciclo aggiunge una riga"
+    }
+   ]
+  },
+  "ag07-classifica": {
+   "title": "Classifica email",
+   "icon": "signpost",
+   "fam": "tools",
+   "lab": "G07",
+   "role": "Nodo Classify (gruppo Other): il modello sceglie la categoria in base alle descrizioni; si prova con Run node.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Input to classify",
+     "icon": "function",
+     "fam": "tools",
+     "sub": "@{triggerOutputs()?['body/subject']} @{triggerOutputs()?['body/body']}"
+    },
+    {
+     "label": "Proposal",
+     "icon": "check-circle",
+     "fam": "knowledge",
+     "sub": "una persona di Zava presenta uno o più business case; non risposte automatiche, domande sul processo o bozze"
+    },
+    {
+     "label": "RispostaAutomatica",
+     "icon": "x-circle",
+     "fam": "system",
+     "sub": "fuori ufficio, mancato recapito, conferme automatiche, anche con Proposta progetto"
+    },
+    {
+     "label": "NonPertinente",
+     "icon": "x-circle",
+     "fam": "system",
+     "sub": "marketing, newsletter, promozioni, spam"
+    },
+    {
+     "label": "Other",
+     "icon": "question",
+     "fam": "platform",
+     "sub": "categoria predefinita creata da Classify per tutto il resto"
+    }
+   ]
+  },
+  "ag07-formato": {
+   "title": "Formato ammesso",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "G07",
+   "role": "If/Else con due righe unite da OR: scegliendo Content-Type il designer crea da solo il ciclo Per ogni allegato.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Riga 1",
+     "icon": "check-circle",
+     "fam": "system",
+     "sub": "contentType Equals application/pdf"
+    },
+    {
+     "label": "Riga 2",
+     "icon": "check-circle",
+     "fam": "system",
+     "sub": "Attachments Name Ends with .docx (o Contains)"
+    },
+    {
+     "label": "Perché il nome per i Word",
+     "icon": "file-text",
+     "fam": "system",
+     "sub": "il tipo vero è lungo e alcuni client lo inviano generico"
+    }
+   ]
+  },
+  "ag07-registra": {
+   "title": "Registra proposta",
+   "icon": "logo:dataverse",
+   "fam": "knowledge",
+   "lab": "G07",
+   "role": "Microsoft Dataverse, Add a new row sulla tabella Proposals (csg_proposals) della soluzione PMO Demand IT (GitHub).",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Title",
+     "icon": "textbox",
+     "fam": "knowledge",
+     "sub": "Name dell'allegato: titolo provvisorio"
+    },
+    {
+     "label": "Cover Message",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "take(coalesce(body('Corpo_in_testo'), ''), 3900)"
+    },
+    {
+     "label": "Source Email",
+     "icon": "envelope-simple",
+     "fam": "knowledge",
+     "sub": "From del trigger"
+    },
+    {
+     "label": "Channel e Proposal Status",
+     "icon": "list-checks",
+     "fam": "knowledge",
+     "sub": "Email, Received"
+    },
+    {
+     "label": "Submission Date",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "utcNow()"
+    }
+   ],
+   "file": "dataverse.svg"
+  },
+  "ag07-nota": {
+   "title": "Allega il documento come nota",
+   "icon": "logo:dataverse",
+   "fam": "knowledge",
+   "lab": "G07",
+   "role": "Add a new row sulla tabella Notes (annotation): la copia del file che gli agenti di G08 leggono da documentbody.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Title e File Name",
+     "icon": "textbox",
+     "fam": "knowledge",
+     "sub": "Name dell'allegato"
+    },
+    {
+     "label": "Is document e Mime type",
+     "icon": "file-text",
+     "fam": "knowledge",
+     "sub": "Yes, Content-Type dell'allegato"
+    },
+    {
+     "label": "Document",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "base64ToString(base64(items('Per_ogni_allegato')?['contentBytes']))"
+    },
+    {
+     "label": "Regarding (Proposals)",
+     "icon": "link",
+     "fam": "knowledge",
+     "sub": "/csg_proposals(@{outputs('Registra_proposta')?['body/csg_proposalid']})"
+    }
+   ],
+   "file": "dataverse.svg"
+  },
+  "ag07-salva": {
+   "title": "Salva il documento nella proposta",
+   "icon": "logo:dataverse",
+   "fam": "knowledge",
+   "lab": "G07",
+   "role": "Facoltativo: Upload a file or an image mette lo stesso file nella colonna della proposta, comoda solo nell'app.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Table name e Row ID",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "Proposals (csg_proposals), token Proposal di Registra proposta"
+    },
+    {
+     "label": "Column name",
+     "icon": "table",
+     "fam": "knowledge",
+     "sub": "Business Case Document"
+    },
+    {
+     "label": "Content",
+     "icon": "function",
+     "fam": "knowledge",
+     "sub": "base64ToBinary(items('Per_ogni_allegato')?['contentBytes'])"
+    },
+    {
+     "label": "Content name",
+     "icon": "textbox",
+     "fam": "knowledge",
+     "sub": "Attachments Name, al posto di Untitled"
+    }
+   ],
+   "file": "dataverse.svg"
+  },
+  "ag07-ricorda": {
+   "title": "Ricorda questa proposta",
+   "icon": "textbox",
+   "fam": "tools",
+   "lab": "G07",
+   "role": "Update Variable su ProposteRegistrate con Append to string: una riga per proposta, per gli agenti di G08.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Value",
+     "icon": "function",
+     "fam": "tools",
+     "sub": "concat(codice PP-####, ' | nota ', annotationid, ' | ', nome del file, decodeUriComponent('%0A'))"
+    },
+    {
+     "label": "Esempio",
+     "icon": "list-bullets",
+     "fam": "tools",
+     "sub": "PP-1007 | nota 6baf778e-... | BC-02_Segmentazione_rete_e_accessi_privilegiati.pdf"
+    },
+    {
+     "label": "Ciclo in sequenza",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "niente parallelismo: due giri potrebbero sovrascriversi la riga"
+    }
+   ]
+  },
+  "ag08-conferma": {
+   "title": "Conferma programma",
+   "icon": "robot",
+   "fam": "agents",
+   "lab": "G08",
+   "role": "Nodo Agent con New agent for this workflow: legge ogni documento e decide il programma; non crea né modifica record.",
+   "layout": "list",
+   "steps": [
+    {
+     "group": "Tools",
+     "icon": "toolbox",
+     "fam": "agents",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "Microsoft Dataverse MCP Server",
+       "icon": "logo:dataverse",
+       "fam": "tools",
+       "sub": "programmi (codice, nome, descrizione) e note",
+       "file": "dataverse.svg"
+      },
+      {
+       "label": "Request for information",
+       "icon": "user-check",
+       "fam": "platform",
+       "sub": "connessione Human review: la domanda arriva per email"
+      }
+     ]
+    },
+    {
+     "group": "Istruzioni",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "layout": "list",
+     "steps": [
+      {
+       "label": "1. Programmi",
+       "icon": "database",
+       "fam": "instructions",
+       "sub": "csg_programcode, csg_name, csg_description; non i criteri"
+      },
+      {
+       "label": "2. Documenti",
+       "icon": "file-text",
+       "fam": "instructions",
+       "sub": "una query per annotationid, testo estratto in Python: il documento è l'autorità"
+      },
+      {
+       "label": "3. Programma",
+       "icon": "target",
+       "fam": "instructions",
+       "sub": "codice indicato o corrispondenza chiara"
+      },
+      {
+       "label": "4. Persona",
+       "icon": "user-check",
+       "fam": "instructions",
+       "sub": "una sola richiesta per esecuzione, solo per ambiguità reali"
+      }
+     ]
+    },
+    {
+     "label": "Limiti rigidi",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "massimo 8 chiamate, ogni nota letta una volta, NESSUNA PROPOSTA RICEVUTA se l'elenco è vuoto"
+    },
+    {
+     "label": "Output",
+     "icon": "list-bullets",
+     "fam": "agents",
+     "sub": "per proposta: PROPOSTA, TITOLO, PROPONENTE, PROGRAMMA o DA CONFERMARE, CHIESTO A UNA PERSONA, SEGNALAZIONI"
+    },
+    {
+     "label": "Risposta",
+     "icon": "function",
+     "fam": "agents",
+     "sub": "coalesce(body('Conferma_programma')?['message'], '')"
+    }
+   ]
+  },
+  "ag08-completa": {
+   "title": "Completa con Agente Demand IT",
+   "icon": "agent:demand-it-agent-192.png",
+   "fam": "github",
+   "lab": "G08",
+   "role": "Nodo Agent con l'Agente Demand IT - GH pubblicato: Message in modalità espressione, chiamata con la connessione Agents.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Dati della corsa",
+     "icon": "textbox",
+     "fam": "github",
+     "sub": "ProposteRegistrate, mittente, oggetto, message di Conferma programma"
+    },
+    {
+     "label": "1. proposal-intake",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "proposte già registrate: aggiorna, non crea; programma solo se confermato"
+    },
+    {
+     "label": "2. proposal-scoring",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "valutazione preliminare se il programma è confermato"
+    },
+    {
+     "label": "3. Niente registrazione",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "nessuna valutazione registrata, nessun altro record creato o eliminato"
+    },
+    {
+     "label": "Risposta",
+     "icon": "function",
+     "fam": "github",
+     "sub": "coalesce(body('Completa_con_Agente_Demand_IT')?['result'], '')"
+    }
+   ]
+  },
+  "ag08-notifica": {
+   "title": "Notifica PMO in Teams",
+   "icon": "logo:teams",
+   "fam": "tools",
+   "lab": "G08",
+   "role": "Microsoft Teams, Post card in a chat or channel, con una connessione Teams propria (la connessione Agents non la copre).",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Post as e Post in",
+     "icon": "paper-plane-tilt",
+     "fam": "tools",
+     "sub": "Flow bot, Channel"
+    },
+    {
+     "label": "Team e Channel",
+     "icon": "users-three",
+     "fam": "tools",
+     "sub": "Zava PMO, Proposte"
+    },
+    {
+     "label": "Scheda adattiva",
+     "icon": "cards",
+     "fam": "tools",
+     "sub": "Da, Oggetto, proposte registrate, conferma del programma, intake e valutazione preliminare"
+    },
+    {
+     "label": "Avviso",
+     "icon": "warning",
+     "fam": "platform",
+     "sub": "valutazione preliminare non registrata: la conferma un analista in chat"
+    },
+    {
+     "label": "Pulsante",
+     "icon": "link",
+     "fam": "tools",
+     "sub": "Apri le proposte nel PMO Demand Hub (INDIRIZZO-APP, elenco csg_proposal)"
+    },
+    {
+     "label": "Valori dinamici",
+     "icon": "function",
+     "fam": "tools",
+     "sub": "substring(string(createArray(...)), 2, ...) protegge il JSON"
+    }
+   ],
+   "file": "teams.png"
+  },
+  "ag09-avviso": {
+   "title": "Avviso - intake fallito",
+   "icon": "logo:teams",
+   "fam": "risk",
+   "lab": "G09",
+   "role": "Microsoft Teams, Post message in a chat or channel: stesso team e canale della scheda di G08.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Post as e Post in",
+     "icon": "paper-plane-tilt",
+     "fam": "risk",
+     "sub": "Flow bot, Channel"
+    },
+    {
+     "label": "Team e Channel",
+     "icon": "users-three",
+     "fam": "risk",
+     "sub": "Zava PMO, Proposte"
+    },
+    {
+     "label": "Message",
+     "icon": "chat-text",
+     "fam": "risk",
+     "sub": "AVVISO: intake di una proposta via email non riuscito. Controlla l'esecuzione in Activity."
+    }
+   ],
+   "file": "teams.png"
+  },
+  "ag09-end": {
+   "title": "End · Failed",
+   "icon": "stop-circle",
+   "fam": "risk",
+   "lab": "G09",
+   "role": "Fa comparire l'esecuzione tra quelle fallite; codice e messaggio accettano solo testo fisso.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Error code",
+     "icon": "key",
+     "fam": "risk",
+     "sub": "IntakeProposteFallito"
+    },
+    {
+     "label": "Error message",
+     "icon": "chat-text",
+     "fam": "risk",
+     "sub": "Elabora proposta non completato: aprire l'esecuzione e cercare il passo non riuscito"
+    }
+   ]
+  },
+  "ag09-gestisci": {
+   "title": "Gestisci errore",
+   "icon": "warning",
+   "fam": "risk",
+   "lab": "G09",
+   "role": "Scope dopo Elabora proposta, ultimo passo del ramo: Settings › Run after, solo la scheda Elabora proposta.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Succeeded",
+     "icon": "x-circle",
+     "fam": "system",
+     "sub": "deselezionato"
+    },
+    {
+     "label": "Failed",
+     "icon": "check-circle",
+     "fam": "risk",
+     "sub": "selezionato"
+    },
+    {
+     "label": "TimedOut",
+     "icon": "check-circle",
+     "fam": "risk",
+     "sub": "selezionato"
+    },
+    {
+     "label": "Skipped",
+     "icon": "x-circle",
+     "fam": "system",
+     "sub": "deselezionato"
+    },
+    {
+     "label": "Esito di prova",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "Registra proposta con int('not-a-number'): avviso in Teams, esecuzione Failed"
+    }
+   ]
+  },
+  "ag09-verifica": {
+   "title": "Verifica email non chiara",
+   "icon": "user-check",
+   "fam": "platform",
+   "lab": "G09",
+   "role": "Nodo Human review sul ramo Other: l'esecuzione aspetta la risposta di una persona, senza scadenza.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Title",
+     "icon": "textbox",
+     "fam": "platform",
+     "sub": "Email del PMO da verificare"
+    },
+    {
+     "label": "Assigned to e Channel",
+     "icon": "user-circle",
+     "fam": "platform",
+     "sub": "il proprio nome, scelto dai risultati; Outlook"
+    },
+    {
+     "label": "Message",
+     "icon": "chat-text",
+     "fam": "platform",
+     "sub": "email non classificabile, con From e Subject del trigger"
+    },
+    {
+     "label": "Input Yes/No",
+     "icon": "question",
+     "fam": "platform",
+     "sub": "Si tratta di una proposta da registrare?"
+    }
+   ]
+  },
+  "ag09-revisore": {
+   "title": "Revisore conferma",
+   "icon": "git-branch",
+   "fam": "system",
+   "lab": "G09",
+   "role": "If/Else sulla risposta del revisore: il ramo If è collegato allo Scope Elabora proposta.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Property",
+     "icon": "textbox",
+     "fam": "system",
+     "sub": "Si tratta di una proposta da registrare? di Verifica email non chiara"
+    },
+    {
+     "label": "Operator e Value",
+     "icon": "check-circle",
+     "fam": "system",
+     "sub": "Equals Yes"
+    },
+    {
+     "label": "Non true",
+     "icon": "warning",
+     "fam": "risk",
+     "sub": "il nodo restituisce la stringa Yes: il confronto con true è sempre falso"
+    }
+   ]
+  }
+ }
+}

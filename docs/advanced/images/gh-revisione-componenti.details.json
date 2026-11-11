@@ -1,0 +1,200 @@
+{
+ "diagram": "gh-revisione-componenti",
+ "details": {
+  "ag08-completa": {
+   "title": "Completa con Agente Demand IT",
+   "icon": "agent:demand-it-agent-192.png",
+   "fam": "github",
+   "lab": "G08",
+   "role": "Nodo Agent con l'Agente Demand IT - GH pubblicato: Message in modalità espressione, chiamata con la connessione Agents.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Dati della corsa",
+     "icon": "textbox",
+     "fam": "github",
+     "sub": "ProposteRegistrate, mittente, oggetto, message di Conferma programma"
+    },
+    {
+     "label": "1. proposal-intake",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "proposte già registrate: aggiorna, non crea; programma solo se confermato"
+    },
+    {
+     "label": "2. proposal-scoring",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "valutazione preliminare se il programma è confermato"
+    },
+    {
+     "label": "3. Niente registrazione",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "nessuna valutazione registrata, nessun altro record creato o eliminato"
+    },
+    {
+     "label": "Risposta",
+     "icon": "function",
+     "fam": "github",
+     "sub": "coalesce(body('Completa_con_Agente_Demand_IT')?['result'], '')"
+    }
+   ]
+  },
+  "ag10-orchestratore": {
+   "title": "Agente Demand IT - GH",
+   "icon": "agent:demand-it-agent-192.png",
+   "fam": "github",
+   "lab": "G10",
+   "role": "Lo strumento e l'agente connesso aggiunti in G10, con la sezione delle istruzioni che fissa l'ordine.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Richiedi via libera revisione",
+     "icon": "flow-arrow",
+     "fam": "tools",
+     "sub": "strumento: CodiceProposta dall'agente, EmailResponsabile Custom"
+    },
+    {
+     "label": "Agente Pianificazione - GH",
+     "icon": "agent:planning-agent-192.png",
+     "fam": "agents",
+     "sub": "orari e invito dopo il via libera; mai briefing o dati del PMO"
+    },
+    {
+     "label": "Istruzioni · Sessione di revisione",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "prima il via libera; Non approvata: niente prenotazione; mai inviti diretti"
+    }
+   ]
+  },
+  "ag01-pianificazione": {
+   "title": "Agente Pianificazione - GH",
+   "icon": "agent:planning-agent-192.png",
+   "fam": "agents",
+   "lab": "G10",
+   "role": "Agente connesso che si occupa solo di persone, calendari e inviti, dopo il via libera; strumenti con Shared account.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Cerca collega",
+     "icon": "user-circle",
+     "fam": "tools",
+     "sub": "Office 365 Users, Search for users (V2)"
+    },
+    {
+     "label": "Trova orari liberi",
+     "icon": "calendar-dots",
+     "fam": "tools",
+     "sub": "Office 365 Outlook, Find meeting times (V2)"
+    },
+    {
+     "label": "Crea sessione di revisione",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Create event (V4), solo dopo un orario confermato",
+     "file": "outlook.png"
+    },
+    {
+     "label": "Leggi evento",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Get event: rilegge l'evento creato",
+     "file": "outlook.png"
+    }
+   ]
+  },
+  "ag01-via-libera": {
+   "title": "Richiedi via libera revisione",
+   "icon": "flow-arrow",
+   "fam": "tools",
+   "lab": "G10",
+   "role": "Workflow usato dall'orchestratore come strumento prima della pianificazione: la soglia sta in una condizione, non nel prompt.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "When an agent calls the workflow",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "CodiceProposta, EmailResponsabile"
+    },
+    {
+     "label": "Leggi proposta",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "List rows su Proposals",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Sopra soglia",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "budget maggiore di 300000",
+     "branches": [
+      {
+       "label": "Else",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Fissa revisione automatica",
+         "icon": "logo:dataverse",
+         "fam": "knowledge",
+         "sub": "Review Scheduled, Esito Automatica",
+         "file": "dataverse.svg"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Start and wait for an approval",
+     "icon": "stamp",
+     "fam": "tools",
+     "sub": "Approvals: approvata, Review Scheduled, Esito Approvata; altrimenti Non approvata",
+     "pill": "If"
+    }
+   ]
+  },
+  "ag10-approvazione": {
+   "title": "Start and wait for an approval",
+   "icon": "stamp",
+   "fam": "tools",
+   "lab": "G10",
+   "role": "Standard approvals nel ramo If di Sopra soglia: il workflow aspetta la risposta del responsabile.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Approval type",
+     "icon": "check-circle",
+     "fam": "tools",
+     "sub": "Approve/Reject - First to respond"
+    },
+    {
+     "label": "Title",
+     "icon": "textbox",
+     "fam": "tools",
+     "sub": "Via libera revisione: CodiceProposta"
+    },
+    {
+     "label": "Assigned to",
+     "icon": "user-circle",
+     "fam": "tools",
+     "sub": "EmailResponsabile"
+    },
+    {
+     "label": "Details",
+     "icon": "chat-text",
+     "fam": "tools",
+     "sub": "proposta, budget richiesto, Approva per fissare la sessione di revisione"
+    },
+    {
+     "label": "Approvata",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "Outcome uguale a Approve"
+    }
+   ]
+  }
+ }
+}

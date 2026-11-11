@@ -59,8 +59,8 @@ export function h1(file: string): string {
 /** Voce di menu di una sezione: il nome apre la panoramica (index.md), dentro ci sono i lab. */
 function sectionItem(dir: string, label: string) {
   const items = labs(dir).map((lab) => ({
-    // nel menu "Lab 01 · Environment Setup", "Lab S01 · Agente orchestratore"
-    text: h1(path.join(DOCS, dir, lab, 'README.md')).replace(/^(Lab S?\d+) - /, '$1 · '),
+    // nel menu "Lab 01 · Environment Setup", "Lab S01 · Agente orchestratore", "Lab G01 · ..."
+    text: h1(path.join(DOCS, dir, lab, 'README.md')).replace(/^(Lab [SG]?\d+) - /, '$1 · '),
     link: `/${dir}/${lab}/`,
   }))
   return items.length ? { text: label, link: `/${dir}/`, collapsed: true, items } : { text: label, link: `/${dir}/` }

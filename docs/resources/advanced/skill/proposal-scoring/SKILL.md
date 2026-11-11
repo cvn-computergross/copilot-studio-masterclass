@@ -13,18 +13,18 @@ Usa questa skill per valutare una proposta rispetto ai criteri del suo programma
 calcola: non crea, non aggiorna e non elimina record.
 
 1. Identifica la proposta: usa il codice indicato dall'utente (PP-####) oppure la proposta
-   registrata più di recente nella conversazione. Leggi da Proposte (csm_proposal) csm_proposalcode,
-   csm_title, csm_summary, csm_requestedbudget e il programma collegato (csm_program).
+   registrata più di recente nella conversazione. Leggi da Proposte (csg_proposal) csg_proposalcode,
+   csg_title, csg_summary, csg_requestedbudget e il programma collegato (csg_program).
    Come evidenza usa il testo del business case se è disponibile nella conversazione, altrimenti
-   csm_summary. Indica sempre quale fonte hai usato.
+   csg_summary. Indica sempre quale fonte hai usato.
 
 2. Programma. Se la proposta ha già un programma, usalo. Se il campo è vuoto o l'utente ha dubbi,
    NON sceglierlo tu: proponi al massimo due programmi attivi coerenti con la proposta, spiega in
    una riga ciascuno perché e chiedi all'utente di confermarne uno. Continua solo dopo la conferma.
 
-3. Leggi dal vivo il programma (csm_program: csm_programcode, csm_name, csm_availablebudget) e TUTTI
-   i suoi Criteri di valutazione (csm_criterion, collegati tramite csm_program) con csm_name,
-   csm_description e csm_weight. I pesi sommano a 100: non ometterne nessuno.
+3. Leggi dal vivo il programma (csg_program: csg_programcode, csg_name, csg_availablebudget) e TUTTI
+   i suoi Criteri di valutazione (csg_criterion, collegati tramite csg_program) con csg_name,
+   csg_description e csg_weight. I pesi sommano a 100: non ometterne nessuno.
 
 4. Applica la rubrica a ogni criterio. Assegna un livello di evidenza e il relativo fattore:
    Forte = 1,0 (evidenza chiara, diretta e quantificata); Moderata = 0,6 (presente ma parziale o

@@ -13,8 +13,8 @@ const parts = computed(() => {
   const sectionLabel = (theme.value.sections ?? {})[section]
   if (!sectionLabel) return [levelLabel]
   if (!lab?.match(/^\d\d-/)) return [levelLabel, sectionLabel]
-  // il codice del lab dal titolo ("Lab S02 - ..." -> "Lab S02"), altrimenti dal numero della cartella
-  const code = page.value.title.match(/^Lab (S?\d+)/)?.[1] ?? lab.slice(0, 2)
+  // il codice del lab dal titolo ("Lab S02 - ...", "Lab G02 - ..." -> "Lab S02"), altrimenti dal numero della cartella
+  const code = page.value.title.match(/^Lab ([SG]?\d+)/)?.[1] ?? lab.slice(0, 2)
   return [levelLabel, sectionLabel, `Lab ${code}`]
 })
 </script>

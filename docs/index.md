@@ -86,7 +86,7 @@ Si prosegue con un approccio code-first, dopo aver consolidato le basi nel porta
 
 ### Advanced
 
-Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dal [Lab 00 - Setup dati](./advanced/standard-harness/00-setup-dati/README.md), che racconta il caso e prepara i dati usati da tutti i lab.
+Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Zava S.p.A. a ricevere, valutare e preparare per il Comitato le proposte di progetto IT. Parti dal Lab 00 - Setup dati della harness scelta ([Standard Harness](./advanced/standard-harness/00-setup-dati/README.md), [GitHub Harness](./advanced/github-harness/00-setup-dati/README.md)): racconta il caso e prepara i dati usati dai lab del percorso.
 
 <div class="card-grid">
 <div class="card card--link">
@@ -109,18 +109,21 @@ Orchestratore, child agent e connected agent, prompt multimodali, grounding su D
 {.card-meta}
 
 </div>
-<div class="card card--link card--soon">
+<div class="card card--link">
 
 <!-- icon: logo-github --> [GitHub Harness](./advanced/github-harness/index.md){.card-title}
 {.card-head}
 
-Lo stesso agente con istruzioni, skill, Dataverse MCP e workflow.
+Orchestratore con istruzioni e skill, Dataverse MCP Server, agenti connessi, workflow con trigger email e human in the loop, dossier Word con una skill Python, pubblicazione in Teams.
 
 <p class="topics f-github">
-<span class="topic"><!-- icon: clipboard-text f-github -->Istruzioni</span>
-<span class="topic"><!-- icon: puzzle-piece f-github -->Skill</span>
+<span class="topic"><!-- icon: puzzle-piece f-github -->Istruzioni e skill</span>
 <span class="topic"><!-- icon: logo-dataverse -->Dataverse MCP</span>
+<span class="topic"><!-- icon: robot f-github -->Agenti connessi</span>
 <span class="topic"><!-- icon: tree-view f-github -->Workflow</span>
+<span class="topic"><!-- icon: user-check f-github -->Human in the loop</span>
+<span class="topic"><!-- icon: logo-word -->Dossier Word</span>
+<span class="topic"><!-- icon: rocket-launch f-github -->Pubblicazione</span>
 </p>
 
 <!-- icon: flask --> <!-- labs: advanced/github-harness -->
@@ -168,7 +171,7 @@ Alcuni lab richiedono risorse create nei lab precedenti: sono indicate all'inizi
 
 ## Cosa userai nei lab
 
-Oltre a Copilot Studio, nei lab incontrerai questi prodotti Microsoft.
+Oltre a Copilot Studio, nei lab incontrerai questi prodotti e strumenti.
 
 <p class="logo-row">
 <span><!-- icon: logo-sharepoint -->SharePoint</span>
@@ -178,6 +181,8 @@ Oltre a Copilot Studio, nei lab incontrerai questi prodotti Microsoft.
 <span><!-- icon: logo-teams -->Teams</span>
 <span><!-- icon: logo-word -->Word</span>
 <span><!-- icon: logo-power-apps -->Power Apps</span>
+<span><!-- icon: logo-onedrive -->OneDrive</span>
+<span><!-- icon: logo-power-fx -->Power Fx</span>
 </p>
 
 ## Riferimenti

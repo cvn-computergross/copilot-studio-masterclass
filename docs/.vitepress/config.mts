@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { defineConfig } from 'vitepress'
-import { DOCS, EXPERIENCES, LEVELS, SECTIONS, sidebar } from './content'
+import { DOCS, EXPERIENCES, LEVELS, SECTIONS, labs, sidebar } from './content'
 import { masterclass } from './markdown'
 
 const base = '/copilot-studio-masterclass/'
@@ -27,6 +27,12 @@ export default defineConfig({
   // relativo, che funziona su GitHub; nel sito vengono copiati così come sono
   buildEnd(site) {
     fs.cpSync(path.join(DOCS, 'resources'), path.join(site.outDir, 'resources'), { recursive: true })
+  },
+
+  // l'ultimo lab di ogni sezione non prosegue nella sezione successiva: "Next" riporta alla Home
+  transformPageData(pageData) {
+    const m = /^([^/]+\/[^/]+)\/(\d\d-[^/]+)\//.exec(pageData.relativePath)
+    if (m && labs(m[1]).at(-1) === m[2]) pageData.frontmatter.next = { text: 'Home', link: '/' }
   },
 
   markdown: {

@@ -1,6 +1,6 @@
 # Lab 05 - Automating with Workflows
 
-[Previous: Lab 04](../04-adding-skills/README.md) | [Back to GitHub Harness](../index.md)
+[Previous: Lab 04](../04-adding-skills/README.md) | [Back to GitHub Harness](../index.md) | [Next: Home](../../../../README.md)
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~90 minuti · <!-- icon: github-logo f-github --> **Harness:** GitHub Copilot
 
@@ -160,6 +160,16 @@ Una lista vuota non è un errore: è uno dei tre percorsi previsti, e la decisio
 length(body('Cerca_dispositivo')?['value'])
 ```
 
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce il numero di dispositivi trovati da **Cerca dispositivo**.
+
+- `body('Cerca_dispositivo')`: il risultato del nodo **Cerca dispositivo**.
+- `?['value']`: l'elenco degli elementi trovati; il `?` evita un errore se l'elenco manca.
+- `length(...)`: conta gli elementi dell'elenco.
+
+Risultato: `1` se l'ID corrisponde a un dispositivo, `0` se la lista è vuota. Per questo la condizione confronta con **Greater** `0`.
+:::
+
 ![](./images/dispositivo-in-inventario-02.png)
 
 3. Impostare **Operator** su **Greater** e **Value** su `0`.
@@ -194,6 +204,17 @@ Se il dispositivo esiste, resta da guardare lo stato. Solo nel percorso "disponi
 - **Value**: `Available`.
 
 ![](./images/dispositivo-disponibile-01.png)
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce lo stato del dispositivo trovato, ad esempio `Available`.
+
+- `body('Cerca_dispositivo')?['value']`: l'elenco dei dispositivi trovati.
+- `first(...)`: ne prende il primo elemento; con **Top Count** `1` è anche l'unico.
+- `?['Status']`: la colonna **Status** di quell'elemento. Le colonne di scelta restituiscono un oggetto, non direttamente il testo.
+- `?['Value']`: il testo della scelta, dentro quell'oggetto.
+
+Risultato: `Available` oppure, ad esempio, `In use`. La stessa forma `first(body('Cerca_dispositivo')?['value'])?['Model']` legge un'altra colonna, ad esempio il modello nel corpo dell'email e nell'output `ModelValue`.
+:::
 
 2. Nel ramo **Disponibile** selezionare **+**, cercare `send an email` e scegliere **Send an email** di **Office 365 Outlook**. Rinominarlo `Avvisa responsabile`, creare la connessione se richiesto e impostare:
 
@@ -295,6 +316,16 @@ Leggi dispositivi
 ```text
 Legge i dispositivi aziendali dalla lista SharePoint Dispositivi di Zava e li restituisce con ID, produttore, modello, colore, tipo e stato. Usalo per mostrare i dispositivi disponibili del tipo richiesto (Laptop, Desktop o Smartphone). Nel parametro Filter Query usa i nomi interni delle colonne, ad esempio Status eq 'Available' and AssetType eq 'Laptop'. Non modifica la lista e non invia richieste.
 ```
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Filtro che l'agente scrive nel parametro **Filter Query**: tiene solo gli elementi che rispettano entrambe le condizioni.
+
+- `Status eq 'Available'`: `eq` significa "uguale a"; la colonna **Status** deve valere `Available`. I valori di testo e di scelta stanno tra apici singoli.
+- `and`: unisce le condizioni, che devono essere vere insieme.
+- `AssetType eq 'Laptop'`: la colonna **AssetType** deve valere `Laptop`.
+
+Risultato: i soli portatili disponibili. Si usano i nomi interni delle colonne, quindi `AssetType` e non "Asset type".
+:::
 
 8. Aprire la scheda **Inputs** e impostare:
 

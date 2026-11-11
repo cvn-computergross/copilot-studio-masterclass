@@ -1,6 +1,6 @@
 # Lab 05 - Device Request Agent Flows
 
-[Previous: Lab 04](../04-job-posting-tools/README.md) | [Back to Standard Harness](../index.md)
+[Previous: Lab 04](../04-job-posting-tools/README.md) | [Back to Standard Harness](../index.md) | [Next: Home](../../../../README.md)
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~90 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
 
@@ -506,6 +506,17 @@ Scorrendo fino in fondo al nodo, sono visibili le variabili di output. **comment
   ]
 }
 ```
+
+::: details <!-- icon: function f-topics --> Come si legge la formula
+Restituisce le opzioni della scheda: una scelta per ogni dispositivo letto da SharePoint.
+
+- `Global.VarDevices.value`: la tabella dei dispositivi restituita da **Get items**.
+- `ForAll(tabella, { ... })`: ripete la formula per ogni riga e restituisce una tabella con un record per riga.
+- `title: If(IsBlank(Model), "NA", Model)`: il testo mostrato. Dentro `ForAll` i nomi `Model` e `ID` sono le colonne della riga corrente; se il valore manca si usa "NA".
+- `value: If(IsBlank(ID), "NA", ID)`: il valore restituito alla scelta, che finisce in `deviceSelectionId`.
+
+Risultato: un'opzione per dispositivo, con il modello come testo e l'ID come valore.
+:::
 
 9. Salvare il Topic.
 

@@ -1,0 +1,120 @@
+{
+ "diagram": "gh-rilascio",
+ "details": {
+  "ag11-memoria": {
+   "title": "Memoria",
+   "icon": "stack",
+   "fam": "system",
+   "lab": "G11",
+   "role": "Interruttore Memory nella scheda Build, con una sezione delle istruzioni che ne delimita l'uso.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Ricorda",
+     "icon": "check-circle",
+     "fam": "system",
+     "sub": "programmi seguiti, formato di risposta preferito, lingua"
+    },
+    {
+     "label": "Non sostituisce i dati",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "codici, importi, stati e punteggi si leggono da Dataverse"
+    },
+    {
+     "label": "Nessun dato personale",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "dei proponenti"
+    },
+    {
+     "label": "Prova",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "PG-300 e risposte brevi, poi New chat: criteri di PG-300 in elenco"
+    }
+   ]
+  },
+  "ag11-teams": {
+   "title": "Teams + Microsoft 365",
+   "icon": "logo:teams",
+   "fam": "lifecycle",
+   "lab": "G11",
+   "role": "Canale aggiunto da Channels › Add channel, dopo Publish agent; l'Availability non si cambia dopo la pubblicazione.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Availability",
+     "icon": "check-circle",
+     "fam": "lifecycle",
+     "sub": "Microsoft Teams; Microsoft 365 Copilot disattivato"
+    },
+    {
+     "label": "Short description",
+     "icon": "textbox",
+     "fam": "lifecycle",
+     "sub": "Proposte di progetto IT per il PMO di Zava"
+    },
+    {
+     "label": "Long description",
+     "icon": "textbox",
+     "fam": "lifecycle",
+     "sub": "registra i business case, prepara valutazioni, dossier e sessioni di revisione"
+    },
+    {
+     "label": "Developer name",
+     "icon": "textbox",
+     "fam": "lifecycle",
+     "sub": "PMO Zava S.p.A."
+    },
+    {
+     "label": "Use and share",
+     "icon": "user-check",
+     "fam": "lifecycle",
+     "sub": "View in Teams, Add: installato solo per sé"
+    },
+    {
+     "label": "Condivisione",
+     "icon": "share-network",
+     "fam": "lifecycle",
+     "sub": "decide chi può usarlo: pubblicare non è condividere"
+    }
+   ],
+   "file": "teams.png"
+  },
+  "ag11-monitor": {
+   "title": "Monitor",
+   "icon": "chart-line-up",
+   "fam": "lifecycle",
+   "lab": "G11",
+   "role": "Scheda Monitor dell'agente: solo le sessioni dei canali pubblicati, non quelle di Preview, anche ore dopo la conversazione.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Overview",
+     "icon": "chart-bar",
+     "fam": "lifecycle",
+     "sub": "Total sessions, Total users, Average duration, Success rate"
+    },
+    {
+     "label": "Crediti",
+     "icon": "coins",
+     "fam": "lifecycle",
+     "sub": "scheda dei crediti stimati"
+    },
+    {
+     "label": "Reactions",
+     "icon": "thumbs-up",
+     "fam": "lifecycle",
+     "sub": "pollice giù in Teams con il commento: La tabella non riporta l'evidenza per un criterio"
+    },
+    {
+     "label": "Riproduzione",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "il caso rifatto in Preview: se il problema è reale, nuovo caso nel set"
+    }
+   ]
+  }
+ }
+}

@@ -156,6 +156,17 @@ I numeri non li calcola il modello. Il flow riceve i livelli, applica i fattori 
 
 ![](./images/passo2-extra-09.png)
 
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce l'ID della proposta letta da **Leggi Proposta**, la riga da cui scaricare il file.
+
+- `body('Leggi_Proposta')`: il risultato del nodo **Leggi Proposta** (spazi sostituiti da `_`, maiuscole comprese).
+- `?['value']`: l'elenco delle righe trovate.
+- `first(...)`: la prima riga; con **Row count** `1` è anche l'unica.
+- `?['csm_proposalid']`: la colonna con l'identificativo della riga.
+
+Risultato: un identificativo come `3f2a9c1e-...`. Con un altro nome di colonna la stessa forma legge qualunque campo della riga.
+:::
+
 ### Valutare con il prompt
 
 1. Aggiungere l'azione **Run a prompt** `Valuta` e selezionare il prompt **Valuta proposta**
@@ -192,6 +203,17 @@ outputs('Valuta')?['body/responsev2/predictionOutput/structuredOutput/Criteri']
 mul(float(items('Per_ogni_criterio')?['Peso']), if(equals(items('Per_ogni_criterio')?['Livello'], 'Forte'), 1.0, if(equals(items('Per_ogni_criterio')?['Livello'], 'Moderata'), 0.6, if(equals(items('Per_ogni_criterio')?['Livello'], 'Debole'), 0.3, 0.0))))
 ```
 
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce i punti di un criterio: il peso moltiplicato per un fattore che dipende dal livello.
+
+- `items('Per_ogni_criterio')`: il criterio corrente del ciclo **Per ogni criterio**; `?['Peso']` e `?['Livello']` sono i suoi campi.
+- `float(...)`: converte il peso in numero decimale.
+- `if(equals(Livello, 'Forte'), 1.0, if(...))`: tre `if` annidati, valutati in ordine. Forte vale 1.0, Moderata 0.6, Debole 0.3, qualsiasi altro livello 0.0.
+- `mul(a, b)`: moltiplica il peso per il fattore.
+
+Risultato: peso 20 e livello Moderata danno 12.0.
+:::
+
 ![](./images/passo2-extra-14.png)
 
 5. Sempre dentro il ciclo aggiungere **Increment variable**: variabile `Punteggio`, valore `outputs('Punti')`
@@ -203,6 +225,19 @@ mul(float(items('Per_ogni_criterio')?['Peso']), if(equals(items('Per_ogni_criter
 ```text
 concat(items('Per_ogni_criterio')?['Criterio'], ' | ', string(items('Per_ogni_criterio')?['Peso']), ' | ', items('Per_ogni_criterio')?['Livello'], ' | ', items('Per_ogni_criterio')?['Evidenza'], ' | ', formatNumber(outputs('Punti'), '0.0', 'it-IT'), decodeUriComponent('%0A'))
 ```
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce una riga di testo per il criterio corrente, da aggiungere a `Dettaglio`, con i campi separati da `|`.
+
+- `items('Per_ogni_criterio')?['Criterio']`, `?['Livello']`, `?['Evidenza']`: i campi di testo del criterio corrente.
+- `string(items('Per_ogni_criterio')?['Peso'])`: il peso, che è un numero, convertito in testo per poterlo unire agli altri pezzi.
+- `formatNumber(outputs('Punti'), '0.0', 'it-IT')`: i punti dell'azione **Punti** con una cifra decimale e la virgola all'italiana.
+- `' | '`: il separatore fisso tra i campi.
+- `decodeUriComponent('%0A')`: un ritorno a capo, così il criterio successivo parte su una nuova riga.
+- `concat(...)`: unisce tutti i pezzi in un unico testo.
+
+Risultato: `<criterio> | 20 | Moderata | <evidenza> | 12,0`.
+:::
 
 ![](./images/passo2-extra-16.png)
 
@@ -216,6 +251,17 @@ concat(items('Per_ogni_criterio')?['Criterio'], ' | ', string(items('Per_ogni_cr
 ```text
 if(greater(float(coalesce(first(body('Leggi_Proposta')?['value'])?['csm_requestedbudget'], 0)), float(coalesce(first(body('Leggi_Programma')?['value'])?['csm_availablebudget'], 0))), if(greaterOrEquals(variables('Punteggio'), 55), 770000001, 770000002), if(greaterOrEquals(variables('Punteggio'), 75), 770000000, if(greaterOrEquals(variables('Punteggio'), 55), 770000001, 770000002)))
 ```
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce il codice della raccomandazione, secondo la regola di soglia e di budget.
+
+- `float(coalesce(first(body('Leggi_Proposta')?['value'])?['csm_requestedbudget'], 0))`: il budget richiesto dalla proposta come numero, `0` se la colonna è vuota. Lo stesso per `csm_availablebudget` del programma, letto da **Leggi Programma**.
+- `greater(richiesto, disponibile)`: vero se il budget richiesto supera quello disponibile.
+- Se è vero, `if(greaterOrEquals(variables('Punteggio'), 55), 770000001, 770000002)`: da 55 punti in su `770000001` (Needs Further Review), altrimenti `770000002` (Not Recommended). Con il budget superato non si arriva mai a Recommended.
+- Se è falso: da 75 punti `770000000` (Recommended), da 55 `770000001`, sotto 55 `770000002`.
+
+Risultato: uno dei tre codici numerici della scelta, che più avanti viene tradotto in testo.
+:::
 
 ![](./images/passo2-extra-17.png)
 

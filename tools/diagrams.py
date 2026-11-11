@@ -2818,6 +2818,657 @@ def gh_concetti_crediti():
     d.save()
 
 
+# --- schemi dell'Advanced della GitHub Harness ------------------------------------------------
+# Lab G01-G11 (docs/advanced/github-harness/): nomi esatti di agenti, skill, strumenti, workflow e tabelle
+# csg_ creati nei lab. Se un lab cambia un nome, va cambiato anche qui. I file vanno
+# in docs/advanced/images/ con il prefisso gh- (gh-panoramica-sistema, gh-architettura, gh-workflow-...); i dettagli
+# interattivi hanno il prefisso agNN- (gNN- è già dei Fundamentals della GitHub Harness).
+# Come gli schemi dell'Advanced della Standard Harness: panoramica e architettura a riquadri piatti con il
+# lab tra parentesi, sequenze per le conversazioni, workflow disegnati come nel designer. Skill in topics
+# (puzzle-piece), istruzioni in instructions, server MCP e workflow in tools, PMO Demand Hub in knowledge,
+# agenti connessi in agents, l'orchestratore in github.
+PA = "agent:planning-agent-192.png"   # icona dell'Agente Pianificazione - GH (G10)
+
+# Dettagli degli schemi dell'Advanced della GitHub Harness: id con il prefisso del lab (ag01-, ag02-...).
+DETAILS.update({
+    # gh-panoramica-sistema (G01) e gh-architettura (G02, G03)
+    "ag01-utenti": D(
+        "Analisti e sponsor", "users-three", "agents", "G01-G11",
+        "Chi usa l'Agente Demand IT - GH: analisti del PMO, proponenti, sponsor e architetti, in Preview durante i lab e poi in Teams.",
+        [N("Preview", "flask", "instructions", "le prove dei lab, con New chat e la traccia", lab="G01-G10"),
+         N("Teams + Microsoft 365", "logo:teams", "lifecycle", "canale con Availability Microsoft Teams, View in Teams", lab="G11"),
+         N("Memoria", "stack", "system", "programmi seguiti, formato di risposta, lingua", lab="G11"),
+         N("Monitor", "chart-line-up", "lifecycle", "sessioni, utenti, Success rate, reazioni con il commento", lab="G11")],
+        layout="list"),
+    "ag01-orchestratore": D(
+        "Agente Demand IT - GH", DA, "github", "G01-G11",
+        "Orchestratore e punto di ingresso unico (csg_agentedemand_gh, soluzione PMO Demand IT (GitHub)).",
+        [N("Istruzioni", "clipboard-text", "instructions", "ruolo, ambito, identificatori; poi documenti, revisione, memoria", lab="G01, G06, G10, G11"),
+         N("Greeting message", "chat-text", "instructions", "dichiarazione di uso dell'IA: decide il Comitato", lab="G04"),
+         N("Memory", "stack", "system", "preferenze di lavoro degli analisti, mai i dati del PMO", lab="G11"),
+         N("Demand IT GH - Base", "list-checks", "lifecycle", "set di valutazione: da 4 a 8 casi, Compare meaning", lab="G02-G06")],
+        layout="list"),
+    "ag01-skill": D(
+        "Skill dell'Agente Demand IT - GH", "puzzle-piece", "topics", "G02-G06",
+        "Istruzioni e script caricati come skill: l'agente le usa quando la richiesta corrisponde alla loro descrizione.",
+        [N("proposal-intake", "puzzle-piece", "topics", "dal business case a Proponente e Proposta, senza duplicati", lab="G02"),
+         N("proposal-scoring", "puzzle-piece", "topics", "rubrica fissa sui criteri pesati, in sola lettura", lab="G05"),
+         N("evaluation-recording", "puzzle-piece", "topics", "registra la Valutazione dopo un sì esplicito", lab="G05"),
+         N("review-dossier-document", "puzzle-piece", "topics", "dossier Word con generate_dossier.py", lab="G06")],
+        layout="list"),
+    "ag01-istruzioni": D(
+        "Istruzioni", "clipboard-text", "instructions", "G01-G11",
+        "Le istruzioni dell'orchestratore crescono lab dopo lab: ogni sezione vale in tutte le conversazioni.",
+        [N("Ruolo, ambito, identificatori", "target", "instructions", "PMO di Zava, PP-####, AS-####, RQ-####, PG-###", lab="G01"),
+         N("Greeting message", "chat-text", "instructions", "dichiarazione di uso dell'IA nel saluto", lab="G04"),
+         N("Generazione di documenti", "file-text", "instructions", "review-dossier-document, mai un file non allegato", lab="G06"),
+         N("Sessione di revisione", "calendar-dots", "instructions", "prima il via libera, poi l'Agente Pianificazione", lab="G10"),
+         N("Memoria", "stack", "instructions", "solo preferenze dichiarate, mai codici, importi o dati dei proponenti", lab="G11")],
+        layout="list"),
+    "ag11-memoria": D(
+        "Memoria", "stack", "system", "G11",
+        "Interruttore Memory nella scheda Build, con una sezione delle istruzioni che ne delimita l'uso.",
+        [N("Ricorda", "check-circle", "system", "programmi seguiti, formato di risposta preferito, lingua"),
+         N("Non sostituisce i dati", "prohibit", "risk", "codici, importi, stati e punteggi si leggono da Dataverse"),
+         N("Nessun dato personale", "prohibit", "risk", "dei proponenti"),
+         N("Prova", "flask", "instructions", "PG-300 e risposte brevi, poi New chat: criteri di PG-300 in elenco")],
+        layout="list"),
+    "ag01-workflow": D(
+        "Intake proposte via email", "flow-arrow", "triggers", "G07-G09",
+        "Workflow che parte all'arrivo di un'email nella casella del PMO e registra le proposte senza nessuno in conversazione.",
+        [N("When a new email arrives", "logo:outlook", "triggers", "Inbox, Subject filter Proposta progetto, con allegati", lab="G07"),
+         N("Classifica email", "signpost", "tools", "Classify: Proposal, RispostaAutomatica, NonPertinente, Other", lab="G07"),
+         N("Elabora proposta", "logo:dataverse", "knowledge", "per ogni allegato PDF o Word: Proposal e nota", lab="G07"),
+         N("Conferma programma", "robot", "agents", "agente inline con Request for information", lab="G08"),
+         N("Completa con Agente Demand IT", DA, "github", "agente pubblicato: intake e valutazione preliminare", lab="G08"),
+         N("Notifica PMO in Teams", "logo:teams", "tools", "scheda adattiva nel canale Proposte del team Zava PMO", lab="G08"),
+         N("Verifica email non chiara", "user-check", "platform", "Human review sul ramo Other", lab="G09"),
+         N("Gestisci errore", "warning", "risk", "avviso in Teams, End Failed IntakeProposteFallito", lab="G09")],
+        layout="list"),
+    "ag01-hub": D(
+        "PMO Demand Hub", "logo:dataverse", "knowledge", "Lab 00",
+        "Soluzione PMO Demand IT (GitHub): cinque tabelle con prefisso csg_ e l'app PMO Demand Hub; le note sono la tabella standard di Dataverse.",
+        [N("Program", "database", "knowledge", "csg_program, Program Code PG-###, Available Budget"),
+         N("Evaluation Criterion", "database", "knowledge", "csg_criterion, Weight: i pesi sommano a 100"),
+         N("Requester", "database", "knowledge", "csg_requester, Requester Code RQ-####"),
+         N("Proposal", "database", "knowledge", "csg_proposal, PP-####, Channel, Proposal Status, Review Scheduled (G10)"),
+         N("Assessment", "database", "knowledge", "csg_assessment, Assessment Code AS-####, Score, Recommendation"),
+         N("Note", "database", "knowledge", "annotation: il documento ricevuto per email", lab="G07")],
+        layout="list"),
+    "ag01-mcp": D(
+        "Dataverse MCP Server", "logo:dataverse", "tools", "G02",
+        "Strumento dell'orchestratore per leggere e scrivere il PMO Demand Hub, con il minimo privilegio.",
+        [N("Authentication", "key", "tools", "End user account: i permessi di chi chatta"),
+         N("Attivi", "check-circle", "tools", "Read query, Create record, Update record, Search, Describe"),
+         N("Disattivati", "prohibit", "risk", "Invoke api, tabelle, Delete record, skill, file")],
+        layout="list"),
+    "ag01-comitato": D(
+        "Agente Comitato - GH", COM, "agents", "G03-G04",
+        "Specialista connesso in sola lettura: prepara briefing e domande per la sessione di revisione di una proposta.",
+        [N("Istruzioni", "clipboard-text", "instructions", "preparazione della revisione, non contatta i proponenti", lab="G03"),
+         N("Dataverse MCP Server", "logo:dataverse", "tools", "Shared account: solo Search, Describe e Read query", lab="G03"),
+         N("Allow other agents to connect", "plugs-connected", "agents", "attivo, pubblicato e collegato all'orchestratore", lab="G03"),
+         N("Sicurezza e ambito", "shield-check", "instructions", "sette guardrail nelle istruzioni", lab="G04"),
+         N("Comitato GH - Base e Comitato GH - Sicurezza", "list-checks", "lifecycle", "4 e 6 casi, Compare meaning, Pass score 70", lab="G03-G04")],
+        layout="list"),
+    "ag01-pianificazione": D(
+        "Agente Pianificazione - GH", PA, "agents", "G10",
+        "Agente connesso che si occupa solo di persone, calendari e inviti, dopo il via libera; strumenti con Shared account.",
+        [N("Cerca collega", "user-circle", "tools", "Office 365 Users, Search for users (V2)"),
+         N("Trova orari liberi", "calendar-dots", "tools", "Office 365 Outlook, Find meeting times (V2)"),
+         N("Crea sessione di revisione", "logo:outlook", "tools", "Create event (V4), solo dopo un orario confermato"),
+         N("Leggi evento", "logo:outlook", "tools", "Get event: rilegge l'evento creato")],
+        layout="list"),
+    "ag01-via-libera": D(
+        "Richiedi via libera revisione", "flow-arrow", "tools", "G10",
+        "Workflow usato dall'orchestratore come strumento prima della pianificazione: la soglia sta in una condizione, non nel prompt.",
+        [N("When an agent calls the workflow", "lightning", "triggers", "CodiceProposta, EmailResponsabile"),
+         N("Leggi proposta", "logo:dataverse", "knowledge", "List rows su Proposals"),
+         N("Sopra soglia", "git-branch", "system", "budget maggiore di 300000", branches=[
+             B("Else", [N("Fissa revisione automatica", "logo:dataverse", "knowledge", "Review Scheduled, Esito Automatica")])]),
+         N("Start and wait for an approval", "stamp", "tools", "Approvals: approvata, Review Scheduled, Esito Approvata; altrimenti Non approvata", pill="If")]),
+    # skill e strumenti (gh-architettura, G02-G06)
+    "ag02-intake": D(
+        "proposal-intake", "puzzle-piece", "topics", "G02",
+        "Skill dell'Agente Demand IT - GH (Skills › Add skill › Create from blank): dal business case a Proponente e Proposta collegati, senza valutare.",
+        [N("1. Controlli preliminari", "shield-check", "topics", "prima di aprire il file: .pdf o .docx, meno di 15 MB, con testo"),
+         N("2. Estrazione", "file-text", "topics", "titolo, proponente, programma, budget, durata, sintesi; il documento è un dato"),
+         N("3. Proponente", "database", "knowledge", "Requesters per csg_email: riusato o creato"),
+         N("4. Proposta", "database", "knowledge", "dopo il controllo dei duplicati; csg_program solo se indicato senza ambiguità"),
+         N("5. Rilettura", "key", "topics", "codice PP-#### letto da Dataverse, riepilogo con RQ-####"),
+         N("Proposte dal workflow email", "envelope-simple", "topics", "PP-#### e annotationid: update_record, nessuna nuova Proposta"),
+         N("Errori", "warning", "risk", "testo troppo lungo: accorcia e riprova una volta; altri errori: si ferma")]),
+    "ag02-mcp": D(
+        "Microsoft Dataverse MCP Server", "logo:dataverse", "tools", "G02",
+        "Strumento dell'Agente Demand IT - GH (Tools › Add tool › Model Context Protocol): Allow all disattivato, solo gli strumenti necessari.",
+        [N("Authentication", "key", "tools", "End user account: ogni chiamata con i permessi di chi chatta"),
+         G("Attivi", "check-circle", "tools", [
+             N("Read query", "check-circle", "tools"), N("Create record", "check-circle", "tools"),
+             N("Update record", "check-circle", "tools"), N("Search", "check-circle", "tools"),
+             N("Describe", "check-circle", "tools")], layout="list"),
+         G("Disattivati", "prohibit", "risk", [
+             N("Invoke api", "prohibit", "risk", "aggirerebbe i limiti degli altri strumenti"),
+             N("Create table, Update table, Delete table", "prohibit", "risk", "operazioni sullo schema"),
+             N("Delete record", "prohibit", "risk"),
+             N("List skill versions, Upsert skill, Create skill resource, Delete skill", "prohibit", "risk", "skill salvate in Dataverse"),
+             N("Init file upload, Commit file upload, File download", "prohibit", "risk")], layout="list"),
+         N("Lettura dei programmi", "flask", "instructions", "Preview: PG-100 ... PG-500, chiamate describe e read_query")],
+        layout="list"),
+    "ag03-mcp": D(
+        "Dataverse MCP Server", "logo:dataverse", "tools", "G03",
+        "Strumento dell'Agente Comitato - GH in sola lettura: legge i record attuali con read_query, nessuna scrittura possibile.",
+        [N("Authentication", "key", "tools", "Shared account: la connessione di chi ha creato l'agente"),
+         N("Perché condivisa", "plugs-connected", "tools", "in una delega la scheda di consenso alla connessione non compare"),
+         N("Attivi", "check-circle", "tools", "Search, Describe, Read query"),
+         N("Disattivati", "prohibit", "risk", "tutti gli altri, Create, Update e Delete record compresi"),
+         N("Permessi della connessione", "warning", "platform", "prima di condividere: un account limitato alle tabelle del PMO"),
+         N("Search all websites", "globe", "knowledge", "eliminata da Knowledge, se presente")],
+        layout="list"),
+    "ag05-scoring": D(
+        "proposal-scoring", "puzzle-piece", "topics", "G05",
+        "Skill in sola lettura: valuta una proposta con una rubrica fissa sui criteri pesati del programma, letti dal vivo.",
+        [N("1. Proposta", "database", "knowledge", "PP-#### o l'ultima registrata; evidenza dal documento o da csg_summary"),
+         N("2. Programma", "question", "topics", "se manca o è ambiguo: al massimo due proposte, decide l'utente"),
+         N("3. Programma e criteri", "database", "knowledge", "csg_program e tutti i csg_criterion, pesi che sommano a 100"),
+         G("4. Rubrica · punti = fattore x peso", "list-numbers", "topics", [
+             N("Forte · 1,0", "check-circle", "topics", "evidenza chiara, diretta e quantificata"),
+             N("Moderata · 0,6", "check-circle", "topics", "presente ma parziale o non quantificata"),
+             N("Debole · 0,3", "check-circle", "topics", "marginale o solo dichiarata"),
+             N("Assente · 0,0", "x-circle", "topics", "nessuna evidenza")], layout="list"),
+         N("5. Indicazione", "stamp", "topics", "Recommended da 75, Needs Further Review 55-74,9, Not Recommended sotto 55; budget oltre il programma: al massimo Needs Further Review"),
+         N("6. Tabella", "table", "topics", "Criterio, Peso, Evidenza, Livello, Punti, poi totale e motivazione"),
+         N("7. Domanda finale", "chat-text", "topics", "registrare la valutazione? Lo fa evaluation-recording")]),
+    "ag05-recording": D(
+        "evaluation-recording", "puzzle-piece", "topics", "G05",
+        "Skill che scrive: registra la Valutazione già mostrata, solo dopo un sì esplicito nella conversazione corrente.",
+        [N("1. Input", "list-checks", "topics", "PP-####, PG-### confermato, tabella, punteggio e indicazione"),
+         N("2. Duplicati", "copy", "topics", "Valutazione già presente: mostra AS-#### e chiede se aggiornarla"),
+         N("3. Assessment", "database", "knowledge", "csg_score, csg_criteriadetail (Criterio | Peso | Livello | Evidenza | Punti), csg_rationale, csg_recommendation"),
+         N("4. Proposal", "database", "knowledge", "csg_program se vuoto, csg_proposalstatus Assessed"),
+         N("5. Rilettura", "key", "topics", "codice AS-#### da Dataverse, poi il riepilogo")]),
+    # gh-workflow-dossier (G06)
+    "ag06-skill": D(
+        "review-dossier-document", "puzzle-piece", "topics", "G06",
+        "Skill importata nell'Agente Demand IT - GH (Skills › Upload a skill) da review-dossier-document.zip, con SKILL.md alla radice.",
+        [N("SKILL.md", "file-text", "topics", "valutazione, dati, contenuti, JSON, script, file da restituire"),
+         N("generate_dossier.py", "file-code", "topics", "validazione e layout con python-docx"),
+         N("dossier_input.sample.json", "file-code", "topics", "esempio di input valido"),
+         N("dossier_revisione.sample.docx", "logo:word", "tools", "documento generato dall'esempio")],
+        layout="list"),
+    "ag06-json": D(
+        "dossier_input.json", "file-code", "github", "G06",
+        "Scritto dall'agente: i dati letti da Dataverse con il Dataverse MCP Server e i contenuti preparati dal modello.",
+        [N("Valutazione AS-####", "database", "knowledge", "punteggio e livelli registrati in csg_criteriadetail"),
+         N("Proposta, Proponente, Programma", "database", "knowledge", "titolo, sintesi, budget, durata, contatti, budget disponibile"),
+         N("Criteri", "database", "knowledge", "nomi e pesi del programma"),
+         N("Domande e rischi", "chat-text", "github", "8 domande per lo sponsor, rischi fondati sulla sintesi")],
+        layout="list"),
+    "ag06-script": D(
+        "generate_dossier.py", "file-code", "github", "G06",
+        "Script della skill, eseguito nella sandbox dell'interprete: Python e librerie comuni, senza accesso a Internet.",
+        [N("Valida", "shield-check", "github", "livelli ammessi, pesi che sommano a 100, esattamente 8 domande"),
+         N("Ricalcola", "function", "github", "punti = fattore x peso e punteggio complessivo"),
+         N("Regola di budget", "coins", "github", "rischio aggiunto se il budget supera quello del programma"),
+         N("Confronta", "warning", "platform", "punteggio diverso da quello registrato: punto di attenzione"),
+         N("Scrive", "logo:word", "tools", "dossier_revisione.docx con python-docx")]),
+    "ag06-docx": D(
+        "dossier_revisione.docx", "logo:word", "tools", "G06",
+        "Il dossier allegato alla risposta: due esecuzioni hanno la stessa forma, cambiano solo le formulazioni di domande e rischi.",
+        [N("Intestazione", "article", "tools", "titolo, proposta PP-####, valutazione AS-####, data"),
+         N("Proponente, Programma, Sintesi", "list-bullets", "tools", "dati letti da Dataverse"),
+         N("Criteri di valutazione ed evidenze", "table", "tools", "tabella Light Grid Accent 1, punteggio complessivo"),
+         N("Domande per lo sponsor", "chat-text", "tools", "8, raggruppate per criterio dal peso più alto"),
+         N("Rischi e punti di attenzione", "warning", "tools", "con il rischio di budget e l'eventuale differenza di punteggio"),
+         N("Nota finale", "sparkle", "tools", "documento preparato con l'IA: decide il Comitato di Valutazione")],
+        layout="list"),
+})
+
+
+# Dettagli di gh-workflow-email (G07-G09): solo ciò che lo schema non mostra (impostazioni, valori, espressioni).
+DETAILS.update({
+    # G07
+    "ag07-trigger": D(
+        "When a new email arrives", "logo:outlook", "triggers", "G07",
+        "Trigger Connector del nodo Start (Office 365 Outlook), con Show all per vedere tutti i parametri.",
+        [N("Folder", "folders", "triggers", "Inbox (predefinito)"),
+         N("Subject filter", "funnel", "triggers", "Proposta progetto"),
+         N("Include attachments", "check-circle", "triggers", "true: senza, l'allegato non arriva al workflow"),
+         N("Only with attachments", "check-circle", "triggers", "true: un'email senza documento non avvia il workflow"),
+         N("Connection", "plugs-connected", "triggers", "il proprio account Office 365 Outlook, non una casella condivisa")],
+        layout="list"),
+    "ag07-variabile": D(
+        "Avvia elenco proposte", "textbox", "tools", "G07",
+        "Initialize Variable al livello principale, subito dopo il trigger: mai dentro un ciclo o un ramo.",
+        [N("Variable name", "textbox", "tools", "ProposteRegistrate"),
+         N("Type", "textbox", "tools", "String"),
+         N("Value", "textbox", "tools", "vuoto: ogni giro del ciclo aggiunge una riga")],
+        layout="list"),
+    "ag07-classifica": D(
+        "Classifica email", "signpost", "tools", "G07",
+        "Nodo Classify (gruppo Other): il modello sceglie la categoria in base alle descrizioni; si prova con Run node.",
+        [N("Input to classify", "function", "tools", "@{triggerOutputs()?['body/subject']} @{triggerOutputs()?['body/body']}"),
+         N("Proposal", "check-circle", "knowledge", "una persona di Zava presenta uno o più business case; non risposte automatiche, domande sul processo o bozze"),
+         N("RispostaAutomatica", "x-circle", "system", "fuori ufficio, mancato recapito, conferme automatiche, anche con Proposta progetto"),
+         N("NonPertinente", "x-circle", "system", "marketing, newsletter, promozioni, spam"),
+         N("Other", "question", "platform", "categoria predefinita creata da Classify per tutto il resto")],
+        layout="list"),
+    "ag07-formato": D(
+        "Formato ammesso", "git-branch", "system", "G07",
+        "If/Else con due righe unite da OR: scegliendo Content-Type il designer crea da solo il ciclo Per ogni allegato.",
+        [N("Riga 1", "check-circle", "system", "contentType Equals application/pdf"),
+         N("Riga 2", "check-circle", "system", "Attachments Name Ends with .docx (o Contains)"),
+         N("Perché il nome per i Word", "file-text", "system", "il tipo vero è lungo e alcuni client lo inviano generico")],
+        layout="list"),
+    "ag07-registra": D(
+        "Registra proposta", "logo:dataverse", "knowledge", "G07",
+        "Microsoft Dataverse, Add a new row sulla tabella Proposals (csg_proposals) della soluzione PMO Demand IT (GitHub).",
+        [N("Title", "textbox", "knowledge", "Name dell'allegato: titolo provvisorio"),
+         N("Cover Message", "function", "knowledge", "take(coalesce(body('Corpo_in_testo'), ''), 3900)"),
+         N("Source Email", "envelope-simple", "knowledge", "From del trigger"),
+         N("Channel e Proposal Status", "list-checks", "knowledge", "Email, Received"),
+         N("Submission Date", "function", "knowledge", "utcNow()")],
+        layout="list"),
+    "ag07-nota": D(
+        "Allega il documento come nota", "logo:dataverse", "knowledge", "G07",
+        "Add a new row sulla tabella Notes (annotation): la copia del file che gli agenti di G08 leggono da documentbody.",
+        [N("Title e File Name", "textbox", "knowledge", "Name dell'allegato"),
+         N("Is document e Mime type", "file-text", "knowledge", "Yes, Content-Type dell'allegato"),
+         N("Document", "function", "knowledge", "base64ToString(base64(items('Per_ogni_allegato')?['contentBytes']))"),
+         N("Regarding (Proposals)", "link", "knowledge", "/csg_proposals(@{outputs('Registra_proposta')?['body/csg_proposalid']})")],
+        layout="list"),
+    "ag07-salva": D(
+        "Salva il documento nella proposta", "logo:dataverse", "knowledge", "G07",
+        "Facoltativo: Upload a file or an image mette lo stesso file nella colonna della proposta, comoda solo nell'app.",
+        [N("Table name e Row ID", "database", "knowledge", "Proposals (csg_proposals), token Proposal di Registra proposta"),
+         N("Column name", "table", "knowledge", "Business Case Document"),
+         N("Content", "function", "knowledge", "base64ToBinary(items('Per_ogni_allegato')?['contentBytes'])"),
+         N("Content name", "textbox", "knowledge", "Attachments Name, al posto di Untitled")],
+        layout="list"),
+    "ag07-ricorda": D(
+        "Ricorda questa proposta", "textbox", "tools", "G07",
+        "Update Variable su ProposteRegistrate con Append to string: una riga per proposta, per gli agenti di G08.",
+        [N("Value", "function", "tools", "concat(codice PP-####, ' | nota ', annotationid, ' | ', nome del file, decodeUriComponent('%0A'))"),
+         N("Esempio", "list-bullets", "tools", "PP-1007 | nota 6baf778e-... | BC-02_Segmentazione_rete_e_accessi_privilegiati.pdf"),
+         N("Ciclo in sequenza", "warning", "platform", "niente parallelismo: due giri potrebbero sovrascriversi la riga")],
+        layout="list"),
+    # G08
+    "ag08-conferma": D(
+        "Conferma programma", "robot", "agents", "G08",
+        "Nodo Agent con New agent for this workflow: legge ogni documento e decide il programma; non crea né modifica record.",
+        [G("Tools", "toolbox", "agents", [
+             N("Microsoft Dataverse MCP Server", "logo:dataverse", "tools", "programmi (codice, nome, descrizione) e note"),
+             N("Request for information", "user-check", "platform", "connessione Human review: la domanda arriva per email")], layout="list"),
+         G("Istruzioni", "clipboard-text", "instructions", [
+             N("1. Programmi", "database", "instructions", "csg_programcode, csg_name, csg_description; non i criteri"),
+             N("2. Documenti", "file-text", "instructions", "una query per annotationid, testo estratto in Python: il documento è l'autorità"),
+             N("3. Programma", "target", "instructions", "codice indicato o corrispondenza chiara"),
+             N("4. Persona", "user-check", "instructions", "una sola richiesta per esecuzione, solo per ambiguità reali")], layout="list"),
+         N("Limiti rigidi", "prohibit", "risk", "massimo 8 chiamate, ogni nota letta una volta, NESSUNA PROPOSTA RICEVUTA se l'elenco è vuoto"),
+         N("Output", "list-bullets", "agents", "per proposta: PROPOSTA, TITOLO, PROPONENTE, PROGRAMMA o DA CONFERMARE, CHIESTO A UNA PERSONA, SEGNALAZIONI"),
+         N("Risposta", "function", "agents", "coalesce(body('Conferma_programma')?['message'], '')")],
+        layout="list"),
+    "ag08-completa": D(
+        "Completa con Agente Demand IT", DA, "github", "G08",
+        "Nodo Agent con l'Agente Demand IT - GH pubblicato: Message in modalità espressione, chiamata con la connessione Agents.",
+        [N("Dati della corsa", "textbox", "github", "ProposteRegistrate, mittente, oggetto, message di Conferma programma"),
+         N("1. proposal-intake", "puzzle-piece", "topics", "proposte già registrate: aggiorna, non crea; programma solo se confermato"),
+         N("2. proposal-scoring", "puzzle-piece", "topics", "valutazione preliminare se il programma è confermato"),
+         N("3. Niente registrazione", "prohibit", "risk", "nessuna valutazione registrata, nessun altro record creato o eliminato"),
+         N("Risposta", "function", "github", "coalesce(body('Completa_con_Agente_Demand_IT')?['result'], '')")],
+        layout="list"),
+    "ag08-notifica": D(
+        "Notifica PMO in Teams", "logo:teams", "tools", "G08",
+        "Microsoft Teams, Post card in a chat or channel, con una connessione Teams propria (la connessione Agents non la copre).",
+        [N("Post as e Post in", "paper-plane-tilt", "tools", "Flow bot, Channel"),
+         N("Team e Channel", "users-three", "tools", "Zava PMO, Proposte"),
+         N("Scheda adattiva", "cards", "tools", "Da, Oggetto, proposte registrate, conferma del programma, intake e valutazione preliminare"),
+         N("Avviso", "warning", "platform", "valutazione preliminare non registrata: la conferma un analista in chat"),
+         N("Pulsante", "link", "tools", "Apri le proposte nel PMO Demand Hub (INDIRIZZO-APP, elenco csg_proposal)"),
+         N("Valori dinamici", "function", "tools", "substring(string(createArray(...)), 2, ...) protegge il JSON")],
+        layout="list"),
+    # G09
+    "ag09-verifica": D(
+        "Verifica email non chiara", "user-check", "platform", "G09",
+        "Nodo Human review sul ramo Other: l'esecuzione aspetta la risposta di una persona, senza scadenza.",
+        [N("Title", "textbox", "platform", "Email del PMO da verificare"),
+         N("Assigned to e Channel", "user-circle", "platform", "il proprio nome, scelto dai risultati; Outlook"),
+         N("Message", "chat-text", "platform", "email non classificabile, con From e Subject del trigger"),
+         N("Input Yes/No", "question", "platform", "Si tratta di una proposta da registrare?")],
+        layout="list"),
+    "ag09-revisore": D(
+        "Revisore conferma", "git-branch", "system", "G09",
+        "If/Else sulla risposta del revisore: il ramo If è collegato allo Scope Elabora proposta.",
+        [N("Property", "textbox", "system", "Si tratta di una proposta da registrare? di Verifica email non chiara"),
+         N("Operator e Value", "check-circle", "system", "Equals Yes"),
+         N("Non true", "warning", "risk", "il nodo restituisce la stringa Yes: il confronto con true è sempre falso")],
+        layout="list"),
+    "ag09-gestisci": D(
+        "Gestisci errore", "warning", "risk", "G09",
+        "Scope dopo Elabora proposta, ultimo passo del ramo: Settings › Run after, solo la scheda Elabora proposta.",
+        [N("Succeeded", "x-circle", "system", "deselezionato"),
+         N("Failed", "check-circle", "risk", "selezionato"),
+         N("TimedOut", "check-circle", "risk", "selezionato"),
+         N("Skipped", "x-circle", "system", "deselezionato"),
+         N("Esito di prova", "flask", "instructions", "Registra proposta con int('not-a-number'): avviso in Teams, esecuzione Failed")],
+        layout="list"),
+    "ag09-avviso": D(
+        "Avviso - intake fallito", "logo:teams", "risk", "G09",
+        "Microsoft Teams, Post message in a chat or channel: stesso team e canale della scheda di G08.",
+        [N("Post as e Post in", "paper-plane-tilt", "risk", "Flow bot, Channel"),
+         N("Team e Channel", "users-three", "risk", "Zava PMO, Proposte"),
+         N("Message", "chat-text", "risk", "AVVISO: intake di una proposta via email non riuscito. Controlla l'esecuzione in Activity.")],
+        layout="list"),
+    "ag09-end": D(
+        "End · Failed", "stop-circle", "risk", "G09",
+        "Fa comparire l'esecuzione tra quelle fallite; codice e messaggio accettano solo testo fisso.",
+        [N("Error code", "key", "risk", "IntakeProposteFallito"),
+         N("Error message", "chat-text", "risk", "Elabora proposta non completato: aprire l'esecuzione e cercare il passo non riuscito")],
+        layout="list"),
+})
+
+
+def gh_adv_panoramica():
+    """G01: il sistema finale della GitHub Harness, come panoramica(): riquadri piatti con il lab tra parentesi."""
+    d = Diagram("gh-panoramica-sistema")
+    WA, WB, WC, WD = 232, 250, 250, 210     # larghezze delle quattro colonne, 55 px fra l'una e l'altra
+    A = 20
+    B = A + WA + 55
+    C = B + WB + 55
+    D = C + WC + 55
+    u = d.node(A, 40, WA, "Analisti e sponsor", "users-three", "agents", "Preview e Teams (G11)", detail="ag01-utenti")
+    kn = d.node(A, 150, WA, "Conoscenza PMO", "logo:sharepoint", "knowledge", "SharePoint (G01)")
+    mail = d.node(A, 440, WA, "Casella del PMO", "logo:outlook", "tools", "Proposta progetto (G07)")
+    da = d.node(B, 40, WB, "Agente Demand IT - GH", DA, "github", "orchestratore (G01)", detail="ag01-orchestratore")
+    wf = d.node(B, 440, WB, "Intake proposte via email", "flow-arrow", "triggers", "workflow (G07-G09)", detail="ag01-workflow")
+    col = [d.node(C, 10, WC, "Skill", "puzzle-piece", "topics", "quattro skill (G02, G05, G06)", detail="ag01-skill"),
+           d.node(C, 95, WC, "Dataverse MCP Server", "logo:dataverse", "tools", "End user account (G02)", detail="ag01-mcp"),
+           d.node(C, 180, WC, "Agente Comitato - GH", COM, "agents", "agente connesso (G03, G04)", detail="ag01-comitato"),
+           d.node(C, 265, WC, "Agente Pianificazione - GH", PA, "agents", "agente connesso (G10)", detail="ag01-pianificazione"),
+           d.node(C, 350, WC, "Richiedi via libera revisione", "flow-arrow", "tools", "workflow con Approvals (G10)", detail="ag01-via-libera")]
+    sk, mcp, com, pian, vl = col
+    d.node(D, 10, WD, "Dossier Word", "logo:word", "tools", "docx in chat (G06)", detail="ag06-docx")
+    hub = d.node(D, 137, WD, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse (Lab 00)", detail="ag01-hub")
+    d.node(D, 440, WD, "Teams del PMO", "logo:teams", "tools", "canale Proposte (G08)")
+    d.arrow([(u["r"], u["cy"]), (B, u["cy"])], "github")
+    d.arrow([(kn["r"], kn["cy"]), (B + 40, kn["cy"]), (B + 40, da["b"])], "knowledge", dashed=True)
+    d.arrow([(mail["r"], mail["cy"]), (B, mail["cy"])], "triggers")
+    d.arrow([(da["cx"], wf["y"]), (da["cx"], da["b"])], "triggers", label="Completa con Agente Demand IT",
+            at=(da["cx"], (da["b"] + wf["y"]) / 2))
+    bus = da["r"] + 28
+    for t in col:
+        d.arrow([(da["r"], da["cy"]), (bus, da["cy"]), (bus, t["cy"]), (C, t["cy"])], "github")
+    d.arrow([(sk["r"], sk["cy"]), (D, sk["cy"])], "tools")
+    bus2 = D - 27
+    d.arrow([(mcp["r"], mcp["cy"]), (bus2, mcp["cy"]), (bus2, hub["cy"] - 10), (D, hub["cy"] - 10)], "knowledge")
+    d.arrow([(com["r"], hub["cy"] + 20), (D, hub["cy"] + 20)], "knowledge", dashed=True)
+    d.arrow([(vl["r"], vl["cy"]), (D + 40, vl["cy"]), (D + 40, hub["b"])], "knowledge")
+    d.arrow([(wf["r"], wf["cy"]), (D, wf["cy"])], "tools")
+    right, low = hub["r"] + 25, wf["b"] + 25
+    d.arrow([(wf["r"] - 40, wf["b"]), (wf["r"] - 40, low), (right, low), (right, hub["cy"]), (hub["r"], hub["cy"])], "triggers",
+            label="Registra proposta e nota", at=(C + WC / 2, low))
+    d.save()
+
+
+def gh_adv_architettura():
+    """G02-G03: i componenti dell'Agente Demand IT - GH e degli agenti connessi, come architettura_standard()."""
+    d = Diagram("gh-architettura")
+    skills = [("proposal-intake", "dal business case a Proponente\ne Proposta (G02)", "ag02-intake"),
+              ("proposal-scoring", "rubrica fissa, sola lettura (G05)", "ag05-scoring"),
+              ("evaluation-recording", "Valutazione dopo la conferma\ndell'utente (G05)", "ag05-recording"),
+              ("review-dossier-document", "dossier Word con Python (G06)", "ag06-skill")]
+    y = 102
+    for label, sub, det in skills:
+        n = d.node(55, y, 254, label, "puzzle-piece", "topics", sub, white=True, h=74 if "\n" in sub else 58, detail=det)
+        y = n["b"] + 7
+    d.node(342, 62, 280, "Istruzioni", "clipboard-text", "instructions", "ruolo, regole e saluto (G01-G11)", white=True, detail="ag01-istruzioni")
+    d.node(342, 140, 280, "Conoscenza PMO", "logo:sharepoint", "knowledge", "cartella SharePoint PMO Knowledge", white=True)
+    d.node(342, 218, 280, "Memoria", "stack", "system", "preferenze di lavoro (G11)", white=True, detail="ag11-memoria")
+    mcp = d.node(342, 296, 280, "Dataverse MCP Server", "logo:dataverse", "tools", "End user account (G02)", white=True, detail="ag02-mcp")
+    k2 = d.node(695, 62, 290, "Dataverse MCP Server", "logo:dataverse", "tools", "Shared account, sola lettura:\nSearch, Describe, Read query", white=True, detail="ag03-mcp")
+    d.node(695, 225, 290, "Strumenti Office 365", "logo:outlook", "tools", "Users e Outlook: persone, orari\nliberi, inviti (G10)", white=True, detail="ag01-pianificazione")
+    vl = d.node(680, 346, 320, "Richiedi via libera revisione", "flow-arrow", "tools", "workflow come strumento, soglia\n300.000 euro e Approvals (G10)", detail="ag01-via-libera")
+    wf = d.node(680, 452, 320, "Intake proposte via email", "flow-arrow", "triggers", "workflow con trigger email,\nchiama l'agente pubblicato (G07-G09)", detail="ag01-workflow")
+    hub = d.node(340, 490, 300, "PMO Demand Hub", "logo:dataverse", "knowledge", "Dataverse, tabelle csg_ (Lab 00)", detail="ag01-hub")
+    # corsie, poi spostate sotto i riquadri
+    orch = d.lane(20, 20, 620, 398, "Agente Demand IT - GH · csg_agentedemand_gh", DA, "github")
+    sl = d.lane(40, 62, 284, y - 7 + 15 - 62, "Skill", "puzzle-piece", "topics")
+    com = d.lane(680, 20, 320, 133, "Agente Comitato - GH · connesso", COM, "agents", detail="ag01-comitato")
+    pl = d.lane(680, 183, 320, 133, "Agente Pianificazione - GH · connesso", PA, "agents")
+    d.parts[0:0] = [d.parts.pop() for _ in range(4)][::-1]
+    for l in (com, pl):
+        d.arrow([(640, l["y"] + 25), (680, l["y"] + 25)], "agents")
+    d.arrow([(640, vl["cy"]), (680, vl["cy"])], "tools")
+    d.arrow([(sl["r"], mcp["cy"]), (mcp["x"], mcp["cy"])], "topics")
+    d.arrow([(mcp["cx"], mcp["b"]), (mcp["cx"], hub["y"])], "knowledge", label="legge e scrive", at=(mcp["cx"], (orch["b"] + hub["y"]) / 2))
+    d.arrow([(wf["x"], wf["y"] + 18), (655, wf["y"] + 18), (655, orch["b"])], "triggers")
+    d.arrow([(wf["x"], hub["cy"]), (hub["r"], hub["cy"])], "triggers")
+    d.arrow([(k2["r"], k2["cy"]), (1015, k2["cy"]), (1015, hub["b"] - 12), (hub["r"], hub["b"] - 12)], "knowledge", dashed=True)
+    d.save()
+
+
+def gh_adv_workflow_chat():
+    """G05: intake, valutazione e registrazione in chat con le tre skill, come workflow_chat()."""
+    a = [("Utente", "user-circle", "agents"), ("Agente Demand IT - GH", DA, "github"),
+         ("PMO Demand Hub", "logo:dataverse", "knowledge")]
+    m = [(0, 1, "Allega il business case (PDF o DOCX)", "call"),
+         (1, 1, "proposal-intake: formato, dimensione, testo", "note"),
+         (1, 2, "Proponente per email, Proposta senza duplicati", "call"), (2, 1, "Codice PP-#### riletto", "reply"),
+         (1, 0, "Riepilogo; programma da confermare se manca", "reply"),
+         (0, 1, "Valuta PP-####", "call"),
+         (1, 1, "proposal-scoring: rubrica fissa, sola lettura", "note"),
+         (1, 2, "Legge proposta, programma e criteri pesati", "call"),
+         (1, 0, "Tabella, punteggio, indicazione; registrare?", "reply"), (0, 1, "Sì, registra", "call"),
+         (1, 1, "evaluation-recording: controllo dei duplicati", "note"),
+         (1, 2, "Valutazione AS-####, Proposta Assessed", "call"),
+         (1, 0, "Codice AS-#### riletto da Dataverse", "reply")]
+    sequence("gh-workflow-chat", a, m, col_min=290)
+
+
+def gh_adv_workflow_dossier():
+    """G06: dalla richiesta al file Word allegato, come workflow_dossier()."""
+    d = Diagram("gh-workflow-dossier")
+    lane_x, lane_y = 640, 20
+    row = lane_y + 40
+    u = d.node(20, row, 190, "Utente", "user-circle", "agents", "Mi prepari il dossier\ndi AS-####?")
+    sk = d.node(250, row, 250, "review-dossier-document", "puzzle-piece", "topics", "skill: legge i dati con il\nDataverse MCP Server", detail="ag06-skill")
+    js = d.node(lane_x + 15, row, 340, "dossier_input.json", "file-code", "github", "scritto dall'agente: dati letti,\n8 domande e rischi", white=True, detail="ag06-json")
+    py = d.node(lane_x + 15, js["b"] + 28, 340, "generate_dossier.py", "file-code", "github", "valida, ricalcola punti e punteggio,\nscrive con python-docx", white=True, detail="ag06-script")
+    dx = d.node(lane_x + 15, py["b"] + 28, 340, "dossier_revisione.docx", "logo:word", "tools", "stesso layout a ogni esecuzione", white=True, detail="ag06-docx")
+    d.lane(lane_x, lane_y, 370, dx["b"] + 15 - lane_y, "Sandbox · Python, senza Internet", "terminal-window", "github")
+    d.parts.insert(0, d.parts.pop())
+    ans = d.node(250, dx["cy"] - 30, 250, "Risposta in chat", "chat-text", "topics", "con il file Word allegato")
+    d.arrow([(u["r"], u["cy"]), (sk["x"], u["cy"])], "topics")
+    d.arrow([(sk["r"], sk["cy"]), (js["x"], sk["cy"])], "topics", label="esegue lo script", at=((sk["r"] + lane_x) / 2, sk["cy"]))
+    d.arrow([(js["cx"], js["b"]), (py["cx"], py["y"])], "github")
+    d.arrow([(py["cx"], py["b"]), (dx["cx"], dx["y"])], "github")
+    d.arrow([(dx["x"], dx["cy"]), (ans["r"], dx["cy"])], "tools", dashed=True, label="allegato", at=((ans["r"] + lane_x) / 2, dx["cy"]))
+    d.save()
+
+
+def gh_adv_workflow_email():
+    """G07-G09: il workflow Intake proposte via email completo, come workflow_email_standard(); il lab tra
+    parentesi dice in quale laboratorio nasce ogni nodo."""
+    d = Diagram("gh-workflow-email")
+    x, w = 75, 300                     # colonna principale, dentro lo Scope e il ciclo
+    SX, SW, LX, LW = 40, 600, 55, 570  # Scope Elabora proposta e ciclo Per ogni allegato
+    R, RW, SP = 700, 290, 660          # colonna degli altri rami e linea da cui partono
+    t = d.node(x, 20, w, "When a new email arrives", "logo:outlook", "triggers",
+               "Inbox, Subject filter Proposta progetto,\nsolo con allegati (G07)", detail="ag07-trigger")
+    v = d.node(x, t["b"] + 30, w, "Avvia elenco proposte", "textbox", "tools", "variabile ProposteRegistrate (G07)", detail="ag07-variabile")
+    c = d.node(x, v["b"] + 30, w, "Classifica email", "signpost", "tools", "Classify: tre categorie e Other (G07)", detail="ag07-classifica")
+    st = c["b"] + 44
+    co = d.node(x, st + 42, w, "Corpo in testo", "file-text", "tools", "Html to text sul corpo (G07)", white=True)
+    lt = co["b"] + 30
+    fm = d.node(x, lt + 42, w, "Formato ammesso", "git-branch", "system", "If/Else: PDF oppure .docx (G07)", white=True, detail="ag07-formato")
+    ig = d.node(LX + LW - 190, fm["y"], 180, "Allegato ignorato", "x-circle", "system", "ramo Else vuoto", white=True)
+    chain = [("Registra proposta", "logo:dataverse", "knowledge", "Add a new row su Proposals (G07)", "ag07-registra"),
+             ("Allega il documento come nota", "logo:dataverse", "knowledge", "Add a new row su Notes (G07)", "ag07-nota"),
+             ("Salva il documento nella proposta", "logo:dataverse", "knowledge", "facoltativo (G07)", "ag07-salva"),
+             ("Ricorda questa proposta", "textbox", "tools", "Append to string (G07)", "ag07-ricorda")]
+    y, nodes = fm["b"] + 44, []
+    for label, icon, fam, sub, det in chain:
+        n = d.node(x, y, w, label, icon, fam, sub, white=True, detail=det)
+        nodes.append(n)
+        y = n["b"] + 30
+    lb = nodes[-1]["b"] + 16
+    after = [("Conferma programma", "robot", "agents", "agente inline (G08)", "ag08-conferma"),
+             ("Completa con Agente Demand IT", DA, "github", "agente pubblicato (G08)", "ag08-completa"),
+             ("Notifica PMO in Teams", "logo:teams", "tools", "scheda adattiva (G08)", "ag08-notifica")]
+    y, agn = lb + 30, []
+    for label, icon, fam, sub, det in after:
+        n = d.node(x, y, w, label, icon, fam, sub, white=True, detail=det)
+        agn.append(n)
+        y = n["b"] + 30
+    sb = agn[-1]["b"] + 16
+    gt = sb + 44
+    av = d.node(LX, gt + 42, 300, "Avviso - intake fallito", "logo:teams", "risk", "Post message in Proposte (G09)", white=True, detail="ag09-avviso")
+    en = d.node(av["r"] + 40, av["y"], SX + SW - 15 - av["r"] - 40, "End · Failed", "stop-circle", "risk", "IntakeProposteFallito (G09)", white=True, detail="ag09-end")
+    # corsie sotto i riquadri: Scope, ciclo, Gestisci errore
+    d.lane(SX, st, SW, sb - st, "Elabora proposta", "stack", "tools")
+    d.lane(LX, lt, LW, lb - lt, "Per ogni allegato", "arrows-clockwise", "tools")
+    d.lane(SX, gt, SW, av["b"] + 16 - gt, "Gestisci errore", "warning", "risk", detail="ag09-gestisci")
+    d.parts[0:0] = [d.parts.pop() for _ in range(3)][::-1]
+    for a_, b_ in ((t, v), (v, c), (co, fm), *zip(nodes, nodes[1:]), *zip(agn, agn[1:])):
+        d.arrow([(a_["cx"], a_["b"]), (b_["cx"], b_["y"])], "tools")
+    d.arrow([(c["cx"], c["b"]), (co["cx"], co["y"])], "tools", label="Proposal", at=(c["cx"], (c["b"] + st) / 2))
+    d.arrow([(fm["cx"], fm["b"]), (nodes[0]["cx"], nodes[0]["y"])], "tools", label="If", at=(fm["cx"], (fm["b"] + nodes[0]["y"]) / 2))
+    d.arrow([(fm["r"], fm["cy"]), (ig["x"], fm["cy"])], NEUTRAL, label="Else", at=((fm["r"] + ig["x"]) / 2, fm["cy"]))
+    d.arrow([(x + w / 2, lb), (agn[0]["cx"], agn[0]["y"])], "tools")
+    d.arrow([(av["r"], av["cy"]), (en["x"], av["cy"])], "risk")
+    d.arrow([(x + w / 2, sb), (x + w / 2, av["y"])], NEUTRAL, dashed=True, label="Run after: Failed, TimedOut",
+            at=(x + w / 2, sb + 22))
+    # gli altri rami di Classifica email, uno sotto l'altro a destra
+    rcx = R + RW / 2
+    top = c["cy"] + 42
+    first = len(d.parts)              # il ramo Other va disegnato sotto i rami grigi: la linea comune resta grigia
+    for i, (branch, label) in enumerate((("RispostaAutomatica", "Fine - risposta automatica"),
+                                         ("NonPertinente", "Fine - non pertinente"))):
+        n = d.node(R, top, RW, label, "stop-circle", "system", "End, Succeeded (G09)")
+        yi = top - 42
+        pts = [(c["r"], c["cy"]), (rcx, c["cy"]), (rcx, top)] if i == 0 else \
+              [(c["r"], c["cy"]), (SP, c["cy"]), (SP, yi), (rcx, yi), (rcx, top)]
+        d.arrow(pts, NEUTRAL, label=branch, at=(rcx, top - 21))
+        top = n["b"] + 58
+    yi = top - 42
+    vr = d.node(R, top, RW, "Verifica email non chiara", "user-check", "platform", "Human review: Sì o No (G09)", detail="ag09-verifica")
+    d.arrow([(c["r"], c["cy"]), (SP, c["cy"]), (SP, yi), (rcx, yi), (rcx, top)], "platform", label="Other", at=(rcx, top - 21))
+    d.parts.insert(first, d.parts.pop())
+    rv = d.node(R, vr["b"] + 30, RW, "Revisore conferma", "git-branch", "system", "If/Else: risposta Yes (G09)", detail="ag09-revisore")
+    fn = d.node(R, rv["b"] + 44, RW, "Fine - nessuna proposta", "stop-circle", "system", "End, Succeeded (G09)")
+    d.arrow([(rcx, vr["b"]), (rcx, rv["y"])], "platform")
+    d.arrow([(rcx, rv["b"]), (rcx, fn["y"])], NEUTRAL, label="Else", at=(rcx, rv["b"] + 22))
+    d.arrow([(R, rv["cy"]), (SX + SW, rv["cy"])], "platform", label="Yes", at=((R + SX + SW) / 2, rv["cy"]))
+    d.save()
+
+
+DETAILS.update({
+    "ag11-teams": D(
+        "Teams + Microsoft 365", "logo:teams", "lifecycle", "G11",
+        "Canale aggiunto da Channels › Add channel, dopo Publish agent; l'Availability non si cambia dopo la pubblicazione.",
+        [N("Availability", "check-circle", "lifecycle", "Microsoft Teams; Microsoft 365 Copilot disattivato"),
+         N("Short description", "textbox", "lifecycle", "Proposte di progetto IT per il PMO di Zava"),
+         N("Long description", "textbox", "lifecycle", "registra i business case, prepara valutazioni, dossier e sessioni di revisione"),
+         N("Developer name", "textbox", "lifecycle", "PMO Zava S.p.A."),
+         N("Use and share", "user-check", "lifecycle", "View in Teams, Add: installato solo per sé"),
+         N("Condivisione", "share-network", "lifecycle", "decide chi può usarlo: pubblicare non è condividere")],
+        layout="list"),
+    "ag11-monitor": D(
+        "Monitor", "chart-line-up", "lifecycle", "G11",
+        "Scheda Monitor dell'agente: solo le sessioni dei canali pubblicati, non quelle di Preview, anche ore dopo la conversazione.",
+        [N("Overview", "chart-bar", "lifecycle", "Total sessions, Total users, Average duration, Success rate"),
+         N("Crediti", "coins", "lifecycle", "scheda dei crediti stimati"),
+         N("Reactions", "thumbs-up", "lifecycle", "pollice giù in Teams con il commento: La tabella non riporta l'evidenza per un criterio"),
+         N("Riproduzione", "flask", "instructions", "il caso rifatto in Preview: se il problema è reale, nuovo caso nel set")],
+        layout="list"),
+})
+
+
+def gh_adv_rilascio():
+    """G11: memoria, pubblicazione in Teams, Monitor e ritorno al set di valutazione, come gh_adv_panoramica()."""
+    d = Diagram("gh-rilascio")
+    W, G = 232, 55
+    xs = [20 + i * (W + G) for i in range(4)]
+    mem = d.node(xs[0], 40, W, "Memoria", "stack", "system", "preferenze di lavoro (G11)", detail="ag11-memoria")
+    da = d.node(xs[1], 40, W, "Agente Demand IT - GH", DA, "github", "orchestratore (G01-G10)")
+    pub = d.node(xs[2], 40, W, "Publish agent", "logo:copilot-studio", "lifecycle", "versione pubblicata (G11)")
+    tm = d.node(xs[3], 40, W, "Teams + Microsoft 365", "logo:teams", "lifecycle", "canale e View in Teams (G11)", detail="ag11-teams")
+    us = d.node(xs[3], 190, W, "Analisti e sponsor", "users-three", "agents", "chat dell'agente in Teams")
+    mon = d.node(xs[2], 190, W, "Monitor", "chart-line-up", "lifecycle", "sessioni e reazioni (G11)", detail="ag11-monitor")
+    ev = d.node(xs[1], 190, W, "Set di valutazione", "list-checks", "lifecycle", "nuovo caso da Monitor")
+    for a, b in ((mem, da), (da, pub), (pub, tm)):
+        d.arrow([(a["r"], a["cy"]), (b["x"], a["cy"])], "lifecycle" if a is not mem else "system")
+    d.arrow([(tm["cx"], tm["b"]), (us["cx"], us["y"])], "agents", label="condivisione", at=(tm["cx"], (tm["b"] + us["y"]) / 2))
+    d.arrow([(us["x"], us["cy"]), (mon["r"], us["cy"])], "lifecycle")
+    d.arrow([(mon["x"], mon["cy"]), (ev["r"], mon["cy"])], "lifecycle")
+    d.arrow([(ev["cx"], ev["y"]), (da["cx"], da["b"])], "lifecycle", dashed=True, label="Evaluate",
+            at=(ev["cx"], (da["b"] + ev["y"]) / 2))
+    d.save()
+
+
+DETAILS.update({
+    "ag10-orchestratore": D(
+        "Agente Demand IT - GH", DA, "github", "G10",
+        "Lo strumento e l'agente connesso aggiunti in G10, con la sezione delle istruzioni che fissa l'ordine.",
+        [N("Richiedi via libera revisione", "flow-arrow", "tools", "strumento: CodiceProposta dall'agente, EmailResponsabile Custom"),
+         N("Agente Pianificazione - GH", PA, "agents", "orari e invito dopo il via libera; mai briefing o dati del PMO"),
+         N("Istruzioni · Sessione di revisione", "clipboard-text", "instructions", "prima il via libera; Non approvata: niente prenotazione; mai inviti diretti")],
+        layout="list"),
+    "ag10-approvazione": D(
+        "Start and wait for an approval", "stamp", "tools", "G10",
+        "Standard approvals nel ramo If di Sopra soglia: il workflow aspetta la risposta del responsabile.",
+        [N("Approval type", "check-circle", "tools", "Approve/Reject - First to respond"),
+         N("Title", "textbox", "tools", "Via libera revisione: CodiceProposta"),
+         N("Assigned to", "user-circle", "tools", "EmailResponsabile"),
+         N("Details", "chat-text", "tools", "proposta, budget richiesto, Approva per fissare la sessione di revisione"),
+         N("Approvata", "git-branch", "system", "Outcome uguale a Approve")],
+        layout="list"),
+})
+
+
+def gh_adv_revisione_componenti():
+    """G10: il rapporto fra agente e workflow nei due versi, nello stile di gh_adv_panoramica(): l'Agente Demand IT - GH
+    chiama Richiedi via libera revisione come strumento (G10), Intake proposte via email chiama l'agente pubblicato (G08)."""
+    d = Diagram("gh-revisione-componenti")
+    L, LW, M, MW, R, RW = 20, 240, 350, 290, 740, 250     # tre colonne: l'agente al centro
+    cx = M + MW / 2
+    em = d.node(M, 20, MW, "Intake proposte via email", "flow-arrow", "triggers", "workflow con trigger email (G07-G09)", detail="ag08-completa")
+    o365 = d.node(R, 20, RW, "Strumenti Office 365", "logo:outlook", "tools", "Users e Outlook: orari, invito")
+    u = d.node(L, 170, LW, "Analista", "user-circle", "agents", "Fissa la revisione di PP-####")
+    da = d.node(M, 170, MW, "Agente Demand IT - GH", DA, "github", "orchestratore (G01)", detail="ag10-orchestratore")
+    pl = d.node(R, 170, RW, "Agente Pianificazione - GH", PA, "agents", "agente connesso (G10)", detail="ag01-pianificazione")
+    wf = d.node(M, 330, MW, "Richiedi via libera revisione", "flow-arrow", "tools",
+                "input CodiceProposta, output Esito;\nsoglia 300.000 euro fissa (G10)", detail="ag01-via-libera")
+    ap = d.node(R, wf["cy"] - 30, RW, "Approvals", "stamp", "tools", "approvazione del responsabile", detail="ag10-approvazione")
+    hub = d.node(M, wf["b"] + 50, MW, "PMO Demand Hub", "logo:dataverse", "knowledge", "Proposal: Review Scheduled")
+    d.arrow([(cx, em["b"]), (cx, da["y"])], "triggers", label="chiama l'agente pubblicato", at=(cx, (em["b"] + da["y"]) / 2))
+    d.arrow([(u["r"], u["cy"]), (M, u["cy"])], "github")
+    d.arrow([(da["r"], da["cy"]), (R, da["cy"])], "agents")
+    d.arrow([(pl["cx"], pl["y"]), (o365["cx"], o365["b"])], "agents")
+    d.arrow([(cx - 70, da["b"]), (cx - 70, wf["y"])], "tools", label="chiama come strumento", at=(cx - 70, da["b"] + 28))
+    d.arrow([(cx + 70, wf["y"]), (cx + 70, da["b"])], "tools", dashed=True, label="Esito", at=(cx + 70, wf["y"] - 28))
+    d.arrow([(wf["r"], ap["cy"]), (R, ap["cy"])], "tools", label="sopra soglia", at=((wf["r"] + R) / 2, ap["cy"]))
+    d.arrow([(cx, wf["b"]), (cx, hub["y"])], "knowledge")
+    d.save()
+
+
+def gh_adv_workflow_revisione():
+    """G10: via libera con la soglia e l'approvazione, poi l'Agente Pianificazione - GH, come workflow_revisione()."""
+    a = [("Utente", "user-circle", "agents"), ("Agente Demand IT - GH", DA, "github"),
+         ("Richiedi via libera revisione", "flow-arrow", "tools"), ("Agente Pianificazione - GH", PA, "agents")]
+    m = [(0, 1, "Fissa la revisione di PP-####", "call"),
+         (1, 2, "Strumento: CodiceProposta", "call"),
+         (2, 2, "Sopra 300.000 euro: approvazione in Approvals", "note"),
+         (2, 1, "Esito; se Approvata o Automatica: Review Scheduled", "reply"),
+         (1, 3, "Codice, titolo, partecipanti, periodo", "call"),
+         (3, 1, "Orari da Cerca collega e Trova orari liberi", "reply"),
+         (1, 0, "Tre orari da 30 minuti, ora di Roma", "reply"),
+         (0, 1, "Confermo il primo orario", "call"),
+         (1, 3, "Data e ora esattamente come confermate", "call"),
+         (3, 1, "Crea sessione di revisione, poi Leggi evento", "reply"),
+         (1, 0, "Evento Revisione proposta PP-#### creato", "reply")]
+    sequence("gh-workflow-revisione", a, m)
+
+
 if __name__ == "__main__":
     failed = []
     for build in (panoramica, architettura_standard, workflow_chat, workflow_email_standard,
@@ -2826,7 +3477,10 @@ if __name__ == "__main__":
                   lab04_agente, lab04_topic, lab05_agente, lab05_sequenza, lab05_available, lab05_request,
                   gh_lab01_percorso, gh_lab02_fonti, gh_lab03_strumenti, gh_lab04_skill, gh_lab05_workflow,
                   gh_concetti_orchestrazione, gh_concetti_componenti, gh_concetti_skill, gh_concetti_conoscenza,
-                  gh_concetti_sandbox, gh_concetti_evoluzione, gh_concetti_agenti_workflow, gh_concetti_crediti):
+                  gh_concetti_sandbox, gh_concetti_evoluzione, gh_concetti_agenti_workflow, gh_concetti_crediti,
+                  gh_adv_panoramica, gh_adv_architettura, gh_adv_workflow_chat, gh_adv_workflow_dossier,
+                  gh_adv_workflow_email, gh_adv_workflow_revisione, gh_adv_rilascio,
+                  gh_adv_revisione_componenti):
         try:
             build()
         except LayoutError as e:

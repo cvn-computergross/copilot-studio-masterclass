@@ -119,6 +119,18 @@ Per registrare una proposta servono operazioni che il modello da solo non può f
 if(greater(length(coalesce(triggerBody()?['text'], '')), 4000), substring(triggerBody()?['text'], 0, 4000), coalesce(triggerBody()?['text'], ''))
 ```
 
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce il testo del messaggio dell'utente, tagliato ai primi 4.000 caratteri se è più lungo.
+
+- `triggerBody()?['text']`: il valore dell'input di testo del trigger (`Messaggio`).
+- `coalesce(..., '')`: se il messaggio manca usa il testo vuoto `''`, così `length` non riceve un valore nullo.
+- `greater(length(...), 4000)`: vero se i caratteri sono più di 4.000.
+- `substring(triggerBody()?['text'], 0, 4000)`: i primi 4.000 caratteri, a partire dalla posizione 0. Il controllo serve perché `substring` dà errore se si chiede più testo di quello che c'è.
+- `if(condizione, A, B)`: usa il testo tagliato se la condizione è vera, altrimenti il testo intero.
+
+Risultato: un messaggio di 5.200 caratteri diventa uno di 4.000; uno di 300 resta com'è.
+:::
+
 > [!NOTE]
 > **Nome interno dell'input**
 >

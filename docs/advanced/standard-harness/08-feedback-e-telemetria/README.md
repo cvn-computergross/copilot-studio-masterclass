@@ -1,6 +1,6 @@
 # Lab S08 - Feedback e telemetria
 
-[Previous: S07](../07-valutazioni-e-pubblicazione/README.md) | [Back to Standard Harness](../index.md)
+[Previous: S07](../07-valutazioni-e-pubblicazione/README.md) | [Back to Standard Harness](../index.md) | [Next: Home](../../../../README.md)
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~60 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
 

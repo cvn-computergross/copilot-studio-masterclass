@@ -173,6 +173,17 @@ Il codice della proposta, sempre nel formato PP-####
 | Row ID      | Espressione: `first(body('Leggi_proposta')?['value'])?['csm_proposalid']` |
 | Column name | Business Case Document                                                    |
 
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce l'ID della proposta trovata da **Leggi proposta**, che dice a Dataverse da quale riga scaricare il file.
+
+- `body('Leggi_proposta')`: il risultato del nodo **Leggi proposta**.
+- `?['value']`: l'elenco delle righe trovate.
+- `first(...)`: la prima riga; con **Row count** `1` è anche l'unica.
+- `?['csm_proposalid']`: la colonna con l'identificativo della riga.
+
+Risultato: un identificativo come `3f2a9c1e-...`. La stessa forma, con un altro nome di colonna, legge qualunque campo della riga.
+:::
+
 ![](./images/passo2-extra-11.png)
 
 ### Estrarre i dati con il prompt
@@ -187,6 +198,13 @@ Il codice della proposta, sempre nel formato PP-####
 ```text
 coalesce(first(body('Leggi_proposta')?['value'])?['csm_message'], '')
 ```
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce il messaggio con cui è arrivata la proposta, oppure il testo vuoto se manca.
+
+- `first(body('Leggi_proposta')?['value'])?['csm_message']`: la colonna `csm_message` della proposta letta, con la stessa forma usata in **Scarica documento**.
+- `coalesce(..., '')`: restituisce il primo valore non vuoto tra quelli indicati; se la colonna è vuota usa `''`. Così il prompt riceve sempre un testo e non un valore nullo.
+:::
 
 ![](./images/passo2-extra-13.png)
 
@@ -236,6 +254,18 @@ length(outputs('Cerca_proponente')?['body/value'])
 ```text
 concat('csm_requesters(', if(equals(length(outputs('Cerca_proponente')?['body/value']), 1), first(outputs('Cerca_proponente')?['body/value'])?['csm_requesterid'], outputs('Crea_proponente')?['body/csm_requesterid']), ')')
 ```
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Costruisce il riferimento alla riga **Requesters** da collegare alla proposta, nella forma `csm_requesters(<id>)`.
+
+- `length(outputs('Cerca_proponente')?['body/value'])`: quante righe ha trovato **Cerca proponente**.
+- `equals(..., 1)`: vero se ne ha trovata una, cioè se il proponente esisteva già.
+- `first(outputs('Cerca_proponente')?['body/value'])?['csm_requesterid']`: in quel caso, l'ID della riga trovata.
+- `outputs('Crea_proponente')?['body/csm_requesterid']`: altrimenti, l'ID della riga appena creata da **Crea proponente**.
+- `if(condizione, A, B)` sceglie tra i due ID; `concat(...)` li incolla al testo fisso `csm_requesters(` e alla `)` finale.
+
+Risultato: `csm_requesters(3f2a9c1e-...)`.
+:::
 
 ![](./images/passo2-extra-17.png)
 

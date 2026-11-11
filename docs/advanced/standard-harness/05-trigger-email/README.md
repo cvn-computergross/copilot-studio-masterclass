@@ -136,6 +136,16 @@ Il flow generato dal trigger inoltra tutto all'agente. Prima di farlo occorre de
 @triggerOutputs()?['body/value']
 ```
 
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce l'elenco delle email arrivate, che **Split On** divide in elementi singoli.
+
+- `triggerOutputs()`: l'output del trigger.
+- `?['body/value']`: l'elenco di email contenuto nel corpo; la `@` iniziale indica che il testo è un'espressione.
+- **Split On**: avvia un'esecuzione per ogni elemento dell'elenco, e in ciascuna le azioni vedono una sola email.
+
+Risultato: se arrivano tre email insieme, partono tre esecuzioni separate.
+:::
+
 ![](./images/passo3-extra-08.png)
 
 3. Sotto il trigger aggiungere **Html to text** (connettore Content Conversion; creare la connessione se richiesto) con **Content** = contenuto dinamico **Body**.
@@ -173,6 +183,22 @@ Il flow generato dal trigger inoltra tutto all'agente. Prima di farlo occorre de
 | Channel         | Select                          | **Email**                                                                                                                                                                  |
 | Proposal Status | Select                          | **Received**                                                                                                                                                               |
 | Submission Date | Expression (fx icon)            | `formatDateTime(utcNow(), 'yyyy-MM-dd')`                                                                                                                                   |
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce il testo dell'email, tagliato ai primi 4.000 caratteri se è più lungo.
+
+- `body('Html_to_text')`: il testo prodotto dall'azione **Html to text**; `string(...)` lo tratta come testo.
+- `greater(length(...), 4000)`: vero se i caratteri sono più di 4.000.
+- `substring(..., 0, 4000)`: i primi 4.000 caratteri, a partire dalla posizione 0. Il controllo serve perché `substring` dà errore se si chiede più testo di quello che c'è.
+- `if(condizione, A, B)`: usa il testo tagliato se la condizione è vera, altrimenti il testo intero.
+:::
+
+::: details <!-- icon: function f-tools --> Come si legge l'espressione
+Restituisce un dato dell'allegato che il ciclo sta elaborando.
+
+- `item()`: l'elemento corrente del ciclo **For each** (`Per ogni allegato`), cioè un allegato dell'email.
+- `?['name']`: il nome del file, usato qui come titolo. Con `?['contentBytes']` si legge invece il contenuto del file, come in **Carica documento email**.
+:::
 
 ![](./images/passo3-extra-14.png)
 

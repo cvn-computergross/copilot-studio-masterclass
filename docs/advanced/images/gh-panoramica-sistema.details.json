@@ -1,0 +1,446 @@
+{
+ "diagram": "gh-panoramica-sistema",
+ "details": {
+  "ag01-utenti": {
+   "title": "Analisti e sponsor",
+   "icon": "users-three",
+   "fam": "agents",
+   "lab": "G01-G11",
+   "role": "Chi usa l'Agente Demand IT - GH: analisti del PMO, proponenti, sponsor e architetti, in Preview durante i lab e poi in Teams.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Preview",
+     "icon": "flask",
+     "fam": "instructions",
+     "sub": "le prove dei lab, con New chat e la traccia",
+     "lab": "G01-G10"
+    },
+    {
+     "label": "Teams + Microsoft 365",
+     "icon": "logo:teams",
+     "fam": "lifecycle",
+     "sub": "canale con Availability Microsoft Teams, View in Teams",
+     "lab": "G11",
+     "file": "teams.png"
+    },
+    {
+     "label": "Memoria",
+     "icon": "stack",
+     "fam": "system",
+     "sub": "programmi seguiti, formato di risposta, lingua",
+     "lab": "G11"
+    },
+    {
+     "label": "Monitor",
+     "icon": "chart-line-up",
+     "fam": "lifecycle",
+     "sub": "sessioni, utenti, Success rate, reazioni con il commento",
+     "lab": "G11"
+    }
+   ]
+  },
+  "ag01-orchestratore": {
+   "title": "Agente Demand IT - GH",
+   "icon": "agent:demand-it-agent-192.png",
+   "fam": "github",
+   "lab": "G01-G11",
+   "role": "Orchestratore e punto di ingresso unico (csg_agentedemand_gh, soluzione PMO Demand IT (GitHub)).",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Istruzioni",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "ruolo, ambito, identificatori; poi documenti, revisione, memoria",
+     "lab": "G01, G06, G10, G11"
+    },
+    {
+     "label": "Greeting message",
+     "icon": "chat-text",
+     "fam": "instructions",
+     "sub": "dichiarazione di uso dell'IA: decide il Comitato",
+     "lab": "G04"
+    },
+    {
+     "label": "Memory",
+     "icon": "stack",
+     "fam": "system",
+     "sub": "preferenze di lavoro degli analisti, mai i dati del PMO",
+     "lab": "G11"
+    },
+    {
+     "label": "Demand IT GH - Base",
+     "icon": "list-checks",
+     "fam": "lifecycle",
+     "sub": "set di valutazione: da 4 a 8 casi, Compare meaning",
+     "lab": "G02-G06"
+    }
+   ]
+  },
+  "ag01-workflow": {
+   "title": "Intake proposte via email",
+   "icon": "flow-arrow",
+   "fam": "triggers",
+   "lab": "G07-G09",
+   "role": "Workflow che parte all'arrivo di un'email nella casella del PMO e registra le proposte senza nessuno in conversazione.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "When a new email arrives",
+     "icon": "logo:outlook",
+     "fam": "triggers",
+     "sub": "Inbox, Subject filter Proposta progetto, con allegati",
+     "lab": "G07",
+     "file": "outlook.png"
+    },
+    {
+     "label": "Classifica email",
+     "icon": "signpost",
+     "fam": "tools",
+     "sub": "Classify: Proposal, RispostaAutomatica, NonPertinente, Other",
+     "lab": "G07"
+    },
+    {
+     "label": "Elabora proposta",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "per ogni allegato PDF o Word: Proposal e nota",
+     "lab": "G07",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Conferma programma",
+     "icon": "robot",
+     "fam": "agents",
+     "sub": "agente inline con Request for information",
+     "lab": "G08"
+    },
+    {
+     "label": "Completa con Agente Demand IT",
+     "icon": "agent:demand-it-agent-192.png",
+     "fam": "github",
+     "sub": "agente pubblicato: intake e valutazione preliminare",
+     "lab": "G08"
+    },
+    {
+     "label": "Notifica PMO in Teams",
+     "icon": "logo:teams",
+     "fam": "tools",
+     "sub": "scheda adattiva nel canale Proposte del team Zava PMO",
+     "lab": "G08",
+     "file": "teams.png"
+    },
+    {
+     "label": "Verifica email non chiara",
+     "icon": "user-check",
+     "fam": "platform",
+     "sub": "Human review sul ramo Other",
+     "lab": "G09"
+    },
+    {
+     "label": "Gestisci errore",
+     "icon": "warning",
+     "fam": "risk",
+     "sub": "avviso in Teams, End Failed IntakeProposteFallito",
+     "lab": "G09"
+    }
+   ]
+  },
+  "ag01-skill": {
+   "title": "Skill dell'Agente Demand IT - GH",
+   "icon": "puzzle-piece",
+   "fam": "topics",
+   "lab": "G02-G06",
+   "role": "Istruzioni e script caricati come skill: l'agente le usa quando la richiesta corrisponde alla loro descrizione.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "proposal-intake",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "dal business case a Proponente e Proposta, senza duplicati",
+     "lab": "G02"
+    },
+    {
+     "label": "proposal-scoring",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "rubrica fissa sui criteri pesati, in sola lettura",
+     "lab": "G05"
+    },
+    {
+     "label": "evaluation-recording",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "registra la Valutazione dopo un sì esplicito",
+     "lab": "G05"
+    },
+    {
+     "label": "review-dossier-document",
+     "icon": "puzzle-piece",
+     "fam": "topics",
+     "sub": "dossier Word con generate_dossier.py",
+     "lab": "G06"
+    }
+   ]
+  },
+  "ag01-mcp": {
+   "title": "Dataverse MCP Server",
+   "icon": "logo:dataverse",
+   "fam": "tools",
+   "lab": "G02",
+   "role": "Strumento dell'orchestratore per leggere e scrivere il PMO Demand Hub, con il minimo privilegio.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Authentication",
+     "icon": "key",
+     "fam": "tools",
+     "sub": "End user account: i permessi di chi chatta"
+    },
+    {
+     "label": "Attivi",
+     "icon": "check-circle",
+     "fam": "tools",
+     "sub": "Read query, Create record, Update record, Search, Describe"
+    },
+    {
+     "label": "Disattivati",
+     "icon": "prohibit",
+     "fam": "risk",
+     "sub": "Invoke api, tabelle, Delete record, skill, file"
+    }
+   ],
+   "file": "dataverse.svg"
+  },
+  "ag01-comitato": {
+   "title": "Agente Comitato - GH",
+   "icon": "agent:committee-agent-192.png",
+   "fam": "agents",
+   "lab": "G03-G04",
+   "role": "Specialista connesso in sola lettura: prepara briefing e domande per la sessione di revisione di una proposta.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Istruzioni",
+     "icon": "clipboard-text",
+     "fam": "instructions",
+     "sub": "preparazione della revisione, non contatta i proponenti",
+     "lab": "G03"
+    },
+    {
+     "label": "Dataverse MCP Server",
+     "icon": "logo:dataverse",
+     "fam": "tools",
+     "sub": "Shared account: solo Search, Describe e Read query",
+     "lab": "G03",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Allow other agents to connect",
+     "icon": "plugs-connected",
+     "fam": "agents",
+     "sub": "attivo, pubblicato e collegato all'orchestratore",
+     "lab": "G03"
+    },
+    {
+     "label": "Sicurezza e ambito",
+     "icon": "shield-check",
+     "fam": "instructions",
+     "sub": "sette guardrail nelle istruzioni",
+     "lab": "G04"
+    },
+    {
+     "label": "Comitato GH - Base e Comitato GH - Sicurezza",
+     "icon": "list-checks",
+     "fam": "lifecycle",
+     "sub": "4 e 6 casi, Compare meaning, Pass score 70",
+     "lab": "G03-G04"
+    }
+   ]
+  },
+  "ag01-pianificazione": {
+   "title": "Agente Pianificazione - GH",
+   "icon": "agent:planning-agent-192.png",
+   "fam": "agents",
+   "lab": "G10",
+   "role": "Agente connesso che si occupa solo di persone, calendari e inviti, dopo il via libera; strumenti con Shared account.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Cerca collega",
+     "icon": "user-circle",
+     "fam": "tools",
+     "sub": "Office 365 Users, Search for users (V2)"
+    },
+    {
+     "label": "Trova orari liberi",
+     "icon": "calendar-dots",
+     "fam": "tools",
+     "sub": "Office 365 Outlook, Find meeting times (V2)"
+    },
+    {
+     "label": "Crea sessione di revisione",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Create event (V4), solo dopo un orario confermato",
+     "file": "outlook.png"
+    },
+    {
+     "label": "Leggi evento",
+     "icon": "logo:outlook",
+     "fam": "tools",
+     "sub": "Get event: rilegge l'evento creato",
+     "file": "outlook.png"
+    }
+   ]
+  },
+  "ag01-via-libera": {
+   "title": "Richiedi via libera revisione",
+   "icon": "flow-arrow",
+   "fam": "tools",
+   "lab": "G10",
+   "role": "Workflow usato dall'orchestratore come strumento prima della pianificazione: la soglia sta in una condizione, non nel prompt.",
+   "layout": "flow",
+   "steps": [
+    {
+     "label": "When an agent calls the workflow",
+     "icon": "lightning",
+     "fam": "triggers",
+     "sub": "CodiceProposta, EmailResponsabile"
+    },
+    {
+     "label": "Leggi proposta",
+     "icon": "logo:dataverse",
+     "fam": "knowledge",
+     "sub": "List rows su Proposals",
+     "file": "dataverse.svg"
+    },
+    {
+     "label": "Sopra soglia",
+     "icon": "git-branch",
+     "fam": "system",
+     "sub": "budget maggiore di 300000",
+     "branches": [
+      {
+       "label": "Else",
+       "fam": "neutral",
+       "steps": [
+        {
+         "label": "Fissa revisione automatica",
+         "icon": "logo:dataverse",
+         "fam": "knowledge",
+         "sub": "Review Scheduled, Esito Automatica",
+         "file": "dataverse.svg"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "label": "Start and wait for an approval",
+     "icon": "stamp",
+     "fam": "tools",
+     "sub": "Approvals: approvata, Review Scheduled, Esito Approvata; altrimenti Non approvata",
+     "pill": "If"
+    }
+   ]
+  },
+  "ag06-docx": {
+   "title": "dossier_revisione.docx",
+   "icon": "logo:word",
+   "fam": "tools",
+   "lab": "G06",
+   "role": "Il dossier allegato alla risposta: due esecuzioni hanno la stessa forma, cambiano solo le formulazioni di domande e rischi.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Intestazione",
+     "icon": "article",
+     "fam": "tools",
+     "sub": "titolo, proposta PP-####, valutazione AS-####, data"
+    },
+    {
+     "label": "Proponente, Programma, Sintesi",
+     "icon": "list-bullets",
+     "fam": "tools",
+     "sub": "dati letti da Dataverse"
+    },
+    {
+     "label": "Criteri di valutazione ed evidenze",
+     "icon": "table",
+     "fam": "tools",
+     "sub": "tabella Light Grid Accent 1, punteggio complessivo"
+    },
+    {
+     "label": "Domande per lo sponsor",
+     "icon": "chat-text",
+     "fam": "tools",
+     "sub": "8, raggruppate per criterio dal peso più alto"
+    },
+    {
+     "label": "Rischi e punti di attenzione",
+     "icon": "warning",
+     "fam": "tools",
+     "sub": "con il rischio di budget e l'eventuale differenza di punteggio"
+    },
+    {
+     "label": "Nota finale",
+     "icon": "sparkle",
+     "fam": "tools",
+     "sub": "documento preparato con l'IA: decide il Comitato di Valutazione"
+    }
+   ],
+   "file": "word.png"
+  },
+  "ag01-hub": {
+   "title": "PMO Demand Hub",
+   "icon": "logo:dataverse",
+   "fam": "knowledge",
+   "lab": "Lab 00",
+   "role": "Soluzione PMO Demand IT (GitHub): cinque tabelle con prefisso csg_ e l'app PMO Demand Hub; le note sono la tabella standard di Dataverse.",
+   "layout": "list",
+   "steps": [
+    {
+     "label": "Program",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "csg_program, Program Code PG-###, Available Budget"
+    },
+    {
+     "label": "Evaluation Criterion",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "csg_criterion, Weight: i pesi sommano a 100"
+    },
+    {
+     "label": "Requester",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "csg_requester, Requester Code RQ-####"
+    },
+    {
+     "label": "Proposal",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "csg_proposal, PP-####, Channel, Proposal Status, Review Scheduled (G10)"
+    },
+    {
+     "label": "Assessment",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "csg_assessment, Assessment Code AS-####, Score, Recommendation"
+    },
+    {
+     "label": "Note",
+     "icon": "database",
+     "fam": "knowledge",
+     "sub": "annotation: il documento ricevuto per email",
+     "lab": "G07"
+    }
+   ],
+   "file": "dataverse.svg"
+  }
+ }
+}

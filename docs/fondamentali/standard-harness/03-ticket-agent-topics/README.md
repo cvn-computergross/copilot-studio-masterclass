@@ -429,6 +429,17 @@ Il seguente Ticket è stato inviato al Reparto IT
 { type: "AdaptiveCard", body: [ { type: "TextBlock", size: "Medium", weight: "Bolder", text: "Riepilogo dati inseriti" }, { type: "FactSet", facts: [ { title: "Nome", value: Text(Topic.nome) }, { title: "Cognome", value: Text(Topic.cognome) }, { title: "Email", value: Text(Topic.email) }, { title: "Tipologia di problema", value: Text(Topic.tipologia) }, { title: "Descrizione", value: Text(Topic.descrizione) } ] } ], '$schema': "http://adaptivecards.io/schemas/adaptive-card.json", version: "1.5" }
 ```
 
+::: details <!-- icon: function f-topics --> Come si legge la formula
+Restituisce la scheda con il riepilogo del ticket. La Formula card descrive la scheda con record tra graffe `{ ... }` ed elenchi tra quadre `[ ... ]`, e può leggere le variabili del topic.
+
+- `Text(Topic.nome)`: converte in testo la variabile `Topic.nome`, cioè la risposta data dall'utente; è così che la scheda usa le variabili.
+- `{ title: "Nome", value: Text(Topic.nome) }`: una riga del riepilogo, con l'etichetta e il valore.
+- `facts: [ ... ]`: l'elenco delle cinque righe (Nome, Cognome, Email, Tipologia di problema, Descrizione).
+- `'$schema'`: il nome sta tra apici singoli perché inizia con `$`.
+
+Risultato: una scheda con il titolo "Riepilogo dati inseriti" e cinque righe riempite con i dati inseriti.
+:::
+
 ![](./images/creazione-topic-adaptive-card-13.png)
 
 15. Dopo aver salvato il Topic premere il tasto Test e inserire la seguente richiesta:

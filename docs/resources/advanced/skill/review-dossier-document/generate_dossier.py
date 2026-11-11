@@ -26,7 +26,7 @@ Contratto JSON di input (tutti i campi sono obbligatori salvo diversa indicazion
      "verifica": "Che cosa verifica la domanda"}
   ],
   "rischi": ["Rischio o punto di attenzione"],          (facoltativo)
-  "punteggio_registrato": 87.0                          (facoltativo: csm_score della Valutazione)
+  "punteggio_registrato": 87.0                          (facoltativo: csg_score della Valutazione)
 }
 
 Regole applicate dal codice (non dal modello):

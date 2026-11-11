@@ -312,44 +312,19 @@ All'inizio servono solo programmi e criteri: sono le regole con cui gli agenti v
 4. Verificare la numerazione automatica: in **Proposals** selezionare **New**, inserire un **Title** di prova e selezionare **Save**. Dopo il salvataggio il **Proposal Code** compare nell'intestazione del modulo e nella vista **Active Proposals**, nel formato `PP-####` (in un ambiente nuovo `PP-1000`).
 5. Eliminare la proposta di prova (**Delete** nella barra dei comandi, poi confermare), così **Proposals** torna vuota. Il codice usato non viene riassegnato: la prima proposta registrata dagli agenti avrà il numero successivo.
 
-## Passaggi facoltativi
-
-### Rendere modificabili le viste principali
-
-Le sottogriglie dei moduli sono già modificabili. Per modificare direttamente anche gli elenchi principali (per esempio cambiare il peso di molti criteri dalla vista Evaluation Criteria) occorre attivare la griglia modificabile sulla tabella, dall'esplora soluzioni classico.
-
-1. Aprire la soluzione **PMO Demand IT** e, nella barra dei comandi, selezionare **...** e poi **Switch to classic**.
-2. Espandere **Entities**, aprire la tabella (ad esempio **Evaluation Criterion**), selezionare la scheda **Controls** e poi **Add Control**.
-3. Selezionare **Editable Grid** (oppure **Power Apps grid control**, la versione più recente, se l'ambiente la propone) e poi **Add**. Nella nuova riga selezionare **Web** come client.
-4. Selezionare **Save** e poi **Publish**. Ripetere per le altre tabelle che interessano, di solito Evaluation Criteria e Programs. Gli utenti possono comunque passare dalla griglia modificabile a quella in sola lettura mentre usano l'app.
-
-### Attivare il tema personalizzato
-
-La soluzione contiene un tema indaco con intestazione scura (`csm_/pmo/theme.xml`). Il tema si applica con il valore di ambiente dell'impostazione **Custom theme definition**, che vale per tutte le app model-driven dell'ambiente: per questo la soluzione non lo imposta e lo si attiva a mano, solo se si vuole.
-
-1. Nella soluzione **PMO Demand IT** selezionare **Add existing**, **More**, **Setting**.
-2. Cercare *custom theme*, selezionare **Custom theme definition**, poi **Next** e **Add**.
-3. Selezionare **Custom theme definition** nella soluzione e poi **Edit**. In **Setting environment value** selezionare **New environment value** e inserire `csm_/pmo/theme.xml`.
-4. Selezionare **Save** e poi **Publish all customizations**.
-
-> [!WARNING]
-> **Ambiente condiviso**
->
-> Il valore di ambiente applica il tema a tutte le app model-driven dell'ambiente che usano il nuovo aspetto. In un ambiente condiviso chiedere prima agli altri maker, oppure saltare questo passaggio: icone, colori e home page funzionano anche senza.
-
 ## Conoscenza PMO in SharePoint
 
 ### Creare la cartella SharePoint della conoscenza PMO
 
 Le linee guida e il piano strategico sono documenti che il PMO aggiorna. Se vengono caricati direttamente nell'agente, l'agente ne usa una copia statica: quando il PMO cambia una regola, l'agente continua ad applicare quella vecchia finché qualcuno non ricarica il file a mano. Collegando invece una cartella SharePoint, l'agente legge sempre la versione corrente e risponde solo agli utenti che hanno il permesso di leggere quei documenti. Per questo i documenti di conoscenza vivono in SharePoint, come nel lavoro reale del PMO.
 
-1. Aprire il sito SharePoint del laboratorio. Se non se ne ha uno, creare un sito del team chiamato `Zava PMO` (da [SharePoint](https://www.office.com/launch/sharepoint), **Create site**, **Team site**).
+1. Creare il proprio sito SharePoint del laboratorio: un sito del team chiamato `Zava PMO - <nomeutente>`, con il proprio nome utente al posto di `<nomeutente>` (ad esempio `Zava PMO - mrossi`), da [SharePoint](https://www.office.com/launch/sharepoint), **Create site**, **Team site**. Il nome utente nel titolo distingue il sito da quelli degli altri partecipanti.
 2. Aprire la raccolta **Documents** e creare una cartella `PMO Knowledge`.
 3. Caricare nella cartella [`Zava_PMO_Linee_Guida_Business_Case.docx`](../../../resources/advanced/conoscenza/Zava_PMO_Linee_Guida_Business_Case.docx) e [`Zava_Piano_Strategico_IT_2026-2028.pdf`](../../../resources/advanced/conoscenza/Zava_Piano_Strategico_IT_2026-2028.pdf).
 4. Annotare l'indirizzo diretto della cartella: verrà usato nel Lab S01 come fonte di conoscenza. Si ottiene aggiungendo all'indirizzo del sito il percorso della raccolta e della cartella; l'indirizzo che compare nella barra del browser quando si apre la cartella (`.../Forms/AllItems.aspx?id=...`) e i link di condivisione hanno un'altra forma e non vanno usati. L'indirizzo deve essere simile a:
 
 ```
-https://<tenant>.sharepoint.com/sites/ZavaPMO/Shared%20Documents/PMO%20Knowledge
+https://<tenant>.sharepoint.com/sites/ZavaPMO-<nomeutente>/Shared%20Documents/PMO%20Knowledge
 ```
 
 5. Verificare che i partecipanti che proveranno l'agente abbiano almeno il permesso di **lettura** sul sito o sulla cartella. Chi non ce l'ha non riceverà risposte da questi documenti, ed è il comportamento corretto.
