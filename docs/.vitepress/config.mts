@@ -56,7 +56,8 @@ export default defineConfig({
     experiences: EXPERIENCES,
     // navigazione in inglese, contenuti in italiano
     outline: { level: [2, 3], label: 'On this page' },
-    socialLinks: [{ icon: 'github', link: repo, ariaLabel: 'GitHub repository' }],
+    // logo ufficiale di GitHub (docs/public/logos/github.svg) al posto dell'icona sottile di VitePress
+    socialLinks: [{ icon: { svg: fs.readFileSync(path.join(DOCS, 'public', 'logos', 'github.svg'), 'utf8') }, link: repo, ariaLabel: 'GitHub repository' }],
     docFooter: { prev: 'Previous', next: 'Next' },
     sidebarMenuLabel: 'Menu',
     returnToTopLabel: 'Return to top',

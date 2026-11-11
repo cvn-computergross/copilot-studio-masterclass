@@ -481,3 +481,7 @@
 
 /* riquadri apribili "::: details" (es. "Perché questa scelta"): il titolo si legge come cliccabile */
 .vp-doc .custom-block.details summary { cursor: pointer; font-weight: 600; }
+
+/* link a GitHub nell'header: logo pieno, nel colore del testo, un po' più grande dell'icona predefinita */
+.VPSocialLinks .VPSocialLink.VPSocialLink { color: var(--vp-c-text-1); }
+.VPSocialLinks .VPSocialLink.VPSocialLink > svg { width: 24px; height: 24px; fill: currentColor; }
