@@ -12,9 +12,9 @@ Hands-on labs for learning Microsoft Copilot Studio. The guides are plain Markdo
 | **Fundamentals** | The basics of Copilot Studio |
 | [Standard Harness](./docs/fondamentali/standard-harness/index.md) | Labs 01-05 in the Copilot Studio portal |
 | [GitHub Harness](./docs/fondamentali/github-harness/index.md) | Labs 01-05 with the GitHub Copilot harness |
-| **Advanced** | The case study: the Demand IT agent of Zava's PMO, starting from [Lab 00](./docs/advanced/standard-harness/00-setup-dati/README.md) |
-| [Standard Harness](./docs/advanced/standard-harness/index.md) | Data setup and labs S01-S08 |
-| [GitHub Harness](./docs/advanced/github-harness/index.md) | Work in progress |
+| **Advanced** | The case study: the Demand IT agent of Zava's PMO, each path starts from its own Lab 00 |
+| [Standard Harness](./docs/advanced/standard-harness/index.md) | [Lab 00](./docs/advanced/standard-harness/00-setup-dati/README.md) (data setup) and labs S01-S08: child agents, prompts and agent flows |
+| [GitHub Harness](./docs/advanced/github-harness/index.md) | [Lab 00](./docs/advanced/github-harness/00-setup-dati/README.md) (data setup) and labs G01-G11: instructions, skills, Dataverse MCP and workflows |
 
 ## Repository structure
 
@@ -27,8 +27,8 @@ docs/                         # the guides: also the source of the website
 │   └── github-harness/
 ├── advanced/                 # Advanced: the case study
 │   ├── images/               # architecture and workflow diagrams (SVG)
-│   ├── standard-harness/     # 00-setup-dati, 01-...07-...
-│   └── github-harness/
+│   ├── standard-harness/     # 00-setup-dati, 01-...08-...
+│   └── github-harness/       # 00-setup-dati, 01-...11-...
 ├── resources/                # files to download: fondamentali/NN-lab-name/, advanced/<topic>/
 ├── public/                   # logos served as-is
 └── .vitepress/               # website configuration and theme (see docs/.vitepress/README.md)
