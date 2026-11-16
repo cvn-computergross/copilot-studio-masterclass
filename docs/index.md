@@ -30,7 +30,7 @@ Il corso ha due livelli. Nei **Fundamentals** impari le basi di Copilot Studio c
 <div class="card-grid">
 <div class="card card--link">
 
-<!-- icon: logo-copilot-studio --> [Standard Harness](./fondamentali/standard-harness/index.md){.card-title}
+<!-- icon: logo-copilot-studio-2024 --> [Standard Harness](./fondamentali/standard-harness/index.md){.card-title}
 {.card-head}
 
 Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenza, topic, tool e agent flow, fino a scenari multi-agente e autonomi.
@@ -58,7 +58,7 @@ Gli agenti si creano nel portale di Copilot Studio: ambiente, fonti di conoscenz
 </div>
 <div class="card card--link">
 
-<!-- icon: logo-github --> [GitHub Harness](./fondamentali/github-harness/index.md){.card-title}
+<!-- icon: logo-github-copilot --> [GitHub Harness](./fondamentali/github-harness/index.md){.card-title}
 {.card-head}
 
 Si prosegue con un approccio code-first, dopo aver consolidato le basi nel portale.
@@ -91,7 +91,7 @@ Il caso pratico: l'**Agente Demand IT** che aiuta l'Ufficio Demand e PMO IT di Z
 <div class="card-grid">
 <div class="card card--link">
 
-<!-- icon: logo-copilot-studio --> [Standard Harness](./advanced/standard-harness/index.md){.card-title}
+<!-- icon: logo-copilot-studio-2024 --> [Standard Harness](./advanced/standard-harness/index.md){.card-title}
 {.card-head}
 
 Orchestratore, child agent e connected agent, prompt multimodali, grounding su Dataverse, trigger via email, dossier Word, valutazioni e pubblicazione.
@@ -111,7 +111,7 @@ Orchestratore, child agent e connected agent, prompt multimodali, grounding su D
 </div>
 <div class="card card--link">
 
-<!-- icon: logo-github --> [GitHub Harness](./advanced/github-harness/index.md){.card-title}
+<!-- icon: logo-github-copilot --> [GitHub Harness](./advanced/github-harness/index.md){.card-title}
 {.card-head}
 
 Orchestratore con istruzioni e skill, Dataverse MCP Server, agenti connessi, workflow con trigger email e human in the loop, dossier Word con una skill Python, pubblicazione in Teams.
