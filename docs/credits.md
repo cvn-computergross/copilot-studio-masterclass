@@ -8,7 +8,7 @@ Questo corso riusa materiali e strumenti open source. In questa pagina trovi da 
 
 ### Microsoft Agent Academy <!-- icon: student f-instructions -->
 
-Alcune parti delle guide dei lab sono adattate da [Microsoft Agent Academy](https://github.com/microsoft/agent-academy), il percorso gratuito di Microsoft per imparare a creare agenti con Copilot Studio. Il caso pratico dell'Advanced prende spunto dal percorso Operative, quello dell'Hiring Agent.
+Alcune parti delle guide dei lab sono adattate da [Microsoft Agent Academy](https://github.com/microsoft/agent-academy). Il caso pratico dell'Advanced prende spunto dal percorso Operative, quello dell'Hiring Agent.
 
 Agent Academy è distribuito con [licenza MIT](https://github.com/microsoft/agent-academy/blob/main/LICENSE), Copyright (c) Microsoft Corporation; le guide sono adattate con modifiche, ristrutturazioni e contenuti originali.
 
@@ -24,4 +24,4 @@ Agent Academy è distribuito con [licenza MIT](https://github.com/microsoft/agen
 
 ## Loghi dei prodotti <!-- icon: info -->
 
-I loghi dei prodotti sono marchi di Microsoft Corporation e GitHub, Inc., usati solo per indicare il prodotto, senza alcuna approvazione dei titolari. Riferimento: [Microsoft Cloud Product Logos](https://www.mscloudlogos.com/).
+I loghi dei prodotti sono marchi di Microsoft Corporation e GitHub, Inc., usati solo per indicare il prodotto. Riferimento: [Microsoft Cloud Product Logos](https://www.mscloudlogos.com/).
