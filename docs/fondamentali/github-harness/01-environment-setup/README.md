@@ -4,6 +4,11 @@ Previous: Start | [Back to GitHub Harness](../index.md) | [Next: Lab 02](../02-k
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~75 minuti · <!-- icon: github-logo f-github --> **Harness:** GitHub Copilot
 
+> [!IMPORTANT]
+> **Ambiente già pronto per chi segue il corso**
+>
+> Per i partecipanti al corso account, trial, ambiente e pubblicazione sono già stati creati: le sezioni *Account e trial di Copilot Studio* e *Ambiente del corso* sono solo a scopo informativo e vanno lette, non eseguite. Il lavoro pratico comincia da [Sito SharePoint "Zava Help Desk"](#sito-sharepoint-zava-help-desk) e prosegue con [Publisher e solution](#publisher-e-solution) e *Verificare l'ambiente*. Chi ripete il percorso in un proprio ambiente le segue invece per intero.
+
 ## Scenario
 
 Zava vuole un unico assistente per i servizi interni: l'help desk IT di primo livello, che risponde ai problemi più comuni (password, VPN) e apre un ticket quando non basta; gli annunci di lavoro, che prepara e invia per conto di chi li richiede; la richiesta di un nuovo dispositivo aziendale, verificata sulla lista dei dispositivi. Nei lab di questa sezione si costruisce un solo agente, l'**Assistente Zava GH**, aggiungendo un pezzo per lab.

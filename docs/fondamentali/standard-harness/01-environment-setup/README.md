@@ -4,6 +4,11 @@ Previous: Start | [Back to Standard Harness](../index.md) | [Next: Lab 02](../02
 
 <!-- icon: clock-countdown --> **Tempo stimato:** ~45 minuti · <!-- icon: toolbox f-standard --> **Harness:** standard
 
+> [!IMPORTANT]
+> **Ambiente già pronto per chi segue il corso**
+>
+> Per i partecipanti al corso account, trial, ambiente e pubblicazione sono già stati creati: le sezioni da *Ottenere un Microsoft 365 Account* ad *Abilitare la Pubblicazione con la Copilot Studio Trial* sono solo a scopo informativo e vanno lette, non eseguite. Il lavoro pratico comincia da [Solution e Publisher](#solution-e-publisher) e prosegue con [Creazione del primo Agente](#creazione-del-primo-agente). Chi ripete il percorso in un proprio ambiente le segue invece per intero.
+
 ## Scenario
 
 Il reparto IT di Zava vuole sperimentare Copilot Studio per offrire ai colleghi un assistente di supporto di primo livello, disponibile in chat e capace di rispondere con un linguaggio semplice. Prima di costruire qualsiasi agente serve però un posto in cui lavorare: un tenant Microsoft 365, l'accesso a Copilot Studio e un ambiente di sviluppo separato da quello predefinito.
