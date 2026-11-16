@@ -90,7 +90,7 @@ Il programma di investimento è il punto di partenza di ogni valutazione: decide
 | Description | `csg_description` | Testo su più righe |
 | Available Budget (EUR) | `csg_availablebudget` | Numero intero, minimo 0 |
 
-### Evaluation Criterion
+### Evaluation Criteria
 
 I criteri sono il cuore della valutazione e cambiano più spesso degli agenti: il PMO può modificare un peso o una descrizione senza toccare istruzioni o skill. Tenerli come righe collegate al programma permette agli agenti di leggere sempre la versione in vigore.
 
