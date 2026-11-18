@@ -26,7 +26,7 @@ L'Ufficio Demand e PMO IT vuole un unico punto di contatto per i proponenti e pe
 In questo laboratorio viene creato l'agente nella soluzione del PMO, vengono scritte le sue istruzioni da orchestratore, gli viene data la conoscenza delle regole aziendali (linee guida del PMO e piano strategico) e vengono configurate le impostazioni generative.
 
 ::: details <!-- icon: lightbulb f-instructions --> Perché questa scelta
-- **Un orchestratore, non un agente tuttofare.** L'orchestratore conosce il processo e decide chi fa cosa. Le procedure specifiche (intake, valutazione, briefing) vivono in componenti separati che si possono testare e cambiare senza riscrivere tutto. È lo stesso schema dell'Hiring Agent di Agent Academy.
+- **Un orchestratore, non un agente tuttofare.** L'orchestratore conosce il processo e decide chi fa cosa. Le procedure specifiche (intake, valutazione, briefing) vivono in componenti separati che si possono testare e cambiare senza riscrivere tutto.
 - **Le regole del processo come conoscenza, i dati come dati.** Le linee guida e il piano strategico sono documenti: vanno nella **conoscenza** e l'agente li cita. Programmi, criteri e pesi invece stanno in Dataverse: verranno letti dal vivo dai flow e dai prompt, non copiati nelle istruzioni. Così, se il PMO cambia un peso, nessun agente va modificato.
 - **Niente web, niente risposte non fondate.** Un agente di governance deve rispondere solo da fonti aziendali. Disattivando **Use information from the Web** e **Allow ungrounded responses** l'agente preferisce dire che non lo sa piuttosto che inventare una regola.
 - **File uploads attivo.** Il proponente allegherà il business case in chat: l'impostazione **File uploads** permette all'agente di ricevere e leggere il file.

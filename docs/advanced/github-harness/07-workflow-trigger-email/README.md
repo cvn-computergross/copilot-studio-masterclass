@@ -207,7 +207,7 @@ Che cosa si è visto, e perché il PMO usa comunque un workflow:
 >
 > Ad oggi, nell'harness GitHub Copilot, un trigger sull'agente non si può modificare come nella standard harness: non c'è un flusso Power Automate da aprire e arricchire con altri passi. Si possono cambiare solo connessione, **Additional instructions**, **Trigger options** e **Advanced parameters**, oppure rimuovere il trigger e aggiungerlo di nuovo. Per logica in più servono le istruzioni o un workflow.
 
-Il trigger sull'agente va bene per compiti semplici in cui conta la velocità di configurazione; per un processo che deve archiviare documenti, coinvolgere persone e gestire gli errori in modo prevedibile serve un workflow. È la stessa scelta di Microsoft Agent Academy.
+Il trigger sull'agente va bene per compiti semplici in cui conta la velocità di configurazione; per un processo che deve archiviare documenti, coinvolgere persone e gestire gli errori in modo prevedibile serve un workflow.
 
 ## Workflow "Intake proposte via email"
 
@@ -498,7 +498,7 @@ Risultato: il PDF o il .docx originale, caricato nella colonna **Business Case D
 > | Necessaria | Sì | No |
 > | Dove si vede nell'app | Scheda **Notes and Attachments** | Scheda **General** |
 >
-> La nota non si può togliere: per leggere il file dalla colonna l'agente dovrebbe usare **File download** del Dataverse MCP Server, che è spento e restituisce solo un link temporaneo che l'agente non scarica in modo affidabile. È anche la scelta di Microsoft Agent Academy, che salva il documento solo come nota. Se si salta questo punto, il PDF resta consultabile nella scheda **Notes and Attachments**.
+> La nota non si può togliere: per leggere il file dalla colonna l'agente dovrebbe usare **File download** del Dataverse MCP Server, che è spento e restituisce solo un link temporaneo che l'agente non scarica in modo affidabile. Se si salta questo punto, il PDF resta consultabile nella scheda **Notes and Attachments**.
 
 ## Variabile "ProposteRegistrate"
 
