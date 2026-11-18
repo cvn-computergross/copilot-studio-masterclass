@@ -1,0 +1,100 @@
+{
+  "codice_valutazione": "AS-1000",
+  "proposta": {
+    "codice": "PP-1000",
+    "titolo": "Portale fornitori self-service",
+    "sintesi": "L'Ufficio Acquisti propone un portale self-service per i circa 1.200 fornitori attivi, realizzato con Power Pages e Dataverse e integrato con Dynamics 365 Finance. Il portale riduce le email di richiesta informazioni, rende i fornitori autonomi nell'aggiornamento dei propri dati e accorcia la qualifica dei nuovi fornitori da 15 a 5 giorni lavorativi. Investimento richiesto 180.000 euro in 9 mesi.",
+    "budget_richiesto": 180000,
+    "durata_mesi": 9
+  },
+  "proponente": {
+    "nome": "Giulia Ferrari",
+    "ruolo": "Responsabile Ufficio Acquisti",
+    "funzione": "Acquisti",
+    "email": "giulia.ferrari@zava-demo.example"
+  },
+  "programma": {
+    "codice": "PG-100",
+    "nome": "Digital Process Transformation",
+    "budget_disponibile": 600000
+  },
+  "criteri": [
+    {
+      "nome": "Strategic Alignment",
+      "peso": 25,
+      "livello": "Forte",
+      "evidenza": "Digitalizza la qualifica e la gestione dei fornitori: contribuisce agli obiettivi OS1 e OS4 del Piano Strategico IT 2026-2028."
+    },
+    {
+      "nome": "Measurable Financial Benefits",
+      "peso": 25,
+      "livello": "Forte",
+      "evidenza": "Risparmio stimato di 120.000 euro all'anno e -40% email su baseline di 3.500."
+    },
+    {
+      "nome": "Process Impact",
+      "peso": 20,
+      "livello": "Forte",
+      "evidenza": "1.200 fornitori coinvolti; qualifica da 15 a 5 giorni lavorativi."
+    },
+    {
+      "nome": "Feasibility and Risk",
+      "peso": 15,
+      "livello": "Moderata",
+      "evidenza": "Pilota al mese 5; dipendenza dal team ERP per le API dei pagamenti."
+    },
+    {
+      "nome": "Platform Reuse",
+      "peso": 15,
+      "livello": "Forte",
+      "evidenza": "Power Pages, Dataverse e Power Automate già disponibili in azienda."
+    }
+  ],
+  "domande": [
+    {
+      "criterio": "Strategic Alignment",
+      "domanda": "Quali obiettivi del Piano Strategico IT 2026-2028 vengono supportati in modo diretto dal portale?",
+      "verifica": "Collegamento esplicito alla strategia aziendale"
+    },
+    {
+      "criterio": "Strategic Alignment",
+      "domanda": "Il portale sostituisce strumenti o processi oggi in uso che verranno dismessi?",
+      "verifica": "Razionalizzazione degli strumenti esistenti"
+    },
+    {
+      "criterio": "Measurable Financial Benefits",
+      "domanda": "Come è stato calcolato il risparmio di 120.000 euro all'anno e chi certificherà la baseline?",
+      "verifica": "Solidità della stima dei benefici"
+    },
+    {
+      "criterio": "Measurable Financial Benefits",
+      "domanda": "Quali KPI verranno misurati nei primi 6 mesi e con quale frequenza?",
+      "verifica": "Piano di misura dei benefici"
+    },
+    {
+      "criterio": "Process Impact",
+      "domanda": "Quali passaggi della qualifica fornitori verranno eliminati o automatizzati?",
+      "verifica": "Riduzione reale delle attività manuali"
+    },
+    {
+      "criterio": "Process Impact",
+      "domanda": "Come verranno gestiti i fornitori che non useranno il portale?",
+      "verifica": "Copertura del processo"
+    },
+    {
+      "criterio": "Feasibility and Risk",
+      "domanda": "Quali sono i tempi concordati con il team ERP per le API di stato dei pagamenti?",
+      "verifica": "Gestione della dipendenza critica"
+    },
+    {
+      "criterio": "Platform Reuse",
+      "domanda": "Quali componenti esistenti di Power Platform verranno riusati e quali andranno costruiti da zero?",
+      "verifica": "Effettivo riuso delle piattaforme"
+    }
+  ],
+  "rischi": [
+    "Adozione da parte dei fornitori di piccole dimensioni.",
+    "Le modifiche alle coordinate bancarie richiedono un controllo antifrode con doppia verifica."
+  ],
+  "punteggio_registrato": 94.0
+}

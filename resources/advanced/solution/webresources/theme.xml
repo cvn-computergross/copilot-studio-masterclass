@@ -1,0 +1,17 @@
+<CustomTheme
+    basePaletteColor="#4F46E5"
+    lockPrimary="false"
+    logoWebResource="csm_/pmo/logo.svg"
+    logoTooltip="PMO Demand Hub"
+>
+  <AppHeaderColors
+    background="#312E81"
+    foreground="#FFFFFF"
+    backgroundHover="#3730A3"
+    foregroundHover="#FFFFFF"
+    backgroundPressed="#1E1B4B"
+    foregroundPressed="#FFFFFF"
+    backgroundSelected="#4338CA"
+    foregroundSelected="#FFFFFF"
+  />
+</CustomTheme>

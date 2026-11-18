@@ -1,0 +1,26 @@
+﻿Name,Description,Weight,Program
+Strategic Alignment,"The proposal contributes directly to the goals of the IT Strategic Plan 2026-2028, in particular end-to-end process digitalization.",25,Digital Process Transformation
+Measurable Financial Benefits,"Benefits expressed in euros or hours saved, with a stated baseline and a verifiable calculation method.",25,Digital Process Transformation
+Process Impact,"Number of users, suppliers or cases involved and a concrete reduction in time, manual steps or errors.",20,Digital Process Transformation
+Feasibility and Risk,"Realistic plan with phases and a pilot, identified dependencies, main risks described with their mitigations.",15,Digital Process Transformation
+Platform Reuse,"Use of platforms the company already licenses (Power Platform, Dynamics 365, Microsoft 365) instead of new products.",15,Digital Process Transformation
+Cyber Risk Reduction,"Measurable reduction of the attack surface or of the likelihood and impact of incidents, with reference to risks already on record.",30,Security and Compliance
+Regulatory Compliance,"Explicit coverage of NIS2, GDPR or internal audit requirements, stating the gaps the proposal closes.",25,Security and Compliance
+User Impact,"Effects on users' daily operations and measures to limit them (communication, maintenance windows, support).",15,Security and Compliance
+Feasibility and Risk,"Realistic plan with phases, available skills, dependencies and project risks with mitigations.",15,Security and Compliance
+Recurring Operating Costs,"Annual running costs (licenses, managed services, staff) stated and sustainable over time.",15,Security and Compliance
+Business Value of the Use Case,"Clear business problem, identified target users and a quantified expected benefit.",30,Data and Artificial Intelligence
+Data Quality and Availability,"Identified data sources, data owner, and enough quality and history for the use case.",25,Data and Artificial Intelligence
+Responsible AI and Privacy,"Assessment of risks to people, legal basis for processing, human oversight and transparency toward users.",20,Data and Artificial Intelligence
+Feasibility and Risk,"Plan with a prototype or pilot, available skills, dependencies and main risks mitigated.",15,Data and Artificial Intelligence
+Measurable Outcomes,"KPIs defined with baseline and target, and how they will be measured after release.",10,Data and Artificial Intelligence
+Employee Experience,"Concrete improvement in employees' daily experience, backed by evidence (surveys, tickets, time spent).",30,Modern Workplace
+Adoption and Change Management,"Communication, training and champions plan to ensure adoption after release.",25,Modern Workplace
+Measurable Financial Benefits,"Savings or avoided costs expressed in euros, for example retiring existing tools or hours saved.",20,Modern Workplace
+Security and Governance,"Content governance, permissions, lifecycle and compliance with company Microsoft 365 policies.",15,Modern Workplace
+Feasibility and Risk,"Realistic plan with phases, dependencies and main risks with mitigations.",10,Modern Workplace
+Resilience and Business Continuity,"Improved availability, disaster recovery, RPO and RTO compared with the current situation.",30,Infrastructure and Cloud
+Infrastructure Cost Reduction,"Lower total cost of ownership (TCO) over at least three years, with stated assumptions.",25,Infrastructure and Cloud
+Environmental Sustainability,"Lower energy use or emissions, with stated estimates and sources.",15,Infrastructure and Cloud
+Feasibility and Risk,"Migration plan in waves, skills, dependencies and main risks with mitigations.",20,Infrastructure and Cloud
+Reduced Technical Debt,Retirement of obsolete or unsupported systems and a simpler architecture.,10,Infrastructure and Cloud

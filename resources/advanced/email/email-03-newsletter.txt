@@ -1,0 +1,9 @@
+Scopo del test (non copiare questa riga): Messaggio promozionale con la parola Proposta nell'oggetto. Atteso: classificato come non pertinente e ignorato.
+
+Oggetto: Proposta progetto speciale: sconto del 30% sui corsi cloud
+Allegati: BC-01_Portale_fornitori_self-service.pdf (serve solo a far partire il trigger)
+
+Corpo:
+Offerta a tempo limitato per la tua azienda!
+Iscriviti entro venerdì ai nostri corsi cloud e ricevi uno sconto del 30%.
+Per non ricevere più queste comunicazioni rispondi con CANCELLA.

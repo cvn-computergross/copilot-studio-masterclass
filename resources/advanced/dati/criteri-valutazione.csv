@@ -1,0 +1,26 @@
+﻿Nome,Descrizione,Peso,Programma
+Allineamento strategico,"La proposta contribuisce in modo diretto agli obiettivi del Piano Strategico IT 2026-2028, in particolare alla digitalizzazione dei processi end-to-end.",25,Trasformazione Digitale dei Processi
+Benefici economici misurabili,"Benefici espressi in euro o in ore risparmiate, con una baseline dichiarata e un metodo di calcolo verificabile.",25,Trasformazione Digitale dei Processi
+Impatto sui processi,"Numero di utenti, fornitori o pratiche coinvolte e riduzione concreta di tempi, passaggi manuali o errori.",20,Trasformazione Digitale dei Processi
+Fattibilità e rischio,"Piano realistico con fasi e pilota, dipendenze identificate, rischi principali descritti con le relative mitigazioni.",15,Trasformazione Digitale dei Processi
+Riuso delle piattaforme,"Utilizzo di piattaforme già licenziate in azienda (Power Platform, Dynamics 365, Microsoft 365) invece di nuovi prodotti.",15,Trasformazione Digitale dei Processi
+Riduzione del rischio cyber,"Riduzione misurabile della superficie di attacco o della probabilità e dell'impatto di incidenti, con riferimento a rischi già censiti.",30,Sicurezza e Conformità
+Conformità normativa,"Copertura esplicita di requisiti NIS2, GDPR o di audit interni, con indicazione dei gap che la proposta chiude.",25,Sicurezza e Conformità
+Impatto sugli utenti,"Effetti sull'operatività quotidiana degli utenti e misure per limitarli (comunicazione, finestre di intervento, supporto).",15,Sicurezza e Conformità
+Fattibilità e rischio,"Piano realistico con fasi, competenze disponibili, dipendenze e rischi di progetto con mitigazioni.",15,Sicurezza e Conformità
+Costi operativi ricorrenti,"Costi annuali di esercizio (licenze, servizi gestiti, personale) dichiarati e sostenibili nel tempo.",15,Sicurezza e Conformità
+Valore di business del caso d'uso,"Problema di business chiaro, utenti destinatari identificati e beneficio atteso quantificato.",30,Dati e Intelligenza Artificiale
+Qualità e disponibilità dei dati,"Fonti dati identificate, proprietario del dato, qualità e storico sufficienti per il caso d'uso.",25,Dati e Intelligenza Artificiale
+IA responsabile e privacy,"Valutazione dei rischi per le persone, base giuridica del trattamento, supervisione umana e trasparenza verso gli utenti.",20,Dati e Intelligenza Artificiale
+Fattibilità e rischio,"Piano con prototipo o pilota, competenze disponibili, dipendenze e rischi principali mitigati.",15,Dati e Intelligenza Artificiale
+Misurabilità dei risultati,"KPI definiti con baseline e obiettivo, e modalità di misura dopo il rilascio.",10,Dati e Intelligenza Artificiale
+Esperienza dei dipendenti,"Miglioramento concreto dell'esperienza quotidiana dei dipendenti, supportato da evidenze (survey, segnalazioni, tempi).",30,Modern Workplace
+Adozione e gestione del cambiamento,"Piano di comunicazione, formazione e champion per garantire l'adozione dopo il rilascio.",25,Modern Workplace
+Benefici economici misurabili,"Risparmi o costi evitati espressi in euro, ad esempio dismissione di strumenti esistenti o ore risparmiate.",20,Modern Workplace
+Sicurezza e governance,"Governance dei contenuti, permessi, ciclo di vita e conformità alle policy Microsoft 365 aziendali.",15,Modern Workplace
+Fattibilità e rischio,"Piano realistico con fasi, dipendenze e rischi principali con mitigazioni.",10,Modern Workplace
+Resilienza e continuità operativa,"Miglioramento di disponibilità, disaster recovery, RPO e RTO rispetto alla situazione attuale.",30,Infrastruttura e Cloud
+Riduzione dei costi infrastrutturali,"Riduzione dei costi totali (TCO) su un orizzonte di almeno tre anni, con ipotesi dichiarate.",25,Infrastruttura e Cloud
+Sostenibilità ambientale,"Riduzione dei consumi energetici o delle emissioni, con stime e fonti dichiarate.",15,Infrastruttura e Cloud
+Fattibilità e rischio,"Piano di migrazione per ondate, competenze, dipendenze e rischi principali con mitigazioni.",20,Infrastruttura e Cloud
+Debito tecnico ridotto,Dismissione di sistemi obsoleti o non supportati e semplificazione dell'architettura.,10,Infrastruttura e Cloud
